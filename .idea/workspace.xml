@@ -4,34 +4,52 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ebbf42b7-ba1c-4fe0-bf0c-0978b39ea6f0" name="Changes" comment="created react project">
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/event/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/nav/Logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JSX File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "LenaAshqar"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;LenaAshqar&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/ReemaIQ/Ticketorium.git",
-    "accountId": "2d0816b8-e9a4-431c-8602-3612ebddd751"
+    "accountId": "68f66e2f-0677-471f-b9ae-311e0eedb4d5"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
-  <component name="ProjectId" id="34KrplFaMFnZ07TRUZQqSBMyWEi" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="34LCnOu4NVmU9fkN31brAhcydoR" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -42,56 +60,52 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/sweet/OneDrive - KFUPM/KFUPM/2025/251/SWE 363/Project/ticketorium/ticketorium/src/components",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.intellij.reactbuddy.reactComponents" value="false" />
+        <entry key="com.intellij.reactbuddy.reactInspector" value="false" />
+        <entry key="com.intellij.reactbuddy.storybook" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\public\fonts" />
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets\Nav" />
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-WS-252.23892.411" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ebbf42b7-ba1c-4fe0-bf0c-0978b39ea6f0" name="Changes" comment="" />
-      <created>1760973289721</created>
+      <changelist id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="" />
+      <created>1760983637967</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1760973289721</updated>
-      <workItem from="1760973291051" duration="837000" />
+      <updated>1760983637967</updated>
+      <workItem from="1760983639104" duration="61000" />
+      <workItem from="1761030737671" duration="664000" />
+      <workItem from="1761654110251" duration="17321000" />
     </task>
-    <task id="LOCAL-00001" summary=".">
-      <option name="closed" value="true" />
-      <created>1760973419863</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1760973419863</updated>
-    </task>
-    <task id="LOCAL-00002" summary="created react project">
-      <option name="closed" value="true" />
-      <created>1760973739358</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1760973739358</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="." />
-    <MESSAGE value="created react project" />
-    <option name="LAST_COMMIT_MESSAGE" value="created react project" />
   </component>
 </project>
