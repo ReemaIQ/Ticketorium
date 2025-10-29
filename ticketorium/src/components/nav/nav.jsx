@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Bell, MessageCircle } from "lucide-react";
 import logoUrl from "../../assets/nav/Logo.png";
-import "./Nav.css";
 
 const navItems = {
     empty: [],
@@ -93,14 +92,14 @@ export default function Nav({userName, type}) {
                     <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
                     <div className="flex-direction-columns items-center">
-                        <span className="text-lg font-[Gilroy-BlackItalic] flex h-3 text-[#1F4C76]">-</span>
-                        <span className="font-[Gilroy-BlackItalic] text-[20px] tracking-wide flex">Ticketorium.</span>
+                        <span className="text-lg font-[Gilroy] font-black flex h-3 text-[#1F4C76]">-</span>
+                        <span className="font-[Gilroy] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
                     </div>
                 </div>
 
 
                 {/* Links */}
-                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy-Medium]">
+                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy] font-medium">
                     {navItems[type]?.map((item) => (
                         <a key={item.label} href={item.href} className="text-white hover:underline">
                             {item.label}

@@ -4,19 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="implementing navigation component">
       <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/event/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/nav/Logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JSX File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -101,11 +99,33 @@
       <updated>1760983637967</updated>
       <workItem from="1760983639104" duration="61000" />
       <workItem from="1761030737671" duration="664000" />
-      <workItem from="1761654110251" duration="17321000" />
+      <workItem from="1761654110251" duration="29515000" />
     </task>
+    <task id="LOCAL-00001" summary="implementing tailwind">
+      <option name="closed" value="true" />
+      <created>1761683868931</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1761683868931</updated>
+    </task>
+    <task id="LOCAL-00002" summary="implementing navigation component">
+      <option name="closed" value="true" />
+      <created>1761683888266</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1761683888266</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="implementing tailwind" />
+    <MESSAGE value="implementing navigation component" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementing navigation component" />
   </component>
 </project>
