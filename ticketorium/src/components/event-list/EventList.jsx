@@ -4,15 +4,15 @@ import Event from "../event/Event";
 /**
  * Displays a list of events.
  *
- * @param {Array} events - List of event objects
+ * @param {{}} events - List of event objects
  * @param {string} userRole - Current user's role ("student", "visitor", "admin", "organizer")
  */
 
-export default function EventList({ events = [], userType }) {
-    if (!events.length) {
+export default function EventList({ events = {}, userType }) {
+    if (events.length) {
         return (
             <div className="flex flex-col justify-center items-center gap-5
-                            p-3 w-full text-gray-500 font-[Gilroy]">
+                            p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]">
                 No events available.
             </div>
         );
@@ -20,17 +20,17 @@ export default function EventList({ events = [], userType }) {
 
     return (
         <div className="flex flex-col justify-center items-center gap-5 p-3">
-            {events.map((event, index) => (
+            {Object.keys(events).map((event, index) => (
                 <Event
-                    key={event.id || index}
+                    key={events[event].id || index}
                     type={userType}
-                    state={event.state}
-                    img={event.img}
-                    title={event.title}
-                    date={event.date}
-                    organizer={event.organizer}
-                    price={event.price}
-                    inviter={event.inviter}
+                    state={events[event].state}
+                    img={events[event].img}
+                    title={events[event].title}
+                    date={events[event].date}
+                    organizer={events[event].organizer}
+                    price={events[event].price}
+                    inviter={events[event].inviter}
                 />
             ))}
         </div>

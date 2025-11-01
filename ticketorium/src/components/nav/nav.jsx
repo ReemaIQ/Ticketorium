@@ -1,33 +1,33 @@
-import { use, useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState } from "react";
+import {NavLink, useNavigate} from "react-router-dom";
 import { Bell, MessageCircle } from "lucide-react";
 import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
-import { useNavigate } from "react-router-dom";
 
 const navItems = {
     empty: [],
     student: [
-        { label: "All Events", href: "/student/events" },
-        { label: "My Events", href: "/student/my-events" },
-        { label: "Bidding", href: "/student/bidding" },
-        { label: "My Disputes", href: "/student/disputes" },
+        { label: "All Events", href: "/events" },
+        { label: "My Events", href: "/my-events" },
+        { label: "Bidding", href: "/bidding" },
+        { label: "My Disputes", href: "/disputes" },
     ],
     visitor: [
-        { label: "All Events", href: "/visitor/events" },
-        { label: "My Events", href: "/visitor/my-events" },
-        { label: "My Disputes", href: "/visitor/disputes" },
+        { label: "All Events", href: "/events" },
+        { label: "My Events", href: "/my-events" },
+        { label: "My Disputes", href: "/disputes" },
     ],
     organizer: [
-        { label: "My Events", href: "/organizer/my-events" },
-        { label: "Create Event", href: "/organizer/create" },
-        { label: "Analytics", href: "/organizer/analytics" },
-        { label: "My Disputes", href: "/organizer/disputes" },
+        { label: "My Events", href: "/my-events" },
+        { label: "Create Event", href: "/create-event" },
+        { label: "Analytics", href: "/analytics" },
+        { label: "My Disputes", href: "/disputes" },
     ],
     admin: [
-        { label: "Manage Events", href: "/admin/manage-events" },
-        { label: "Manage Users", href: "/admin/manage-users" },
-        { label: "Manage Disputes", href: "/admin/manage-disputes" },
-        { label: "System Policies", href: "/admin/system-policies" },
+        { label: "Manage Events", href: "/events" },
+        { label: "Manage Users", href: "/manage-users" },
+        { label: "Manage Disputes", href: "/manage-disputes" },
+        { label: "System Policies", href: "/system-policies" },
     ],
 };
 
@@ -71,31 +71,6 @@ export default function Nav({userName, type, setLoggedInUser}) {
         navigate("/log-in");
     }
 
-    const handleLogoClick = () => {
-        let path;
-
-        switch (type) {
-            case "student":
-                path = "/home/student";
-                break;
-            case "visitor":
-                path = "/home/visitor";
-                break;
-            case "organizer":
-                path = "/home/organizer";
-                break;
-            case "admin":
-                path = "/home/admin";
-                break;
-            case "empty":
-            default:
-                path = "/home";
-                break;
-        }
-
-        window.location.href = path;
-    };
-
     return (
         <nav id="nav" className="w-full h-15 bg-[#1F4C76] text-white flex items-center justify-between px-3 py-5 relative">
 
@@ -103,22 +78,22 @@ export default function Nav({userName, type, setLoggedInUser}) {
             <div id="nav-links" className="flex items-center gap-10">
 
                 {/* Logo */}
-                <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={handleLogoClick}>
+                <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={() => {navigate('/home')}}>
                     <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
                     <div className="flex-direction-columns items-center">
-                        <span className="text-lg font-[Gilroy] font-black flex h-3 text-[#1F4C76]">-</span>
-                        <span className="font-[Gilroy] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
+                        <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]">-</span>
+                        <span className="font-[Gilroy-Black] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
                     </div>
                 </div>
 
 
                 {/* Links */}
-                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy] font-medium">
+                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy-Medium]">
                     {navItems[type]?.map((item) => (
-                        <a key={item.label} href={item.href} className="text-white hover:underline">
+                        <NavLink to={item.href} className="text-white hover:underline">
                             {item.label}
-                        </a>
+                        </NavLink>
                     ))}
                 </div>
             </div>
@@ -132,7 +107,18 @@ export default function Nav({userName, type, setLoggedInUser}) {
 
                 {/* Admin's Buttons*/}
                 {(type === "admin") && (
-                    <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                    <>
+                        <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        <InitialAvatar name={userName} setOpen={setOpen} open={open} />
+                        <div
+                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+                            role="menu"
+                        >
+                            <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                Logout
+                            </button>
+                        </div>
+                    </>
                 )}
 
                 {/* Other User Types' Buttons*/}
@@ -140,8 +126,6 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     <>
                         <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
                         <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-
-                            <InitialAvatar name={userName} setOpen={setOpen} open={open} />
 
                         {/* Dropdown (Logout only) */}
                         <div
