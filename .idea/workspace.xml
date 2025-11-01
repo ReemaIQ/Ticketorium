@@ -4,25 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Update the way fonts are called for unification">
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/event/game-dev.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/event/graduation.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/event/group-hiking.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/event/spelling-bee.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/img.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/pages/all-events.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/pages/my-events.jsx" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="moved images to organize directories">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/footer/footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/footer/footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/all-events.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/my-events.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/user_home/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/user_home/UserHome.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +50,9 @@
     &quot;accountId&quot;: &quot;2d0816b8-e9a4-431c-8602-3612ebddd751&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -89,6 +89,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets\images" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\pages\Home" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\public\fonts" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets\Nav" />
@@ -139,7 +140,111 @@
       <option name="project" value="LOCAL" />
       <updated>1761736415366</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="created event component">
+      <option name="closed" value="true" />
+      <created>1762006982178</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1762006982178</updated>
+    </task>
+    <task id="LOCAL-00005" summary="created event list component">
+      <option name="closed" value="true" />
+      <created>1762007003827</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007003827</updated>
+    </task>
+    <task id="LOCAL-00006" summary="created admin home page">
+      <option name="closed" value="true" />
+      <created>1762007024912</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007024912</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added font">
+      <option name="closed" value="true" />
+      <created>1762007032929</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007032929</updated>
+    </task>
+    <task id="LOCAL-00008" summary="edited navigation bar">
+      <option name="closed" value="true" />
+      <created>1762007048484</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007048484</updated>
+    </task>
+    <task id="LOCAL-00009" summary="uploaded imaged for dummy events">
+      <option name="closed" value="true" />
+      <created>1762007070038</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007070038</updated>
+    </task>
+    <task id="LOCAL-00010" summary="created event component">
+      <option name="closed" value="true" />
+      <created>1762007089574</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007089574</updated>
+    </task>
+    <task id="LOCAL-00011" summary="created bidding component">
+      <option name="closed" value="true" />
+      <created>1762007096169</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007096169</updated>
+    </task>
+    <task id="LOCAL-00012" summary="emptied app file">
+      <option name="closed" value="true" />
+      <created>1762007107177</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007107177</updated>
+    </task>
+    <task id="LOCAL-00013" summary="created all events page">
+      <option name="closed" value="true" />
+      <created>1762007116024</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007116024</updated>
+    </task>
+    <task id="LOCAL-00014" summary="created my events page">
+      <option name="closed" value="true" />
+      <created>1762007121604</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1762007121604</updated>
+    </task>
+    <task id="LOCAL-00015" summary="updating fonts">
+      <option name="closed" value="true" />
+      <created>1762015942650</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1762015942650</updated>
+    </task>
+    <task id="LOCAL-00016" summary="moved images to organize directories">
+      <option name="closed" value="true" />
+      <created>1762015998353</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1762015998353</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,6 +254,18 @@
     <MESSAGE value="implementing tailwind" />
     <MESSAGE value="implementing navigation component" />
     <MESSAGE value="Update the way fonts are called for unification" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update the way fonts are called for unification" />
+    <MESSAGE value="created event list component" />
+    <MESSAGE value="created admin home page" />
+    <MESSAGE value="added font" />
+    <MESSAGE value="edited navigation bar" />
+    <MESSAGE value="uploaded imaged for dummy events" />
+    <MESSAGE value="created event component" />
+    <MESSAGE value="created bidding component" />
+    <MESSAGE value="emptied app file" />
+    <MESSAGE value="created all events page" />
+    <MESSAGE value="created my events page" />
+    <MESSAGE value="updating fonts" />
+    <MESSAGE value="moved images to organize directories" />
+    <option name="LAST_COMMIT_MESSAGE" value="moved images to organize directories" />
   </component>
 </project>

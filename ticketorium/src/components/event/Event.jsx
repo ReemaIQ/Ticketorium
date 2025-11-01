@@ -10,7 +10,7 @@ export default function Event({ type, state, img, title, date, organizer, price,
 
             {/* Left image */}
             <div className="w-1/3">
-                <img src={img} alt="Event" className="w-full h-full object-cover" />
+                <img src={"/src/assets/images/event/" + img} alt="Event" className="w-full h-full object-cover" />
             </div>
 
             {/* Right content */}
@@ -20,24 +20,24 @@ export default function Event({ type, state, img, title, date, organizer, price,
                 <div>
                         { state === "invited" ? (
                             <div className="flex flex-row justify-between">
-                                <p className="font-[Gilroy] font-bold text-[#4F6FFF] text-[18px] my-1">
+                                <p className="font-[Gilroy-Bold] text-[#4F6FFF] text-[18px] my-1">
                                     You've been invited to this event by {inviter}!
                                 </p>
-                                <p className="font-[Gilroy] font-bold text-[#4F6FFF] mb-1">
+                                <p className="font-[Gilroy-Bold] text-[#4F6FFF] mb-1">
                                     in 3 days!
                                 </p>
                             </div>
                         ) : (
-                            <p className="font-[Gilroy] font-bold text-right text-[#4F6FFF] mb-1">
+                            <p className="font-[Gilroy-Bold] text-right text-[#4F6FFF] mb-1">
                                 in 3 days!
                             </p>
                         )}
 
-                    <h2 className="font-[Gilroy] font-black text-[#1A1A1A] text-[28px] leading-tight my-1">
+                    <h2 className="font-[Gilroy-Black] text-[#1A1A1A] text-[28px] leading-tight my-1">
                         {title}
                     </h2>
 
-                    <p className="font-[Gilroy] font-medium text-[20px] text-[#3E3E3E]">
+                    <p className="font-[Gilroy-Medium] text-[20px] text-[#3E3E3E]">
                         Join us in the exciting coding competition — don’t miss it!
                         Two lines maximum here. Just saying btw. Js.
                     </p>
@@ -48,18 +48,18 @@ export default function Event({ type, state, img, title, date, organizer, price,
                     <EventActions type={type} category={category} state={state}/>
 
                     {price === 0 && category === "attendee" && (
-                        <span className="font-[Gilroy] font-medium text-gray-700 text-[16px] self-center">
+                        <span className="font-[Gilroy-Medium] text-gray-700 text-[16px] self-center">
                             Free
                         </span>
                     )}
 
                     {price !== 0 && category === "attendee" && (
-                        <span className="font-[Gilroy] font-bold text-[#4F6FFF] text-[18px] self-center">
+                        <span className="font-[Gilroy-Bold] text-[#4F6FFF] text-[18px] self-center">
                             $ {price}
                         </span>
                     )}
 
-                    <div className="font-[Gilroy] font-medium text-sm text-[#3E3E3E] text-right whitespace-nowrap ml-auto">
+                    <div className="font-[Gilroy-Medium] text-sm text-[#3E3E3E] text-right whitespace-nowrap ml-auto">
                         {date} <br /> by {organizer}
                     </div>
 

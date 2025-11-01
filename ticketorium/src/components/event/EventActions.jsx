@@ -4,7 +4,7 @@ import { eventActionsConfig } from "./eventActionsConfig";
 import { ArrowRight, Tickets } from "lucide-react";
 
 const baseBtn =
-    "rounded-[6px] font-[Gilroy] font-medium text-[16px] px-3 py-2 flex items-center gap-1";
+    "rounded-[6px] font-[Gilroy-Medium] text-[16px] px-3 py-2 flex items-center gap-1";
 
 const variants = {
     primary: "bg-[#FFDF4F] text-[#14113B]",

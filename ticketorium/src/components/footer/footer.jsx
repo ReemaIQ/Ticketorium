@@ -3,40 +3,40 @@ import { NavLink} from 'react-router-dom';
 const footerContent = { // based on user type
     "student" : {
         "Invite Friends": {
-            "Send Invitations": "/student/all-events",
-            "Your Invitations": "/student/my-events"
+            "Send Invitations": "/events",
+            "Your Invitations": "/my-events"
         },
         "Join Events": {
-            "All Events": "/student/all-events",
-            "Your Events": "/student/my-events"
+            "All Events": "/events",
+            "Your Events": "/my-events"
         },
         "Manage Your Tickets": {
-            "Refund a Ticket": "/student/my-events",
-            "Start a Bidding": "/student/bidding"
+            "Refund a Ticket": "/my-events",
+            "Start a Bidding": "/bidding"
         },
         "Contact Us": {
-            "Open a Dispute": "/student/disputes",
-            "Your Disputes": "/student/disputes"
+            "Open a Dispute": "/disputes",
+            "Your Disputes": "/disputes"
         },
     },
     "visitor" : {
         "Join Events": {
-            "All Events": "/visitor/all-events",
-            "Your Events": "/visitor/my-events"
+            "All Events": "/events",
+            "Your Events": "/my-events"
         },
         "Contact Us": {
-            "Open a Dispute": "/visitor/disputes",
-            "Your Disputes": "/visitor/disputes"
+            "Open a Dispute": "/disputes",
+            "Your Disputes": "/disputes"
         },
     },
     "organizer" : {
         "Manage Events": {
-            "New Event": "/organizer/new-event",
-            "Your Events": "/organizer/my-events"
+            "New Event": "/new-event",
+            "Your Events": "/my-events"
         },
         "Contact Us": {
-            "Open a Dispute": "/organizer/disputes",
-            "Your Disputes": "/organizer/disputes"
+            "Open a Dispute": "/disputes",
+            "Your Disputes": "/disputes"
         },
     }
 }
