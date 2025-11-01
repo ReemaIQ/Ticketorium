@@ -61,16 +61,16 @@ export default function Nav({userName, type}) {
 
         switch (type) {
             case "student":
-                path = "/student/home";
+                path = "/home/student";
                 break;
             case "visitor":
-                path = "/visitor/home";
+                path = "/home/visitor";
                 break;
             case "organizer":
-                path = "/organizer/home";
+                path = "/home/organizer";
                 break;
             case "admin":
-                path = "/admin/home";
+                path = "/home/admin";
                 break;
             case "empty":
             default:
