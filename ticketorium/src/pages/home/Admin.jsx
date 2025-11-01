@@ -3,81 +3,13 @@ import Nav from "../../components/nav/Nav.jsx";
 import EventList from "../../components/event-list/EventList.jsx";
 
 import { Search, Hash } from "lucide-react";
-
 import heroImg from "./assets/img.png";
-import groupHiking from "../../assets/event/group-hiking.png";
-import gameDev from "../../assets/event/game-dev.png";
-import spellingBee from "../../assets/event/spelling-bee.png";
-import graduation from "../../assets/event/graduation.png";
 
 function Admin() {
     const user = {
         name: "Student",
         type: "visitor",
     };
-
-    const events = [
-        {
-            id:1,
-            state:"joined",
-            img: groupHiking,
-            title:"2025 Group Hiking",
-            date:"9:30 AM Nov 21, 2025",
-            organizer:"CS Department",
-            price: 0,
-        },
-
-        {
-            id:2,
-            state:"not-joined",
-            img: gameDev,
-            title:"2025 GameDev Competition",
-            date:"Nov 21, 2025",
-            organizer:"CS Department",
-            price: 19.99,
-        },
-
-        {
-            id: 3,
-            state:"waitlist",
-            img:spellingBee,
-            title:"2025 Spelling Bee",
-            date:"Nov 21, 2025",
-            organizer:"CS Department",
-            price: 0,
-        },
-
-        {
-            id: 4,
-            state:"waitlisted",
-            img: gameDev,
-            title:"2025 Coding Competition",
-            date:"Nov 21, 2025",
-            organizer:"CS Department",
-            price: 19.99,
-        },
-
-        {
-            id: 5,
-            state: "invited",
-            img: gameDev,
-            title: "2025 Coding Competition",
-            date: "Nov 21, 2025",
-            organizer: "CS Department",
-            price: 0,
-            inviter:"Student"
-        },
-
-        {
-            id: 6,
-            state: "graduation",
-            img: graduation,
-            title: "2025 Graduation Ceremony",
-            date: "March 6, 2026",
-            organizer: "Harvard",
-            price: 0,
-        }
-    ]
 
     return (
         <>
