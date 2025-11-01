@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+} */
+
 /* --- Fonts (Gilroy) --- */
 @font-face {
     font-family: 'Gilroy-BlackItalic';
@@ -8,10 +15,10 @@
     font-style: italic;
     font-display: swap;
 }
-@font-face {
+/* @font-face {
     font-family: 'Gilroy-Medium';
     src: url('../../../public/fonts/gilroy/Gilroy-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
-}
+} */

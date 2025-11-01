@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { Bell, MessageCircle } from "lucide-react";
-import logoUrl from "../../assets/nav/Logo.png";
+import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
+import { useNavigate } from "react-router-dom";
 
 const navItems = {
     empty: [],
@@ -30,22 +31,25 @@ const navItems = {
     ],
 };
 
-function InitialAvatar({ name }) {
+
+function InitialAvatar({ name, setOpen, open }) {
     const letter = (name && name.trim().charAt(0).toUpperCase()) || "U"; // U = Unknown
 
     return (
-        <div
+        <div onClick={() => setOpen(!open)}
             aria-label="User menu"
-            className="w-8 h-8 rounded-full bg-[#404d71] text-white grid place-items-center select-none hover:bg-[#55608a] cursor-pointer"
+            className="w-8 h-8 rounded-full bg-[#404d71] text-white grid place-items-center select-none hover:bg-[#55608a] cursor-pointer outline-[rgba(255,255,255,0.2)] outline-4"
         >
             <span className="text-sm font-semibold">{letter}</span>
         </div>
     );
 }
 
-export default function Nav({userName, type}) {
+export default function Nav({userName, type, setLoggedInUser}) {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         function onDocClick(e) {
@@ -56,6 +60,16 @@ export default function Nav({userName, type}) {
         document.addEventListener("mousedown", onDocClick);
         return () => document.removeEventListener("mousedown", onDocClick);
     }, []);
+
+    useEffect(() => {
+        console.log("Dropdown open state:", open);
+    }, [open]);
+
+    function handleLogout() {
+        localStorage.removeItem("loggedInUser");
+        setLoggedInUser(null);
+        navigate("/log-in");
+    }
 
     const handleLogoClick = () => {
         let path;
@@ -89,7 +103,7 @@ export default function Nav({userName, type}) {
             <div id="nav-links" className="flex items-center gap-10">
 
                 {/* Logo */}
-                <div id="nav-logo" className="flex items-center gap-1" onClick={handleLogoClick}>
+                <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={handleLogoClick}>
                     <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
                     <div className="flex-direction-columns items-center">
@@ -127,22 +141,14 @@ export default function Nav({userName, type}) {
                         <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
                         <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
 
-                        <button
-                            type="button"
-                            onClick={() => setOpen((s) => !s)}
-                            className="focus:outline-none"
-                            aria-haspopup="menu"
-                            aria-expanded={open}
-                        >
-                            <InitialAvatar name={userName} />
-                        </button>
+                            <InitialAvatar name={userName} setOpen={setOpen} open={open} />
 
                         {/* Dropdown (Logout only) */}
                         <div
-                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
                             role="menu"
                         >
-                            <button onClick={() => console.log("Logout")} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                            <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
                                 Logout
                             </button>
                         </div>
