@@ -1,38 +1,81 @@
-@import "tailwindcss";
+:root {
 
-@font-face {
-    font-family: 'Gilroy';
-    src: url('../public/fonts/gilroy/Gilroy-BlackItalic.ttf') format('truetype');
-    font-weight: 900;
-    font-style: italic;
-    font-display: swap;
+  --primary-color: #1a1a1a;
+  --secondary-color: #1F4C76;
+  --accent-color: #FFDF4F;
+  --bright-blue-color: #0800FF;
+  --warning-color: #F54141;
 }
 
-@font-face {
-    font-family: 'Gilroy';
-    src: url('../public/fonts/gilroy/Gilroy-Black.ttf') format('truetype');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
+* {
+  box-sizing: border-box;
+  /* margin: 0;
+  padding: 0; */
+  scroll-behavior: smooth;
+  /* overflow-x: hidden; */
 }
 
-@font-face {
-    font-family: 'Gilroy';
-    src: url('../public/fonts/gilroy/Gilroy-Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
+/* html, body {
+  height: 100vh;
+  background-color: white;
+} */
 
+/* gilroy */
 @font-face {
-    font-family: 'Gilroy';
-    src: url('../public/fonts/gilroy/Gilroy-Medium.ttf') format('truetype');
+    font-family: 'Gilroy-Medium';
+    src: url('../../../public/fonts/gilroy/Gilroy-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
 }
 
-*{
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+@font-face {
+    font-family: 'Gilroy-Black';
+    src: url('../../../public/fonts/gilroy/Gilroy-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Epilogue */
+@font-face {
+    font-family: 'Epilogue-Black';
+    src: url('../../../public/fonts/epilogue/Epilogue-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* DM-Sans */
+@font-face {
+    font-family: 'DM-Sans-ExtraLight';
+    src: url('../../../public/fonts/dm_sans/DMSans-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DM-Sans-Light';
+    src: url('../../../public/fonts/dm_sans/DMSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DM-Sans-Black';
+    src: url('../../../public/fonts/dm_sans/DMSans-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DM-Sans-Regular';
+    src: url('../../../public/fonts/dm_sans/DMSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
