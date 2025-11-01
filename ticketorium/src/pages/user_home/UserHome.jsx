@@ -1,3 +1,7 @@
+import EventList from "../../components/event-list/EventList.jsx";
+import React from "react";
+import {Hash, Search} from "lucide-react";
+
 const contentOptions = {
     // student, visitor, organizer, admin, system-admin
     "student": {
@@ -48,14 +52,32 @@ const contentOptions = {
 
     }, 
     "admin": {
-
+        "notifications": {
+            "header": "Notifications",
+            "jump-to": "Notifications"
+        },
+        "upcoming-events": {
+            "header": "Upcoming Events",
+            "jump-to": "Upcoming Events"
+        }
     },
     "system-admin": {
-
+        "notifications": {
+            "header": "Notifications",
+            "jump-to": "Notifications"
+        },
+        "universities": {
+            "header": "Universities",
+            "jump-to": "Universities"
+        },
+        "upcoming-events": {
+            "header": "Upcoming Events",
+            "jump-to": "Upcoming Events"
+        }
     }
     
     // ["Your Upcoming Events", "Invites Sent", "Events of Subscriptions", "Subscriptions", "Event Organizers"],
-    // "visitor": ["Your Upcoming Events", "Invites Recieved", "Events of Subscriptions", "Subscriptions", "Event Organizers"]
+    // "visitor": ["Your Upcoming Events", "Invites Received", "Events of Subscriptions", "Subscriptions", "Event Organizers"]
 }
 
 function UserHome(props) {
@@ -81,12 +103,61 @@ function UserHome(props) {
                 )}
             </div>
         </div>
+
         {/* Sections */}
-        <div className="flex flex-col py-20 px-15 gap-20">
+        <div className="flex flex-col items-center py-10 px-15 gap-10">
             {Object.keys(contentOptions[props.users[props.user]["type"]]).map(key => 
                 <>
-                <h2 id={key} className="font-[Epilogue-Black] text-[60px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
-                <div className="h-screen"></div>
+                <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3 px-15">
+                    {/* Left: Title + Search */}
+                    <div className="flex items-center gap-3">
+                        <h2 id={key} className="font-[Epilogue-Black] text-[60px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
+
+                        {/* Search Button */}
+                        {/*onClick={onSearch}*/}
+                        <button
+                            className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 transition"
+                            aria-label="Search"
+                        >
+                            <Search size={20} className="text-gray-500" />
+                        </button>
+                    </div>
+
+                    {/* Right: Filter Button */}
+                    {/*onClick={onFilter}*/}
+                    <button
+                        className="flex items-center gap-2 border-2 border-[#4F6FFF]
+                        text-[#14113B] px-5 py-2 rounded-full font-[Gilroy-Medium]
+                        hover:bg-[#4F6FFF] hover:text-white transition"
+                    >
+                        <Hash size={18} />
+                        Filter
+                    </button>
+                </div>
+
+                <div className="flex w-full max-w-6xl">
+                    {key === "notifications" ?
+                        (
+                            <h1 className="font-[Gilroy-Medium] text-[20px]"> notifications </h1>
+                        ) :
+                    (key=== "subscriptions" ?
+                        (
+                            <h1 className="font-[Gilroy-Medium] text-[20px]"> subscriptions </h1>
+                        ) :
+                    (key === "event-organizers" ?
+                        (
+                            <h1 className="font-[Gilroy-Medium] text-[20px]"> event-organizers </h1>
+                        ) :
+                    (key === "universities" ?
+                        (
+                            <h1 className="font-[Gilroy-Medium] text-[20px]"> universities </h1>
+                        ):
+
+                        (
+                        <EventList events={props.events} userType={props.user.type}/>
+                        ))))
+                    }
+                </div>
                 </>
             )}
 
