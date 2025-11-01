@@ -76,16 +76,16 @@ export default function Nav({userName, type, setLoggedInUser}) {
 
         switch (type) {
             case "student":
-                path = "/student/home";
+                path = "/home/student";
                 break;
             case "visitor":
-                path = "/visitor/home";
+                path = "/home/visitor";
                 break;
             case "organizer":
-                path = "/organizer/home";
+                path = "/home/organizer";
                 break;
             case "admin":
-                path = "/admin/home";
+                path = "/home/admin";
                 break;
             case "empty":
             default:
@@ -107,14 +107,14 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
                     <div className="flex-direction-columns items-center">
-                        <span className="text-lg font-[Gilroy-BlackItalic] flex h-3 text-[#1F4C76]">-</span>
-                        <span className="font-[Gilroy-BlackItalic] text-[20px] tracking-wide flex">Ticketorium.</span>
+                        <span className="text-lg font-[Gilroy] font-black flex h-3 text-[#1F4C76]">-</span>
+                        <span className="font-[Gilroy] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
                     </div>
                 </div>
 
 
                 {/* Links */}
-                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy-Medium]">
+                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy] font-medium">
                     {navItems[type]?.map((item) => (
                         <a key={item.label} href={item.href} className="text-white hover:underline">
                             {item.label}
