@@ -12,7 +12,7 @@ const variants = {
     border: "border bg-white",
 };
 
-export default function EventActions({ type, category, state , eventId}) {
+export default function EventActions({ type, category, state , eventId, onAction}) {
     // const actions = eventActionsConfig[category]?.[state] || eventActionsConfig[category]?.default;
     const navigate = useNavigate();
     const actions =
@@ -46,10 +46,18 @@ export default function EventActions({ type, category, state , eventId}) {
                 const isTickets = Icon === Tickets;
 
                     const handleClick = () => { //r
+                        // If the page provided a handler, let it decide (details page then open modals)
+                        if (onAction) {
+                            onAction(action.label);
+                            return;
+                        }
+
+                        // Default behavior (lists/cards): keep your previous behavior
                         if (action.label === "View" && eventId) {
                             navigate(`/event/${eventId}`);
                             return;
                         }
+
                         console.log(`${action.label} clicked`);
                     };
 
