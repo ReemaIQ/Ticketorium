@@ -7,6 +7,7 @@ import DummyUserHome from './pages/DummyUserHome.jsx'
 import UserHome from './pages/user_home/UserHome.jsx'
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
+import EventPage from "./pages/event_details/event_page.jsx";
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -277,6 +278,9 @@ function App() {
 
         <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>} />
         <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
+
+        <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
+
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
       </Routes>
       <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
