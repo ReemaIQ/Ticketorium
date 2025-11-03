@@ -1,6 +1,6 @@
 import React from "react";
 import { eventActionsConfig } from "./eventActionsConfig";
-
+import { useNavigate } from "react-router-dom"; //r
 import { ArrowRight, Tickets } from "lucide-react";
 
 const baseBtn =
@@ -12,10 +12,15 @@ const variants = {
     border: "border bg-white",
 };
 
-export default function EventActions({ type, category, state }) {
-    const actions = eventActionsConfig[category]?.[state] || eventActionsConfig[category]?.default;
+export default function EventActions({ type, category, state , eventId}) {
+    // const actions = eventActionsConfig[category]?.[state] || eventActionsConfig[category]?.default;
+    const navigate = useNavigate();
+    const actions =
+        eventActionsConfig[category]?.[state] ||
+        eventActionsConfig[category]?.default;
 
     if (!actions) return null;
+
 
     return (
         <div className="flex flex-wrap gap-2">
@@ -40,11 +45,20 @@ export default function EventActions({ type, category, state }) {
                 const isArrowRight = Icon === ArrowRight;
                 const isTickets = Icon === Tickets;
 
+                    const handleClick = () => { //r
+                        if (action.label === "View" && eventId) {
+                            navigate(`/event/${eventId}`);
+                            return;
+                        }
+                        console.log(`${action.label} clicked`);
+                    };
+
                 return (
                     <button
                         key={index}
                         className={`${baseBtn} ${variantClass} ${colorClass}`}
-                        onClick={() => console.log(`${action.label} clicked`)}
+                        // onClick={() => console.log(`${action.label} clicked`)}
+                        onClick={handleClick} //r
                     >
                         {/* Show Tickets icon BEFORE text */}
                         {isTickets && <Icon size={16} />}
