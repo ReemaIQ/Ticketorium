@@ -6,15 +6,15 @@ export default function Event({ type, state, img, title, date, organizer, price,
     const category = getUserCategory(type);
 
     return (
-        <div className="flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
+        <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
 
             {/* Left image */}
-            <div className="w-1/3">
+            <div className="md:w-1/3">
                 <img src={"/src/assets/images/event/" + img} alt="Event" className="w-full h-full object-cover" />
             </div>
 
             {/* Right content */}
-            <div className="flex flex-col justify-between pb-5 pt-3 pr-4 w-2/3 gap-5">
+            <div className="flex flex-col justify-between pb-5 pt-3 pr-4 pl-5 md:w-2/3 md:pl-0 gap-5">
 
                 {/* Top */}
                 <div>
@@ -44,7 +44,7 @@ export default function Event({ type, state, img, title, date, organizer, price,
                 </div>
 
                 {/* Bottom */}
-                <div className="flex flex-col items-center justify-between md:flex-row gap-2">
+                <div className="flex flex-col items-center md:flex-row gap-2">
                     <EventActions type={type} category={category} state={state}/>
 
                     {price === 0 && category === "attendee" && (
