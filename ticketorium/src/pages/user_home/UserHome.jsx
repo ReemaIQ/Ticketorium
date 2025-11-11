@@ -154,7 +154,7 @@ function UserHome(props) {
                         ):
 
                         (
-                        <EventList events={props.events} userType={props.user.type}/>
+                        <EventList events={props.events} userType={props.users[props.user]['type']}/>
                         ))))
                     }
                 </div>
