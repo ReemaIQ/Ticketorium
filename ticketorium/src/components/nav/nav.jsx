@@ -109,6 +109,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
                 {(type === "admin") && (
                     <>
                         <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        <InitialAvatar name={userName} setOpen={setOpen} open={open} />
                     </>
                 )}
 
@@ -117,6 +118,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     <>
                         <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
                         <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        <InitialAvatar name={userName} setOpen={setOpen} open={open} />
 
                         {/* Dropdown (Logout only) */}
                         <div
@@ -130,15 +132,15 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     </>
                 )}
 
-                <InitialAvatar name={userName} setOpen={setOpen} open={open} />
-                <div
+                
+                {/* <div
                     className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
                     role="menu"
                 >
                     <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
                         Logout
                     </button>
-                </div>
+                </div> */}
 
             </div>
         </nav>

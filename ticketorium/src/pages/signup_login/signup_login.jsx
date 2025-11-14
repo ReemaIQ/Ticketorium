@@ -269,7 +269,7 @@ function SignupLogin(props) {
 }
 
     return (
-    <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center'>
+    <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center mb-[20vh]'>
         <div className="width-full h-full flex flex-col gap-10 m-16">
 
             {/* Header: Log in or Sign Up */}

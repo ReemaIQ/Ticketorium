@@ -94,8 +94,8 @@ function UserHome(props) {
     return (
         <>
         <div className=" m-0 py-10 text-3xl flex flex-col bg-[var(--secondary-color)] w-full relative">
-            <div className="flex justify-between order-2 xl:order-1">
-                <div className="xl:px-20 xl:py-30 px-10 py-10 sm:max-xl:flex sm:max-xl:flex-col sm:max-xl:w-full">
+            <div id="a" className="flex justify-between order-2 xl:order-1">
+                <div id="b" className="xl:px-20 xl:py-30 px-10 py-10 max-xl:flex max-xl:flex-col max-xl:w-full">
                     <h1 className="flex flex-col items-center max-xl:text-center text-[86px] sm:text-[110px] md:text-[130px] font-bold font-[Epilogue-Black] md:leading-[125px] text-white">Welcome<br/>Back,<br/>{props.users[props.user]["first-name"]}!</h1>
                     <p className="max-xl:flex flex-col items-center font-[DM-Sans-Light] text-[24px] text-white mt-7">All {(props.users[props.user]["type"] === "visitor" || props.users[props.user]["type"] === "system-admin")? "this": "your"} university's events in one place.</p>
                 </div>
