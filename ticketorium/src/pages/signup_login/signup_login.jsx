@@ -269,11 +269,11 @@ function SignupLogin(props) {
 }
 
     return (
-    <form onSubmit={(e) => handleSubmit(e, props.option)}>
+    <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center'>
         <div className="width-full h-full flex flex-col gap-10 m-16">
 
             {/* Header: Log in or Sign Up */}
-            <h1 className="text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
+            <h1 className="text-[50px] sm:text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
 
             {/* List of all inputs, depends if page is login, signup part 1 or 2 */}
             <SignupInputsList option={option} errors={errors} inputsAndSetters={inputsAndSetters} />
@@ -293,7 +293,7 @@ function SignupLogin(props) {
             </button>
 
             {/* Decoration - Tilted Div */}
-            <div className="absolute bg-[#1F4C76] rotate-[13.21deg] h-[1200px] w-[576.1037586593156px] top-[-30px] right-[-300px] object-contain"></div>
+            {/* <div className="absolute bg-[#1F4C76] rotate-[13.21deg] h-[1200px] w-[576.1037586593156px] top-[-30px] right-[-300px] object-contain"></div> */}
         </div>
     </form>
     )
