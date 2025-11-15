@@ -9,7 +9,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 
 library.add(fas, far, fab)
 
-function SearchBtn (props) {
+function SearchBtn (props) { //  expandable, rounded, content
     const [active, setActive] = useState(false);
     const [hovered, setHovered] = useState(false);
     const [query, setQuery] = useState("")
@@ -19,13 +19,22 @@ function SearchBtn (props) {
             setActive(true);
     }, [query]);
 
+    const handleSearch = (value) => {
+        if (props.searchFor === "university") {
+            const filtered = Object.keys(props.content).filter(uniId => props.content[uniId]["name"].toLowerCase().includes(value.toLowerCase()) || uniId.toLowerCase().includes(value.toLowerCase()));
+            props.setFiltered(filtered);
+            console.log(value)
+            console.log(filtered)
+        }
+    }
+
     return (
         <div onClick={() => !query.length && setActive(!active)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className={`border-2 ${props.rounded?`rounded-[${props.rounded}]`:"rounded-full"} w-12 h-12 cursor-pointer ring-[rgba(0,0,0,0.1)] transition-all duration-300 flex justify-start gap-[0.2em] pl-3 ${(active && props.expandable)? "w-[90%] md:w-[62%] xl:w-[50%]": ""} align-center ${(active || query)? "border-[var(--filter-buttons)]": "hover:ring-4 border-gray-600"} ${!props.expandable? "w-[90%]": "hover:w-[90%] xl:hover:w-[50%] md:hover:w-[62%]"}`}>
             <FontAwesomeIcon
             icon={"fa-solid fa-magnifying-glass"}
             className="self-center shrink-0"
             />
-            {(active || hovered || !props.expandable) && <input autoFocus type="text" value={query} placeholder="Search" onChange={(e) => {setQuery(e.target.value)}} className="h-full w-full outline-none rounded-full text-xl font-[DM-Sans-Light] px-1"/>}
+            {(active || hovered || !props.expandable) && <input autoFocus type="text" value={query} placeholder="Search" onChange={(e) => {setQuery(e.target.value); handleSearch(e.target.value);}} className="h-full w-full outline-none rounded-full text-xl font-[DM-Sans-Light] px-1"/>}
             
         </div>
     );

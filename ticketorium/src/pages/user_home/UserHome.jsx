@@ -129,7 +129,7 @@ function UserHome(props) {
                                 className="text-white"
                                 />
                             </button>
-                            <SearchBtn searchingFor={key} expandable={true}/>
+                            <SearchBtn searchFor={key} expandable={true}/>
                         </div>
                     </div>
                     
