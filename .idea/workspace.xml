@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="fixed nav logout issue">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="working on event responsiveness">
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/bidding/bids.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/bidding/listing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/user_home/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/user_home/UserHome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,11 +84,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\pages" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets\images" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\pages\Home" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\public\fonts" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets\Nav" />
-      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -109,6 +116,8 @@
       <workItem from="1762192217112" duration="32000" />
       <workItem from="1762712151493" duration="1107000" />
       <workItem from="1762786735584" duration="5292000" />
+      <workItem from="1762820205615" duration="93000" />
+      <workItem from="1763218355241" duration="10566000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
@@ -238,7 +247,23 @@
       <option name="project" value="LOCAL" />
       <updated>1762015998353</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="fixed mistake in passing user type to events list">
+      <option name="closed" value="true" />
+      <created>1762820233342</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1762820233342</updated>
+    </task>
+    <task id="LOCAL-00018" summary="working on event responsiveness">
+      <option name="closed" value="true" />
+      <created>1762820260411</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1762820260411</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,6 +285,8 @@
     <MESSAGE value="created my events page" />
     <MESSAGE value="updating fonts" />
     <MESSAGE value="moved images to organize directories" />
-    <option name="LAST_COMMIT_MESSAGE" value="moved images to organize directories" />
+    <MESSAGE value="fixed mistake in passing user type to events list" />
+    <MESSAGE value="working on event responsiveness" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on event responsiveness" />
   </component>
 </project>
