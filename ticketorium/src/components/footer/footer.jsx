@@ -49,7 +49,7 @@ function Footer(props) {
             <div onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="h-[48px] w-full bg-[var(--secondary-color)] text-white font-[DM-Sans-Light] text-[15px] flex justify-center items-center cursor-pointer">
                 Back to top
             </div>
-            <div className="w-full bg-[#11223B] flex flex-col justify-center p-20 max-xl:self-center">
+            <div className="w-full bg-[var(--footer-color)] flex flex-col justify-center p-20 max-xl:self-center">
                 {(props.type == "empty" || props.type == "admin" || props.type == "system-admin") && (
                     <div className="grid grid-cols-2 xl:flex flex-col gap-4">
                         <h3 className="text-[20px] text-white font-[DM-Sans-Black]">Contact Us</h3>

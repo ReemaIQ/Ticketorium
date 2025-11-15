@@ -20,7 +20,7 @@ function SearchBtn (props) {
     }, [query]);
 
     return (
-        <div onClick={() => !query.length && setActive(!active)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className={`border-2 ${props.rounded?`rounded-[${props.rounded}]`:"rounded-full"} w-12 h-12 cursor-pointer ring-[rgba(0,0,0,0.1)] transition-all duration-300 flex justify-start gap-[0.2em] pl-3 ${(active && props.expandable)? "w-[90%] md:w-[62%] xl:w-[50%]": ""} align-center ${(active || query)? "border-[var(--secondary-color)]": "hover:ring-4 border-gray-600"} ${!props.expandable? "w-[90%]": "hover:w-[90%] xl:hover:w-[50%] md:hover:w-[62%]"}`}>
+        <div onClick={() => !query.length && setActive(!active)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className={`border-2 ${props.rounded?`rounded-[${props.rounded}]`:"rounded-full"} w-12 h-12 cursor-pointer ring-[rgba(0,0,0,0.1)] transition-all duration-300 flex justify-start gap-[0.2em] pl-3 ${(active && props.expandable)? "w-[90%] md:w-[62%] xl:w-[50%]": ""} align-center ${(active || query)? "border-[var(--filter-buttons)]": "hover:ring-4 border-gray-600"} ${!props.expandable? "w-[90%]": "hover:w-[90%] xl:hover:w-[50%] md:hover:w-[62%]"}`}>
             <FontAwesomeIcon
             icon={"fa-solid fa-magnifying-glass"}
             className="self-center shrink-0"

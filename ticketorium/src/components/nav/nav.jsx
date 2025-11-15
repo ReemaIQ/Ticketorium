@@ -32,7 +32,7 @@ const navItems = {
 };
 
 
-function InitialAvatar({ name, setOpen, open }) {
+function InitialAvatar({ name, setOpen, open}) {
     const letter = (name && name.trim().charAt(0).toUpperCase()) || "U"; // U = Unknown
 
     return (
@@ -78,7 +78,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
     }
 
     return (
-        <nav id="nav" className="w-full h-15 bg-[#1F4C76] text-white flex items-center justify-between px-3 py-5 relative">
+        <nav id="nav" className="w-full h-15 bg-[var(--secondary-color)] text-white flex items-center justify-between px-3 py-5 relative">
 
             {/* Left*/}
             <div id="nav-links" className="flex items-center gap-10">
@@ -88,7 +88,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
                     <div className="flex-direction-columns items-center">
-                        <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]">-</span>
+                        <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]"></span>
                         <span className="font-[Gilroy-Black] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
                     </div>
                 </div>
