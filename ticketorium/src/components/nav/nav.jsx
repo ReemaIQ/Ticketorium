@@ -68,7 +68,13 @@ export default function Nav({userName, type, setLoggedInUser}) {
     function handleLogout() {
         localStorage.removeItem("loggedInUser");
         setLoggedInUser(null);
+        setOpen(false);
         navigate("/log-in");
+    }
+
+    function handleChangeUni() {
+        setOpen(false);
+        navigate("/university-selection");
     }
 
     return (
@@ -122,9 +128,16 @@ export default function Nav({userName, type, setLoggedInUser}) {
 
                         {/* Dropdown (Logout only) */}
                         <div
-                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-48 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
                             role="menu"
                         >
+
+                            <button className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                Customize Profile
+                            </button>
+                            {(type === "visitor" || type === "system-admin") && <button onClick={handleChangeUni} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                Change University
+                            </button>}
                             <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
                                 Logout
                             </button>

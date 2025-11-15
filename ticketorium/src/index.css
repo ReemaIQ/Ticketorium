@@ -51,6 +51,14 @@ body {
 }
 
 @font-face {
+    font-family: 'Gilroy-SemiBold';
+    src: url('../public/fonts/gilroy/Gilroy-SemiBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
     font-family: 'Gilroy-BlackItalic';
     src: url('../public/fonts/gilroy/Gilroy-BlackItalic.ttf') format('truetype');
     font-weight: 900;
@@ -67,6 +75,13 @@ body {
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Epilogue-Bold';
+    src: url('../public/fonts/epilogue/Epilogue-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
 
 /* DM-Sans */
 @font-face {
