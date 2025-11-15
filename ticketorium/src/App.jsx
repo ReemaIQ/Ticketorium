@@ -1,13 +1,18 @@
-import Nav from './components/nav/nav.jsx'
-import Footer from './components/footer/footer.jsx'
-import SignupLogin from './pages/signup_login/signup_login.jsx'
 import {Route, Routes, Navigate} from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
+
+import Nav from './components/nav/nav.jsx'
+import Footer from './components/footer/footer.jsx'
+
+import SignupLogin from './pages/signup_login/signup_login.jsx'
 import DummyUserHome from './pages/DummyUserHome.jsx'
 import UserHome from './pages/user_home/UserHome.jsx'
+
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import EventPage from "./pages/event_details/event_page.jsx";
+
+import Bidding from "./pages/Bidding.jsx"
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -165,12 +170,65 @@ function App() {
         }
     }
 
+    // dummyBids format
+    const initialDummyBids = {
+        1 : {
+            user: "boring-user",
+            topBid: "99.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        2 : {
+            user: "boring-user",
+            topBid: "89.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        3 : {
+            user: "boring-user",
+            topBid: "79.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        4 : {
+            user: "other-user",
+            topBid: "19.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        5 : {
+            user: "other-user",
+            topBid: "29.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        6 : {
+            user: "other-user",
+            topBid: "39.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        7 : {
+            user: "other-user",
+            topBid: "49.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        },
+        8 : {
+            user: "other-user",
+            topBid: "49.99 $",
+            date: "Dec 28th 7:00 P.M.",
+            year: "2025",
+        }
+    }
+
   const [loggedInUser, setLoggedInUser] = useState(null); //username only
   const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
   const [part1Data, setPart1Data] = useState({});
   const dummyUsers = useRef({});
   const dummyUniversities = useRef({});
   const dummyEvents = useRef({});
+  const dummyBids = useRef({});
 
   useEffect(() => {
     // loggedInUser 
@@ -195,9 +253,16 @@ function App() {
     emptyDummyEvents && localStorage.setItem("dummyEvents", JSON.stringify(initialDummyEvents));
     emptyDummyEvents && (dummyEvents.current = initialDummyEvents);
 
+    // dummyBids
+    const emptyDummyBids = localStorage.getItem("dummyBids") == "null" || !localStorage.getItem("dummyBids");
+      !emptyDummyBids && (dummyBids.current = JSON.parse(localStorage.getItem("dummyBids")));
+      emptyDummyBids && localStorage.setItem("dummyBids", JSON.stringify(initialDummyBids));
+      emptyDummyBids && (dummyBids.current = initialDummyBids);
+
     console.log("Dummy Users:", dummyUsers.current);
     console.log("Dummy Universities:", dummyUniversities.current);
     console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
+    console.log("Dummy Bids:", dummyBids.current, localStorage.getItem("dummyBids"));
     console.log("Logged in", localStorage.getItem("loggedInUser"));
 
   }, []);
@@ -278,8 +343,9 @@ function App() {
 
         <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>} />
         <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
-
         <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
+
+        <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
       </Routes>

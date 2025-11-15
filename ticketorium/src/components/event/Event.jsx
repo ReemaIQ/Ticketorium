@@ -19,6 +19,7 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
                     />
                 </NavLink>
                 {/*<img src={"/src/assets/images/event/" + img} alt="Event" className="w-full h-full object-cover" />*/}
+            </div>
 
             {/* Right content */}
             <div className="flex flex-col justify-between pb-5 pt-3 pr-4 pl-5 md:w-2/3 md:pl-0 gap-5">
@@ -75,7 +76,6 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
                     <div className="font-[Gilroy-Medium] text-sm text-[#3E3E3E] text-right whitespace-nowrap ml-auto">
                         {date} <br /> by {organizer}
                     </div>
-
                 </div>
             </div>
 
