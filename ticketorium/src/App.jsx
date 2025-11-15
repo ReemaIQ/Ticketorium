@@ -8,6 +8,9 @@ import UserHome from './pages/user_home/UserHome.jsx'
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import EventPage from "./pages/event_details/event_page.jsx";
+import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
+import OrganizerAnalyticsPage from "./pages/organizer/organizer_analytics_page.jsx"; //r
+
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -269,7 +272,25 @@ function App() {
     <>
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} setLoggedInUser={setLoggedInUser}/>
       <Routes>
-        <Route path="/home" element={!loggedInUser? <DummyUserHome/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/> {/* main home page for not logged in users */}
+
+          <Route path="/home"
+              element={
+                  !loggedInUser ? (
+                      <DummyUserHome /> //reema: not logged in to dummy landing home
+                  ) : dummyUsers.current[loggedInUser]["type"] === "organizer" ? (
+                      <OrganizerHomePage /> //reema: organizer page
+                  ) : (
+                      <UserHome
+                          user={loggedInUser}
+                          users={dummyUsers.current}
+                          universities={dummyUniversities.current}
+                          events={dummyEvents.current}
+                      />
+                  )
+              }
+          />
+
+          {/*<Route path="/home" element={!loggedInUser? <DummyUserHome/>:  <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/> /!* main home page for not logged in users *!/*/}
         {/*<Route path="/visitor/home" element={!loggedInUser? <DummyUserHome/> : dummyUsers.current[loggedInUser]["type"] != "visitor"? <Navigate to={`/${dummyUsers.current[loggedInUser]["type"]}/home`}/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/>*/}
         {/*<Route path="/student/home" element={!loggedInUser? <DummyUserHome/> : dummyUsers.current[loggedInUser]["type"] != "student"? <Navigate to={`/${dummyUsers.current[loggedInUser]["type"]}/home`}/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/>*/}
         <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
@@ -281,7 +302,20 @@ function App() {
 
         <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
 
-        <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
+          <Route //r
+              path="/organizer/analytics"
+              element={
+                  !loggedInUser ? (
+                      <Navigate to="/log-in" />
+                  ) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (
+                      <Navigate to="/home" />
+                  ) : (
+                      <OrganizerAnalyticsPage />
+                  )
+              }
+          />
+
+          <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
       </Routes>
       <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
     </>
