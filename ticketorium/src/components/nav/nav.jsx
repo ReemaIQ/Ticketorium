@@ -20,7 +20,7 @@ const navItems = {
     organizer: [
         { label: "My Events", href: "/my-events" },
         { label: "Create Event", href: "/create-event" },
-        { label: "Analytics", href: "/analytics" },
+        { label: "Analytics", href: "/organizer/analytics" },
         { label: "My Disputes", href: "/disputes" },
     ],
     admin: [
