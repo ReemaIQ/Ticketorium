@@ -7,6 +7,7 @@ import DummyUserHome from './pages/DummyUserHome.jsx'
 import UserHome from './pages/user_home/UserHome.jsx'
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
+import UniversitySelection from './pages/UniversitySelection.jsx'
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -199,6 +200,8 @@ function App() {
     console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
     console.log("Logged in", localStorage.getItem("loggedInUser"));
 
+    // testingForceUser("yo-shayma");
+
   }, []);
 
   const checkIfEmailExists = (email) => {
@@ -263,14 +266,27 @@ function App() {
     localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
   }
 
+  const assignUni = (university) => {
+    if (loggedInUser) {
+      dummyUsers.current[loggedInUser].university = university;
+      localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
+    }
+  }
+
+  // testing methods
+
+  const testingForceUser = (username) => {
+    setLoggedInUser(username);
+    localStorage.setItem("loggedInUser", username);
+  }
+
 
   return (
     <>
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} setLoggedInUser={setLoggedInUser}/>
       <Routes>
-        <Route path="/home" element={!loggedInUser? <DummyUserHome/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/> {/* main home page for not logged in users */}
-        {/*<Route path="/visitor/home" element={!loggedInUser? <DummyUserHome/> : dummyUsers.current[loggedInUser]["type"] != "visitor"? <Navigate to={`/${dummyUsers.current[loggedInUser]["type"]}/home`}/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/>*/}
-        {/*<Route path="/student/home" element={!loggedInUser? <DummyUserHome/> : dummyUsers.current[loggedInUser]["type"] != "student"? <Navigate to={`/${dummyUsers.current[loggedInUser]["type"]}/home`}/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/>*/}
+        <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (dummyUsers.current[loggedInUser]["university"]? <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
+        <Route path="/university-selection" element={<UniversitySelection universities={dummyUniversities.current} assignUni={assignUni}/>}/>
         <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
         <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
         <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
