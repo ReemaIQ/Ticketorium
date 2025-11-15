@@ -1,8 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import listing from "../../assets/images/bidding/listing.png";
 import bids from "../../assets/images/bidding/bids.png";
+import MakeBidModal from "./MakeBidModal.jsx";
 
-export default function Bidding({type, date, year, topBid}) {
+export default function Bidding({type,bidding}) {
+    const [open, setOpen] = useState(false);
+
+    const handleBid = ({ id, deadline, startingBid }) => {
+        console.log("Create listing:", { id, deadline, startingBid });
+        setOpen(false); // close after creating
+    };
+
     return (
         <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
 
@@ -18,7 +26,7 @@ export default function Bidding({type, date, year, topBid}) {
                 <div>
                     {/* Title */}
                         <h2 className="font-[Gilroy-Black] text-[#1A1A1A] text-[28px] leading-tight my-1">
-                            {year} Graduation Ceremony
+                            {bidding.year} Graduation Ceremony
                         </h2>
 
 
@@ -43,23 +51,27 @@ export default function Bidding({type, date, year, topBid}) {
                         )}
 
                         {type === "bids" && (
-                            <button
-                                className="flex items-center gap-2 bg-[#FFDF4F] text-[#14113B]
+                            <>
+                                <button
+                                    className="flex items-center gap-2 bg-[#FFDF4F] text-[#14113B]
                                         rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3"
-                            >
-                                Bid
-                                <img src={bids} alt="Bid" className="w-5 h-5 object-cover"/>
-                            </button>
+                                    onClick={() => setOpen(true)}
+                                >
+                                    Bid
+                                    <img src={bids} alt="Bid" className="w-5 h-5 object-cover" />
+                                </button>
+                                <MakeBidModal open={open} onClose={() => setOpen(false)} bidding={bidding} onBid={handleBid}/>
+                            </>
                         )}
                     </div>
 
                     {/* Right */}
                     <div>
                         <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Bidding Ends:
-                            <span className="text-[#14113B]"> {date}</span>
+                            <span className="text-[#14113B]"> {bidding.date}</span>
                         </p>
                         <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Highest Bid:
-                            <span className="text-[#14113B]"> {topBid}</span>
+                            <span className="text-[#14113B]"> {bidding.topBid}</span>
                         </p>
                     </div>
 
