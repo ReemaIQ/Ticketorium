@@ -9,7 +9,9 @@ import Event from "../event/Event";
  */
 
 export default function EventList({ events = {}, userType }) {
-    if (events.length) {
+    const items = Object.entries(events); //r
+
+    if (items.length === 0) { //r
         return (
             <div className="flex flex-col justify-center items-center gap-5
                             p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]">
@@ -18,19 +20,20 @@ export default function EventList({ events = {}, userType }) {
         );
     }
 
-    return (
+    return ( //r
         <div className="flex flex-col justify-center items-center gap-5 p-3">
-            {Object.keys(events).map((event, index) => (
+            {items.map(([id, ev]) => (
                 <Event
-                    key={events[event].id || index}
+                    key={id}
+                    id={id}                 // pass id so card can link to /event/:id
                     type={userType}
-                    state={events[event].state}
-                    img={events[event].img}
-                    title={events[event].title}
-                    date={events[event].date}
-                    organizer={events[event].organizer}
-                    price={events[event].price}
-                    inviter={events[event].inviter}
+                    state={ev.state}
+                    img={ev.img}
+                    title={ev.title}
+                    date={ev.date}
+                    organizer={ev.organizer}
+                    price={ev.price}
+                    inviter={ev.inviter}
                 />
             ))}
         </div>
