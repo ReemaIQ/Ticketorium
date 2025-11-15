@@ -67,10 +67,6 @@ function AllEvents(props) {
                 </div>
 
             </div>
-
-            {/* Footer */}
-            {/* <Footer type={user.type} /> */}
-
         </>
     )
 }
