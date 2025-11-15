@@ -253,8 +253,6 @@ function SignupLogin(props) {
     }
 
 
-
-
     // empty input fields
     setEmailOrUsername("");
     setEmail("");
@@ -282,7 +280,7 @@ function SignupLogin(props) {
             {options[option]["linkText"] && (
                 <div className="text-[20px] font-[gilroy-medium] flex gap-2">
                     <span className="text-[var(--primary-color)]">{options[option]["linkText"]}</span> 
-                    <NavLink to={options[option]["linkPath"]} end className="text-[var(--bright-blue-color)] cursor-pointer">{options[option]["anchorText"]}</NavLink>
+                    <NavLink to={options[option]["linkPath"]} end className="text-[var(--secondary-accent-color)] cursor-pointer">{options[option]["anchorText"]}</NavLink>
                 </div>
             )}
 

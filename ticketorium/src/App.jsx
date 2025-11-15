@@ -2,7 +2,7 @@ import Nav from './components/nav/nav.jsx'
 import Footer from './components/footer/footer.jsx'
 import SignupLogin from './pages/signup_login/signup_login.jsx'
 import {Route, Routes, Navigate} from 'react-router-dom'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, use } from 'react'
 import DummyUserHome from './pages/DummyUserHome.jsx'
 import UserHome from './pages/user_home/UserHome.jsx'
 import AllEvents from "./pages/AllEvents.jsx";
@@ -80,32 +80,87 @@ function App() {
   // dummyUniversities format
   // id is uni name abbreviated, e.g. kfupm, harvard, saud, etc. unique ids ofc
   const initialDummyUniversities = {
-    "kfupm": {
-      "name": "King Fahd University of Petroleum and Minerals",
-      "logo": "kfupm.png"
-    },
-    "harvard": {
-      "name": "Harvard University",
-      "logo": "harvard.png"
-    },
-    "saud": {
-      "name": "King Saud University",
-      "logo": "saud.png"
-    },
-    "manchester": {
-      "name": "University of Manchester",
-      "logo": "manchester.png"
-    },
-    "oxford": {
-      "name": "University of Oxford",
-      "logo": "oxford.png"
-    },
-    "cambridge": {
-      "name": "University of Cambridge",
-      "logo": "cambridge.png"
+  "kfupm": {
+    "name": "King Fahd University of Petroleum and Minerals",
+    "logo": "kfupm.png",
+    "theme-colors": {
+      "primary-color": "#006C35",
+      "secondary-color": "#004B23",
+      "accent-color": "#FFD700",
+      "secondary-accent-color": "#003018",
+      "filter-buttons": "#FFD700",
+      "warning-color": "#FFD700",
+      "footer-color": "#002E1A"
     }
-    // more can be added by system admins only!
+  },
+  "harvard": {
+    "name": "Harvard University",
+    "logo": "harvard.png",
+    "theme-colors": {
+      "primary-color": "#A51C30",
+      "secondary-color": "#4A0C15",
+      "accent-color": "#C4B7A6",
+      "secondary-accent-color": "#7A1A24",
+      "filter-buttons": "#A51C30",
+      "warning-color": "#A51C30",
+      "footer-color": "#3B0A1E"
+    }
+  },
+  "saud": {
+    "name": "King Saud University",
+    "logo": "saud.png",
+    "theme-colors": {
+      "primary-color": "#004B8D",
+      "secondary-color": "#002F5E",
+      "accent-color": "#A5C8E1",
+      "secondary-accent-color": "#013A73",
+      "filter-buttons": "#004B8D",
+      "warning-color": "#004B8D",
+      "footer-color": "#001F3B"
+    }
+  },
+  "manchester": {
+    "name": "University of Manchester",
+    "logo": "manchester.png",
+    "theme-colors": {
+      "primary-color": "#6A1B9A",
+      "secondary-color": "#4A0F6E",
+      "accent-color": "#FFCC00",
+      "secondary-accent-color": "#B8860B",
+      "filter-buttons": "#6A1B9A",
+      "warning-color": "#FFCC00",
+      "footer-color": "#3D0D5C"
+    }
+  },
+  "oxford": {
+    "name": "University of Oxford",
+    "logo": "oxford.png",
+    "theme-colors": {
+      "primary-color": "#002147",
+      "secondary-color": "#00132B",
+      "accent-color": "#A8996E",
+      "secondary-accent-color": "#7A6A4A",
+      "filter-buttons": "#002147",
+      "warning-color": "#A8996E",
+      "footer-color": "#000D1A"
+    }
+  },
+  "cambridge": {
+    "name": "University of Cambridge",
+    "logo": "cambridge.png",
+    "theme-colors": {
+      "primary-color": "#A3C1AD",
+      "secondary-color": "#6C8F7A",
+      "accent-color": "#D6083B",
+      "secondary-accent-color": "#8F062E",
+      "filter-buttons": "#A3C1AD",
+      "warning-color": "#D6083B",
+      "footer-color": "#4A6350"
+    }
   }
+  // more can be added by system admins only!
+}
+
 
   // dummyEvents format
     const initialDummyEvents = {
@@ -168,6 +223,7 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState(null); //username only
   const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
   const [part1Data, setPart1Data] = useState({});
+  const [choseUni, setChoseUni] = useState(false);
   const dummyUsers = useRef({});
   const dummyUniversities = useRef({});
   const dummyEvents = useRef({});
@@ -203,6 +259,34 @@ function App() {
     // testingForceUser("yo-shayma");
 
   }, []);
+
+  useEffect(() => {
+    const rootStyle = document.querySelector(':root').style;
+
+    // Take theme of logged in user's uni, or stick to default
+    rootStyle.setProperty('--secondary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-color"] : "#1F4C76");
+    rootStyle.setProperty('--primary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["primary-color"] : "#1a1a1a");
+    rootStyle.setProperty('--accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["accent-color"] : "#FFDF4F");
+    rootStyle.setProperty('--secondary-accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-accent-color"] : "#0800FF");
+    rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
+    rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
+    rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
+    console.log("Current user university:", (loggedInUser && dummyUsers.current[loggedInUser]["university"])? dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]: "No user logged in");
+  }, [choseUni]);
+
+    useEffect(() => {
+    const rootStyle = document.querySelector(':root').style;
+
+    // Take theme of logged in user's uni, or stick to default
+    rootStyle.setProperty('--secondary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-color"] : "#1F4C76");
+    rootStyle.setProperty('--primary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["primary-color"] : "#1a1a1a");
+    rootStyle.setProperty('--accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["accent-color"] : "#FFDF4F");
+    rootStyle.setProperty('--secondary-accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-accent-color"] : "#0800FF");
+    rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
+    rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
+    rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
+    console.log("Current user university:", (loggedInUser && dummyUsers.current[loggedInUser]["university"])? dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]: "No user logged in");
+  });
 
   const checkIfEmailExists = (email) => {
     for (const username in dummyUsers.current) {
@@ -280,13 +364,12 @@ function App() {
     localStorage.setItem("loggedInUser", username);
   }
 
-
   return (
     <>
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} setLoggedInUser={setLoggedInUser}/>
       <Routes>
         <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (dummyUsers.current[loggedInUser]["university"]? <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
-        <Route path="/university-selection" element={<UniversitySelection universities={dummyUniversities.current} assignUni={assignUni}/>}/>
+        <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection universities={dummyUniversities.current} assignUni={assignUni} setChoseUni={setChoseUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
         <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
         <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
         <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>

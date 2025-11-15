@@ -3,9 +3,19 @@
   --primary-color: #1a1a1a;
   --secondary-color: #1F4C76;
   --accent-color: #FFDF4F;
-  --bright-blue-color: #0800FF;
+  --secondary-accent-color: #0800FF;
   --warning-color: #F54141;
+  --footer-color: #11223B;
+  --filter-buttons: oklch(49.6% 0.265 301.924);
 }
+
+/*    "primary-color": "#002147",
+      "secondary-color": "#00132B",
+      "accent-color": "#A8996E",
+      "secondary-accent-color": "#7A6A4A",
+      "filter-buttons": "#002147",
+      "warning-color": "#A8996E",
+      "footer-color": "#000D1A" */
 
 * {
   box-sizing: border-box;
