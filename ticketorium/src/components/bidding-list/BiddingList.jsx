@@ -38,13 +38,7 @@ export default function BiddingList({ biddings = {}, type, user }) {
     return ( //r
         <div className="flex flex-col justify-center items-center gap-5 p-3 pb-10">
             {filteredItems.map(([ id, bidding]) => (
-                <Bidding
-                    id = {id}
-                    type={type}
-                    date={bidding.date}
-                    year={bidding.year}
-                    topBid={bidding.topBid}
-                />
+                <Bidding bidding={bidding} type={type} />
             ))}
         </div>
     );

@@ -4,17 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="working on event responsiveness">
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/bidding/bids.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/bidding/listing.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="added dummy bids and other things">
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/AddListingModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/MakeBidModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/MiniBidding.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +114,7 @@
       <workItem from="1762712151493" duration="1107000" />
       <workItem from="1762786735584" duration="5292000" />
       <workItem from="1762820205615" duration="93000" />
-      <workItem from="1763218355241" duration="10566000" />
+      <workItem from="1763218355241" duration="16106000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
@@ -263,7 +260,23 @@
       <option name="project" value="LOCAL" />
       <updated>1762820260411</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="biddings and their page">
+      <option name="closed" value="true" />
+      <created>1763239146051</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1763239146051</updated>
+    </task>
+    <task id="LOCAL-00020" summary="added dummy bids and other things">
+      <option name="closed" value="true" />
+      <created>1763239163147</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1763239163147</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,6 +300,8 @@
     <MESSAGE value="moved images to organize directories" />
     <MESSAGE value="fixed mistake in passing user type to events list" />
     <MESSAGE value="working on event responsiveness" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on event responsiveness" />
+    <MESSAGE value="biddings and their page" />
+    <MESSAGE value="added dummy bids and other things" />
+    <option name="LAST_COMMIT_MESSAGE" value="added dummy bids and other things" />
   </component>
 </project>

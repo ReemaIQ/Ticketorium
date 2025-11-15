@@ -1,8 +1,18 @@
 import BiddingList from "../components/bidding-list/BiddingList.jsx";
+import AddListingModal from "../components/bidding/AddListingModal.jsx";
+
 import {Hash, Plus} from "lucide-react";
+import {useState} from "react";
 import React from "react";
 
 function Bidding(props) {
+    const [open, setOpen] = useState(false);
+
+    const handleCreate = ({ id, deadline, startingBid }) => {
+        console.log("Create listing:", { id, deadline, startingBid });
+        setOpen(false); // close after creating
+    };
+
     return (
         <>
             { /* Content */}
@@ -22,10 +32,19 @@ function Bidding(props) {
                         <button
                             className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
                                 text-[#14113B]  rounded-[6px] font-[Gilroy-Medium]"
+                            onClick={() => setOpen(true)}
                         >
                             <Plus size={18} />
                             New Listing
                         </button>
+
+                        <AddListingModal
+                            open={open}
+                            onClose={() => setOpen(false)}
+                            biddings={Object.values(props.biddings).filter(b => b.user === props.user)}
+                            onCreate={handleCreate}
+                        />
+
                     </div>
 
                     <BiddingList user={props.user} biddings={props.biddings} type="listing" />
