@@ -77,7 +77,7 @@ const PIE_COLORS = ["#4F6FFF", "#2F4473", "#FACC15", "#FB7185"];
 
 function SectionCard({ title, description, children }) {
     return (
-        <section className="w-full rounded-[32px] bg-white border border-gray-200 px-10 py-8 space-y-4 shadow-sm">
+        <section className="w-full rounded-[6px] bg-white border border-gray-200 px-10 py-8 space-y-4 shadow-sm">
             <div>
                 <h2 className="font-[Epilogue-Black] text-[32px] text-[var(--primary-color)] leading-[1.1]">
                     {title}

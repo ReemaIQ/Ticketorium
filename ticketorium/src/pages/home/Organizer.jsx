@@ -100,7 +100,7 @@ function Organizer() {
             {/* --- Analytics Section --- */}
             <section
                 id="analytics"
-                className="bg-[#F3F3F3] flex flex-col items-center py-10 px-15 gap-6"
+                className="bg-white flex flex-col items-center py-10 px-15 gap-6"
             >
                 <div
                     id="section-header"
@@ -121,7 +121,7 @@ function Organizer() {
             {/* --- Upcoming Events Section --- */}
             <section
                 id="upcoming-events"
-                className="bg-[#F3F3F3] flex flex-col items-center py-10 px-15 gap-6"
+                className="bg-white flex flex-col items-center py-10 px-15 gap-6"
             >
                 <div
                     id="section-header"

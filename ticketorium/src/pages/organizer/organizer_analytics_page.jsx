@@ -4,10 +4,10 @@ import { Hash, Search } from "lucide-react";
 
 function OrganizerAnalyticsPage() {
     return (
-        <div className="flex flex-col min-h-screen bg-[#F3F3F3]">
+        <div className="flex flex-col min-h-screen bg-white">
 
             {/* ---- Page Header ---- */}
-            <section className="bg-[#F3F3F3] flex flex-col items-center py-20 px-20 gap-4 w-full">
+            <section className="bg-white flex flex-col items-center py-20 px-20 gap-4 w-full">
                 <h1 className="font-[Epilogue-Black] text-[90px] leading-[1.0] text-[var(--primary-color)]">
                     Analytics
                 </h1>
@@ -19,7 +19,7 @@ function OrganizerAnalyticsPage() {
 
 
             {/* ---- Centered Search + Filter ---- */}
-            <section className="bg-[#F3F3F3] flex flex-col items-center w-full px-20 mt-5">
+            <section className="bg-white flex flex-col items-center w-full px-20 mt-5">
                 <div className="flex items-center justify-center gap-6 w-full max-w-4xl">
 
                     {/* Search Input */}
@@ -54,7 +54,7 @@ function OrganizerAnalyticsPage() {
             {/* ---- Analytics Section ---- */}
             <section
                 id="analytics"
-                className="bg-[#F3F3F3] flex flex-col items-center py-5 px-20 gap-6 w-full"
+                className="bg-white flex flex-col items-center py-5 px-20 gap-6 w-full"
             >
                 <div className="w-full max-w-6xl">
                     <OrganizerAnalytics />
