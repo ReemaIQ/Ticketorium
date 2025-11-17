@@ -7,10 +7,10 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
     const category = getUserCategory(type);
 
     return (
-        <div className="flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
+        <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
 
             {/* Left image (click to details //r) */}
-            <div className="w-1/3">
+            <div className="md:w-1/3">
                 <NavLink to={`/event/${id}`} aria-label={`Open details for ${title}`}>
                     <img
                         src={`/src/assets/images/event/${img}`}
@@ -21,7 +21,7 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
             </div>
 
             {/* Right content */}
-            <div className="flex flex-col justify-between pb-5 pt-3 pr-4 w-2/3 gap-5">
+            <div className="flex flex-col justify-between pb-5 pt-3 pr-4 pl-5 md:w-2/3 md:pl-0 gap-5">
 
                 {/* Top */}
                 <div>
@@ -57,7 +57,7 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
                 </div>
 
                 {/* Bottom */}
-                <div className="flex flex-col items-center justify-between md:flex-row gap-2">
+                <div className="flex flex-col items-center md:flex-row gap-2">
                     <EventActions type={type} category={category} state={state} eventId={id} />
 
                     {price === 0 && category === "attendee" && (
@@ -75,7 +75,6 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
                     <div className="font-[Gilroy-Medium] text-sm text-[#3E3E3E] text-right whitespace-nowrap ml-auto">
                         {date} <br /> by {organizer}
                     </div>
-
                 </div>
             </div>
 

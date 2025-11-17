@@ -154,11 +154,7 @@ function UserHome(props) {
                         ):
 
                         (
-                            <EventList
-                                events={props.events}
-                                userType={props.users[props.user]['type']}   // fix r
-                            />
-
+                        <EventList events={props.events} userType={props.users[props.user]['type']}/>
                         ))))
                     }
                 </div>
