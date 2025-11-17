@@ -10,6 +10,7 @@ import MyEvents from "./pages/MyEvents.jsx";
 import EventPage from "./pages/event_details/event_page.jsx";
 import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import OrganizerAnalyticsPage from "./pages/organizer/organizer_analytics_page.jsx"; //r
+import RegistrationStatus from "./pages/registration/registration_page.jsx"; //r
 
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
@@ -315,7 +316,12 @@ function App() {
               }
           />
 
+          {/* reema: Checkout / Registration Status page */}
+          <Route path="/checkout" element={<RegistrationStatus />} />
+
+
           <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
+
       </Routes>
       <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
     </>
