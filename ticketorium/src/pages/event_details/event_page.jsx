@@ -297,13 +297,34 @@ export default function EventPage(props) {
                     <div className="mt-6 flex justify-end gap-3">
                         <button onClick={closeModal} className="px-4 py-2 text-sm font-medium border border-slate-300 bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50">Cancel</button>
 
+                        {/*<button*/}
+                        {/*    onClick={() => { setViewState("joined"); closeModal(); }}*/}
+                        {/*    className="px-4 py-2 text-sm font-medium border border-slate-300 bg-yellow-400 text-slate-900 rounded-md shadow-sm hover:bg-yellow-300"*/}
+                        {/*>*/}
+                        {/*    {price > 0 ? "Pay & Join" : "Join"}*/}
+                        {/*</button>*/}
+                        {/* r edited to fix resign button */}
+
                         <button
-                            onClick={() => { setViewState("joined"); closeModal(); }}
+                            onClick={() => {
+                                setViewState("joined");
+                                closeModal();
+
+                                // reema: minimal connection to Checkout page
+                                // For now we always treat this as successful registration.
+                                // Later we can compute success based on payment / capacity.
+                                navigate("/checkout", {
+                                    state: {
+                                        isSuccess: true, //switch this for successful/ failed registration
+                                        // could also pass: eventId , userType: type, price,
+                                    },
+                                });
+                            }}
                             className="px-4 py-2 text-sm font-medium border border-slate-300 bg-yellow-400 text-slate-900 rounded-md shadow-sm hover:bg-yellow-300"
                         >
                             {price > 0 ? "Pay & Join" : "Join"}
                         </button>
-                        {/* r edited to fix resign button */}
+
 
 
 
