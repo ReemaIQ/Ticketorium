@@ -18,7 +18,6 @@ export default function Event({ id, type, state, img, title, date, organizer, pr
                         className="w-full h-full object-cover"
                     />
                 </NavLink>
-                {/*<img src={"/src/assets/images/event/" + img} alt="Event" className="w-full h-full object-cover" />*/}
             </div>
 
             {/* Right content */}
