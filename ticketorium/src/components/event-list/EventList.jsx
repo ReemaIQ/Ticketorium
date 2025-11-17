@@ -24,7 +24,6 @@ export default function EventList({ events = {}, userType }) {
         <div className="flex flex-col justify-center items-center gap-5 p-3">
             {items.map(([id, ev]) => (
                 <Event
-                    key={id}
                     id={id}                 // pass id so card can link to /event/:id
                     type={userType}
                     state={ev.state}
