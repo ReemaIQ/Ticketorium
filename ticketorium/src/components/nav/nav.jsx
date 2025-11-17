@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState } from "react";
 import {NavLink, useNavigate} from "react-router-dom";
-import { Bell, MessageCircle } from "lucide-react";
+import { Bell, MessageCircle, Menu, X } from "lucide-react";
 import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
 
@@ -46,9 +46,10 @@ function InitialAvatar({ name, setOpen, open }) {
 }
 
 export default function Nav({userName, type, setLoggedInUser}) {
-    const [open, setOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const [open, setOpen] = useState(false); // avatar log out drop down
+    const [mobileOpen, setMobileOpen] = useState(false); // hamburger menu
 
+    const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -61,9 +62,6 @@ export default function Nav({userName, type, setLoggedInUser}) {
         return () => document.removeEventListener("mousedown", onDocClick);
     }, []);
 
-    useEffect(() => {
-        console.log("Dropdown open state:", open);
-    }, [open]);
 
     function handleLogout() {
         localStorage.removeItem("loggedInUser");
@@ -71,76 +69,115 @@ export default function Nav({userName, type, setLoggedInUser}) {
         navigate("/log-in");
     }
 
+    const items = navItems[type] || [];
+
     return (
-        <nav id="nav" className="w-full h-15 bg-[#1F4C76] text-white flex items-center justify-between px-3 py-5 relative">
+        <>
+            <nav id="nav" className="w-full h-15 bg-[#1F4C76] text-white flex items-center justify-between px-3 py-4 md:px-6 md:py-5 relative">
 
-            {/* Left*/}
-            <div id="nav-links" className="flex items-center gap-10">
+                {/* Left*/}
+                <div id="nav-links" className="flex items-center gap-6 md:gap-10">
 
-                {/* Logo */}
-                <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={() => {navigate('/home')}}>
-                    <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
+                    {/* Logo */}
+                    <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={() => {navigate('/home');setMobileOpen(false);}}>
+                        <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
-                    <div className="flex-direction-columns items-center">
-                        <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]">-</span>
-                        <span className="font-[Gilroy-Black] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
+                        <div className="flex-direction-columns items-center">
+                            <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]">-</span>
+                            <span className="font-[Gilroy-Black] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
+                        </div>
+                    </div>
+
+
+                    {/* Desktop links */}
+                    <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy-Medium]">
+                        {items.map((item) => (
+                            <NavLink to={item.href} className="text-white hover:underline">
+                                {item.label}
+                            </NavLink>
+                        ))}
                     </div>
                 </div>
 
 
-                {/* Links */}
-                <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy-Medium]">
-                    {navItems[type]?.map((item) => (
-                        <NavLink to={item.href} className="text-white hover:underline">
-                            {item.label}
-                        </NavLink>
-                    ))}
-                </div>
-            </div>
-
-
-            {/* Right: Icons + Avatar */}
-            <div id="nav-buttons"
-                 className="flex items-center gap-4 relative"
-                 ref={dropdownRef}
-            >
-
-                {/* Admin's Buttons*/}
-                {(type === "admin") && (
-                    <>
-                        <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-                    </>
-                )}
-
-                {/* Other User Types' Buttons*/}
-                {(type === "student" || type === "visitor" || type === "organizer") && (
-                    <>
-                        <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-                        <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-
-                        {/* Dropdown (Logout only) */}
-                        <div
-                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
-                            role="menu"
-                        >
-                            <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
-                                Logout
-                            </button>
-                        </div>
-                    </>
-                )}
-
-                <InitialAvatar name={userName} setOpen={setOpen} open={open} />
-                <div
-                    className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
-                    role="menu"
+                {/* Right: Icons + Avatar + Hamburger */}
+                <div id="nav-buttons"
+                     className="flex items-center gap-3 md:gap-4 relative"
+                     ref={dropdownRef}
                 >
-                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
-                        Logout
-                    </button>
-                </div>
 
-            </div>
-        </nav>
+                    {/* Admin's Buttons*/}
+                    {(type === "admin") && (
+                        <>
+                            <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        </>
+                    )}
+
+                    {/* Other User Types' Buttons*/}
+                    {(type === "student" || type === "visitor" || type === "organizer") && (
+                        <>
+                            <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                            <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        </>
+                    )}
+
+                    {type && type !== "empty" && (
+                        <>
+                            {/* Avatar + Logout dropdown */}
+                            <div className="relative">
+                                <InitialAvatar name={userName} setOpen={setOpen} open={open} />
+
+                                <div
+                                    className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top ${
+                                        open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+                                    }`}
+                                    role="menu"
+                                >
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                        role="menuitem"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Hamburger (mobile only) */}
+                            <button
+                                type="button"
+                                className="md:hidden p-1 rounded bg-[#1F4C76] text-white focus:outline-none cursor-pointer hover:opacity-80 transition-opacity"
+                                onClick={() => setMobileOpen((prev) => !prev)}
+                                aria-label="Toggle navigation menu"
+                            >
+                                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                            </button>
+                        </>
+                    )}
+                </div>
+            </nav>
+
+            {/* Mobile Menu (only logged in) */}
+            {type && type !== "empty" && (
+                <div
+                    className={`md:hidden w-full bg-white text-black transition-[max-height,opacity] duration-200 ease-out overflow-hidden ${
+                        mobileOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                >
+                    <div className="flex flex-col items-center text-center gap-2 py-3 font-[Gilroy-Medium]">
+                        {items.map((item) => (
+                            <NavLink
+                                key={item.label}
+                                to={item.href}
+                                onClick={() => setMobileOpen(false)}
+                                className="w-full py-2 hover:bg-gray-100"
+                            >
+                                {item.label}
+                            </NavLink>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
