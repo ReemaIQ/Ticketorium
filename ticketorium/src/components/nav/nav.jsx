@@ -164,7 +164,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
                         mobileOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
                     }`}
                 >
-                    <div className="flex flex-col items-center text-center gap-2 py-3 font-[Gilroy-Medium]">
+                    <div className="flex flex-col items-center text-center py-2 font-[Gilroy-Medium]">
                         {items.map((item) => (
                             <NavLink
                                 key={item.label}
