@@ -289,14 +289,19 @@ export default function EventPage(props) {
     console.log("Ticket created:", ticket); //r: to remove the error
 
     // modals
-    const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'edit' | 'verify' | 'delete' | 'none'
+    const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'edit' | 'verify' | 'delete' | 'ticket' | 'none'
     const [showDeleteBanner, setShowDeleteBanner] = useState(false);
     const closeModal = () => setOpenModal("none");
 
-    /* r: AUTO-OPEN JOIN MODAL WHEN returning from failure */
+    /* AUTO-OPEN MODALS WHEN COMING FROM REGISTRATION STATUS */
     useEffect(() => {
-        if (routerLocation.state?.openJoinModal) {
+        const state = routerLocation.state;
+        if (!state) return;
+
+        if (state.openJoinModal) {
             setOpenModal("join");
+        } else if (state.openTicketModal) {
+            setOpenModal("ticket");
         }
     }, [routerLocation.state]);
 
