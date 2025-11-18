@@ -1,19 +1,19 @@
 import {Route, Routes, Navigate} from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 
-import Nav from './components/nav/nav.jsx'
-import Footer from './components/footer/footer.jsx'
+import Nav from './components/nav/Nav.jsx'
+import Footer from './components/footer/Footer.jsx'
 
-import SignupLogin from './pages/signup_login/signup_login.jsx'
+import SignupLogin from './pages/SignupLogin.jsx'
 import DummyUserHome from './pages/DummyUserHome.jsx'
-import UserHome from './pages/user_home/UserHome.jsx'
+import UserHome from './pages/UserHome.jsx'
 
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
-import EventPage from "./pages/event_details/event_page.jsx";
+import EventPage from "./pages/Event.jsx";
 import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
-import OrganizerAnalyticsPage from "./pages/organizer/organizer_analytics_page.jsx"; //r
-import RegistrationStatus from "./pages/registration/registration_page.jsx"; //r
+import Analytics from "./pages/Analytics.jsx"; //r
+import Registration from "./pages/Registration.jsx"; //r
 
 
 import Bidding from "./pages/Bidding.jsx"
@@ -128,6 +128,15 @@ function App() {
         },
 
         2: {
+            state: "joined",
+            img: "group-hiking.png",
+            title: "2025 Group Hiking",
+            date: "9:30 AM Nov 21, 2025",
+            organizer: "CS Department",
+            price: 10,
+        },
+
+        3: {
             state: "not-joined",
             img: "game-dev.png",
             title: "2025 GameDev Competition",
@@ -136,7 +145,7 @@ function App() {
             price: 19.99,
         },
 
-        3: {
+        4: {
             state: "waitlist",
             img: "spelling-bee.png",
             title: "2025 Spelling Bee",
@@ -145,7 +154,7 @@ function App() {
             price: 0,
         },
 
-        4: {
+        5: {
             state: "waitlisted",
             img: "game-dev.png",
             title: "2025 Coding Competition",
@@ -154,7 +163,7 @@ function App() {
             price: 19.99,
         },
 
-        5: {
+        6: {
             state: "invited",
             img: "game-dev.png",
             title: "2025 Coding Competition",
@@ -164,7 +173,7 @@ function App() {
             inviter: "Student"
         },
 
-        6: {
+        7: {
             state: "graduation",
             img: "graduation.png",
             title: "2025 Graduation Ceremony",
@@ -344,14 +353,9 @@ function App() {
                   !loggedInUser ? (
                       <DummyUserHome /> //reema: not logged in to dummy landing home
                   ) : dummyUsers.current[loggedInUser]["type"] === "organizer" ? (
-                      <OrganizerHomePage /> //reema: organizer page
+                      <OrganizerHomePage /> //reema: organizer home page
                   ) : (
-                      <UserHome
-                          user={loggedInUser}
-                          users={dummyUsers.current}
-                          universities={dummyUniversities.current}
-                          events={dummyEvents.current}
-                      />
+                      <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>
                   )
               }
           />
@@ -369,10 +373,10 @@ function App() {
 
         <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
 
-        <Route path="/organizer/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<OrganizerAnalyticsPage />) }/>
+        <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
 
         {/* reema: Checkout / Registration Status page */}
-        <Route path="/checkout" element={<RegistrationStatus />} />
+        <Route path="/checkout" element={<Registration />} />
 
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>

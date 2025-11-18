@@ -1,8 +1,8 @@
 import React from "react";
-import OrganizerAnalytics from "../../components/organizer/organizer_analytics.jsx";
+import OrganizerAnalytics from "../components/analytics/Analytics.jsx";
 import { Hash, Search } from "lucide-react";
 
-function OrganizerAnalyticsPage() {
+function Analytics() {
     return (
         <div className="flex flex-col min-h-screen bg-white">
 
@@ -64,4 +64,4 @@ function OrganizerAnalyticsPage() {
     );
 }
 
-export default OrganizerAnalyticsPage;
+export default Analytics;

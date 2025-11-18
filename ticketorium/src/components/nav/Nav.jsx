@@ -4,6 +4,9 @@ import { Bell, MessageCircle, Menu, X } from "lucide-react";
 import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
 
+//import NotificationModal from ;
+//import LogOutModal???? from;
+
 const navItems = {
     empty: [],
     student: [
@@ -20,7 +23,7 @@ const navItems = {
     organizer: [
         { label: "My Events", href: "/my-events" },
         { label: "Create Event", href: "/create-event" },
-        { label: "Analytics", href: "/organizer/analytics" },
+        { label: "Analytics", href: "/analytics" },
         { label: "My Disputes", href: "/disputes" },
     ],
     admin: [

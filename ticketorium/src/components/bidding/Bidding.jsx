@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import listing from "../../assets/images/bidding/listing.png";
 import bids from "../../assets/images/bidding/bids.png";
-import MakeBidModal from "./MakeBidModal.jsx";
+import MakeBidModal from "../modals/MakeBidModal.jsx";
 
 export default function Bidding({type,bidding}) {
     const [open, setOpen] = useState(false);

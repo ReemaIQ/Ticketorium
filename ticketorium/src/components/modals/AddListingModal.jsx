@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import MiniBidding from "./MiniBidding.jsx";
+import MiniBidding from "../bidding/MiniBidding.jsx";
 
 export default function AddListingModal({
                                             open,
                                             onClose,
-                                            biddings = {}, // [{id, title, desc, img, countdownText, dateText, organizer}]
+                                            biddings = {}, // [{id, title, desc, img, countdownText, dateText, analytics}]
                                             onCreate,     // ({ticketId, deadline, startingBid}) => void
                                         }) {
     const items = Object.entries(biddings);

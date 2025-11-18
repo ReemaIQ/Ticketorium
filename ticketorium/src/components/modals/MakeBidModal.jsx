@@ -4,7 +4,7 @@ import { X, BadgeDollarSign } from "lucide-react";
 export default function MakeBidModal({
                                              open,
                                              onClose,
-                                             bidding,              // { img, title, description, countdownText, biddingEnds, latestBid, dateText, organizer }
+                                             bidding,              // { img, title, description, countdownText, biddingEnds, latestBid, dateText, analytics }
                                              onBid,               // (amount: number) => void
                                          }) {
     const [bid, setBid] = useState("");

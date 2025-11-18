@@ -9,11 +9,10 @@ import { useEffect, useState } from 'react'
 
 library.add(fas, far, fab)
 
-import "./signup_login.css"; 
 
 import validator from "validator";
-import SignupInputsList from "../../components/signup_login/signup_inputs_list/SignupInputsList";
-import rightArrow from "../../assets/images/signup/right_arrow.svg";
+import SignupInputsList from "../components/signup_login/signup_inputs_list/SignupInputsList.jsx";
+import rightArrow from "../assets/images/signup/right_arrow.svg";
 import { NavLink, useNavigate } from 'react-router-dom';
 
 
