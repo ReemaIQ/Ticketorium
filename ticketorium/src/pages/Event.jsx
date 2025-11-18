@@ -1,7 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import EventActions from "../../components/event/EventActions.jsx";
-import { getUserCategory } from "../../components/event/getUserCategory.js";
+
+import EventActions from "../components/event/EventActions.jsx";
+import { getUserCategory } from "../components/event/getUserCategory.js";
+
+//import ResignModal from "./ResignModal";
+//import JoinModal from "./";
+//import SeatingModal from "./";
 
 /* ----------------------------- Modal Component ----------------------------- */
 function Modal({ isOpen, onClose, children }) {
@@ -16,7 +21,7 @@ function Modal({ isOpen, onClose, children }) {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-            <div className="relative mx-4 w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl">
+            <div className="relative mx-4 w-xl rounded-xl bg-white p-6 shadow-xl">
                 <button
                     aria-label="Close"
                     onClick={onClose}
@@ -141,7 +146,7 @@ export default function EventPage(props) {
     const navigate = useNavigate();
     const { eventId } = useParams();
 
-    // type: student / visitor / organizer / admin
+    // type: student / visitor / analytics / admin
     const type = useMemo(() => {
         const t = props?.users && props?.user ? props.users[props.user]?.type : "visitor";
         return (t || "visitor").toLowerCase();
@@ -198,7 +203,7 @@ export default function EventPage(props) {
                 setOpenModal("resign");
                 break;
 
-            // organizer/admin tools
+            // analytics/admin tools
             case "Edit":
                 setOpenModal("edit");
                 break;
@@ -335,16 +340,16 @@ export default function EventPage(props) {
 
             <Modal isOpen={openModal === "resign"} onClose={closeModal}>
                 <div className="text-center">
-                    <h3 className="text-xl font-semibold">Resign from <span className="font-bold">{title}</span>?</h3>
+                    <h3 className="text-xl font-semibold">Are you sure you want to resign from <span className="font-bold">{title}</span>?</h3>
                 </div>
                 {price > 0 && (
-                    <p className="mt-2 text-slate-500 text-center">Refund: <span className="text-indigo-700 font-medium">${price.toFixed(2)}</span></p>
+                    <p className="mt-2 text-slate-500 text-center">You will receive a refund of: <span className="text-indigo-700 font-medium">${price.toFixed(2)}</span></p>
                 )}
                 <div className="mt-6 flex justify-center gap-3">
 
                     <button
                         onClick={() => { setViewState("not-joined"); closeModal(); }}
-                        className="px-4 py-2 text-sm font-medium bg-white border border-rose-300 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
+                        className="px-4 py-2 text-sm font-medium bg-white border border-rose-600 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
                     >
                         Resign
                     </button>
@@ -352,8 +357,8 @@ export default function EventPage(props) {
 
 
 
-                <button onClick={closeModal} className="px-4 py-2 text-sm font-medium border border-slate-300 bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50">
-                        Don't Resign
+                <button onClick={closeModal} className="px-4 py-2 text-sm font-medium border bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50">
+                        Cancel
                     </button>
                 </div>
             </Modal>
