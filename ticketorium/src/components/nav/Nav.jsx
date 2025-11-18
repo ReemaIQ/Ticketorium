@@ -4,7 +4,7 @@ import { Bell, MessageCircle, Menu, X } from "lucide-react";
 import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
 
-//import NotificationModal from ;
+import NotificationModal from "../modals/NotificationModal.jsx";
 //import LogOutModal???? from;
 
 const navItems = {
@@ -49,16 +49,19 @@ function InitialAvatar({ name, setOpen, open }) {
 }
 
 export default function Nav({userName, type, setLoggedInUser}) {
-    const [open, setOpen] = useState(false); // avatar log out drop down
+    const [logoutOpen, setLogoutOpen] = useState(false); // avatar log out drop down
+    const [notificationOpen, setNotificationOpen] = useState(false); //notifications modal
     const [mobileOpen, setMobileOpen] = useState(false); // hamburger menu
 
     const dropdownRef = useRef(null);
+
     const navigate = useNavigate();
 
     useEffect(() => {
         function onDocClick(e) {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setOpen(false);
+                setLogoutOpen(false);
+                setNotificationOpen(false);
             }
         }
         document.addEventListener("mousedown", onDocClick);
@@ -109,30 +112,39 @@ export default function Nav({userName, type, setLoggedInUser}) {
                      ref={dropdownRef}
                 >
 
-                    {/* Admin's Buttons*/}
-                    {(type === "admin") && (
+                    {/* Specific User Types' Buttons*/}
+                    {(type === "student" || type === "visitor" || type === "organizer") && (
                         <>
-                            <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                            <NavLink to={"/disputes"}>
+                                <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                            </NavLink>
                         </>
                     )}
 
-                    {/* Other User Types' Buttons*/}
-                    {(type === "student" || type === "visitor" || type === "organizer") && (
-                        <>
-                            <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-                            <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-                        </>
-                    )}
+                    <div className="relative cursor-pointer">
+                        <div onClick={() => setNotificationOpen(!notificationOpen)} aria-label="User menu">
+                            <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" setOpen={setNotificationOpen} open={notificationOpen} />
+                        </div>
+
+                        <div className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-fit px-5 py-3 z-10 transform transition-all duration-200 ease-out origin-top ${
+                            notificationOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+                             role="menu">
+
+                            <NotificationModal role="menuitem"/>
+                            <p role="menuitem">notif</p>
+
+                        </div>
+                    </div>
 
                     {type && type !== "empty" && (
                         <>
                             {/* Avatar + Logout dropdown */}
                             <div className="relative">
-                                <InitialAvatar name={userName} setOpen={setOpen} open={open} />
+                                <InitialAvatar name={userName} setOpen={setLogoutOpen} open={logoutOpen} />
 
                                 <div
                                     className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top ${
-                                        open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+                                        logoutOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
                                     }`}
                                     role="menu"
                                 >
