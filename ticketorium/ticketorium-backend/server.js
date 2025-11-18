@@ -73,6 +73,114 @@ app.get("/api/tickets", (_req, res) => {
     res.json(tickets);
 });
 
+/**
+ * GET /api/tickets/verify
+ * Query params:
+ *   - code: ticketCode  OR
+ *   - token: qrToken / qrData
+ *   - eventId: optional, ensures ticket belongs to this event
+ *
+ * Response:
+ *   { valid, reason, message, ticket? }
+ */
+app.get("/api/tickets/verify", (req, res) => {
+    const { code, token, eventId } = req.query;
+
+    if (!code && !token) {
+        return res.status(400).json({
+            valid: false,
+            reason: "bad-request",
+            message: "You must provide either code or token",
+        });
+    }
+
+    // Helper: match QR token/payload
+    function matchesToken(t, incomingToken) {
+        if (!incomingToken) return false;
+
+        // Exact qrToken
+        if (t.qrToken === incomingToken) return true;
+
+        // Exact qrData (ex: "TICKET:<qrToken>")
+        if (t.qrData === incomingToken) return true;
+
+        // If payload is "TICKET:abcd...", strip prefix
+        if (incomingToken.startsWith("TICKET:")) {
+            return t.qrToken === incomingToken.slice("TICKET:".length);
+        }
+
+        return false;
+    }
+
+    let ticket;
+
+    if (token) {
+        ticket = tickets.find((t) => matchesToken(t, token));
+    } else if (code) {
+        ticket = tickets.find((t) => t.ticketCode === code);
+    }
+
+    if (!ticket) {
+        return res.json({
+            valid: false,
+            reason: "not-found",
+            message: "Ticket not found",
+        });
+    }
+
+    // Check event match (optional but recommended)
+    if (eventId && String(ticket.eventId) !== String(eventId)) {
+        return res.json({
+            valid: false,
+            reason: "wrong-event",
+            message: "Ticket belongs to a different event",
+            ticket: {
+                id: ticket.id,
+                eventId: ticket.eventId,
+                ticketCode: ticket.ticketCode,
+                status: ticket.status,
+            },
+        });
+    }
+
+    // Check status
+    if (ticket.status !== "active") {
+        return res.json({
+            valid: false,
+            reason: "inactive",
+            message:
+                ticket.status === "used"
+                    ? "Ticket has already been used"
+                    : "Ticket is not active",
+            ticket: {
+                id: ticket.id,
+                eventId: ticket.eventId,
+                ticketCode: ticket.ticketCode,
+                status: ticket.status,
+            },
+        });
+    }
+
+    // ✅ Optional: mark as used now
+    ticket.status = "used";
+
+    return res.json({
+        valid: true,
+        reason: "ok",
+        message: "Ticket is valid and has been marked as used.",
+        ticket: {
+            id: ticket.id,
+            eventId: ticket.eventId,
+            userId: ticket.userId,
+            ticketCode: ticket.ticketCode,
+            seat: ticket.seat,
+            price: ticket.price,
+            status: ticket.status,
+            createdAt: ticket.createdAt,
+        },
+    });
+});
+
 const PORT = 4000;
 app.listen(PORT, () => {
     console.log(`Tickets service running at http://localhost:${PORT}`);
