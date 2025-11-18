@@ -69,7 +69,7 @@ function Bidding(props) {
                                     hover:bg-[#4F6FFF] hover:text-white transition"
                         >
                             <Hash size={18} />
-                            Filter
+                            Sort
                         </button>
                     </div>
 
