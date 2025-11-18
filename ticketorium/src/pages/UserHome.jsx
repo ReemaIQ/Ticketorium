@@ -111,7 +111,7 @@ function UserHome(props) {
                 <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3 px-15">
                     {/* Left: Title + Search */}
                     <div className="flex items-center gap-3">
-                        <h2 id={key} className="font-[Epilogue-Black] text-[60px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
+                        <h2 id={key} className="font-[Epilogue-Black] text-[50px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
 
                         {/* Search Button */}
                         {/*onClick={onSearch}*/}
