@@ -14,6 +14,7 @@ import EventPage from "./pages/Event.jsx";
 import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import Analytics from "./pages/Analytics.jsx"; //r
 import Registration from "./pages/Registration.jsx"; //r
+import ManageUsers from "./pages/ManageUsers.jsx";
 
 
 import Bidding from "./pages/Bidding.jsx"
@@ -56,7 +57,7 @@ function App() {
       "phone": "01023456782",
       "password": "Dope!1111",
       "type": "system-admin",
-      "university": null, // he is prompted upon login to choose which university to administer
+      "university": "harvard", // he is prompted upon login to choose which university to administer
       "gender": "male",
       "date-of-birth": "1995-01-01",
     },
@@ -114,6 +115,252 @@ function App() {
       "logo": "cambridge.png"
     }
     // more can be added by system admins only!
+  }
+
+  const initialDummyNotifications = {
+          "event_join_success": {
+            "category": "event",
+            "titleTemplate": "You joined {{eventName}}",
+            "bodyTemplate": "You have successfully joined {{eventName}}.",
+            "roles": ["student", "visitor"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+          },
+          "event_join_failed_full_or_closed": {
+            "category": "event",
+            "titleTemplate": "Could not join {{eventName}}",
+            "bodyTemplate": "You could not join {{eventName}} because it is full or closed.",
+            "roles": ["student", "visitor"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+          },
+          "event_waitlist_added": {
+            "category": "event",
+            "titleTemplate": "Waitlisted for {{eventName}}",
+            "bodyTemplate": "You have been added to the waitlist for {{eventName}}.",
+            "roles": ["student", "visitor"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+          },
+          "event_time_changed": {
+            "category": "event",
+            "titleTemplate": "{{eventName}} time changed",
+            "bodyTemplate": "The time for {{eventName}} has changed to {{newDateTime}}.",
+            "roles": ["student", "visitor", "organizer"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+          },
+          "event_location_changed": {
+            "category": "event",
+            "titleTemplate": "{{eventName}} location changed",
+            "bodyTemplate": "The location for {{eventName}} has changed to {{newLocation}}.",
+            "roles": ["student", "visitor", "organizer"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+          "event_canceled": {
+            "category": "event",
+            "titleTemplate": "{{eventName}} was cancelled",
+            "bodyTemplate": "{{eventName}} has been cancelled.",
+            "roles": ["student", "visitor", "organizer"],
+            "badge": true,
+            "inApp": true,
+            "email": true
+        },
+          "event_reminder_day_before": {
+            "category": "event",
+            "titleTemplate": "{{eventName}} is tomorrow",
+            "bodyTemplate": "{{eventName}} starts tomorrow at {{startTime}}.",
+            "roles": ["student", "visitor"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+          "event_reminder_hours_before": {
+            "category": "event",
+            "titleTemplate": "{{eventName}} starts soon",
+            "bodyTemplate": "{{eventName}} starts in {{timeUntilStart}}.",
+            "roles": ["student", "visitor"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+          "event_invited": {
+            "category": "event",
+            "titleTemplate": "You were invited to {{eventName}}",
+            "bodyTemplate": "{{inviterName}} invited you to {{eventName}}.",
+            "roles": ["student", "visitor"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+
+    /* BIDDING (STUDENT / ADMIN / ORGANIZER AS BIDDER) */
+
+          "bidding_bid_placed":{
+            "category": "bidding",
+            "titleTemplate": "Bid placed on {{listingTitle}} ticket",
+            "bodyTemplate": "Your bid of {{amount}} was placed on {{listingTitle}} ticket.",
+            "roles": ["student"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+          "bidding_won":{
+            "category": "bidding",
+            "titleTemplate": "You won the bidding for {{listingTitle}} ticket",
+            "bodyTemplate": "You won the bidding for {{listingTitle}} ticket. Complete your purchase.",
+            "roles": ["student"],
+            "badge": true,
+            "inApp": true,
+            "email": true
+        },
+          "bidding_ends_soon": {
+            "category": "bidding",
+            "titleTemplate": "Bidding ends soon for {{listingTitle}} ticket",
+            "bodyTemplate": "Bidding for {{listingTitle}} ticket ends in {{timeUntilEnd}}.",
+            "roles": ["student", "organizer", "admin"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+
+    /* LISTINGS (STUDENT AS SELLER, OPTIONALLY OTHERS) */
+
+          "listing_received_bid": {
+            "category": "listing",
+            "titleTemplate": "New bid on {{listingTitle}} ticket",
+            "bodyTemplate": "Your listing {{listingTitle}} ticket received a new bid.",
+            "roles": ["student"],
+            "badge": true,
+            "inApp": true,
+            "email": false
+        },
+          "listing_expired": {
+            "category": "listing",
+            "titleTemplate": "Listing expired: {{listingTitle}}",
+            "bodyTemplate": "Your listing {{listingTitle}} has expired.",
+            "roles": ["student"],
+            "badge": false,
+            "inApp": true,
+            "email": false
+        },
+          "listing_sold": {
+            "category": "listing",
+            "titleTemplate": "Your ticket was sold",
+            "bodyTemplate": "Your ticket {{listingTitle}} was sold for {{amount}}.",
+            "roles": ["student"],
+            "badge": true,
+            "inApp": true,
+            "email": true
+        },
+
+    /* DISPUTES (STUDENT / VISITOR / ORGANIZER / ADMIN AS COMPLAINANT) */
+
+        "dispute_created": {
+        "category": "dispute",
+        "titleTemplate": "Dispute {{disputeTitle}} submitted",
+        "bodyTemplate": "Your dispute regarding {{eventName}} has been submitted.",
+        "roles": ["student", "visitor", "organizer"],
+        "badge": true,
+        "inApp": true,
+        "email": false
+    },
+        "dispute_created-admin": {
+          "category": "dispute",
+          "titleTemplate": "New dispute titled {{disputeTitle}} was created",
+          "bodyTemplate": "A dispute regarding {{eventName}} has been created.",
+          "roles": ["admin"],
+          "badge": true,
+          "inApp": true,
+          "email": false
+      },
+        "dispute_new_message": {
+        "category": "dispute",
+        "titleTemplate": "New reply in the dispute: {{disputeTitle}}",
+        "bodyTemplate": "There is a new message on your dispute for {{eventName}}.",
+        "roles": ["student", "visitor", "organizer", "admin"],
+        "badge": true,
+        "inApp": true,
+        "email": false
+    },
+
+    /* ORGANIZER-SPECIFIC EVENT REMINDERS */
+
+        "organizer_event_reminder_day_before": {
+        "category": "organizer_event",
+        "titleTemplate": "Your event {{eventName}} is tomorrow",
+        "bodyTemplate": "Your event {{eventName}} is scheduled for tomorrow at {{startTime}}.",
+        "roles": ["organizer"],
+        "badge": false,
+        "inApp": true,
+        "email": false
+    },
+        "organizer_event_reminder_hours_before": {
+        "category": "organizer_event",
+        "titleTemplate": "Your event {{eventName}} starts soon",
+        "bodyTemplate": "Your event {{eventName}} starts in {{timeUntilStart}}.",
+        "roles": ["organizer"],
+        "badge": false,
+        "inApp": true,
+        "email": false
+    },
+        "organizer_event_ended":{
+        "category": "organizer_event",
+        "titleTemplate": "{{eventName}} has ended",
+        "bodyTemplate": "Your event {{eventName}} has ended. Review attendance or feedback.",
+        "roles": ["organizer"],
+        "badge": false,
+        "inApp": true,
+        "email": false
+    },
+        "organizer_role_granted": {
+        "category": "account",
+        "titleTemplate": "Organizer role granted",
+        "bodyTemplate": "You have been granted organizer privileges.",
+        "roles": ["organizer"],
+        "badge": true,
+        "inApp": true,
+        "email": false
+    },
+
+    // /* ACCOUNT & SECURITY (ALL ROLES) */
+    //
+    // {
+    //     "id": "account_password_changed",
+    //     "category": "account",
+    //     "titleTemplate": "Password changed",
+    //     "bodyTemplate": "Your account password has been changed.",
+    //     "roles": ["student", "visitor", "organizer", "admin"],
+    //     "badge": true,
+    //     "inApp": true,
+    //     "email": true
+    // },
+    // {
+    //     "id": "account_email_changed",
+    //     "category": "account",
+    //     "titleTemplate": "Email address changed",
+    //     "bodyTemplate": "Your account email has been changed to {{newEmail}}.",
+    //     "roles": ["student", "visitor", "organizer", "admin"],
+    //     "badge": true,
+    //     "inApp": true,
+    //     "email": true
+    // },
+    // {
+    //     "id": "account_new_login",
+    //     "category": "security",
+    //     "titleTemplate": "New login to your account",
+    //     "bodyTemplate": "Your account was accessed from a new device or location: {{locationDescription}}.",
+    //     "roles": ["student", "visitor", "organizer", "admin"],
+    //     "badge": true,
+    //     "inApp": true,
+    //     "email": true
+    // }
   }
 
   // dummyEvents format
@@ -242,6 +489,7 @@ function App() {
   const dummyUniversities = useRef({});
   const dummyEvents = useRef({});
   const dummyBids = useRef({});
+  const dummyNotifications = useRef({});
 
   useEffect(() => {
     // loggedInUser 
@@ -272,10 +520,17 @@ function App() {
       emptyDummyBids && localStorage.setItem("dummyBids", JSON.stringify(initialDummyBids));
       emptyDummyBids && (dummyBids.current = initialDummyBids);
 
+    // dummyNotifications
+    const emptyDummyNotifications = localStorage.getItem("dummyNotifications") == "null" || !localStorage.getItem("dummyNotifications");
+    !emptyDummyNotifications && (dummyNotifications.current = JSON.parse(localStorage.getItem("dummyNotifications")));
+    emptyDummyNotifications && localStorage.setItem("dummyNotifications", JSON.stringify(initialDummyNotifications));
+    emptyDummyNotifications && (dummyNotifications.current = initialDummyNotifications);
+
     console.log("Dummy Users:", dummyUsers.current);
     console.log("Dummy Universities:", dummyUniversities.current);
     console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
     console.log("Dummy Bids:", dummyBids.current, localStorage.getItem("dummyBids"));
+    console.log("Dummy Notifications:", dummyNotifications.current, localStorage.getItem("dummyNotifications"));
     console.log("Logged in", localStorage.getItem("loggedInUser"));
 
   }, []);
@@ -374,10 +629,10 @@ function App() {
         <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
 
         <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
-
         {/* reema: Checkout / Registration Status page */}
         <Route path="/checkout" element={<Registration />} />
 
+        <Route path="/manage-users" element={<ManageUsers users={dummyUsers.current} user={loggedInUser}/>}/>
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
 
