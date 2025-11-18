@@ -47,3 +47,13 @@ export async function fetchTicketForEvent({ eventId, userId }) {
     // Return the most recent one or null
     return matching.length > 0 ? matching[matching.length - 1] : null;
 }
+
+export async function verifyTicket({ token }) {
+    try {
+        const res = await fetch(`http://localhost:4000/api/tickets/verify?token=${token}`);
+        return await res.json();
+    } catch (err) {
+        console.error("Verify error:", err);
+        return { valid: false, message: "Server error" };
+    }
+}
