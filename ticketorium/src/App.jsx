@@ -116,7 +116,7 @@ function App() {
     // more can be added by system admins only!
   }
 
-  // dummyEvents format
+    // dummyEvents format
     const initialDummyEvents = {
         1: {
             state: "joined",
@@ -124,7 +124,8 @@ function App() {
             title: "2025 Group Hiking",
             date: "9:30 AM Nov 21, 2025",
             organizer: "CS Department",
-            price: 0,
+            price: 19.99,
+            hasSeatingPlan: true,      //r: this event uses the seat map
         },
 
         2: {
@@ -134,6 +135,7 @@ function App() {
             date: "Nov 21, 2025",
             organizer: "CS Department",
             price: 19.99,
+            hasSeatingPlan: true,     // optional, default is false if omitted
         },
 
         3: {
@@ -171,8 +173,10 @@ function App() {
             date: "March 6, 2026",
             organizer: "Harvard",
             price: 0,
+            hasSeatingPlan: false,
         }
-    }
+    };
+
 
     // dummyBids format
     const initialDummyBids = {
