@@ -2,8 +2,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import EventActions from "../../components/event/EventActions.jsx";
 import { getUserCategory } from "../../components/event/getUserCategory.js";
-import { createTicket, fetchTicketForEvent } from "../../api/tickets.js"; // r: for QR codes and tickets
-import QRCode from "react-qr-code"; // r: for QR codes and tickets
+import {
+    createTicket,
+    fetchTicketForEvent,
+    verifyTicket,
+} from "../../api/tickets.js"; // tickets & verification
+import QRCode from "react-qr-code"; // for QR codes
 
 /* ----------------------------- Modal Component ----------------------------- */
 function Modal({ isOpen, onClose, children }) {
@@ -48,7 +52,9 @@ function InviteRow({ person, price }) {
                 </div>
                 <div>
                     <div className="font-semibold">{person.name}</div>
-                    <div className="text-xs text-slate-500">{person.subtitle}</div>
+                    <div className="text-xs text-slate-500">
+                        {person.subtitle}
+                    </div>
                 </div>
             </div>
             <button
@@ -119,37 +125,157 @@ function InviteList({ price }) {
 }
 
 /* ----------------------------- Verify Ticket ------------------------------ */
-function VerifyForm({ onClose }) {
+function VerifyForm({ eventId, onClose }) {
+    const [mode, setMode] = useState("code"); // "code" | "scan"
     const [code, setCode] = useState("");
+    const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    async function handleVerifyByCode() {
+        if (!code.trim()) {
+            alert("Please enter a ticket code.");
+            return;
+        }
+
+        setLoading(true);
+        const response = await verifyTicket({
+            code: code.trim(),
+            eventId,
+        });
+        setResult(response);
+        setLoading(false);
+    }
+
+    // Placeholder for QR scanning: once you integrate a scanner, call this
+    async function handleVerifyByToken(token) {
+        if (!token) return;
+        setLoading(true);
+        const response = await verifyTicket({
+            token,
+            eventId,
+        });
+        setResult(response);
+        setLoading(false);
+    }
 
     return (
         <div>
-            <input
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2"
-                placeholder="Enter Ticket Code"
-            />
-            <div className="flex justify-center mt-6 gap-3">
+            {/* Tabs: Code vs QR */}
+            <div className="flex mb-4 border-b border-slate-200">
                 <button
-                    onClick={() => {
-                        if (!code.trim()) {
-                            alert("Please enter a code.");
-                            return;
-                        }
-                        alert(`Ticket ${code} is VALID (demo).`);
-                    }}
-                    className="px-4 py-2 border rounded-md bg-yellow-400 hover:bg-yellow-300"
+                    type="button"
+                    onClick={() => setMode("code")}
+                    className={`flex-1 py-2 text-sm font-medium ${
+                        mode === "code"
+                            ? "border-b-2 border-[#4F6FFF] text-[#4F6FFF]"
+                            : "text-slate-500"
+                    }`}
                 >
-                    Verify
+                    Enter Ticket Code
                 </button>
                 <button
-                    onClick={onClose}
-                    className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"
+                    type="button"
+                    onClick={() => setMode("scan")}
+                    className={`flex-1 py-2 text-sm font-medium ${
+                        mode === "scan"
+                            ? "border-b-2 border-[#4F6FFF] text-[#4F6FFF]"
+                            : "text-slate-500"
+                    }`}
                 >
-                    Close
+                    Scan QR
                 </button>
             </div>
+
+            {mode === "code" && (
+                <>
+                    <label className="block text-sm text-slate-600 mb-1">
+                        Ticket Code
+                    </label>
+                    <input
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2"
+                        placeholder="Ex: TKT-KFUP-1234-ABCDEF"
+                    />
+
+                    <div className="flex justify-center mt-6 gap-3">
+                        <button
+                            onClick={handleVerifyByCode}
+                            disabled={loading}
+                            className="px-4 py-2 border rounded-md bg-yellow-400 hover:bg-yellow-300 disabled:opacity-60"
+                        >
+                            {loading ? "Verifying..." : "Verify"}
+                        </button>
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </>
+            )}
+
+            {mode === "scan" && (
+                <div className="mt-2 text-sm text-slate-600 space-y-3">
+                    <p className="text-xs text-slate-500">
+                        QR scanning camera integration can be added later
+                        using a library like <code>react-qr-reader</code>.
+                    </p>
+
+                    <textarea
+                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-xs"
+                        rows={3}
+                        placeholder='Paste QR payload (ex: "TICKET:abcd1234") and click outside to verify'
+                        onBlur={async (e) => {
+                            const raw = e.target.value.trim();
+                            if (!raw) return;
+                            await handleVerifyByToken(raw);
+                        }}
+                    />
+
+                    <div className="flex justify-center mt-4">
+                        <button
+                            onClick={onClose}
+                            className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Result panel */}
+            {result && (
+                <div
+                    className={`mt-6 rounded-md border px-4 py-3 text-sm ${
+                        result.valid
+                            ? "bg-emerald-50 border-emerald-400 text-emerald-700"
+                            : "bg-rose-50 border-rose-400 text-rose-700"
+                    }`}
+                >
+                    <div className="font-semibold mb-1">
+                        {result.valid ? "Ticket Verified" : "Ticket Invalid"}
+                    </div>
+                    <div>{result.message}</div>
+
+                    {result.ticket && (
+                        <div className="mt-2 text-xs text-slate-700 space-y-1">
+                            <div>
+                                Ticket Code:{" "}
+                                <span className="font-mono font-semibold">
+                                    {result.ticket.ticketCode}
+                                </span>
+                            </div>
+                            <div>Event ID: {result.ticket.eventId}</div>
+                            <div>Status: {result.ticket.status}</div>
+                            {result.ticket.seat && (
+                                <div>Seat: {result.ticket.seat}</div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }
@@ -313,7 +439,10 @@ export default function EventPage(props) {
             try {
                 const existing = await fetchTicketForEvent({ eventId, userId });
                 if (existing) {
-                    setTicket((prev) => prev || { ...existing, accessibilityNotes: "" });
+                    setTicket(
+                        (prev) =>
+                            prev || { ...existing, accessibilityNotes: "" }
+                    );
                     console.log("Loaded ticket from backend:", existing);
                 }
             } catch (err) {
@@ -509,12 +638,16 @@ export default function EventPage(props) {
                         <button
                             onClick={async () => {
                                 if (hasSeatingPlan && !selectedSeat) {
-                                    alert("Please choose a seat before joining.");
+                                    alert(
+                                        "Please choose a seat before joining."
+                                    );
                                     return;
                                 }
 
                                 if (!userId) {
-                                    alert("You must be logged in to join events.");
+                                    alert(
+                                        "You must be logged in to join events."
+                                    );
                                     return;
                                 }
 
@@ -523,7 +656,9 @@ export default function EventPage(props) {
                                     const createdTicket = await createTicket({
                                         eventId,
                                         userId,
-                                        seat: hasSeatingPlan ? selectedSeat : null,
+                                        seat: hasSeatingPlan
+                                            ? selectedSeat
+                                            : null,
                                         price,
                                     });
 
@@ -533,7 +668,10 @@ export default function EventPage(props) {
                                         accessibilityNotes,
                                     });
 
-                                    console.log("Ticket created (from backend):", createdTicket);
+                                    console.log(
+                                        "Ticket created (from backend):",
+                                        createdTicket
+                                    );
 
                                     // 3) Mark as joined in UI
                                     setViewState("joined");
@@ -545,14 +683,18 @@ export default function EventPage(props) {
                                             isSuccess: true,
                                             eventId,
                                             ticketId: createdTicket.id,
-                                            ticketCode: createdTicket.ticketCode,
+                                            ticketCode:
+                                            createdTicket.ticketCode,
                                             seat: createdTicket.seat,
                                             price: createdTicket.price,
                                             fromEventId: eventId, // used earlier for "Try Again" flow
                                         },
                                     });
                                 } catch (err) {
-                                    console.error("Error creating ticket:", err);
+                                    console.error(
+                                        "Error creating ticket:",
+                                        err
+                                    );
                                     // For now: mark as failure and go to failure UI
                                     navigate("/checkout", {
                                         state: {
@@ -774,7 +916,7 @@ export default function EventPage(props) {
                     <h3 className="text-xl font-semibold mb-4 text-center">
                         Verify Tickets
                     </h3>
-                    <VerifyForm onClose={closeModal} />
+                    <VerifyForm eventId={eventId} onClose={closeModal} />
                 </div>
             </Modal>
 

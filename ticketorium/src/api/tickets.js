@@ -48,12 +48,34 @@ export async function fetchTicketForEvent({ eventId, userId }) {
     return matching.length > 0 ? matching[matching.length - 1] : null;
 }
 
-export async function verifyTicket({ token }) {
+/**
+ * Verify ticket by code or QR token.
+ * Usage:
+ *   verifyTicket({ code, eventId })
+ *   verifyTicket({ token, eventId })
+ */
+export async function verifyTicket({ code, token, eventId }) {
+    const params = new URLSearchParams();
+
+    if (code) params.append("code", code);
+    if (token) params.append("token", token);
+    if (eventId) params.append("eventId", String(eventId));
+
     try {
-        const res = await fetch(`http://localhost:4000/api/tickets/verify?token=${token}`);
-        return await res.json();
+        const res = await fetch(`${BASE_URL}/api/tickets/verify?${params.toString()}`);
+
+        if (!res.ok) {
+            const text = await res.text();
+            throw new Error(`Failed to verify ticket: ${res.status} ${text}`);
+        }
+
+        return await res.json(); // { valid, message, reason, ticket? }
     } catch (err) {
         console.error("Verify error:", err);
-        return { valid: false, message: "Server error" };
+        return {
+            valid: false,
+            reason: "error",
+            message: "Server error. Please try again.",
+        };
     }
 }
