@@ -8,6 +8,8 @@ import {
     verifyTicket,
 } from "../../api/tickets.js"; // tickets & verification
 import QRCode from "react-qr-code"; // for QR codes
+import { Scanner } from "@yudiel/react-qr-scanner"; //for QR code scanner
+
 
 /* ----------------------------- Modal Component ----------------------------- */
 function Modal({ isOpen, onClose, children }) {
@@ -146,9 +148,14 @@ function VerifyForm({ eventId, onClose }) {
         setLoading(false);
     }
 
-    // Placeholder for QR scanning: once you integrate a scanner, call this
+    const [lastScanned, setLastScanned] = useState("");
+
     async function handleVerifyByToken(token) {
         if (!token) return;
+
+        if (token === lastScanned && result?.valid !== undefined) return;
+        setLastScanned(token);
+
         setLoading(true);
         const response = await verifyTicket({
             token,
@@ -157,6 +164,7 @@ function VerifyForm({ eventId, onClose }) {
         setResult(response);
         setLoading(false);
     }
+
 
     return (
         <div>
@@ -216,23 +224,54 @@ function VerifyForm({ eventId, onClose }) {
                 </>
             )}
 
+            {/*{mode === "scan" && (*/}
+            {/*    <div className="mt-2 text-sm text-slate-600 space-y-3">*/}
+            {/*        <p className="text-xs text-slate-500">*/}
+            {/*            QR scanning camera integration can be added later*/}
+            {/*            using a library like <code>react-qr-reader</code>.*/}
+            {/*        </p>*/}
+
+            {/*        <textarea*/}
+            {/*            className="w-full rounded-md border border-slate-300 px-3 py-2 text-xs"*/}
+            {/*            rows={3}*/}
+            {/*            placeholder='Paste QR payload (ex: "TICKET:abcd1234") and click outside to verify'*/}
+            {/*            onBlur={async (e) => {*/}
+            {/*                const raw = e.target.value.trim();*/}
+            {/*                if (!raw) return;*/}
+            {/*                await handleVerifyByToken(raw);*/}
+            {/*            }}*/}
+            {/*        />*/}
+
+            {/*        <div className="flex justify-center mt-4">*/}
+            {/*            <button*/}
+            {/*                onClick={onClose}*/}
+            {/*                className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"*/}
+            {/*            >*/}
+            {/*                Close*/}
+            {/*            </button>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*)}*/}
             {mode === "scan" && (
                 <div className="mt-2 text-sm text-slate-600 space-y-3">
                     <p className="text-xs text-slate-500">
-                        QR scanning camera integration can be added later
-                        using a library like <code>react-qr-reader</code>.
+                        Point the camera at the ticket&apos;s QR code. It will be
+                        verified automatically when scanned.
                     </p>
 
-                    <textarea
-                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-xs"
-                        rows={3}
-                        placeholder='Paste QR payload (ex: "TICKET:abcd1234") and click outside to verify'
-                        onBlur={async (e) => {
-                            const raw = e.target.value.trim();
-                            if (!raw) return;
-                            await handleVerifyByToken(raw);
-                        }}
-                    />
+                    <div className="w-full max-w-xs mx-auto overflow-hidden rounded-lg border border-slate-200">
+                        <Scanner
+                            constraints={{ facingMode: "environment" }}
+                            onDecode={async (result) => {
+                                if (!result) return;
+                                console.log("Scanned QR:", result);
+                                await handleVerifyByToken(result);
+                            }}
+                            onError={(error) => console.warn(error)}
+                            containerStyle={{ width: "100%" }}
+                            videoStyle={{ width: "100%" }}
+                        />
+                    </div>
 
                     <div className="flex justify-center mt-4">
                         <button
@@ -244,6 +283,7 @@ function VerifyForm({ eventId, onClose }) {
                     </div>
                 </div>
             )}
+
 
             {/* Result panel */}
             {result && (
