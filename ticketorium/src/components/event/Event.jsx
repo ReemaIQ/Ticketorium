@@ -94,7 +94,7 @@ export default function Event({
                 >
                     <EventActions type={type} category={category} state={state} eventId={id} />
 
-                    <div className="flex md:flex-row justify-between gap-25">
+                    <div className="flex-1 flex md:flex-row justify-between">
                         <div className="pl-2 flex align-center items-center">
                             {price === 0 && category === "attendee" && (
                                 <span className="font-[Gilroy-Medium] text-gray-700 text-[16px] self-center">
