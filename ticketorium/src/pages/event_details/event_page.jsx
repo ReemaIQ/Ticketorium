@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams, useNavigate , useLocation} from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import EventActions from "../../components/event/EventActions.jsx";
 import { getUserCategory } from "../../components/event/getUserCategory.js";
-
+import { createTicket, fetchTicketForEvent } from "../../api/tickets.js"; // r: for QR codes and tickets
+import QRCode from "react-qr-code"; // r: for QR codes and tickets
 
 /* ----------------------------- Modal Component ----------------------------- */
 function Modal({ isOpen, onClose, children }) {
@@ -241,7 +242,8 @@ export default function EventPage(props) {
     const { eventId } = useParams();
     const routerLocation = useLocation();
 
-
+    // Logged-in user id (or null if not logged in)
+    const userId = props?.user ?? null;
 
     // type: student / visitor / organizer / admin
     const type = useMemo(() => {
@@ -286,7 +288,6 @@ export default function EventPage(props) {
     const [accessibilityNotes, setAccessibilityNotes] = useState("");
     console.log("Ticket created:", ticket); //r: to remove the error
 
-
     // modals
     const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'edit' | 'verify' | 'delete' | 'none'
     const [showDeleteBanner, setShowDeleteBanner] = useState(false);
@@ -298,6 +299,25 @@ export default function EventPage(props) {
             setOpenModal("join");
         }
     }, [routerLocation.state]);
+
+    // Load existing ticket when page mounts / user changes
+    useEffect(() => {
+        if (!userId) return; // not logged in, nothing to load
+
+        async function loadTicket() {
+            try {
+                const existing = await fetchTicketForEvent({ eventId, userId });
+                if (existing) {
+                    setTicket((prev) => prev || { ...existing, accessibilityNotes: "" });
+                    console.log("Loaded ticket from backend:", existing);
+                }
+            } catch (err) {
+                console.error("Failed to load ticket:", err);
+            }
+        }
+
+        loadTicket();
+    }, [eventId, userId]);
 
     // actions coming from EventActions buttons
     function handleAction(label) {
@@ -311,8 +331,13 @@ export default function EventPage(props) {
 
             // ticket & invite
             case "Your Ticket":
-                alert("Open ticket page…");
+                if (!userId) {
+                    alert("You must be logged in to view your ticket.");
+                    return;
+                }
+                setOpenModal("ticket");
                 break;
+
             case "Send Invite":
             case "Offer Ticket":
             case "Accept":
@@ -477,41 +502,61 @@ export default function EventPage(props) {
                         </button>
 
                         <button
-                            onClick={() => {
+                            onClick={async () => {
                                 if (hasSeatingPlan && !selectedSeat) {
-                                    alert(
-                                        "Please choose a seat before joining."
-                                    );
+                                    alert("Please choose a seat before joining.");
                                     return;
                                 }
 
-                                const newTicket = {
-                                    eventId,
-                                    seat: hasSeatingPlan
-                                        ? selectedSeat
-                                        : null,
-                                    price,
-                                    accessibilityNotes,
-                                };
-                                setTicket(newTicket);
-                                console.log(
-                                    "Ticket created (demo):",
-                                    newTicket
-                                );
+                                if (!userId) {
+                                    alert("You must be logged in to join events.");
+                                    return;
+                                }
 
-                                setViewState("joined");
-                                closeModal();
-
-                                navigate("/checkout", {
-                                    state: {
-                                        isSuccess: true, // later this can come from real backend logic
+                                try {
+                                    // 1) Call backend to create ticket
+                                    const createdTicket = await createTicket({
                                         eventId,
-                                        seat: newTicket.seat,
-                                        price: newTicket.price,
-                                        fromEventId: eventId, // remember which event we came from
-                                    },
-                                });
+                                        userId,
+                                        seat: hasSeatingPlan ? selectedSeat : null,
+                                        price,
+                                    });
 
+                                    // 2) Store in local state
+                                    setTicket({
+                                        ...createdTicket,
+                                        accessibilityNotes,
+                                    });
+
+                                    console.log("Ticket created (from backend):", createdTicket);
+
+                                    // 3) Mark as joined in UI
+                                    setViewState("joined");
+                                    closeModal();
+
+                                    // 4) Go to checkout / registration status page
+                                    navigate("/checkout", {
+                                        state: {
+                                            isSuccess: true,
+                                            eventId,
+                                            ticketId: createdTicket.id,
+                                            ticketCode: createdTicket.ticketCode,
+                                            seat: createdTicket.seat,
+                                            price: createdTicket.price,
+                                            fromEventId: eventId, // used earlier for "Try Again" flow
+                                        },
+                                    });
+                                } catch (err) {
+                                    console.error("Error creating ticket:", err);
+                                    // For now: mark as failure and go to failure UI
+                                    navigate("/checkout", {
+                                        state: {
+                                            isSuccess: false,
+                                            eventId,
+                                            fromEventId: eventId,
+                                        },
+                                    });
+                                }
                             }}
                             className="px-4 py-2 text-sm font-medium border border-slate-300 bg-yellow-400 text-slate-900 rounded-md shadow-sm hover:bg-yellow-300"
                         >
@@ -574,6 +619,82 @@ export default function EventPage(props) {
                         )}
                     </p>
                     <InviteList price={price} />
+                </div>
+            </Modal>
+
+            {/* TICKET MODAL */}
+            <Modal isOpen={openModal === "ticket"} onClose={closeModal}>
+                <div className="text-center">
+                    <h3 className="text-xl font-semibold mb-2">Your Ticket</h3>
+
+                    {!ticket ? (
+                        <p className="text-sm text-slate-500">
+                            No ticket found. Please join the event first.
+                        </p>
+                    ) : (
+                        <>
+                            {/* Ticket code */}
+                            <p className="text-sm text-slate-600 mb-4">
+                                Ticket Code:{" "}
+                                <span className="font-mono font-semibold">
+                                    {ticket.ticketCode}
+                                </span>
+                            </p>
+
+                            {/* QR Code */}
+                            <div className="flex justify-center mb-4">
+                                <div className="bg-white p-3 rounded-lg border inline-block">
+                                    <QRCode
+                                        value={
+                                            ticket.qrData ||
+                                            ticket.qrToken ||
+                                            ticket.ticketCode
+                                        }
+                                        size={160}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Event & seat info */}
+                            <div className="text-sm text-slate-600 space-y-1 mb-4">
+                                <div>
+                                    Event:{" "}
+                                    <span className="font-semibold">
+                                        {title}
+                                    </span>
+                                </div>
+                                <div>
+                                    Seat:{" "}
+                                    <span className="font-semibold">
+                                        {ticket.seat || "General Admission"}
+                                    </span>
+                                </div>
+                                <div>
+                                    Price:{" "}
+                                    <span className="font-semibold">
+                                        {ticket.price > 0
+                                            ? `SAR ${ticket.price.toFixed(2)}`
+                                            : "Free"}
+                                    </span>
+                                </div>
+                                {ticket.accessibilityNotes && (
+                                    <div className="mt-2 text-xs text-slate-500">
+                                        Accessibility notes:{" "}
+                                        <span className="italic">
+                                            {ticket.accessibilityNotes}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+
+                            <button
+                                onClick={closeModal}
+                                className="px-4 py-2 text-sm font-medium border border-slate-300 bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                            >
+                                Close
+                            </button>
+                        </>
+                    )}
                 </div>
             </Modal>
 
