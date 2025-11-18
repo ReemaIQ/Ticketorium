@@ -16,13 +16,16 @@ function RegistrationStatus() {
           - Otherwise we fall back to a dummy variable below.
     --------------------------------------------------------- */
 
-    const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
+    // const DEMO_DEFAULT_SUCCESS = false; // change to false to test failure UI
+    //
+    // const isSuccessFromState = location.state?.isSuccess;
+    // const isSuccess =
+    //     typeof isSuccessFromState === "boolean"
+    //         ? isSuccessFromState
+    //         : DEMO_DEFAULT_SUCCESS;
 
-    const isSuccessFromState = location.state?.isSuccess;
-    const isSuccess =
-        typeof isSuccessFromState === "boolean"
-            ? isSuccessFromState
-            : DEMO_DEFAULT_SUCCESS;
+    let isSuccess = true;
+
 
     /* ---------------------------------------------------------
        2) success could depend on:
@@ -40,17 +43,40 @@ function RegistrationStatus() {
 
     const badgeImage = isSuccess ? successImg : failureImg;
 
+    // function handlePrimaryClick() {
+    //     if (isSuccess) {
+    //         // View Event Details : for now go back OR use a dummy event
+    //         // Later pass `eventId` in location.state and use it here.
+    //         // Example: navigate(`/event/${location.state.eventId}`);
+    //         navigate(-1);
+    //     } else {
+    //         // Try Again : simply go back to previous screen
+    //         navigate("/register"); // Failure? go to registration form again
+    //     }
+    // }
+
     function handlePrimaryClick() {
+        const fromEventId = location.state?.fromEventId;
+
         if (isSuccess) {
-            // View Event Details : for now go back OR use a dummy event
-            // Later pass `eventId` in location.state and use it here.
-            // Example: navigate(`/event/${location.state.eventId}`);
-            navigate(-1);
+            // SUCCESS: go back to event (or just back if no id)
+            if (fromEventId) {
+                navigate(`/event/${fromEventId}`);
+            } else {
+                navigate(-1);
+            }
         } else {
-            // Try Again : simply go back to previous screen
-            navigate(-1);
+            // FAILURE: go back to event & reopen JOIN modal
+            if (fromEventId) {
+                navigate(`/event/${fromEventId}`, {
+                    state: { openJoinModal: true }, // tell EventPage to open the Join modal
+                });
+            } else {
+                navigate(-1);
+            }
         }
     }
+
 
     function handleSecondaryClick() {
         if (isSuccess) {
