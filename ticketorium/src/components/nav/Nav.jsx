@@ -8,26 +8,33 @@ import NotificationModal from "../modals/NotificationModal.jsx";
 //import LogOutModal???? from;
 
 const navItems = {
-    empty: [],
-    student: [
+    "": [],
+    "student": [
         { label: "All Events", href: "/events" },
         { label: "My Events", href: "/my-events" },
         { label: "Bidding", href: "/bidding" },
         { label: "My Disputes", href: "/disputes" },
     ],
-    visitor: [
+    "visitor": [
         { label: "All Events", href: "/events" },
         { label: "My Events", href: "/my-events" },
         { label: "My Disputes", href: "/disputes" },
     ],
-    organizer: [
+    "organizer": [
         { label: "My Events", href: "/my-events" },
         { label: "Create Event", href: "/create-event" },
         { label: "Analytics", href: "/analytics" },
         { label: "My Disputes", href: "/disputes" },
     ],
-    admin: [
+    "admin": [
         { label: "Manage Events", href: "/events" },
+        { label: "Manage Users", href: "/manage-users" },
+        { label: "Manage Disputes", href: "/manage-disputes" },
+        { label: "System Policies", href: "/system-policies" },
+    ],
+    "system-admin": [
+        { label: "Manage Events", href: "/events" },
+        { label: "Manage Universities", href: "/universities" },
         { label: "Manage Users", href: "/manage-users" },
         { label: "Manage Disputes", href: "/manage-disputes" },
         { label: "System Policies", href: "/system-policies" },
