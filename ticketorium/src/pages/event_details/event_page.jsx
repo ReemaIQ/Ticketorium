@@ -126,45 +126,48 @@ function InviteList({ price }) {
     );
 }
 
+
 /* ----------------------------- Verify Ticket ------------------------------ */
 function VerifyForm({ eventId, onClose }) {
     const [mode, setMode] = useState("code"); // "code" | "scan"
     const [code, setCode] = useState("");
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [lastScanned, setLastScanned] = useState("");
+
+    async function runVerify(payload) {
+        setLoading(true);
+        try {
+            const response = await verifyTicket(payload);
+            setResult(response);
+        } catch (err) {
+            console.error("Verify error:", err);
+            setResult({
+                valid: false,
+                message: "Server error while verifying ticket.",
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
 
     async function handleVerifyByCode() {
         if (!code.trim()) {
             alert("Please enter a ticket code.");
             return;
         }
-
-        setLoading(true);
-        const response = await verifyTicket({
-            code: code.trim(),
-            eventId,
-        });
-        setResult(response);
-        setLoading(false);
+        await runVerify({ code: code.trim(), eventId });
     }
-
-    const [lastScanned, setLastScanned] = useState("");
 
     async function handleVerifyByToken(token) {
         if (!token) return;
 
+        // avoid spamming same token
         if (token === lastScanned && result?.valid !== undefined) return;
         setLastScanned(token);
 
-        setLoading(true);
-        const response = await verifyTicket({
-            token,
-            eventId,
-        });
-        setResult(response);
-        setLoading(false);
+        await runVerify({ token, eventId });
     }
-
 
     return (
         <div>
@@ -194,6 +197,7 @@ function VerifyForm({ eventId, onClose }) {
                 </button>
             </div>
 
+            {/* -------- CODE MODE -------- */}
             {mode === "code" && (
                 <>
                     <label className="block text-sm text-slate-600 mb-1">
@@ -224,52 +228,35 @@ function VerifyForm({ eventId, onClose }) {
                 </>
             )}
 
-            {/*{mode === "scan" && (*/}
-            {/*    <div className="mt-2 text-sm text-slate-600 space-y-3">*/}
-            {/*        <p className="text-xs text-slate-500">*/}
-            {/*            QR scanning camera integration can be added later*/}
-            {/*            using a library like <code>react-qr-reader</code>.*/}
-            {/*        </p>*/}
-
-            {/*        <textarea*/}
-            {/*            className="w-full rounded-md border border-slate-300 px-3 py-2 text-xs"*/}
-            {/*            rows={3}*/}
-            {/*            placeholder='Paste QR payload (ex: "TICKET:abcd1234") and click outside to verify'*/}
-            {/*            onBlur={async (e) => {*/}
-            {/*                const raw = e.target.value.trim();*/}
-            {/*                if (!raw) return;*/}
-            {/*                await handleVerifyByToken(raw);*/}
-            {/*            }}*/}
-            {/*        />*/}
-
-            {/*        <div className="flex justify-center mt-4">*/}
-            {/*            <button*/}
-            {/*                onClick={onClose}*/}
-            {/*                className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"*/}
-            {/*            >*/}
-            {/*                Close*/}
-            {/*            </button>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*)}*/}
+            {/* -------- SCAN MODE -------- */}
             {mode === "scan" && (
                 <div className="mt-2 text-sm text-slate-600 space-y-3">
                     <p className="text-xs text-slate-500">
-                        Point the camera at the ticket&apos;s QR code. It will be
-                        verified automatically when scanned.
+                        Point the camera at the ticket&apos;s QR code. The
+                        ticket will be verified automatically when scanned.
                     </p>
 
                     <div className="w-full max-w-xs mx-auto overflow-hidden rounded-lg border border-slate-200">
                         <Scanner
                             constraints={{ facingMode: "environment" }}
-                            onDecode={async (result) => {
-                                if (!result) return;
-                                console.log("Scanned QR:", result);
-                                await handleVerifyByToken(result);
+                            onScan={(detectedCodes) => {
+                                if (
+                                    !detectedCodes ||
+                                    detectedCodes.length === 0
+                                )
+                                    return;
+
+                                const token = detectedCodes[0].rawValue;
+                                console.log("Scanned QR:", token);
+                                handleVerifyByToken(token);
                             }}
-                            onError={(error) => console.warn(error)}
-                            containerStyle={{ width: "100%" }}
-                            videoStyle={{ width: "100%" }}
+                            onError={(error) => {
+                                console.log("Scanner error:", error);
+                            }}
+                            styles={{
+                                container: { width: "100%" },
+                                video: { width: "100%" },
+                            }}
                         />
                     </div>
 
@@ -283,7 +270,6 @@ function VerifyForm({ eventId, onClose }) {
                     </div>
                 </div>
             )}
-
 
             {/* Result panel */}
             {result && (
@@ -316,9 +302,16 @@ function VerifyForm({ eventId, onClose }) {
                     )}
                 </div>
             )}
+
+            {loading && (
+                <p className="mt-2 text-xs text-slate-400">
+                    Checking ticket...
+                </p>
+            )}
         </div>
     );
 }
+
 
 /* ----------------------------- Seating Plan ----------------------------- */
 function SeatingPlan({ selectedSeat, onSelect, occupiedSeats = [] }) {
