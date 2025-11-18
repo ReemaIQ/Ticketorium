@@ -1,9 +1,9 @@
-import EventList from "../../components/event-list/EventList.jsx";
+import EventList from "../components/event-list/EventList.jsx";
 import React from "react";
 import {Hash, Search} from "lucide-react";
 
 const contentOptions = {
-    // student, visitor, organizer, admin, system-admin
+    // student, visitor, analytics, admin, system-admin
     "student": {
         "user-events": {
             "header": "Your Upcoming Events",

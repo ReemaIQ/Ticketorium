@@ -3,7 +3,7 @@ import EventList from "../components/event-list/EventList.jsx";
 
 import {Search, Hash, Plus} from "lucide-react";
 
-function AllEvents(props) {
+function MyEvents(props) {
    const getEventsTitle = (type) => {
         const t = type?.toLowerCase();
 
@@ -67,7 +67,7 @@ function AllEvents(props) {
                             {/* Right: Create Event Button */}
                             {/* Only visible to organizers */}
                             {/*onClick={opens create event page}*/}
-                            {   (props.user.type === "organizer") && (
+                            {   (props.users[props.user]['type'] === "organizer") && (
                                 <button
                                     className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
                                 text-[#14113B]  rounded-[6px] font-[Gilroy-Medium]"
@@ -88,4 +88,4 @@ function AllEvents(props) {
     )
 }
 
-export default AllEvents
+export default MyEvents
