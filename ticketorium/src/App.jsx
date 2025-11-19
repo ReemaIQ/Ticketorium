@@ -378,14 +378,14 @@ function App() {
             messages: [
                 {
                     id: "m1",
-                    from: "user", // 'user' | 'support'
+                    from: "yo-shayma", // 'user' | 'admin' | 'system-admin'
                     type: "text",
                     text: "I have this issue with my ticket not arriving.",
                     createdAt: "2025-11-21T09:15:00Z",
                 },
                 {
                     id: "m2",
-                    from: "support",
+                    from: "so-cool",
                     type: "text",
                     text: "I’ll fix it right away!",
                     createdAt: "2025-11-21T09:17:00Z",
@@ -406,7 +406,22 @@ function App() {
             createdAt: "2025-11-21T08:40:00Z",
             lastActivityAt: "2025-11-21T08:50:00Z",
             status: "open",
-            messages: [],
+            messages: [
+                {
+                    id: "m1",
+                    from: "chicken-nugget", // 'user' | 'admin' | 'system-admin'
+                    type: "text",
+                    text: "I have this issue with my ticket not arriving.",
+                    createdAt: "2025-11-21T09:15:00Z",
+                },
+                {
+                    id: "m2",
+                    from: "so-cool",
+                    type: "text",
+                    text: "I’ll fix it right away!",
+                    createdAt: "2025-11-21T09:17:00Z",
+                }
+            ],
         }
         // add more disputes...
     };
@@ -689,7 +704,7 @@ function App() {
         <Route path="/checkout" element={<Registration />} />
 
         <Route path="/manage-users" element={<ManageUsers users={dummyUsers.current} user={loggedInUser}/>}/>
-        <Route path="/disputes" element={<Disputes disputes={dummyDisputes.current} user={loggedInUser}/>}/>
+        <Route path="/disputes" element={<Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
 
