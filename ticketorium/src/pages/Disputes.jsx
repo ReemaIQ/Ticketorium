@@ -6,7 +6,7 @@ import DisputeChat from "../components/dispute/DisputeChat.jsx";
 
 /* ---------------- New Dispute Form ---------------- */
 
-function NewDisputeForm({ onSubmit, onCancel }) {
+function NewDisputeForm({ onSubmit, onCancel, username }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
 
@@ -16,7 +16,7 @@ function NewDisputeForm({ onSubmit, onCancel }) {
             alert("Please fill in both fields.");
             return;
         }
-        onSubmit({ title, body });
+        onSubmit({ title, body }, username);
         setTitle("");
         setBody("");
     }
@@ -69,6 +69,7 @@ export default function MyDisputesPage(props) {
     const [disputes, setDisputes] = useState(props.disputes || {});
     const [selectedId, setSelectedId] = useState(null);
     const [mode, setMode] = useState("empty"); // 'empty' | 'new' | 'chat'
+    //mode = props.mode || "empty";
 
     // Turn object into array for lists (and make sure each item has an id)
     const disputesArray = useMemo(
@@ -80,11 +81,12 @@ export default function MyDisputesPage(props) {
         [disputes]
     );
 
-    // Get the currently selected dispute from the object
+    // Get the currently selected dispute from the ARRAY, which always has id
     const selectedDispute = useMemo(
-        () => (selectedId ? disputes[selectedId] || null : null),
-        [disputes, selectedId]
+        () => disputesArray.find((d) => d.id === selectedId) || null,
+        [disputesArray, selectedId]
     );
+
 
     // When selecting from list → go to chat mode
     function handleSelectDispute(id) {
@@ -92,7 +94,7 @@ export default function MyDisputesPage(props) {
         setMode("chat");
     }
 
-    function handleCreateDispute({ title, body }) {
+    function handleCreateDispute({ title, body }, username) {
         const nowIso = new Date().toISOString();
         const newId = `d_${Date.now()}`;
 
@@ -106,7 +108,7 @@ export default function MyDisputesPage(props) {
             messages: [
                 {
                     id: `m_${Date.now()}`,
-                    from: "user",
+                    from: username,
                     type: "text",
                     text: body,
                     createdAt: nowIso,
@@ -124,7 +126,7 @@ export default function MyDisputesPage(props) {
         setMode("chat");
     }
 
-    function handleSendMessage(disputeId, text) {
+    function handleSendMessage(disputeId, text, username) {
         const nowIso = new Date().toISOString();
 
         setDisputes((prev) => {
@@ -140,7 +142,7 @@ export default function MyDisputesPage(props) {
                         ...(existing.messages || []),
                         {
                             id: `m_${Date.now()}`,
-                            from: "user",
+                            from: username,
                             type: "text",
                             text,
                             createdAt: nowIso,
@@ -152,13 +154,14 @@ export default function MyDisputesPage(props) {
     }
 
     return (
-        <div className="min-h-screen bg-white text-[#1A1A1A]">
-            <header className="flex items-center justify-between px-4 md:px-8 pt-6 pb-4">
+        <div className="flex flex-col h-screen bg-white text-[#1A1A1A]">
+            <header className="flex items-center justify-between px-4 md:px-8 py-4">
                 <h1 className="font-[Gilroy-Black] text-[40px] md:text-[48px] leading-none py-10">
                     My Disputes
                 </h1>
 
-                <button
+                {(props.users[props.user]['type'] !== "admin" && props.users[props.user]['type'] !== "system-admin") && (
+                    <button
                     type="button"
                     onClick={() => {
                         setMode("new");
@@ -169,10 +172,16 @@ export default function MyDisputesPage(props) {
                     <Plus className="w-4 h-4" />
                     New Dispute
                 </button>
+                    )}
             </header>
 
-            <section className="flex flex-col md:flex-row border-t border-transparent px-4 md:px-8 pb-6 gap-4 md:gap-6">
-                {/* Left: Dispute list */}
+            <section
+                className="
+                        flex flex-col md:flex-row
+                        px-4 md:px-8 pb-6 gap-4 md:gap-6
+                        h-[700px] md:h-[700px] overflow-y-hidden
+                    "
+            >                {/* Left: Dispute list */}
                 <DisputeList
                     disputes={disputesArray}
                     selectedId={selectedId}
@@ -180,7 +189,7 @@ export default function MyDisputesPage(props) {
                 />
 
                 {/* Right: main area (empty / new / chat) */}
-                <div className="flex-col items-center gap-2 w-full h-full justify-end">
+                <div className="flex-1 flex flex-col md:h-[600px] h-[450px] mt-3 md:mt-0">
 
                         {mode === "empty" && (
                             <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
@@ -190,6 +199,7 @@ export default function MyDisputesPage(props) {
 
                         {mode === "new" && (
                             <NewDisputeForm
+                                username={props.user}
                                 onSubmit={handleCreateDispute}
                                 onCancel={() =>
                                     selectedDispute ? setMode("chat") : setMode("empty")
@@ -202,6 +212,7 @@ export default function MyDisputesPage(props) {
                             <DisputeChat
                                 dispute={selectedDispute}
                                 onSendMessage={handleSendMessage}
+                                username={props.user}
                             />
                         )}
                 </div>

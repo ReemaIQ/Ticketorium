@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="polishing event responsiveness">
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="quick attempt at adding notification modal">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute-list/DisputeList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute-list/DisputeList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +37,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;68f66e2f-0677-471f-b9ae-311e0eedb4d5&quot;
+    &quot;accountId&quot;: &quot;2d0816b8-e9a4-431c-8602-3612ebddd751&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -60,7 +64,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -75,17 +79,17 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\components\dispute" />
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\components" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\components\modals" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\pages" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\assets\images" />
-      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\pages\Home" />
-      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\public\fonts" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
+        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-WS-252.23892.411" />
       </set>
     </attachedChunks>
   </component>
@@ -111,7 +115,10 @@
       <workItem from="1763218355241" duration="16200000" />
       <workItem from="1763399528658" duration="9912000" />
       <workItem from="1763415510631" duration="2229000" />
-      <workItem from="1763475231204" duration="6727000" />
+      <workItem from="1763475231204" duration="24427000" />
+      <workItem from="1763535245072" duration="4681000" />
+      <workItem from="1763542604558" duration="2093000" />
+      <workItem from="1763561015485" duration="8865000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
@@ -313,19 +320,101 @@
       <option name="project" value="LOCAL" />
       <updated>1763481930574</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="polishing event responsiveness">
+      <option name="closed" value="true" />
+      <created>1763482083746</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1763482083746</updated>
+    </task>
+    <task id="LOCAL-00027" summary="fixed routes after reorganizing">
+      <option name="closed" value="true" />
+      <created>1763484034433</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1763484034433</updated>
+    </task>
+    <task id="LOCAL-00028" summary="notification modal skeleton">
+      <option name="closed" value="true" />
+      <created>1763484048606</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1763484048606</updated>
+    </task>
+    <task id="LOCAL-00029" summary="made manage users page">
+      <option name="closed" value="true" />
+      <created>1763508823792</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1763508823792</updated>
+    </task>
+    <task id="LOCAL-00030" summary="updated system-admin links">
+      <option name="closed" value="true" />
+      <created>1763508892736</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1763508892736</updated>
+    </task>
+    <task id="LOCAL-00031" summary="changed filter to sort">
+      <option name="closed" value="true" />
+      <created>1763508906305</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1763508906305</updated>
+    </task>
+    <task id="LOCAL-00032" summary="made manage users page">
+      <option name="closed" value="true" />
+      <created>1763508923426</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1763508923426</updated>
+    </task>
+    <task id="LOCAL-00033" summary="made section title font smaller">
+      <option name="closed" value="true" />
+      <created>1763508960772</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1763508960772</updated>
+    </task>
+    <task id="LOCAL-00034" summary="worked on disputes page">
+      <option name="closed" value="true" />
+      <created>1763513169453</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1763513169453</updated>
+    </task>
+    <task id="LOCAL-00035" summary="worked on disputes page">
+      <option name="closed" value="true" />
+      <created>1763513189134</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1763513189134</updated>
+    </task>
+    <task id="LOCAL-00036" summary="quick attempt at adding notification modal">
+      <option name="closed" value="true" />
+      <created>1763513203931</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1763513203931</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implementing tailwind" />
-    <MESSAGE value="implementing navigation component" />
-    <MESSAGE value="Update the way fonts are called for unification" />
-    <MESSAGE value="created event list component" />
-    <MESSAGE value="created admin home page" />
-    <MESSAGE value="added font" />
     <MESSAGE value="edited navigation bar" />
     <MESSAGE value="uploaded imaged for dummy events" />
     <MESSAGE value="created event component" />
@@ -343,6 +432,14 @@
     <MESSAGE value="improved nav responsiveness" />
     <MESSAGE value="re-organizing files" />
     <MESSAGE value="polishing event responsiveness" />
-    <option name="LAST_COMMIT_MESSAGE" value="polishing event responsiveness" />
+    <MESSAGE value="fixed routes after reorganizing" />
+    <MESSAGE value="notification modal skeleton" />
+    <MESSAGE value="updated system-admin links" />
+    <MESSAGE value="changed filter to sort" />
+    <MESSAGE value="made manage users page" />
+    <MESSAGE value="made section title font smaller" />
+    <MESSAGE value="worked on disputes page" />
+    <MESSAGE value="quick attempt at adding notification modal" />
+    <option name="LAST_COMMIT_MESSAGE" value="quick attempt at adding notification modal" />
   </component>
 </project>
