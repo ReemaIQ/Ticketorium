@@ -20,15 +20,15 @@ export default function Event({ type, state, img, title, date, organizer, price,
                 <div>
                         { state === "invited" ? (
                             <div className="flex flex-row justify-between">
-                                <p className="font-[Gilroy-Bold] text-[#4F6FFF] text-[18px] my-1">
+                                <p className="font-[Gilroy-Bold] text-[var(--secondary-accent-color)] text-[18px] my-1">
                                     You've been invited to this event by {inviter}!
                                 </p>
-                                <p className="font-[Gilroy-Bold] text-[#4F6FFF] mb-1">
+                                <p className="font-[Gilroy-Bold] text-[var(--secondary-accent-color)] mb-1">
                                     in 3 days!
                                 </p>
                             </div>
                         ) : (
-                            <p className="font-[Gilroy-Bold] text-right text-[#4F6FFF] mb-1">
+                            <p className="font-[Gilroy-Bold] text-right text-[var(--secondary-accent-color)] mb-1">
                                 in 3 days!
                             </p>
                         )}
@@ -54,12 +54,12 @@ export default function Event({ type, state, img, title, date, organizer, price,
                     )}
 
                     {price !== 0 && category === "attendee" && (
-                        <span className="font-[Gilroy-Bold] text-[#4F6FFF] text-[18px] self-center">
+                        <span className="font-[Gilroy-Bold] text-[var(--secondary-accent-color)] text-[18px] self-center">
                             $ {price}
                         </span>
                     )}
 
-                    <div className="font-[Gilroy-Medium] text-sm text-[#3E3E3E] text-right whitespace-nowrap ml-auto">
+                    <div className="font-[Gilroy-Medium] text-sm text-[var(--primary-color)] text-right whitespace-nowrap ml-auto">
                         {date} <br /> by {organizer}
                     </div>
 

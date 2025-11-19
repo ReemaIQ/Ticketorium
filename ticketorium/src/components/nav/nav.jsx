@@ -66,10 +66,10 @@ export default function Nav({userName, type, setLoggedInUser}) {
     }, [open]);
 
     function handleLogout() {
+        navigate("/log-in");
         localStorage.removeItem("loggedInUser");
         setLoggedInUser(null);
         setOpen(false);
-        navigate("/log-in");
     }
 
     function handleChangeUni() {

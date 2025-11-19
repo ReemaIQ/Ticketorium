@@ -1,5 +1,5 @@
 import EventList from "../../components/event-list/EventList.jsx";
-import {useState} from "react";
+import {useState, useRef, useEffect} from "react";
 // Font Awesome Setup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -41,7 +41,7 @@ const contentOptions = {
             "header": "Your Upcoming Events",
             "jump-to": "Upcoming Events"
         },
-        "invites-sent": {
+        "invites-received": {
             "header": "Invites Received",
             "jump-to": "Invites"
         },
@@ -90,7 +90,40 @@ const contentOptions = {
     // "visitor": ["Your Upcoming Events", "Invites Received", "Events of Subscriptions", "Subscriptions", "Event Organizers"]
 }
 
+
 function UserHome(props) {
+    // upcoming events
+    const [filteredUpcomingEvents, setFilteredUpcomingEvents] = useState([]);
+    const upcomingEventsOriginalState = useRef({});
+    // invites received
+    const [filteredInvitesReceived, setFilteredInvitesReceived] = useState([]);
+    const invitesReceivedOriginalState = useRef({});
+    // invites sent
+    const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
+    const invitesSentOriginalState = useRef({});
+
+
+    function getSearchBtn(key) {
+        switch (key) {
+            case "user-events":
+                return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", upcomingEventsOriginalState.current, setFilteredUpcomingEvents, "event", searchValue, { "list-type": "my-events", "university": props.uni})}} expandable={true}/>
+            case "invites-received":
+                return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", invitesReceivedOriginalState.current, setFilteredInvitesReceived, "event", searchValue, { "list-type": "invites-received", "university": props.uni})}} expandable={true}/>
+            case "invites-sent":
+                return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", invitesSentOriginalState.current, setFilteredInvitesSent, "event", searchValue, { "list-type": "invites-sent", "university": props.uni})}} expandable={true}/>
+            default:
+                return null;
+        }
+    }
+
+    useEffect(() => {
+            props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, upcomingEventsOriginalState, "event", "", { "list-type": "my-events", "university": props.uni})
+            setFilteredUpcomingEvents(Object.keys(upcomingEventsOriginalState.current)); // ik its stupid, but it forces a re-render
+            props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, invitesReceivedOriginalState, "event", "", { "list-type": "invites-received", "university": props.uni})
+            setFilteredInvitesReceived(Object.keys(invitesReceivedOriginalState.current)); // ik its stupid, but it forces a re-render
+            props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, invitesSentOriginalState, "event", "", { "list-type": "invites-sent", "university": props.uni})
+            setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current)); // ik its stupid, but it forces a re-render
+        }, []);
     return (
         <>
         <div className=" m-0 py-10 text-3xl flex flex-col xl:flex-row bg-[var(--secondary-color)] w-full relative xl:justify-between xl:items-center xl:content-center">
@@ -129,14 +162,15 @@ function UserHome(props) {
                                 className="text-white"
                                 />
                             </button>
-                            <SearchBtn searchFor={key} expandable={true}/>
+                            {getSearchBtn(key)}
                         </div>
                     </div>
                     
                 </div>
 
                 <div className="flex w-full max-w-6xl">
-                    {key === "notifications" ?
+                    {
+                    key === "notifications" ?
                         (
                             <h1 className="font-[Gilroy-Medium] text-[20px]"> notifications </h1>
                         ) :
@@ -152,16 +186,28 @@ function UserHome(props) {
                         (
                             <h1 className="font-[Gilroy-Medium] text-[20px]"> universities </h1>
                         ):
-
+                    (key === "user-events" ?
                         (
-                        <EventList events={props.events} userType={props.user.type}/>
-                        ))))
+                        <EventList events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events"/>
+
+                        )
+                    : 
+                    (key === "invites-received" ?
+                        <EventList events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received"/>
+                    : 
+                    (key === "invites-sent" ?
+                        <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
+                    :
+                    "")
+                    ))
+                )))
                     }
                 </div>
                 </>
             )}
 
         </div>
+        <button className="border-7 rounded-full py-3 px-15 m-10 self-center border-purple-200 cursor-pointer">Magic Button</button> {/**/}
         </>
     )
 }
