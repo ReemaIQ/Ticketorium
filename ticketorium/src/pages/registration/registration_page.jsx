@@ -14,14 +14,16 @@ function RegistrationStatus() {
             we use that.
           - Otherwise we fall back to a demo default.
     --------------------------------------------------------- */
+    //
+    // const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
+    //
+    // const isSuccessFromState = location.state?.isSuccess;
+    // const isSuccess =
+    //     typeof isSuccessFromState === "boolean"
+    //         ? isSuccessFromState
+    //         : DEMO_DEFAULT_SUCCESS;
 
-    const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
-
-    const isSuccessFromState = location.state?.isSuccess;
-    const isSuccess =
-        typeof isSuccessFromState === "boolean"
-            ? isSuccessFromState
-            : DEMO_DEFAULT_SUCCESS;
+    let isSuccess = true;
 
     // event data from navigation state
     const eventId = location.state?.eventId || null;
