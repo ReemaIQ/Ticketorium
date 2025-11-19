@@ -7,6 +7,7 @@ import DummyUserHome from './pages/DummyUserHome.jsx'
 import UserHome from './pages/user_home/UserHome.jsx'
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
+import Checkout from './pages/payment/Checkout.jsx'
 import UniversitySelection from './pages/UniversitySelection.jsx'
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
@@ -23,7 +24,7 @@ function App() {
       "phone": "01023456780",
       "password": "Shayma!1111",
       "type": "visitor",
-      "university": "harvard", // does not belong to any university. but can choose which university's events to explore
+      "university": "Harvard", // does not belong to any university. but can choose which university's events to explore
       "gender": "female",
       "date-of-birth": "2004-05-01",
     },
@@ -35,7 +36,7 @@ function App() {
       "phone": "01023456781",
       "password": "Cool!1111",
       "type": "admin",
-      "university": "kfupm", // cannot belong to any other university
+      "university": "KFUPM", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "1995-01-01",
     },
@@ -59,7 +60,7 @@ function App() {
       "phone": "01023456783",
       "password": "Chicken!1111",
       "type": "organizer",
-      "university": "kfupm", // cannot belong to any other university
+      "university": "KFUPM", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "1997-01-01",
     },
@@ -71,7 +72,7 @@ function App() {
       "phone": "01023456784",
       "password": "Boring!1111",
       "type": "student",
-      "university": "kfupm", // cannot belong to any other university
+      "university": "KFUPM", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "2004-10-01",
     }
@@ -80,7 +81,7 @@ function App() {
   // dummyUniversities format
   // id is uni name abbreviated, e.g. kfupm, harvard, saud, etc. unique ids ofc
   const initialDummyUniversities = {
-  "kfupm": {
+  "KFUPM": {
     "name": "King Fahd University of Petroleum and Minerals",
     "logo": "kfupm.png",
     "theme-colors": {
@@ -93,7 +94,7 @@ function App() {
       "footer-color": "#002E1A"
     }
   },
-  "harvard": {
+  "Harvard": {
     "name": "Harvard University",
     "logo": "harvard.png",
     "theme-colors": {
@@ -106,7 +107,7 @@ function App() {
       "footer-color": "#3B0A1E"
     }
   },
-  "saud": {
+  "Saud": {
     "name": "King Saud University",
     "logo": "saud.png",
     "theme-colors": {
@@ -119,7 +120,7 @@ function App() {
       "footer-color": "#001F3B"
     }
   },
-  "manchester": {
+  "Manchester": {
     "name": "University of Manchester",
     "logo": "manchester.png",
     "theme-colors": {
@@ -132,7 +133,7 @@ function App() {
       "footer-color": "#3D0D5C"
     }
   },
-  "oxford": {
+  "Oxford": {
     "name": "University of Oxford",
     "logo": "oxford.png",
     "theme-colors": {
@@ -145,7 +146,7 @@ function App() {
       "footer-color": "#000D1A"
     }
   },
-  "cambridge": {
+  "Cambridge": {
     "name": "University of Cambridge",
     "logo": "cambridge.png",
     "theme-colors": {
@@ -165,7 +166,7 @@ function App() {
   // dummyEvents format
     const initialDummyEvents = {
         1: {
-            state: "joined",
+            university: "Harvard",
             img: "group-hiking.png",
             title: "2025 Group Hiking",
             date: "9:30 AM Nov 21, 2025",
@@ -174,7 +175,7 @@ function App() {
         },
 
         2: {
-            state: "not-joined",
+            university: "Manchester",
             img: "game-dev.png",
             title: "2025 GameDev Competition",
             date: "Nov 21, 2025",
@@ -183,7 +184,7 @@ function App() {
         },
 
         3: {
-            state: "waitlist",
+            university: "Harvard",
             img: "spelling-bee.png",
             title: "2025 Spelling Bee",
             date: "Nov 21, 2025",
@@ -192,7 +193,7 @@ function App() {
         },
 
         4: {
-            state: "waitlisted",
+            university: "KFUPM",
             img: "game-dev.png",
             title: "2025 Coding Competition",
             date: "Nov 21, 2025",
@@ -201,32 +202,69 @@ function App() {
         },
 
         5: {
-            state: "invited",
+            university: "KFUPM",
             img: "game-dev.png",
             title: "2025 Coding Competition",
             date: "Nov 21, 2025",
             organizer: "CS Department",
             price: 0,
-            inviter: "Student"
         },
 
         6: {
-            state: "graduation",
+            university: "Harvard",
             img: "graduation.png",
             title: "2025 Graduation Ceremony",
             date: "March 6, 2026",
             organizer: "Harvard",
             price: 0,
+        },
+        
+        7: {
+            university: "Manchester",
+            img: "game-dev.png",
+            title: "Shayma's Insanely Awesome Event",
+            date: "December 1, 2025",
+            organizer: "Shayma",
+            price: 0,
         }
+    }
+
+    const initialDummyEventsJoined = {
+        1: {
+            eventId: 1, // just to be clear, event id here
+            user: "yo-shayma", // user id
+            state: "joined", // state: joined, waitlisted, invited
+        },
+        2: {
+            eventId: 2,
+            user: "yo-shayma",
+            state: "joined",
+        },
+
+        3: {
+            eventId: 3,
+            user: "yo-shayma",
+            state: "joined",
+        },
+        6: {
+            eventId: 4,
+            user: "boring-user",
+            state: "invited",
+            invitee: "yo-shayma"
+        },
     }
 
   const [loggedInUser, setLoggedInUser] = useState(null); //username only
   const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
   const [part1Data, setPart1Data] = useState({});
-  const [choseUni, setChoseUni] = useState(false);
+  const [selectedUni, setSelectedUni] = useState(null);
   const dummyUsers = useRef({});
   const dummyUniversities = useRef({});
   const dummyEvents = useRef({});
+  const dummyEventsJoined = useRef({});
+  const [isLoading, setIsLoading] = useState(true);
+
+
 
   useEffect(() => {
     // loggedInUser 
@@ -251,28 +289,23 @@ function App() {
     emptyDummyEvents && localStorage.setItem("dummyEvents", JSON.stringify(initialDummyEvents));
     emptyDummyEvents && (dummyEvents.current = initialDummyEvents);
 
-    console.log("Dummy Users:", dummyUsers.current);
-    console.log("Dummy Universities:", dummyUniversities.current);
-    console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
-    console.log("Logged in", localStorage.getItem("loggedInUser"));
+    // dummyEventsJoined
+    const emptyDummyEventsJoined = localStorage.getItem("dummyEventsJoined") == "null" || !localStorage.getItem("dummyEventsJoined");
+    !emptyDummyEventsJoined && (dummyEventsJoined.current = JSON.parse(localStorage.getItem("dummyEventsJoined")));
+    emptyDummyEventsJoined && localStorage.setItem("dummyEventsJoined", JSON.stringify(initialDummyEventsJoined));
+    emptyDummyEventsJoined && (dummyEventsJoined.current = initialDummyEventsJoined);
+
+    // console logs of all dummy data, jus for testing
+    // console.log("Dummy Users:", dummyUsers.current);
+    // console.log("Dummy Universities:", dummyUniversities.current);
+    // console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
+    // console.log("Dummy Events Joined:", dummyEventsJoined.current, localStorage.getItem("dummyEventsJoined"));
+    // console.log("Logged in", localStorage.getItem("loggedInUser"));
+    setSelectedUni(null);
 
     // testingForceUser("yo-shayma");
-
+    setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    const rootStyle = document.querySelector(':root').style;
-
-    // Take theme of logged in user's uni, or stick to default
-    rootStyle.setProperty('--secondary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-color"] : "#1F4C76");
-    rootStyle.setProperty('--primary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["primary-color"] : "#1a1a1a");
-    rootStyle.setProperty('--accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["accent-color"] : "#FFDF4F");
-    rootStyle.setProperty('--secondary-accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-accent-color"] : "#0800FF");
-    rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
-    rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
-    rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
-    console.log("Current user university:", (loggedInUser && dummyUsers.current[loggedInUser]["university"])? dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]: "No user logged in");
-  }, [choseUni]);
 
     useEffect(() => {
     const rootStyle = document.querySelector(':root').style;
@@ -285,8 +318,15 @@ function App() {
     rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
     rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
     rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
-    console.log("Current user university:", (loggedInUser && dummyUsers.current[loggedInUser]["university"])? dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]: "No user logged in");
-  });
+    // console.log("Current user university:", (loggedInUser && dummyUsers.current[loggedInUser]["university"])? dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]: "No user logged in");
+
+    if (loggedInUser && dummyUsers.current[loggedInUser] && 
+        dummyUsers.current[loggedInUser].type !== "visitor" && 
+        dummyUsers.current[loggedInUser].type !== "system-admin") {
+      setSelectedUni(true);
+    }
+  }, [loggedInUser]);
+
 
   const checkIfEmailExists = (email) => {
     for (const username in dummyUsers.current) {
@@ -357,6 +397,55 @@ function App() {
     }
   }
 
+  // this is a very general function, to avoid repeating code in many places, it is anything and everything related to filtering content
+  // this func sets ids only, in a list, unless typeOfFilter is initial, then it is an object
+  const filterContent = (typeOfFilter, content, setter, searchFor, searchValue="", filterDetails) => { // we will utalize the fact that js makes unpassed arguments undefined
+    // content is the content we will filter
+    // searchFor is either university or event or event manager or student
+    // typeOfFilter is either search or filterBtn or initial filtering(my-events or all-events)
+    // search value is only if typeOfFilter is search
+    // filterDetails is only if typeOfFilter is filterBtn or initial filtering(my or all or home)
+    if (searchFor === "university") { // there is only one use of this, searching only, no filter, no initial state either
+            const filtered = Object.keys(content).filter(uniId => content[uniId]["name"].toLowerCase().includes(searchValue.toLowerCase()) || uniId.toLowerCase().includes(searchValue.toLowerCase()));
+            setter(filtered);
+    }
+    // if events, then search by event name, description, organizer
+    if (typeOfFilter === "search" && searchFor === "event") {
+        // console.log("HYYY", content)
+        // just get the events and joinedevents in content (only for my-events)
+          const filtered = Object.keys(content).filter(eventId => content[eventId]["title"].toLowerCase().includes(searchValue.toLowerCase()))
+        setter(filtered);
+    }
+    else if (typeOfFilter === "initial" && searchFor === "event") {
+      // console.log("Hi, I am here", filterDetails)
+      let results = {};
+      console.log("lol", filterDetails)
+      console.log("burger", loggedInUser)
+      console.log("nugget", filterDetails["list-type"] === "invites-received")
+      console.log("taco", content)
+      const ids = filterDetails["list-type"] === "all-events"? 
+      Object.keys(content).filter(eventId => content[eventId]["university"] === filterDetails["university"])
+      : (filterDetails["list-type"] === "my-events"?
+      Object.keys(content["eventsJoined"]).filter(eventJoinedId => content["events"][content["eventsJoined"][eventJoinedId]["eventId"]]["university"] === filterDetails["university"] &&
+              content["eventsJoined"][eventJoinedId]["user"] === loggedInUser && content["eventsJoined"][eventJoinedId]["state"] !== "invited")
+      : (filterDetails["list-type"] === "invites-received"? Object.keys(content["eventsJoined"]).filter(eventJoinedId => content["events"][content["eventsJoined"][eventJoinedId]["eventId"]]["university"] === filterDetails["university"] &&
+        content["eventsJoined"][eventJoinedId]["state"] === "invited" &&
+        content["eventsJoined"][eventJoinedId]["invitee"] === loggedInUser) // includes uni, this user, invites received
+      :(filterDetails["list-type"] === "invites-sent"? Object.keys(content["eventsJoined"]).filter(eventJoinedId => content["events"][content["eventsJoined"][eventJoinedId]["eventId"]]["university"] === filterDetails["university"] &&
+        content["eventsJoined"][eventJoinedId]["state"] === "invited" &&
+        content["eventsJoined"][eventJoinedId]["user"] === loggedInUser)
+        :[])));
+      console.log("IDs:", ids)
+      for (let id of ids) {
+        results[id] = filterDetails["list-type"] === "all-events"? content[id]: content["events"][content["eventsJoined"][id]["eventId"]];
+      }
+      // console.log("results:", results)
+      setter.current = results
+      // console.log("setter", setter)
+      // console.log("content", filterDetails, content)
+    }
+  }
+
   // testing methods
 
   const testingForceUser = (username) => {
@@ -367,17 +456,20 @@ function App() {
   return (
     <>
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} setLoggedInUser={setLoggedInUser}/>
+      {isLoading && <h1 className='m-15 text-5xl self-center absolute h-[100vh]'>Loading...</h1>}
+      {!isLoading &&
       <Routes>
-        <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (dummyUsers.current[loggedInUser]["university"]? <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
-        <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection universities={dummyUniversities.current} assignUni={assignUni} setChoseUni={setChoseUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
+        <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (selectedUni? <UserHome filterContent={filterContent} uni={dummyUsers.current[loggedInUser].university} user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} /> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
+        <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection filterContent={filterContent} universities={dummyUniversities.current} assignUni={assignUni} setSelectedUni={setSelectedUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
         <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
         <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
         <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
-
-        <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>} />
-        <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
-        <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
+        <Route path="/my-events" element={loggedInUser?<MyEvents filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
+        <Route path="/events" element={loggedInUser?<AllEvents filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
+        <Route path="/checkout" element={<Checkout/>}/>
+        <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--primary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
       </Routes>
+      }
       <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
     </>
   )

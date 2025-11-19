@@ -5,7 +5,7 @@ import {useNavigate, NavLink} from "react-router-dom"
 // fetch all supported uni logos
 const uniLogos = import.meta.glob("../assets/images/home-main/unis/*.{png,jpg,jpeg,svg}", {eager: true}); // get all images in the unis folder 
 const uniImages = Object.values(uniLogos).map((img) => img.default); // arr of logo img paths
-console.log("Uni Images:", uniImages[0]);
+// console.log("Uni Images:", uniImages[0]);
 
 function DummyUserHome() {
     const navigate = useNavigate()

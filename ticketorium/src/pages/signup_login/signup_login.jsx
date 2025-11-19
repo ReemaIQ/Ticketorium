@@ -89,7 +89,7 @@ function SignupLogin(props) {
 
     // depending on option, redirect to different pages
     if (option == "sign-up") {
-         console.log(email);
+        //  console.log(email);
         // email field
         if (!email) {
             errorsFound["email"] = "Please enter your email"
@@ -126,7 +126,7 @@ function SignupLogin(props) {
         }
 
         if (Object.keys(errorsFound).length > 0) {
-            console.log("Errors found:", errorsFound)
+            // console.log("Errors found:", errorsFound)
             setErrors(errorsFound)
             return
         }
@@ -143,7 +143,7 @@ function SignupLogin(props) {
         const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
         // email or username field
         if (!emailOrUsername) {
-            console.log("bruh", emailOrUsername)
+            // console.log("bruh", emailOrUsername)
             errorsFound["email-or-username"] = "Please enter your email or username"
         }
         // first check format
@@ -174,7 +174,7 @@ function SignupLogin(props) {
 
 
         if (Object.keys(errorsFound).length > 0) {
-            console.log("Errors found:", errorsFound)
+            // console.log("Errors found:", errorsFound)
             setErrors(errorsFound)
             return
         }
@@ -190,7 +190,7 @@ function SignupLogin(props) {
     }
     
     else if (option == "sign-up-part-2") {
-        console.log(email)
+        // console.log(email)
         // username field
         if (!username) {
             errorsFound["username"] = "Please enter your username"
@@ -229,7 +229,7 @@ function SignupLogin(props) {
         } 
 
         if (Object.keys(errorsFound).length > 0) {
-            console.log("Errors found:", errorsFound)
+            // console.log("Errors found:", errorsFound)
             setErrors(errorsFound)
             return
         }

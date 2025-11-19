@@ -20,12 +20,9 @@ function SearchBtn (props) { //  expandable, rounded, content
     }, [query]);
 
     const handleSearch = (value) => {
-        if (props.searchFor === "university") {
-            const filtered = Object.keys(props.content).filter(uniId => props.content[uniId]["name"].toLowerCase().includes(value.toLowerCase()) || uniId.toLowerCase().includes(value.toLowerCase()));
-            props.setFiltered(filtered);
-            console.log(value)
-            console.log(filtered)
-        }
+        // if universities, then search by uni name or id
+        props.filterFunc(value.length? value : "");
+
     }
 
     return (
