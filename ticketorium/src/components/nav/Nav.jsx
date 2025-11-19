@@ -55,7 +55,7 @@ function InitialAvatar({ name, setOpen, open }) {
     );
 }
 
-export default function Nav({userName, type, setLoggedInUser}) {
+export default function Nav({userName, type, setLoggedInUser, notifications}) {
     const [logoutOpen, setLogoutOpen] = useState(false); // avatar log out drop down
     const [notificationOpen, setNotificationOpen] = useState(false); //notifications modal
     const [mobileOpen, setMobileOpen] = useState(false); // hamburger menu
@@ -128,23 +128,24 @@ export default function Nav({userName, type, setLoggedInUser}) {
                         </>
                     )}
 
-                    <div className="relative cursor-pointer">
-                        <div onClick={() => setNotificationOpen(!notificationOpen)} aria-label="User menu">
-                            <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" setOpen={setNotificationOpen} open={notificationOpen} />
-                        </div>
-
-                        <div className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-fit px-5 py-3 z-10 transform transition-all duration-200 ease-out origin-top ${
-                            notificationOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
-                             role="menu">
-
-                            <NotificationModal role="menuitem"/>
-                            <p role="menuitem">notif</p>
-
-                        </div>
-                    </div>
-
                     {type && type !== "empty" && (
                         <>
+                            <div className="relative cursor-pointer">
+                                <div onClick={() => setNotificationOpen(!notificationOpen)} aria-label="User menu">
+                                    <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                                </div>
+
+                                <div className={`absolute right-0 top-12 bg-white text-black rounded-[6px] border-white shadow-xl z-20 transform transition-all duration-200 ease-out origin-top ${
+                                    notificationOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+                                     role="menu">
+
+                                    {/* Render the Modal Component */}
+                                    <NotificationModal notifications={notifications} type={type}/>
+
+                                </div>
+                            </div>
+
+
                             {/* Avatar + Logout dropdown */}
                             <div className="relative">
                                 <InitialAvatar name={userName} setOpen={setLogoutOpen} open={logoutOpen} />

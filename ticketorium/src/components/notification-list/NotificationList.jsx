@@ -1,33 +1,30 @@
-// export default function NotificationList({notifications = {}, maxItems = 5, onItemClick,}) {
-//     const visible = notifications.slice(0, maxItems);
-//
-//     if (!visible.length) {
-//         return (
-//             <div className="px-4 py-2 text-[13px] text-gray-500">
-//                 No notifications yet.
-//             </div>
-//         );
-//     }
-//
-//     return (
-//         <div className="max-h-56 overflow-y-auto">
-//             {visible.map((notif) => (
-//                 <button
-//                     key={notif.id}
-//                     type="button"
-//                     onClick={() => onItemClick && onItemClick(notif)}
-//                     className={`w-full text-left px-4 py-2 text-[13px] hover:bg-gray-100 flex flex-col gap-0.5 ${
-//                         notif.read
-//                             ? "text-[#555]"
-//                             : "text-[#14113B] font-[Gilroy-Medium]"
-//                     }`}
-//                 >
-//                     <span className="truncate">{notif.title}</span>
-//                     {notif.time && (
-//                         <span className="text-[11px] text-gray-500">{notif.time}</span>
-//                     )}
-//                 </button>
-//             ))}
-//         </div>
-//     );
-// }
+import Notification from "../notifications/Notification.jsx";
+import {Clock } from "lucide-react"
+
+function NotificationList({ notifications, onMarkAsRead }) {
+
+    if (notifications.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#F5F5F5] flex items-center justify-center mb-3">
+                    <Clock className="w-6 h-6 text-[#A0A0A0]" />
+                </div>
+                <p className="text-[14px] text-[#A0A0A0] font-[Gilroy-Medium]">No notifications yet.</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="max-h-[400px] w-full overflow-y-auto custom-scrollbar">
+            {notifications.map((notif) => (
+                <Notification
+                    key={notif.id}
+                    notification={notif}
+                    onRead={onMarkAsRead}
+                />
+            ))}
+        </div>
+    );
+}
+
+export default NotificationList;

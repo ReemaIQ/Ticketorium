@@ -120,120 +120,133 @@ function App() {
   // dummyNotifications format
   const initialDummyNotifications = {
           "event_join_success": {
-            "category": "event",
-            "titleTemplate": "You joined {{eventName}}",
-            "bodyTemplate": "You have successfully joined {{eventName}}.",
-            "roles": ["student", "visitor"],
-            "badge": true,
-            "inApp": true,
-            "email": false
+                "id":"event_join_success",
+                "category": "event",
+                "titleTemplate": "You joined {{eventName}}",
+                "bodyTemplate": "You have successfully joined {{eventName}}.",
+                "roles": ["student", "visitor"],
+                "badge": true,
+                "inApp": true,
+                "email": false
           },
           "event_join_failed_full_or_closed": {
-            "category": "event",
-            "titleTemplate": "Could not join {{eventName}}",
-            "bodyTemplate": "You could not join {{eventName}} because it is full or closed.",
-            "roles": ["student", "visitor"],
-            "badge": true,
-            "inApp": true,
-            "email": false
+                "id":"event_join_failed_full_or_closed",
+                "category": "event",
+                "titleTemplate": "Could not join {{eventName}}",
+                "bodyTemplate": "You could not join {{eventName}} because it is full or closed.",
+                "roles": ["student", "visitor"],
+                "badge": true,
+                "inApp": true,
+                "email": false
           },
           "event_waitlist_added": {
-            "category": "event",
-            "titleTemplate": "Waitlisted for {{eventName}}",
-            "bodyTemplate": "You have been added to the waitlist for {{eventName}}.",
-            "roles": ["student", "visitor"],
-            "badge": true,
-            "inApp": true,
-            "email": false
+                "id":"event_waitlist_added",
+                "category": "event",
+                "titleTemplate": "Waitlisted for {{eventName}}",
+                "bodyTemplate": "You have been added to the waitlist for {{eventName}}.",
+                "roles": ["student", "visitor"],
+                "badge": true,
+                "inApp": true,
+                "email": false
           },
           "event_time_changed": {
-            "category": "event",
-            "titleTemplate": "{{eventName}} time changed",
-            "bodyTemplate": "The time for {{eventName}} has changed to {{newDateTime}}.",
-            "roles": ["student", "visitor", "organizer"],
-            "badge": true,
-            "inApp": true,
-            "email": false
+                "id":"event_time_changed",
+                "category": "event",
+                "titleTemplate": "{{eventName}} time changed",
+                "bodyTemplate": "The time for {{eventName}} has changed to {{newDateTime}}.",
+                "roles": ["student", "visitor", "organizer"],
+                "badge": true,
+                "inApp": true,
+                "email": false
           },
           "event_location_changed": {
-            "category": "event",
-            "titleTemplate": "{{eventName}} location changed",
-            "bodyTemplate": "The location for {{eventName}} has changed to {{newLocation}}.",
-            "roles": ["student", "visitor", "organizer"],
-            "badge": true,
-            "inApp": true,
-            "email": false
-        },
+                "id":"event_location_changed",
+                "category": "event",
+                "titleTemplate": "{{eventName}} location changed",
+                "bodyTemplate": "The location for {{eventName}} has changed to {{newLocation}}.",
+                "roles": ["student", "visitor", "organizer"],
+                "badge": true,
+                "inApp": true,
+                "email": false
+          },
           "event_canceled": {
-            "category": "event",
-            "titleTemplate": "{{eventName}} was cancelled",
-            "bodyTemplate": "{{eventName}} has been cancelled.",
-            "roles": ["student", "visitor", "organizer"],
-            "badge": true,
-            "inApp": true,
-            "email": true
-        },
+                "id":"event_canceled",
+                "category": "event",
+                "titleTemplate": "{{eventName}} was cancelled",
+                "bodyTemplate": "{{eventName}} has been cancelled.",
+                "roles": ["student", "visitor", "organizer"],
+                "badge": true,
+                "inApp": true,
+                "email": true
+          },
           "event_reminder_day_before": {
-            "category": "event",
-            "titleTemplate": "{{eventName}} is tomorrow",
-            "bodyTemplate": "{{eventName}} starts tomorrow at {{startTime}}.",
-            "roles": ["student", "visitor"],
-            "badge": true,
-            "inApp": true,
-            "email": false
-        },
+                "id":"event_reminder_day_before",
+                "category": "event",
+                "titleTemplate": "{{eventName}} is tomorrow",
+                "bodyTemplate": "{{eventName}} starts tomorrow at {{startTime}}.",
+                "roles": ["student", "visitor"],
+                "badge": true,
+                "inApp": true,
+                "email": false
+          },
           "event_reminder_hours_before": {
-            "category": "event",
-            "titleTemplate": "{{eventName}} starts soon",
-            "bodyTemplate": "{{eventName}} starts in {{timeUntilStart}}.",
-            "roles": ["student", "visitor"],
-            "badge": true,
-            "inApp": true,
-            "email": false
-        },
+                "id":"event_reminder_hours_before",
+                "category": "event",
+                "titleTemplate": "{{eventName}} starts soon",
+                "bodyTemplate": "{{eventName}} starts in {{timeUntilStart}}.",
+                "roles": ["student", "visitor"],
+                "badge": true,
+                "inApp": true,
+                "email": false
+          },
           "event_invited": {
-            "category": "event",
-            "titleTemplate": "You were invited to {{eventName}}",
-            "bodyTemplate": "{{inviterName}} invited you to {{eventName}}.",
-            "roles": ["student", "visitor"],
-            "badge": true,
-            "inApp": true,
-            "email": false
-        },
+                "id":"event_invited",
+                "category": "event",
+                "titleTemplate": "You were invited to {{eventName}}",
+                "bodyTemplate": "{{inviterName}} invited you to {{eventName}}.",
+                "roles": ["student", "visitor"],
+                "badge": true,
+                "inApp": true,
+                "email": false
+          },
 
     /* BIDDING (STUDENT / ADMIN / ORGANIZER AS BIDDER) */
 
           "bidding_bid_placed":{
-            "category": "bidding",
-            "titleTemplate": "Bid placed on {{listingTitle}} ticket",
-            "bodyTemplate": "Your bid of {{amount}} was placed on {{listingTitle}} ticket.",
-            "roles": ["student"],
-            "badge": true,
-            "inApp": true,
-            "email": false
+                "id":"bidding_bid_placed",
+                "category": "bidding",
+                "titleTemplate": "Bid placed on {{listingTitle}} ticket",
+                "bodyTemplate": "Your bid of {{amount}} was placed on {{listingTitle}} ticket.",
+                "roles": ["student"],
+                "badge": true,
+                "inApp": true,
+                "email": false
         },
           "bidding_won":{
-            "category": "bidding",
-            "titleTemplate": "You won the bidding for {{listingTitle}} ticket",
-            "bodyTemplate": "You won the bidding for {{listingTitle}} ticket. Complete your purchase.",
-            "roles": ["student"],
-            "badge": true,
-            "inApp": true,
-            "email": true
+                "id":"bidding_won",
+                "category": "bidding",
+                "titleTemplate": "You won the bidding for {{listingTitle}} ticket",
+                "bodyTemplate": "You won the bidding for {{listingTitle}} ticket. Complete your purchase.",
+                "roles": ["student"],
+                "badge": true,
+                "inApp": true,
+                "email": true
         },
           "bidding_ends_soon": {
-            "category": "bidding",
-            "titleTemplate": "Bidding ends soon for {{listingTitle}} ticket",
-            "bodyTemplate": "Bidding for {{listingTitle}} ticket ends in {{timeUntilEnd}}.",
-            "roles": ["student", "organizer", "admin"],
-            "badge": true,
-            "inApp": true,
-            "email": false
+                "id":"bidding_ends_soon",
+                "category": "bidding",
+                "titleTemplate": "Bidding ends soon for {{listingTitle}} ticket",
+                "bodyTemplate": "Bidding for {{listingTitle}} ticket ends in {{timeUntilEnd}}.",
+                "roles": ["student"],
+                "badge": true,
+                "inApp": true,
+                "email": false
         },
 
     /* LISTINGS (STUDENT AS SELLER, OPTIONALLY OTHERS) */
 
-          "listing_received_bid": {
+        "listing_received_bid": {
+            "id":"listing_received_bid",
             "category": "listing",
             "titleTemplate": "New bid on {{listingTitle}} ticket",
             "bodyTemplate": "Your listing {{listingTitle}} ticket received a new bid.",
@@ -242,7 +255,9 @@ function App() {
             "inApp": true,
             "email": false
         },
-          "listing_expired": {
+
+        "listing_expired": {
+            "id":"listing_expired",
             "category": "listing",
             "titleTemplate": "Listing expired: {{listingTitle}}",
             "bodyTemplate": "Your listing {{listingTitle}} has expired.",
@@ -251,83 +266,92 @@ function App() {
             "inApp": true,
             "email": false
         },
-          "listing_sold": {
-            "category": "listing",
-            "titleTemplate": "Your ticket was sold",
-            "bodyTemplate": "Your ticket {{listingTitle}} was sold for {{amount}}.",
-            "roles": ["student"],
-            "badge": true,
-            "inApp": true,
-            "email": true
+
+        "listing_sold": {
+                "id":"listing_sold",
+                "category": "listing",
+                "titleTemplate": "Your ticket was sold",
+                "bodyTemplate": "Your ticket {{listingTitle}} was sold for {{amount}}.",
+                "roles": ["student"],
+                "badge": true,
+                "inApp": true,
+                "email": true
         },
 
     /* DISPUTES (STUDENT / VISITOR / ORGANIZER / ADMIN AS COMPLAINANT) */
 
         "dispute_created": {
-        "category": "dispute",
-        "titleTemplate": "Dispute {{disputeTitle}} submitted",
-        "bodyTemplate": "Your dispute regarding {{eventName}} has been submitted.",
-        "roles": ["student", "visitor", "organizer"],
-        "badge": true,
-        "inApp": true,
-        "email": false
+            "id":"dispute_created",
+            "category": "dispute",
+            "titleTemplate": "Dispute {{disputeTitle}} submitted",
+            "bodyTemplate": "Your dispute regarding {{eventName}} has been submitted.",
+            "roles": ["student", "visitor", "organizer"],
+            "badge": true,
+            "inApp": true,
+            "email": false
     },
         "dispute_created-admin": {
-          "category": "dispute",
-          "titleTemplate": "New dispute titled {{disputeTitle}} was created",
-          "bodyTemplate": "A dispute regarding {{eventName}} has been created.",
-          "roles": ["admin"],
-          "badge": true,
-          "inApp": true,
-          "email": false
+            "id":"dispute_created-admin",
+            "category": "dispute",
+            "titleTemplate": "New dispute titled {{disputeTitle}} was created",
+            "bodyTemplate": "A dispute regarding {{eventName}} has been created.",
+            "roles": ["admin", "system-admin"],
+            "badge": true,
+            "inApp": true,
+            "email": false
       },
         "dispute_new_message": {
-        "category": "dispute",
-        "titleTemplate": "New reply in the dispute: {{disputeTitle}}",
-        "bodyTemplate": "There is a new message on your dispute for {{eventName}}.",
-        "roles": ["student", "visitor", "organizer", "admin"],
-        "badge": true,
-        "inApp": true,
-        "email": false
+            "id":"dispute_new_message",
+            "category": "dispute",
+            "titleTemplate": "New reply in the dispute: {{disputeTitle}}",
+            "bodyTemplate": "There is a new message on your dispute for {{eventName}}.",
+            "roles": ["student", "visitor", "organizer", "admin", "system-admin"],
+            "badge": true,
+            "inApp": true,
+            "email": false
     },
 
     /* ORGANIZER-SPECIFIC EVENT REMINDERS */
 
         "organizer_event_reminder_day_before": {
-        "category": "organizer_event",
-        "titleTemplate": "Your event {{eventName}} is tomorrow",
-        "bodyTemplate": "Your event {{eventName}} is scheduled for tomorrow at {{startTime}}.",
-        "roles": ["organizer"],
-        "badge": false,
-        "inApp": true,
-        "email": false
+            "id":"organizer_event_reminder_day_before",
+            "category": "organizer_event",
+            "titleTemplate": "Your event {{eventName}} is tomorrow",
+            "bodyTemplate": "Your event {{eventName}} is scheduled for tomorrow at {{startTime}}.",
+            "roles": ["organizer"],
+            "badge": false,
+            "inApp": true,
+            "email": false
     },
         "organizer_event_reminder_hours_before": {
-        "category": "organizer_event",
-        "titleTemplate": "Your event {{eventName}} starts soon",
-        "bodyTemplate": "Your event {{eventName}} starts in {{timeUntilStart}}.",
-        "roles": ["organizer"],
-        "badge": false,
-        "inApp": true,
-        "email": false
+            "id":"organizer_event_reminder_hours_before",
+            "category": "organizer_event",
+            "titleTemplate": "Your event {{eventName}} starts soon",
+            "bodyTemplate": "Your event {{eventName}} starts in {{timeUntilStart}}.",
+            "roles": ["organizer"],
+            "badge": false,
+            "inApp": true,
+            "email": false
     },
         "organizer_event_ended":{
-        "category": "organizer_event",
-        "titleTemplate": "{{eventName}} has ended",
-        "bodyTemplate": "Your event {{eventName}} has ended. Review attendance or feedback.",
-        "roles": ["organizer"],
-        "badge": false,
-        "inApp": true,
-        "email": false
+            "id":"organizer_event_ended",
+            "category": "organizer_event",
+            "titleTemplate": "{{eventName}} has ended",
+            "bodyTemplate": "Your event {{eventName}} has ended. Review attendance or feedback.",
+            "roles": ["organizer"],
+            "badge": false,
+            "inApp": true,
+            "email": false
     },
         "organizer_role_granted": {
-        "category": "account",
-        "titleTemplate": "Organizer role granted",
-        "bodyTemplate": "You have been granted organizer privileges.",
-        "roles": ["organizer"],
-        "badge": true,
-        "inApp": true,
-        "email": false
+            "id":"organizer_role_granted",
+            "category": "account",
+            "titleTemplate": "Organizer role granted",
+            "bodyTemplate": "You have been granted organizer privileges.",
+            "roles": ["organizer"],
+            "badge": true,
+            "inApp": true,
+            "email": false
     },
 
     // /* ACCOUNT & SECURITY (ALL ROLES) */
@@ -591,6 +615,7 @@ function App() {
     emptyDummyNotifications && localStorage.setItem("dummyNotifications", JSON.stringify(initialDummyNotifications));
     emptyDummyNotifications && (dummyNotifications.current = initialDummyNotifications);
 
+    // dummyDisputes
     const emptyDummyDisputes = localStorage.getItem("dummyDisputes") == "null" || !localStorage.getItem("dummyDisputes");
     !emptyDummyDisputes && (dummyDisputes.current = JSON.parse(localStorage.getItem("dummyDisputes")));
     emptyDummyDisputes && localStorage.setItem("dummyDisputes", JSON.stringify(dummyDisputes));
@@ -671,7 +696,7 @@ function App() {
 
   return (
     <>
-      <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} user={loggedInUser} setLoggedInUser={setLoggedInUser}/>
+      <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} />
       <Routes>
 
           <Route path="/home"
@@ -681,7 +706,7 @@ function App() {
                   ) : dummyUsers.current[loggedInUser]["type"] === "organizer" ? (
                       <OrganizerHomePage /> //reema: organizer home page
                   ) : (
-                      <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>
+                      <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current} notifications={dummyNotifications.current} />
                   )
               }
           />
