@@ -29,14 +29,14 @@ const navItems = {
     "admin": [
         { label: "Manage Events", href: "/events" },
         { label: "Manage Users", href: "/manage-users" },
-        { label: "Manage Disputes", href: "/manage-disputes" },
+        { label: "Manage Disputes", href: "/disputes" },
         { label: "System Policies", href: "/system-policies" },
     ],
     "system-admin": [
         { label: "Manage Events", href: "/events" },
         { label: "Manage Universities", href: "/universities" },
         { label: "Manage Users", href: "/manage-users" },
-        { label: "Manage Disputes", href: "/manage-disputes" },
+        { label: "Manage Disputes", href: "/disputes" },
         { label: "System Policies", href: "/system-policies" },
     ],
 };
