@@ -368,12 +368,12 @@ function App() {
   // dummyDisputes format
   const initialDummyDisputes = {
         1: {
-            id: "d1",
             title: "Ticket not received",
             subtitle: "Issue with email delivery for my ticket.",
             createdAt: "2025-11-21T09:15:00Z",
             lastActivityAt: "2025-11-21T09:20:00Z",
             status: "open", // or 'pending', 'resolved'
+            participants: ["yo-shayma", "so-cool"],
             // derived in UI: "10 min", "45 min", "1 hr" from lastActivityAt
             messages: [
                 {
@@ -389,15 +389,15 @@ function App() {
                     type: "text",
                     text: "I’ll fix it right away!",
                     createdAt: "2025-11-21T09:17:00Z",
-                }
-                // {
-                //     id: "m3",
-                //     from: "user",
-                //     type: "image",
-                //     url: "/src/assets/disputes/example-screenshot.png",
-                //     caption: "This is what I see on my screen.",
-                //     createdAt: "2025-11-21T09:20:00Z",
-                // },
+                },
+                {
+                    id: "m3",
+                    from: "user",
+                    type: "image",
+                    url: "/src/assets/images/event/group-hiking.png",
+                    caption: "This is what I see on my screen.",
+                    createdAt: "2025-11-21T09:20:00Z",
+                },
             ],
         },
         2: {
@@ -406,6 +406,7 @@ function App() {
             createdAt: "2025-11-21T08:40:00Z",
             lastActivityAt: "2025-11-21T08:50:00Z",
             status: "open",
+            participants: ["chicken-nugget", "so-cool"],
             messages: [
                 {
                     id: "m1",
