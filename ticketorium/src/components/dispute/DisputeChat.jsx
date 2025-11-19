@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Paperclip, Send } from "lucide-react";
 
 function MessageBubble({ message, username }) {
@@ -42,11 +42,38 @@ function MessageBubble({ message, username }) {
 function DisputeChat({ dispute, onSendMessage, username }) {
     const [input, setInput] = useState("");
     const messages = Array.isArray(dispute.messages) ? dispute.messages : [];
+    const fileInputRef = useRef(null);
 
     const handleSend = () => {
         if (!input.trim()) return;
         onSendMessage(dispute.id, input.trim(), username);
         setInput("");
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+
+            // For demo purposes, we read the file locally to display it immediately.
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // You should collect the caption from the user if needed,
+                // but for this demo, we'll send it immediately.
+                const imageUrl = e.target.result;
+
+                onSendMessage(
+                    dispute.id,
+                    "Image attached.", // Placeholder text, or prompt for caption
+                    username,
+                    "image",
+                    imageUrl // Pass the image URL (base64 data URL)
+                );
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Reset the file input so the same file can be selected again
+        event.target.value = null;
     };
 
     return (
@@ -66,6 +93,15 @@ function DisputeChat({ dispute, onSendMessage, username }) {
 
             {/* Input row pinned at bottom */}
             <div className="mt-3 mb-2 flex items-center gap-3">
+
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    className="hidden" // Keep it hidden
+                />
+
                 <div className="flex-1 bg-[#F6F9FF] rounded-full px-5 py-3 flex items-center">
                     <input
                         className="flex-1 bg-transparent outline-none text-[14px] font-[Gilroy-Medium]"
@@ -83,6 +119,7 @@ function DisputeChat({ dispute, onSendMessage, username }) {
                 <button
                     type="button"
                     className="w-9 h-9 rounded-full border border-[#DADADA] flex items-center justify-center hover:bg-[#F7F7F7]"
+                    onClick={() => fileInputRef.current.click()}
                 >
                     <Paperclip className="w-4 h-4 text-[#14113B]" />
                 </button>

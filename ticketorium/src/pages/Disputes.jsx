@@ -73,12 +73,32 @@ export default function MyDisputesPage(props) {
 
     // Turn object into array for lists (and make sure each item has an id)
     const disputesArray = useMemo(
-        () =>
-            Object.entries(disputes).map(([id, d]) => ({
+        () => {
+            if (!disputes) return [];
+
+            const allDisputesArray = Object.entries(disputes).map(([id, d]) => ({
                 id,
                 ...d,
-            })),
-        [disputes]
+            }));
+
+            // Filtering Logic: Show disputes only if the current user is a participant.
+            return allDisputesArray.filter(dispute => {
+                // A common check: See if the current user has sent or received *any* message.
+                // **BETTER**: Filter based on a dedicated `participants` array on the dispute object.
+
+                // Assuming you add a 'participants' array to your dispute objects:
+                if (dispute.participants && dispute.participants.includes(props.user)) {
+                    return true;
+                }
+
+                // Fallback check (less reliable, but works if participants aren't stored):
+                const messages = Array.isArray(dispute.messages) ? dispute.messages : [];
+                const isParticipant = messages.some(msg => msg.from === props.user);
+
+                return isParticipant;
+            });
+        },
+        [disputes, props.user]
     );
 
     // Get the currently selected dispute from the ARRAY, which always has id
@@ -179,7 +199,7 @@ export default function MyDisputesPage(props) {
                 className="
                         flex flex-col md:flex-row
                         px-4 md:px-8 pb-6 gap-4 md:gap-6
-                        h-[700px] md:h-[700px] overflow-y-hidden
+                        h-[300px] md:h-[700px] overflow-y-hidden
                     "
             >                {/* Left: Dispute list */}
                 <DisputeList
