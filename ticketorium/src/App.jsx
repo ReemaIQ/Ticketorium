@@ -16,9 +16,8 @@ import Analytics from "./pages/Analytics.jsx"; //r
 import Registration from "./pages/Registration.jsx"; //r
 import ManageUsers from "./pages/ManageUsers.jsx";
 import Disputes from "./pages/Disputes.jsx";
-
-
 import Bidding from "./pages/Bidding.jsx"
+import SystemPolicies from "./pages/SystemPolicies.jsx";
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -706,6 +705,7 @@ function App() {
 
         <Route path="/manage-users" element={<ManageUsers users={dummyUsers.current} user={loggedInUser}/>}/>
         <Route path="/disputes" element={<Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
+        <Route path="/system-policies" element={<SystemPolicies />}/>
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
 
