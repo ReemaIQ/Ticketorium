@@ -5,8 +5,13 @@ import OrganizerAnalytics from "../../components/organizer/organizer_analytics.j
 import heroImg from "../../assets/img.png";
 
 /* Dummy data – replace later with real events */
-const upcomingEvents = [
-    {
+/* r: changed from ARRAY to OBJECT so keys (1,3,4) match /event/:id & dummyEvents ids.
+   When this was an array, keys were 0,1,2, causing:
+   - /event/0 → “Event” fallback
+   - /event/1 → dummyEvents[1] = Group Hiking (so Spelling Bee opened that)
+*/
+const upcomingEvents = {
+    1: {
         id: "1",
         title: "2025 Group Hiking",
         description:
@@ -17,7 +22,7 @@ const upcomingEvents = [
         department: "by CS Department",
         location: "Abha Mountains",
     },
-    {
+    3: {
         id: "3",
         title: "2025 Spelling Bee",
         description:
@@ -28,7 +33,7 @@ const upcomingEvents = [
         department: "by CS Department",
         location: "KFUPM Auditorium",
     },
-    {
+    4: {
         id: "4",
         title: "2025 Coding Competition",
         description:
@@ -39,7 +44,7 @@ const upcomingEvents = [
         department: "by CS Department",
         location: "KFUPM Lab B24",
     },
-];
+};
 
 function Organizer() {
     const scrollToSection = (id) => {
@@ -154,6 +159,7 @@ function Organizer() {
 
                 {/* reuse EventList*/}
                 <div className="flex w-full max-w-6xl px-15">
+                    {/* r: now passes object so EventList navigates using ids 1,3,4 not 0,1,2 */}
                     <EventList events={upcomingEvents} userType="organizer" />
                 </div>
             </section>

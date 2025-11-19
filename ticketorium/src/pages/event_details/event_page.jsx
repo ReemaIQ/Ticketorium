@@ -10,7 +10,6 @@ import {
 import QRCode from "react-qr-code"; // for QR codes
 import { Scanner } from "@yudiel/react-qr-scanner"; //for QR code scanner
 
-
 /* ----------------------------- Modal Component ----------------------------- */
 function Modal({ isOpen, onClose, children }) {
     useEffect(() => {
@@ -126,12 +125,11 @@ function InviteList({ price }) {
     );
 }
 
-
 /* ----------------------------- Verify Ticket ------------------------------ */
 function VerifyForm({ eventId, onClose }) {
     const [mode, setMode] = useState("code"); // "code" | "scan"
     const [code, setCode] = useState("");
-    const [result, setResult] = useState(null);
+    aconst [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [lastScanned, setLastScanned] = useState("");
 
@@ -312,7 +310,6 @@ function VerifyForm({ eventId, onClose }) {
     );
 }
 
-
 /* ----------------------------- Seating Plan ----------------------------- */
 function SeatingPlan({ selectedSeat, onSelect, occupiedSeats = [] }) {
     const rows = [1, 2, 3, 4, 5, 6, 7];
@@ -424,8 +421,9 @@ export default function EventPage(props) {
     const [title, setTitle] = useState(raw?.title || "Event");
     const [location, setLocation] = useState(raw?.location || "Campus");
     const [description, setDescription] = useState(
+        raw?.description ||
         "Join us for an amazing event. (Demo description)"
-    );
+    ); //r: prefer event's saved description when available
     const [cover] = useState(
         `/src/assets/images/event/${raw?.img || "graduation.png"}`
     );
@@ -517,7 +515,9 @@ export default function EventPage(props) {
 
             // organizer/admin tools
             case "Edit":
-                setOpenModal("edit");
+                if (eventId) {
+                    navigate(`/event/${eventId}/edit`); //r: open the full Edit Event page instead of the small modal
+                }
                 break;
             case "Verify Tickets":
             case "Verify Tickets →":
@@ -878,7 +878,7 @@ export default function EventPage(props) {
                 </div>
             </Modal>
 
-            {/* EDIT MODAL */}
+            {/* EDIT MODAL (no longer reached when pressing "Edit", but kept for now) */}
             <Modal isOpen={openModal === "edit"} onClose={closeModal}>
                 <div>
                     <h3 className="text-xl font-semibold mb-4 text-center">

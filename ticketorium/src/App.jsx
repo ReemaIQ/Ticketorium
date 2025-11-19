@@ -15,8 +15,14 @@ import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import OrganizerAnalyticsPage from "./pages/organizer/organizer_analytics_page.jsx"; //r
 import RegistrationStatus from "./pages/registration/registration_page.jsx"; //r
 
-
 import Bidding from "./pages/Bidding.jsx"
+
+
+import CreateEventPage from "./pages/events/create_event_page.jsx"; //r
+import EditEventPage from "./pages/events/edit_event_page.jsx"; //r
+
+import ScrollToTop from "./components/scroll-to-top/scroll_to_top.jsx"; //r: scroll to top on every route change
+
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -24,8 +30,8 @@ function App() {
   // to be replaced in the db, for now, this is just dummy data
   // Dummy users format
   const initialDummyUsers = {
-    "yo-shayma": 
-    { 
+    "yo-shayma":
+    {
       "first-name": "Shayma",
       "last-name": "Alarfaj",
       "email": "shayma@gmail.com",
@@ -239,7 +245,7 @@ function App() {
   const dummyBids = useRef({});
 
   useEffect(() => {
-    // loggedInUser 
+    // loggedInUser
     localStorage.getItem("loggedInUser") && setLoggedInUser(localStorage.getItem("loggedInUser")); // watch out for username = null
     !localStorage.getItem("loggedInUser") && setLoggedInUser(null);
 
@@ -274,6 +280,47 @@ function App() {
     console.log("Logged in", localStorage.getItem("loggedInUser"));
 
   }, []);
+
+  //create event
+    const createEvent = (data) => {
+        const current = dummyEvents.current;
+
+        const numericIds = Object.keys(current)
+            .map(Number)
+            .filter((n) => !Number.isNaN(n));
+
+        const nextId = (numericIds.length ? Math.max(...numericIds) : 0) + 1;
+        const newId = String(nextId);
+
+        current[newId] = {
+            state: "not-joined",
+            img: data.img || "graduation.png",
+            title: data.title,
+            date: data.dateLabel,          // string like "09:30 Nov 21, 2025"
+            organizer: data.organizer,
+            price: data.price ?? 0,
+            hasSeatingPlan: !!data.hasSeatingPlan,
+            description: data.description || "",
+            location: data.location || "",
+            seats: data.seats || null,
+            type: data.type || "Indoor",
+        };
+
+        localStorage.setItem("dummyEvents", JSON.stringify(current));
+        return newId;
+    };
+
+    const updateEvent = (id, updates) => {
+        const current = dummyEvents.current;
+        if (!current[id]) return;
+
+        current[id] = {
+            ...current[id],
+            ...updates,
+        };
+
+        localStorage.setItem("dummyEvents", JSON.stringify(current));
+    };
 
   const checkIfEmailExists = (email) => {
     for (const username in dummyUsers.current) {
@@ -340,6 +387,7 @@ function App() {
 
   return (
     <>
+        <ScrollToTop /> {/* r: ensures every route navigation resets scroll to the top */}
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} setLoggedInUser={setLoggedInUser}/>
       <Routes>
 
@@ -366,6 +414,11 @@ function App() {
         <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
         <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
         <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
+
+
+          {/*r: create and edit events*/}
+          <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : ["organizer", "admin"].includes(dummyUsers.current[loggedInUser]["type"]) ? (<CreateEventPage user={loggedInUser} users={dummyUsers.current} onCreate={createEvent}/>) : (<Navigate to="/home" />)}/>
+          <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : ["organizer", "admin"].includes(dummyUsers.current[loggedInUser]["type"]) ? (<EditEventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} onUpdate={updateEvent}/>) : (<Navigate to="/home" />)}/>
 
         <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>} />
         <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
