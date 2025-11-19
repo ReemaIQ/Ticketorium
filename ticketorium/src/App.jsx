@@ -15,6 +15,7 @@ import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import Analytics from "./pages/Analytics.jsx"; //r
 import Registration from "./pages/Registration.jsx"; //r
 import ManageUsers from "./pages/ManageUsers.jsx";
+import Disputes from "./pages/Disputes.jsx";
 
 
 import Bidding from "./pages/Bidding.jsx"
@@ -25,8 +26,8 @@ function App() {
   // to be replaced in the db, for now, this is just dummy data
   // Dummy users format
   const initialDummyUsers = {
-    "yo-shayma": 
-    { 
+    "yo-shayma":
+    {
       "first-name": "Shayma",
       "last-name": "Alarfaj",
       "email": "shayma@gmail.com",
@@ -117,6 +118,7 @@ function App() {
     // more can be added by system admins only!
   }
 
+  // dummyNotifications format
   const initialDummyNotifications = {
           "event_join_success": {
             "category": "event",
@@ -363,8 +365,55 @@ function App() {
     // }
   }
 
-  // dummyEvents format
-    const initialDummyEvents = {
+  // dummyDisputes format
+  const initialDummyDisputes = {
+        1: {
+            id: "d1",
+            title: "Ticket not received",
+            subtitle: "Issue with email delivery for my ticket.",
+            createdAt: "2025-11-21T09:15:00Z",
+            lastActivityAt: "2025-11-21T09:20:00Z",
+            status: "open", // or 'pending', 'resolved'
+            // derived in UI: "10 min", "45 min", "1 hr" from lastActivityAt
+            messages: [
+                {
+                    id: "m1",
+                    from: "user", // 'user' | 'support'
+                    type: "text",
+                    text: "I have this issue with my ticket not arriving.",
+                    createdAt: "2025-11-21T09:15:00Z",
+                },
+                {
+                    id: "m2",
+                    from: "support",
+                    type: "text",
+                    text: "I’ll fix it right away!",
+                    createdAt: "2025-11-21T09:17:00Z",
+                }
+                // {
+                //     id: "m3",
+                //     from: "user",
+                //     type: "image",
+                //     url: "/src/assets/disputes/example-screenshot.png",
+                //     caption: "This is what I see on my screen.",
+                //     createdAt: "2025-11-21T09:20:00Z",
+                // },
+            ],
+        },
+        2: {
+            title: "Double charge on payment",
+            subtitle: "I was charged twice when buying tickets.",
+            createdAt: "2025-11-21T08:40:00Z",
+            lastActivityAt: "2025-11-21T08:50:00Z",
+            status: "open",
+            messages: [],
+        }
+        // add more disputes...
+    };
+
+
+    // dummyEvents format
+  const initialDummyEvents = {
         1: {
             state: "joined",
             img: "group-hiking.png",
@@ -430,8 +479,8 @@ function App() {
         }
     }
 
-    // dummyBids format
-    const initialDummyBids = {
+  // dummyBids format
+  const initialDummyBids = {
         1 : {
             user: "boring-user",
             topBid: "99.99 $",
@@ -490,6 +539,7 @@ function App() {
   const dummyEvents = useRef({});
   const dummyBids = useRef({});
   const dummyNotifications = useRef({});
+  const dummyDisputes = useRef({});
 
   useEffect(() => {
     // loggedInUser 
@@ -526,11 +576,17 @@ function App() {
     emptyDummyNotifications && localStorage.setItem("dummyNotifications", JSON.stringify(initialDummyNotifications));
     emptyDummyNotifications && (dummyNotifications.current = initialDummyNotifications);
 
+    const emptyDummyDisputes = localStorage.getItem("dummyDisputes") == "null" || !localStorage.getItem("dummyDisputes");
+    !emptyDummyDisputes && (dummyDisputes.current = JSON.parse(localStorage.getItem("dummyDisputes")));
+    emptyDummyDisputes && localStorage.setItem("dummyDisputes", JSON.stringify(dummyDisputes));
+    emptyDummyDisputes && (dummyDisputes.current = initialDummyDisputes)
+
     console.log("Dummy Users:", dummyUsers.current);
     console.log("Dummy Universities:", dummyUniversities.current);
     console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
     console.log("Dummy Bids:", dummyBids.current, localStorage.getItem("dummyBids"));
     console.log("Dummy Notifications:", dummyNotifications.current, localStorage.getItem("dummyNotifications"));
+    console.log("Dummy Disputes:", dummyDisputes.current, localStorage.getItem("dummyDisputes"));
     console.log("Logged in", localStorage.getItem("loggedInUser"));
 
   }, []);
@@ -633,6 +689,7 @@ function App() {
         <Route path="/checkout" element={<Registration />} />
 
         <Route path="/manage-users" element={<ManageUsers users={dummyUsers.current} user={loggedInUser}/>}/>
+        <Route path="/disputes" element={<Disputes disputes={dummyDisputes.current} user={loggedInUser}/>}/>
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
 
