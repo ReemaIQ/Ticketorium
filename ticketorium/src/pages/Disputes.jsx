@@ -125,6 +125,9 @@ export default function MyDisputesPage(props) {
             createdAt: nowIso,
             lastActivityAt: nowIso,
             status: "open",
+            //Add the current user to the participants array
+            //System adds second user maybe by least busy admin?
+            participants: [username, "so-cool"],
             messages: [
                 {
                     id: `m_${Date.now()}`,
@@ -146,25 +149,37 @@ export default function MyDisputesPage(props) {
         setMode("chat");
     }
 
-    function handleSendMessage(disputeId, text, username) {
+
+    function handleSendMessage(disputeId, text, username, type = "text", url = null) {
         const nowIso = new Date().toISOString();
 
         setDisputes((prev) => {
             const existing = prev[disputeId];
             if (!existing) return prev;
 
+            // 🔑 Prepare the new participants array
+            let updatedParticipants = existing.participants ? [...existing.participants] : [];
+
+            // 🔑 Add the current username if they are not already in the list
+            if (!updatedParticipants.includes(username)) {
+                updatedParticipants.push(username);
+            }
+
             return {
                 ...prev,
                 [disputeId]: {
                     ...existing,
                     lastActivityAt: nowIso,
+                    // 🔑 Update the dispute with the potentially new participant list
+                    participants: updatedParticipants,
                     messages: [
                         ...(existing.messages || []),
                         {
                             id: `m_${Date.now()}`,
                             from: username,
-                            type: "text",
-                            text,
+                            type: type,
+                            text: text,
+                            url: url,
                             createdAt: nowIso,
                         },
                     ],
