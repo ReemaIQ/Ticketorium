@@ -1,4 +1,3 @@
-// ticketorium/src/pages/registration/RegistrationStatus.jsx
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -13,24 +12,29 @@ function RegistrationStatus() {
        1) Determine if the registration is successful or not
           - If a previous page passes `state: { isSuccess: true }`,
             we use that.
-          - Otherwise we fall back to a dummy variable below.
+          - Otherwise we fall back to a demo default.
     --------------------------------------------------------- */
+    //
+    // const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
+    //
+    // const isSuccessFromState = location.state?.isSuccess;
+    // const isSuccess =
+    //     typeof isSuccessFromState === "boolean"
+    //         ? isSuccessFromState
+    //         : DEMO_DEFAULT_SUCCESS;
 
-    const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
+    let isSuccess = true;
 
-    const isSuccessFromState = location.state?.isSuccess;
-    const isSuccess =
-        typeof isSuccessFromState === "boolean"
-            ? isSuccessFromState
-            : DEMO_DEFAULT_SUCCESS;
+    // event data from navigation state
+    const eventId = location.state?.eventId || null;
+    const fromEventId = location.state?.fromEventId || eventId || null;
 
     /* ---------------------------------------------------------
        2) success could depend on:
-          - userType === "student" || userType === "visitor"
+          - userType === "student" || "visitor"
           - attendeesCount < eventCapacity
           - paymentStatus === "paid"
           - not banned / already registered, etc.
-
     --------------------------------------------------------- */
 
     // Content that depends on success/failure
@@ -40,25 +44,46 @@ function RegistrationStatus() {
 
     const badgeImage = isSuccess ? successImg : failureImg;
 
+    /* ---------------------------------------------------------
+       3) Button handlers
+    --------------------------------------------------------- */
+
     function handlePrimaryClick() {
         if (isSuccess) {
-            // View Event Details : for now go back OR use a dummy event
-            // Later pass `eventId` in location.state and use it here.
-            // Example: navigate(`/event/${location.state.eventId}`);
-            navigate(-1);
+            // SUCCESS: go back to event (or just back if no id)
+            if (eventId) {
+                navigate(`/event/${eventId}`);
+            } else if (fromEventId) {
+                navigate(`/event/${fromEventId}`);
+            } else {
+                navigate(-1);
+            }
         } else {
-            // Try Again : simply go back to previous screen
-            navigate(-1);
+            // FAILURE: go back to event & reopen JOIN modal
+            if (fromEventId) {
+                navigate(`/event/${fromEventId}`, {
+                    state: { openJoinModal: true }, // tell EventPage to open the Join modal
+                });
+            } else {
+                navigate(-1);
+            }
         }
     }
 
     function handleSecondaryClick() {
         if (isSuccess) {
-            // View Ticket : in the future navigate to a real ticket page
-            // Example: navigate(`/tickets/${location.state.ticketId}`);
-            alert("Demo only: this would show the user's ticket.");
+            // SUCCESS: View Ticket: go to event page and open ticket modal
+            const targetEventId = eventId || fromEventId;
+            if (!targetEventId) {
+                alert("Missing event info – cannot open ticket.");
+                return;
+            }
+
+            navigate(`/event/${targetEventId}`, {
+                state: { openTicketModal: true }, // tell EventPage to open the Ticket modal
+            });
         } else {
-            // Get Help : disputes / help center
+            // FAILURE: Get Help : disputes / help center
             navigate("/disputes");
         }
     }
@@ -79,20 +104,20 @@ function RegistrationStatus() {
                 <div className="flex-1 flex flex-col gap-4">
                     {/* Big heading */}
                     <div className="leading-[1.05]">
-            <span
-                className={`block font-[Epilogue-Black] text-[56px] ${
-                    isSuccess ? "text-[#22C55E]" : "text-[#F97373]"
-                }`}
-            >
-              {headingLine1}
-            </span>
                         <span
                             className={`block font-[Epilogue-Black] text-[56px] ${
                                 isSuccess ? "text-[#22C55E]" : "text-[#F97373]"
                             }`}
                         >
-              {headingLine2}
-            </span>
+                            {headingLine1}
+                        </span>
+                        <span
+                            className={`block font-[Epilogue-Black] text-[56px] ${
+                                isSuccess ? "text-[#22C55E]" : "text-[#F97373]"
+                            }`}
+                        >
+                            {headingLine2}
+                        </span>
                     </div>
 
                     {/* Small text */}

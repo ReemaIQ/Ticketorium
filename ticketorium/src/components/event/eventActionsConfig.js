@@ -37,7 +37,8 @@ export const eventActionsConfig = {
     organizer: { //r
         default: [
             { label: "Edit", icon: ArrowRight, variant: "primary" },
-            { label: "Verify Tickets", icon: ArrowRight, variant: "primary" },
+            { label: "Verify Tickets", icon: ArrowRight, variant: "secondary" },
+            { label: "Delete", color: "text-red-500", variant: "border" },
         ],
     },
     admin: { //r
