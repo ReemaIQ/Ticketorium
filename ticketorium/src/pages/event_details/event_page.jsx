@@ -129,7 +129,7 @@ function InviteList({ price }) {
 function VerifyForm({ eventId, onClose }) {
     const [mode, setMode] = useState("code"); // "code" | "scan"
     const [code, setCode] = useState("");
-    aconst [result, setResult] = useState(null);
+    const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [lastScanned, setLastScanned] = useState("");
 
@@ -422,8 +422,8 @@ export default function EventPage(props) {
     const [location, setLocation] = useState(raw?.location || "Campus");
     const [description, setDescription] = useState(
         raw?.description ||
-        "Join us for an amazing event. (Demo description)"
-    ); //r: prefer event's saved description when available
+        "Join us for an amazing event. (Demo description)" // r: prefer saved event description
+    );
     const [cover] = useState(
         `/src/assets/images/event/${raw?.img || "graduation.png"}`
     );
@@ -443,7 +443,7 @@ export default function EventPage(props) {
     const [selectedSeat, setSelectedSeat] = useState(null);
     const [ticket, setTicket] = useState(null);
     const [accessibilityNotes, setAccessibilityNotes] = useState("");
-    console.log("Ticket created:", ticket); //r: to remove the error
+    console.log("Ticket created:", ticket); // r: to remove the error
 
     // modals
     const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'edit' | 'verify' | 'delete' | 'ticket' | 'none'
@@ -516,7 +516,7 @@ export default function EventPage(props) {
             // organizer/admin tools
             case "Edit":
                 if (eventId) {
-                    navigate(`/event/${eventId}/edit`); //r: open the full Edit Event page instead of the small modal
+                    navigate(`/event/${eventId}/edit`); // r: go to full Edit Event page
                 }
                 break;
             case "Verify Tickets":
@@ -878,7 +878,7 @@ export default function EventPage(props) {
                 </div>
             </Modal>
 
-            {/* EDIT MODAL (no longer reached when pressing "Edit", but kept for now) */}
+            {/* EDIT MODAL (no longer used for "Edit" button, but kept in case re-use it later) */}
             <Modal isOpen={openModal === "edit"} onClose={closeModal}>
                 <div>
                     <h3 className="text-xl font-semibold mb-4 text-center">

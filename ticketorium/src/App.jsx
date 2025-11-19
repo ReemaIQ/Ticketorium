@@ -17,6 +17,8 @@ import RegistrationStatus from "./pages/registration/registration_page.jsx"; //r
 
 import Bidding from "./pages/Bidding.jsx"
 
+import CreateEventPage from "./pages/events/create_event_page.jsx";
+import EditEventPage from "./pages/events/edit_event_page.jsx";
 
 import CreateEventPage from "./pages/events/create_event_page.jsx"; //r
 import EditEventPage from "./pages/events/edit_event_page.jsx"; //r
@@ -133,7 +135,6 @@ function App() {
             price: 19.99,
             hasSeatingPlan: true,      //r: this event uses the seat map
         },
-
         2: {
             state: "not-joined",
             img: "game-dev.png",
@@ -161,7 +162,6 @@ function App() {
             organizer: "CS Department",
             price: 19.99,
         },
-
         5: {
             state: "invited",
             img: "game-dev.png",
@@ -171,7 +171,6 @@ function App() {
             price: 0,
             inviter: "Student"
         },
-
         6: {
             state: "graduation",
             img: "graduation.png",
@@ -236,52 +235,46 @@ function App() {
         }
     }
 
-  const [loggedInUser, setLoggedInUser] = useState(null); //username only
-  const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
-  const [part1Data, setPart1Data] = useState({});
-  const dummyUsers = useRef({});
-  const dummyUniversities = useRef({});
-  const dummyEvents = useRef({});
-  const dummyBids = useRef({});
+    // ---------- States / Refs ----------
+    const [loggedInUser, setLoggedInUser] = useState(null);
+    const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
+    const [part1Data, setPart1Data] = useState({});
 
-  useEffect(() => {
-    // loggedInUser
-    localStorage.getItem("loggedInUser") && setLoggedInUser(localStorage.getItem("loggedInUser")); // watch out for username = null
-    !localStorage.getItem("loggedInUser") && setLoggedInUser(null);
+    const dummyUsers = useRef({});
+    const dummyUniversities = useRef({});
+    const dummyEvents = useRef(initialDummyEvents); // r: events are now ONLY in-memory
+    const dummyBids = useRef({});
 
-    // dummyUsers
-    const emptyDummyUsers = localStorage.getItem("dummyUsers") == "null" || !localStorage.getItem("dummyUsers");
-    !emptyDummyUsers && (dummyUsers.current = JSON.parse(localStorage.getItem("dummyUsers")));
-    emptyDummyUsers && localStorage.setItem("dummyUsers", JSON.stringify(initialDummyUsers));
-    emptyDummyUsers && (dummyUsers.current = initialDummyUsers);
+    // ---------- useEffect ----------
+    useEffect(() => {
+        // loggedInUser
+        localStorage.getItem("loggedInUser") && setLoggedInUser(localStorage.getItem("loggedInUser")); // watch out for username = null
+        !localStorage.getItem("loggedInUser") && setLoggedInUser(null);
 
-    // dummyUniversities
-    const emptyDummyUniversities =  localStorage.getItem("dummyUniversities") == "null" || !localStorage.getItem("dummyUniversities");
-    !emptyDummyUniversities && (dummyUniversities.current = JSON.parse(localStorage.getItem("dummyUniversities")));
-    emptyDummyUniversities && localStorage.setItem("dummyUniversities", JSON.stringify(initialDummyUniversities));
-    emptyDummyUniversities && (dummyUniversities.current = initialDummyUniversities)
+        // dummyUsers
+        const emptyDummyUsers = localStorage.getItem("dummyUsers") == "null" || !localStorage.getItem("dummyUsers");
+        !emptyDummyUsers && (dummyUsers.current = JSON.parse(localStorage.getItem("dummyUsers")));
+        emptyDummyUsers && localStorage.setItem("dummyUsers", JSON.stringify(initialDummyUsers));
+        emptyDummyUsers && (dummyUsers.current = initialDummyUsers);
 
-    // dummyEvents
-    const emptyDummyEvents = localStorage.getItem("dummyEvents") == "null" || !localStorage.getItem("dummyEvents");
-    !emptyDummyEvents && (dummyEvents.current = JSON.parse(localStorage.getItem("dummyEvents")));
-    emptyDummyEvents && localStorage.setItem("dummyEvents", JSON.stringify(initialDummyEvents));
-    emptyDummyEvents && (dummyEvents.current = initialDummyEvents);
+        // dummyUniversities
+        const emptyDummyUniversities = localStorage.getItem("dummyUniversities") == "null" || !localStorage.getItem("dummyUniversities");
+        !emptyDummyUniversities && (dummyUniversities.current = JSON.parse(localStorage.getItem("dummyUniversities")));
+        emptyDummyUniversities && localStorage.setItem("dummyUniversities", JSON.stringify(initialDummyUniversities));
+        emptyDummyUniversities && (dummyUniversities.current = initialDummyUniversities);
 
-    // dummyBids
-    const emptyDummyBids = localStorage.getItem("dummyBids") == "null" || !localStorage.getItem("dummyBids");
-      !emptyDummyBids && (dummyBids.current = JSON.parse(localStorage.getItem("dummyBids")));
-      emptyDummyBids && localStorage.setItem("dummyBids", JSON.stringify(initialDummyBids));
-      emptyDummyBids && (dummyBids.current = initialDummyBids);
+        // r: dummyEvents REMOVE all localStorage logic
+        console.log("Dummy Events (in-memory only):", dummyEvents.current);
 
-    console.log("Dummy Users:", dummyUsers.current);
-    console.log("Dummy Universities:", dummyUniversities.current);
-    console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
-    console.log("Dummy Bids:", dummyBids.current, localStorage.getItem("dummyBids"));
-    console.log("Logged in", localStorage.getItem("loggedInUser"));
+        // dummyBids
+        const emptyDummyBids = localStorage.getItem("dummyBids") == "null" || !localStorage.getItem("dummyBids");
+        !emptyDummyBids && (dummyBids.current = JSON.parse(localStorage.getItem("dummyBids")));
+        emptyDummyBids && localStorage.setItem("dummyBids", JSON.stringify(initialDummyBids));
+        emptyDummyBids && (dummyBids.current = initialDummyBids);
 
-  }, []);
+    }, []);
 
-  //create event
+    // ---------- Create Event (IN-MEMORY ONLY) ----------
     const createEvent = (data) => {
         const current = dummyEvents.current;
 
@@ -306,10 +299,11 @@ function App() {
             type: data.type || "Indoor",
         };
 
-        localStorage.setItem("dummyEvents", JSON.stringify(current));
+
         return newId;
     };
 
+    // ---------- Update Event (IN-MEMORY ONLY) ----------
     const updateEvent = (id, updates) => {
         const current = dummyEvents.current;
         if (!current[id]) return;
@@ -319,125 +313,123 @@ function App() {
             ...updates,
         };
 
-        localStorage.setItem("dummyEvents", JSON.stringify(current));
+
     };
 
-  const checkIfEmailExists = (email) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].email === email) {
-        return true;
-      }
-    }
-    return false;
-  }
+    // ---------- Helper functions (unchanged) ----------
+    const checkIfEmailExists = (email) => {
+        for (const username in dummyUsers.current) {
+            if (dummyUsers.current[username].email === email) {
+                return true;
+            }
+        }
+        return false;
+    };
 
-  const checkIfPhoneExists = (phone) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].phone === phone) {
-        return true;
-      }
-    }
-    return false;
-  }
+    const checkIfPhoneExists = (phone) => {
+        for (const username in dummyUsers.current) {
+            if (dummyUsers.current[username].phone === phone) {
+                return true;
+            }
+        }
+        return false;
+    };
 
-  const checkIfUsernameExists = (username) => {
-    return username in dummyUsers.current;
-  }
+    const checkIfUsernameExists = (username) => {
+        return username in dummyUsers.current;
+    };
 
-  const checkUsernamePassword = (username, password) => {
-    if (username in dummyUsers.current) {
-      return dummyUsers.current[username].password === password;
-    }
-  }
+    const checkUsernamePassword = (username, password) => {
+        if (username in dummyUsers.current) {
+            return dummyUsers.current[username].password === password;
+        }
+    };
 
-  const checkEmailPassword = (email, password) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].email === email) {
-        return dummyUsers.current[username].password === password;
-      }
-    }
-    return false;
-  }
+    const checkEmailPassword = (email, password) => {
+        for (const username in dummyUsers.current) {
+            if (dummyUsers.current[username].email === email) {
+                return dummyUsers.current[username].password === password;
+            }
+        }
+        return false;
+    };
 
-  const getUsernameFromEmail = (email) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].email  === email) {
-        return username;
-      }
-    }
-    return null;
-  }
+    const getUsernameFromEmail = (email) => {
+        for (const username in dummyUsers.current) {
+            if (dummyUsers.current[username].email === email) {
+                return username;
+            }
+        }
+        return null;
+    };
 
-  const addNewUser = (data) => {
-    const userObject = {
-      "first-name": data["first-name"],
-      "last-name": data["last-name"],
-      "email": data["email"],
-      "phone": data["phone-number"],
-      "password": data["password"],
-      "type": "visitor",
-      "university": null,
-      "gender": data["gender"],
-      "date-of-birth": data["date-of-birth"]
-    }
-    dummyUsers.current[data["username"]] = userObject;
-    localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
-  }
+    const addNewUser = (data) => {
+        const userObject = {
+            "first-name": data["first-name"],
+            "last-name": data["last-name"],
+            "email": data["email"],
+            "phone": data["phone-number"],
+            "password": data["password"],
+            "type": "visitor",
+            "university": null,
+            "gender": data["gender"],
+            "date-of-birth": data["date-of-birth"]
+        };
+
+        dummyUsers.current[data["username"]] = userObject;
+        localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
+    };
+
+    // ---------- ROUTES ----------
+    return (
+        <>
+            <ScrollToTop />
+            <Nav
+                type={loggedInUser ? dummyUsers.current[loggedInUser]["type"] : "empty"}
+                userName={loggedInUser ? dummyUsers.current[loggedInUser]["first-name"] : ""}
+                setLoggedInUser={setLoggedInUser}
+            />
+
+            <Routes>
+
+                {/* HOME */}
+                <Route path="/home" element={!loggedInUser ? <DummyUserHome /> : dummyUsers.current[loggedInUser]["type"] === "organizer" ? <OrganizerHomePage /> : <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current} />} />
+
+                {/* LOGIN / SIGNUP */}
+                <Route path="/log-in" element={loggedInUser ? <Navigate to={`/home`} /> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail} />} />
+
+                <Route path="/sign-up" element={loggedInUser ? <Navigate to={`/home`} /> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data} />} />
+
+                <Route path="/sign-up-2" element={loggedInUser ? <Navigate to={`/home`} /> : finishedPart1SignUp ? <SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data} /> : <Navigate to="/sign-up" />} />
+
+                {/* CREATE & EDIT EVENT */}
+                <Route path="/create-event" element={!loggedInUser ? <Navigate to="/log-in" /> : ["organizer", "admin"].includes(dummyUsers.current[loggedInUser]["type"]) ? <CreateEventPage user={loggedInUser} users={dummyUsers.current} onCreate={createEvent} /> : <Navigate to="/home" />} />
+
+                <Route path="/event/:eventId/edit" element={!loggedInUser ? <Navigate to="/log-in" /> : ["organizer", "admin"].includes(dummyUsers.current[loggedInUser]["type"]) ? <EditEventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} onUpdate={updateEvent} /> : <Navigate to="/home" />} />
+
+                {/* EVENT PAGES */}
+                <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
+                <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
+                <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
+
+                {/* BIDDING */}
+                <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
+
+                {/* ORGANIZER ANALYTICS */}
+                <Route path="/organizer/analytics" element={!loggedInUser ? <Navigate to="/log-in" /> : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? <Navigate to="/home" /> : <OrganizerAnalyticsPage />} />
+
+                {/* REGISTRATION STATUS */}
+                <Route path="/checkout" element={<RegistrationStatus />} />
+
+                {/* 404 */}
+                <Route path="*" element={loggedInUser ? <h1 className="m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]">404 - Page Not Found :)</h1> : <Navigate to="/log-in" />} />
+
+            </Routes>
 
 
-  return (
-    <>
-        <ScrollToTop /> {/* r: ensures every route navigation resets scroll to the top */}
-      <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} setLoggedInUser={setLoggedInUser}/>
-      <Routes>
-
-          <Route path="/home"
-              element={
-                  !loggedInUser ? (
-                      <DummyUserHome /> //reema: not logged in to dummy landing home
-                  ) : dummyUsers.current[loggedInUser]["type"] === "organizer" ? (
-                      <OrganizerHomePage /> //reema: organizer page
-                  ) : (
-                      <UserHome
-                          user={loggedInUser}
-                          users={dummyUsers.current}
-                          universities={dummyUniversities.current}
-                          events={dummyEvents.current}
-                      />
-                  )
-              }
-          />
-
-          {/*<Route path="/home" element={!loggedInUser? <DummyUserHome/>:  <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/> /!* main home page for not logged in users *!/*/}
-        {/*<Route path="/visitor/home" element={!loggedInUser? <DummyUserHome/> : dummyUsers.current[loggedInUser]["type"] != "visitor"? <Navigate to={`/${dummyUsers.current[loggedInUser]["type"]}/home`}/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/>*/}
-        {/*<Route path="/student/home" element={!loggedInUser? <DummyUserHome/> : dummyUsers.current[loggedInUser]["type"] != "student"? <Navigate to={`/${dummyUsers.current[loggedInUser]["type"]}/home`}/>: <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current}/>}/>*/}
-        <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
-        <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
-        <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
-
-
-          {/*r: create and edit events*/}
-          <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : ["organizer", "admin"].includes(dummyUsers.current[loggedInUser]["type"]) ? (<CreateEventPage user={loggedInUser} users={dummyUsers.current} onCreate={createEvent}/>) : (<Navigate to="/home" />)}/>
-          <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : ["organizer", "admin"].includes(dummyUsers.current[loggedInUser]["type"]) ? (<EditEventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} onUpdate={updateEvent}/>) : (<Navigate to="/home" />)}/>
-
-        <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>} />
-        <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
-        <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
-
-        <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
-
-        <Route path="/organizer/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<OrganizerAnalyticsPage />) }/>
-
-        {/* reema: Checkout / Registration Status page */}
-        <Route path="/checkout" element={<RegistrationStatus />} />
-
-
-        <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
-
-      </Routes>
-      <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
-    </>
-  )
+            <Footer type={loggedInUser ? dummyUsers.current[loggedInUser]["type"] : "empty"} />
+        </>
+    );
 }
 
-export default App
+export default App;
