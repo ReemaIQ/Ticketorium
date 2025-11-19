@@ -238,7 +238,7 @@ export default function EventPage(props) {
         <div className="bg-white text-[#1A1A1A] min-h-screen">
             <main className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 py-8">
                 {/* Back */}
-                <button onClick={() => navigate(-1)} className="text-[#4F6FFF] hover:underline font-[Gilroy-Medium] text-[16px]">
+                <button onClick={() => navigate(-1)} className="text-[#14113B] hover:underline font-[Gilroy-Medium] text-[16px]">
                     ← Back
                 </button>
 

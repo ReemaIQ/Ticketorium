@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="refining disputes">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="system policies page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/NotificationModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/NotificationModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/notification-list/NotificationList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/notification-list/NotificationList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/notifications/Notification.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/notifications/Notification.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -415,15 +419,37 @@
       <option name="project" value="LOCAL" />
       <updated>1763584327234</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="finished disputes">
+      <option name="closed" value="true" />
+      <created>1763587714188</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1763587714188</updated>
+    </task>
+    <task id="LOCAL-00039" summary="finished disputes">
+      <option name="closed" value="true" />
+      <created>1763588076657</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1763588076657</updated>
+    </task>
+    <task id="LOCAL-00040" summary="system policies page">
+      <option name="closed" value="true" />
+      <created>1763588451466</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1763588451466</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="uploaded imaged for dummy events" />
-    <MESSAGE value="created event component" />
     <MESSAGE value="created bidding component" />
     <MESSAGE value="emptied app file" />
     <MESSAGE value="created all events page" />
@@ -447,6 +473,8 @@
     <MESSAGE value="worked on disputes page" />
     <MESSAGE value="quick attempt at adding notification modal" />
     <MESSAGE value="refining disputes" />
-    <option name="LAST_COMMIT_MESSAGE" value="refining disputes" />
+    <MESSAGE value="finished disputes" />
+    <MESSAGE value="system policies page" />
+    <option name="LAST_COMMIT_MESSAGE" value="system policies page" />
   </component>
 </project>

@@ -1,6 +1,7 @@
 import EventList from "../components/event-list/EventList.jsx";
-import React from "react";
+import React, {useMemo, useState} from "react";
 import {Hash, Search} from "lucide-react";
+import NotificationList from "../components/notification-list/NotificationList.jsx";
 
 const contentOptions = {
     // student, visitor, analytics, admin, system-admin
@@ -81,6 +82,23 @@ const contentOptions = {
 }
 
 function UserHome(props) {
+    const [notifications, setNotifications] = useState(props.notifications || {});
+    const notificationArray = useMemo(() => {
+        if (!notifications) return [];
+
+        return Object.values(notifications)
+            .filter((n) => {
+                // If roles are defined, check if current userType is included
+                if (n.roles && Array.isArray(n.roles)) {
+                    return n.roles.includes(props.users[props.user]["type"]);
+                }
+                // If no roles defined, assume visible to all (or change to false to be strict)
+                return true;
+            })
+            .reverse(); // Sort new to old
+
+    }, [notifications, props.users[props.user]["type"]]);
+
     return (
         <>
         <div className="m-0 text-3xl flex flex-col gap-10 bg-[var(--secondary-color)] w-full h-screen relative">
@@ -138,7 +156,21 @@ function UserHome(props) {
                 <div className="flex w-full max-w-6xl">
                     {key === "notifications" ?
                         (
-                            <h1 className="font-[Gilroy-Medium] text-[20px]"> notifications </h1>
+                            <div className="border-1 rounded-[6px] border-[#E0E0E0] w-full">
+                                <NotificationList
+                                    notifications={notificationArray}
+                                    onMarkAsRead={ (id) => {
+                                        setNotifications((prev) => {
+                                            if (!prev[id]) return prev;
+                                            return {
+                                                ...prev,
+                                                [id]: { ...prev[id], read: true }
+                                            };
+                                        });
+                                    }}
+                                />
+                            </div>
+
                         ) :
                     (key=== "subscriptions" ?
                         (
