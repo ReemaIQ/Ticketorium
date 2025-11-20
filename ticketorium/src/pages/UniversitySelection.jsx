@@ -17,7 +17,6 @@ function UniversitySelection(props) {
         rootStyle.setProperty('--accent-color', props.universities[university]["theme-colors"]["accent-color"]);
         rootStyle.setProperty('--secondary-accent-color', props.universities[university]["theme-colors"]["secondary-accent-color"]);
         rootStyle.setProperty('--footer-color', props.universities[university]["theme-colors"]["footer-color"]);
-        rootStyle.setProperty('--filter-buttons', props.universities[university]["theme-colors"]["filter-buttons"]);
         rootStyle.setProperty('--warning-color', props.universities[university]["theme-colors"]["warning-color"]);
         rootStyle.setProperty('--success-color', props.universities[university]["theme-colors"]["success-color"]);
         navigate("/home");
