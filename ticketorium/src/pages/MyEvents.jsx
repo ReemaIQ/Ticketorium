@@ -17,7 +17,7 @@ import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 library.add(fas, far, fab)
 import { useNavigate } from "react-router-dom"; //r: needed to navigate to the Create Event page
 
-function AllEvents(props) {
+function MyEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]);
     const originalState = useRef({});
 
@@ -67,7 +67,7 @@ function AllEvents(props) {
     };
 
     useEffect(() => {
-        props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, originalState, "event", "", { "list-type": "my-events", "university": props.uni})
+        props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, originalState, "event", "", { "list-type": "my-events", "university": props.university})
         console.log("Original State Set:", originalState.current);
         setFilteredEvents(Object.keys(originalState.current)); // ik its stupid, but it forces a re-render
     }, []);
@@ -78,14 +78,7 @@ function AllEvents(props) {
             {/* Content */}
             <div id="page-content" className="flex flex-col items-center gap-30">
                 {/* Upcoming Events */}
-                <div
-                    id="events-section"
-                    className="flex flex-col max-w-5xl align-middle"
-                >
-                    <div
-                        id="section-header"
-                        className="flex items-center justify-between w-full mt-9 mb-3 px-3"
-                    >
+
                 <div id="events-section" className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10">
                     <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3 px-3">
                         {/* Left: Title + Search */}
@@ -98,7 +91,7 @@ function AllEvents(props) {
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            {   (props.user.type === "organizer") && (
+                            {   (props.users[props.user]['type'] === "organizer") && (
                                 <button
                                     onClick={() => navigate("/events/new")} //r: opens the Create Event full page
                                     className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
@@ -119,4 +112,4 @@ function AllEvents(props) {
     );
 }
 
-export default AllEvents;
+export default MyEvents;

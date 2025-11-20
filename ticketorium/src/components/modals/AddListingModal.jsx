@@ -5,8 +5,8 @@ import MiniBidding from "../bidding/MiniBidding.jsx";
 export default function AddListingModal({
                                             open,
                                             onClose,
-                                            biddings = {}, // object-of-objects
-                                            onCreate,
+                                            biddings = {}, // [{id, title, desc, img, countdownText, dateText, analytics}]
+                                            onCreate,     // ({ticketId, deadline, startingBid}) => void
                                         }) {
     const items = Object.entries(biddings); // [ [id, bidding], ... ]
     const [selectedId, setSelectedId] = useState(null);
@@ -87,11 +87,13 @@ export default function AddListingModal({
                     {/* Bottom form */}
                     <div className="p-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                         <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                             {/* Deadline */}
                             <label>
                                 <span className="text-[12px] text-[#7B7B7B] mb-1 block">
                                     Deadline
                                 </span>
+
                                 <input
                                     type="date"
                                     min={new Date().toISOString().split("T")[0]}
@@ -105,6 +107,7 @@ export default function AddListingModal({
                                         } else setDeadline(picked);
                                     }}
                                     className="w-full border-b border-gray-300 focus:border-[#4F6FFF] outline-none bg-transparent py-1"
+                                    placeholder="YYYY/MM/DD"
                                 />
                             </label>
 
@@ -113,6 +116,7 @@ export default function AddListingModal({
                                 <span className="text-[12px] text-[#7B7B7B] mb-1 block">
                                     Starting Bid
                                 </span>
+
                                 <input
                                     type="number"
                                     min="0"

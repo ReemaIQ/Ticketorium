@@ -1,14 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import EventActions from "../../components/event/EventActions.jsx";
-import { getUserCategory } from "../../components/event/getUserCategory.js";
-import {
-    createTicket,
-    fetchTicketForEvent,
-    verifyTicket,
-} from "../../api/tickets.js"; // tickets & verification
+import EventActions from "../components/event/EventActions.jsx";
+import { getUserCategory } from "../components/event/getUserCategory.js";
+
+//import ResignModal from "./ResignModal";
+//import JoinModal from "./";
+//import SeatingModal from "./";
+
+import {createTicket, fetchTicketForEvent, verifyTicket,} from "../../api/tickets.js"; // tickets & verification
 import QRCode from "react-qr-code"; // for QR codes
 import { Scanner } from "@yudiel/react-qr-scanner"; //for QR code scanner
+
 
 /* ----------------------------- Modal Component ----------------------------- */
 function Modal({ isOpen, onClose, children }) {
@@ -26,7 +28,7 @@ function Modal({ isOpen, onClose, children }) {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-            <div className="relative mx-4 w-full max-w-2xl rounded-xl bg-white p-6 shadow-xl">
+            <div className="relative mx-4 w-xl rounded-xl bg-white p-6 shadow-xl">
                 <button
                     aria-label="Close"
                     onClick={onClose}
@@ -401,7 +403,7 @@ export default function EventPage(props) {
     // Logged-in user id (or null if not logged in)
     const userId = props?.user ?? null;
 
-    // type: student / visitor / organizer / admin
+    // type: student / visitor / analytics / admin
     const type = useMemo(() => {
         const t =
             props?.users && props?.user
@@ -513,7 +515,7 @@ export default function EventPage(props) {
                 setOpenModal("resign");
                 break;
 
-            // organizer/admin tools
+            // analytics/admin tools
             case "Edit":
                 if (eventId) {
                     navigate(`/event/${eventId}/edit`); // r: go to full Edit Event page
@@ -554,7 +556,7 @@ export default function EventPage(props) {
                 {/* Back */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="text-[#4F6FFF] hover:underline font-[Gilroy-Medium] text-[16px]"
+                    className="text-[#14113B] hover:underline font-[Gilroy-Medium] text-[16px]"
                 >
                     ← Back
                 </button>
@@ -750,12 +752,12 @@ export default function EventPage(props) {
             <Modal isOpen={openModal === "resign"} onClose={closeModal}>
                 <div className="text-center">
                     <h3 className="text-xl font-semibold">
-                        Resign from <span className="font-bold">{title}</span>?
+                        Are you sure you want to resign from <span className="font-bold">{title}</span>?
                     </h3>
                 </div>
                 {price > 0 && (
                     <p className="mt-2 text-slate-500 text-center">
-                        Refund:{" "}
+                        You will receive a refund of:{" "}
                         <span className="text-indigo-700 font-medium">
                             ${price.toFixed(2)}
                         </span>
@@ -767,15 +769,15 @@ export default function EventPage(props) {
                             setViewState("not-joined");
                             closeModal();
                         }}
-                        className="px-4 py-2 text-sm font-medium bg-white border border-rose-300 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
+                        className="px-4 py-2 text-sm font-medium bg-white border border-rose-600 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
                     >
                         Resign
                     </button>
                     <button
                         onClick={closeModal}
-                        className="px-4 py-2 text-sm font-medium border border-slate-300 bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                        className="px-4 py-2 text-sm font-medium border bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
                     >
-                        Don't Resign
+                        Cancel
                     </button>
                 </div>
             </Modal>

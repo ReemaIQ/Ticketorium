@@ -1,5 +1,5 @@
 import BiddingList from "../components/bidding-list/BiddingList.jsx";
-import AddListingModal from "../components/bidding/AddListingModal.jsx";
+import AddListingModal from "../components/modals/AddListingModal.jsx";
 
 import {Hash, Plus} from "lucide-react";
 import {useState} from "react";
@@ -69,7 +69,7 @@ function Bidding(props) {
                                     hover:bg-[#4F6FFF] hover:text-white transition"
                         >
                             <Hash size={18} />
-                            Filter
+                            Sort
                         </button>
                     </div>
 

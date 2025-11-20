@@ -1,10 +1,10 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import successImg from "../../assets/images/registration/Correct.jpg";
-import failureImg from "../../assets/images/registration/Wrong.jpg";
+import successImg from "../assets/images/registration/Correct.jpg";
+import failureImg from "../assets/images/registration/Wrong.jpg";
 
-function RegistrationStatus() {
+function Registration() {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -164,4 +164,4 @@ function RegistrationStatus() {
     );
 }
 
-export default RegistrationStatus;
+export default Registration;

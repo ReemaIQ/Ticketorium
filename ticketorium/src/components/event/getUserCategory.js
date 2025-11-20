@@ -1,6 +1,6 @@
 /**
  * Returns the user category based on the type.
- * @param {string} type - The type of the user (e.g., "student", "visitor", "admin", "organizer")
+ * @param {string} type - The type of the user (e.g., "student", "visitor", "admin", "analytics")
  * @returns {"attendee" | "other"} - Returns "attendee" for students and visitors, "other" for admins and organizers.
  */
 export function getUserCategory(type) {
