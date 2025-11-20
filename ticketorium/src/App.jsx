@@ -26,6 +26,8 @@ import Registration from "./pages/Registration.jsx"; //r
 import PaymentResult from './pages/payment/PaymentResult.jsx'
 import AboutOrganizer from './pages/AboutOrganizer.jsx'
 
+import Disputes from "./pages/Disputes.jsx";
+
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
 function App() {
