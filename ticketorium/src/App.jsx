@@ -14,6 +14,8 @@ import AboutOrganizer from './pages/AboutOrganizer.jsx'
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
+// oh pls work, pleeeeease
+
 function App() {
   // to be replaced in the db, for now, this is just dummy data
   // Dummy users format
