@@ -4,22 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="removed node modules folder">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment=".">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/SearchBtn/SearchBtn.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/search-button/SearchBtn.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/close_modal.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/close_modal.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/hero_img.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/hero_img.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/amex.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/amex.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/card_types.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/card_types.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/cvv.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/cvv.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/mc.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/mc.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/powered_by_stripe.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/powered_by_stripe.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/successful_payment.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/successful_payment.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/temp.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/temp.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/unsuccessful_payment.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/unsuccessful_payment.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/visa.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/visa.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/signup/right_arrow.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/assets/images/signup/right_arrow.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/WaitlistSuccess.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/WaitlistSuccess.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/footer/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/payment/PaymentInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/payment/PaymentInput.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_inputs_list/SignupInputsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_inputs_list/SignupInputsList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AboutOrganizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AboutOrganizer.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/DummyUserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/DummyUserHome.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/events/create_event_page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/events/CreateEvent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/events/edit_event_page.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/events/EditEvent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/payment/Checkout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/payment/Checkout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/payment/PaymentResult.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/payment/PaymentResult.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +56,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="shayma-pls" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -66,7 +91,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "shayma-sprint3",
     "last_opened_file_path": "C:/Users/sweet/OneDrive - KFUPM/KFUPM/2025/251/SWE 363/Project/ticketorium",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -458,7 +483,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763648571831</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary=".">
+      <option name="closed" value="true" />
+      <created>1763660544171</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1763660544171</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,7 +521,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="emptied app file" />
     <MESSAGE value="created all events page" />
     <MESSAGE value="created my events page" />
     <MESSAGE value="updating fonts" />
@@ -513,6 +545,7 @@
     <MESSAGE value="finished disputes" />
     <MESSAGE value="system policies page" />
     <MESSAGE value="removed node modules folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed node modules folder" />
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
   </component>
 </project>
