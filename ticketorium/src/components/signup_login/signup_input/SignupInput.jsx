@@ -92,10 +92,10 @@ function SignupInput(props) {
 
 
     return (
-        <div className='w-[524px]'>
+        <div className='w-[400px] xl:w-[524px]'>
         {props.inputOption === "gender" && 
         <div onClick={handleDropdownClick} className="cursor-pointer">
-        <div className="relative w-[524px] h-[60px]">
+        <div className="relative w-[400px] xl:w-[524px] h-[60px]">
             <div className="p-5 pl-13 border-b-2 border-[rgba(0,0,0,0.2)] w-full h-full">
             </div>
             <FontAwesomeIcon
@@ -110,7 +110,7 @@ function SignupInput(props) {
         }
             <FontAwesomeIcon
                 icon={"fa-solid fa-caret-down"}
-                className="absolute left-[490px] top-7 -translate-y-1/2 text-[rgba(0,0,0,0.2)] text-2xl"
+                className="absolute left-[91%] xl:left-[490px] top-7 -translate-y-1/2 text-[rgba(0,0,0,0.2)] text-2xl"
             />
         </div>
         <DropdownPopup onOptionClick={handleDropdownOptionClick} isOpen={dropdownOpen} />
@@ -118,7 +118,7 @@ function SignupInput(props) {
         }  
 
         {props.inputOption !== "gender" &&
-            <div className="relative w-[524px] h-[60px]">
+            <div className="relative w-[400px] xl:w-[524px] h-[60px]">
                 <input
                 onChange={(event) => props.valAndSetter[1](event.target.value)}
                 type={inputOptions[props.inputOption]["type"]}

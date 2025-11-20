@@ -32,7 +32,7 @@ const navItems = {
 };
 
 
-function InitialAvatar({ name, setOpen, open }) {
+function InitialAvatar({ name, setOpen, open}) {
     const letter = (name && name.trim().charAt(0).toUpperCase()) || "U"; // U = Unknown
 
     return (
@@ -62,17 +62,23 @@ export default function Nav({userName, type, setLoggedInUser}) {
     }, []);
 
     useEffect(() => {
-        console.log("Dropdown open state:", open);
+        // console.log("Dropdown open state:", open);
     }, [open]);
 
     function handleLogout() {
+        navigate("/log-in");
         localStorage.removeItem("loggedInUser");
         setLoggedInUser(null);
-        navigate("/log-in");
+        setOpen(false);
+    }
+
+    function handleChangeUni() {
+        setOpen(false);
+        navigate("/university-selection");
     }
 
     return (
-        <nav id="nav" className="w-full h-15 bg-[#1F4C76] text-white flex items-center justify-between px-3 py-5 relative">
+        <nav id="nav" className="w-full h-15 bg-[var(--secondary-color)] text-white flex items-center justify-between px-3 py-5 relative">
 
             {/* Left*/}
             <div id="nav-links" className="flex items-center gap-10">
@@ -82,7 +88,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
                     <div className="flex-direction-columns items-center">
-                        <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]">-</span>
+                        <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]"></span>
                         <span className="font-[Gilroy-Black] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
                     </div>
                 </div>
@@ -109,6 +115,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
                 {(type === "admin") && (
                     <>
                         <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        <InitialAvatar name={userName} setOpen={setOpen} open={open} />
                     </>
                 )}
 
@@ -117,12 +124,20 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     <>
                         <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
                         <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        <InitialAvatar name={userName} setOpen={setOpen} open={open} />
 
                         {/* Dropdown (Logout only) */}
                         <div
-                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
+                            className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-48 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
                             role="menu"
                         >
+
+                            <button className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                Customize Profile
+                            </button>
+                            {(type === "visitor" || type === "system-admin") && <button onClick={handleChangeUni} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                Change University
+                            </button>}
                             <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
                                 Logout
                             </button>
@@ -130,15 +145,15 @@ export default function Nav({userName, type, setLoggedInUser}) {
                     </>
                 )}
 
-                <InitialAvatar name={userName} setOpen={setOpen} open={open} />
-                <div
+                
+                {/* <div
                     className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top animate-soft ${open ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
                     role="menu"
                 >
                     <button onClick={handleLogout} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
                         Logout
                     </button>
-                </div>
+                </div> */}
 
             </div>
         </nav>
