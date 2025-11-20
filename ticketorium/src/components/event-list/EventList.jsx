@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import Event from "../event/Event";
 
 /**
@@ -8,33 +8,35 @@ import Event from "../event/Event";
  * @param {string} userRole - Current user's role ("student", "visitor", "admin", "organizer")
  */
 
-export default function EventList({ events = {}, userType }) {
-    const items = Object.entries(events); //r
+export default function EventList(props) {
 
-    if (items.length === 0) { //r
+    if (props.events)
+        props.filteredEvents = Object.keys(props.events)
+    
+    if (props.filteredEvents.length === 0) {
         return (
             <div className="flex flex-col justify-center items-center gap-5
                             p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]">
-                No events available.
+                {props.listType === "my-events" ? "No events joined yet." : "No events available."}
             </div>
         );
     }
 
     return ( //r
         <div className="flex flex-col justify-center items-center gap-5 p-3">
-            {items.map(([id, ev]) => (
-                <Event
-                    id={id}                 // pass id so card can link to /event/:id
-                    type={userType}
-                    state={ev.state}
-                    img={ev.img}
-                    title={ev.title}
-                    date={ev.date}
-                    organizer={ev.organizer}
-                    price={ev.price}
-                    inviter={ev.inviter}
+            {props.filteredEvents.map((event) => {
+                return <Event
+                    // key={props.events[event]}
+                    type={props.userType}
+                    state={props.events[event].state}
+                    img={props.events[event].img}
+                    title={props.events[event].title}
+                    date={props.events[event].date}
+                    organizer={props.events[event].organizer}
+                    price={props.events[event].price}
+                    inviter={props.events[event].inviter}
                 />
-            ))}
+            })}
         </div>
     );
 }

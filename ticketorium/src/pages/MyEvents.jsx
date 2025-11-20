@@ -1,10 +1,26 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
 import EventList from "../components/event-list/EventList.jsx";
 
 import { Search, Hash, Plus } from "lucide-react";
+
+// Font Awesome Setup
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import SearchBtn from "../components/SearchBtn/SearchBtn.jsx";
+import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
+
+
+library.add(fas, far, fab)
 import { useNavigate } from "react-router-dom"; //r: needed to navigate to the Create Event page
 
 function AllEvents(props) {
+    const [filteredEvents, setFilteredEvents] = useState([]);
+    const originalState = useRef({});
+
     const navigate = useNavigate(); //r: used when clicking "Create New Event" button
 
     //r: user in props is the username; we must look up the type from users map
@@ -12,8 +28,10 @@ function AllEvents(props) {
 
     const getEventsTitle = (type) => {
         const t = type?.toLowerCase();
+        // There's some dead code here
 
         if (t === "organizer") {
+            return <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]" >My Events</span>;
             return (
                 <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
                     My Events
@@ -23,8 +41,9 @@ function AllEvents(props) {
 
         if (t === "visitor") {
             return (
-                <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
+                <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
                     My Events{" "}
+                    <span>at Harvard</span>
                     <span className="font-[Gilroy-Medium] text-[40px] text-[#1A1A1A] ">
                         at Harvard
                     </span>
@@ -47,6 +66,13 @@ function AllEvents(props) {
         );
     };
 
+    useEffect(() => {
+        props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, originalState, "event", "", { "list-type": "my-events", "university": props.uni})
+        console.log("Original State Set:", originalState.current);
+        setFilteredEvents(Object.keys(originalState.current)); // ik its stupid, but it forces a re-render
+    }, []);
+
+
     return (
         <>
             {/* Content */}
@@ -60,41 +86,23 @@ function AllEvents(props) {
                         id="section-header"
                         className="flex items-center justify-between w-full mt-9 mb-3 px-3"
                     >
+                <div id="events-section" className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10">
+                    <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3 px-3">
                         {/* Left: Title + Search */}
-                        <div className="flex items-center gap-3">
-                            <h1>{getEventsTitle(userType)}</h1>{" "}
-                            {/* r: pass actual userType instead of props.user?.type */}
-                            {/* Search Button */}
-                            {/*onClick={onSearch}*/}
-                            <button
-                                className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 transition"
-                                aria-label="Search"
-                            >
-                                <Search size={20} className="text-gray-500" />
-                            </button>
+                        <div className="flex flex-col gap-4 w-full">
+                            <h1>
+                                {getEventsTitle(props.user?.type)}
+                            </h1>
+                            <div className="flex gap-4 self-start w-full justify-center">
+                                <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", originalState.current, setFilteredEvents, "event", searchValue, { "list-type": "my-events", "university": props.uni})}} expandable={true}/>
+                            </div>
                         </div>
-
-                        {/* Right: Filter and Create Event Buttons */}
                         <div className="flex items-center gap-3">
-                            {/* Left: Filter Button */}
-                            {/*onClick={onFilter}*/}
-                            <button
-                                className="flex items-center gap-2 border-2 border-[#4F6FFF]
-                                text-[#14113B] px-5 py-2 rounded-full font-[Gilroy-Medium]
-                                hover:bg-[#4F6FFF] hover:text-white transition"
-                            >
-                                <Hash size={18} />
-                                Filter
-                            </button>
-
-                            {/* Right: Create Event Button */}
-                            {/* Only visible to organizers */}
-                            {/*onClick={opens create event page}*/}
-                            {userType === "organizer" && ( //r: check userType looked up above
+                            {   (props.user.type === "organizer") && (
                                 <button
                                     onClick={() => navigate("/events/new")} //r: opens the Create Event full page
                                     className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
-                                text-[#14113B]  rounded-[6px] font-[Gilroy-Medium]"
+                                text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
                                 >
                                     <Plus size={18} />
                                     Create New Event
@@ -103,12 +111,10 @@ function AllEvents(props) {
                         </div>
                     </div>
 
-                    <EventList
-                        events={props.events}
-                        userType={userType || "visitor"} //r: pass same derived type to cards
-                    />
+                    <EventList events={originalState.current} filteredEvents={filteredEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events"/>
                 </div>
             </div>
+            {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess}  />}
         </>
     );
 }
