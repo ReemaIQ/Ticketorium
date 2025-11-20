@@ -78,6 +78,6 @@ function AllEvents(props) {
             {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess} />}
         </>
     )
-}
+}//1
 
 export default AllEvents

@@ -1,7 +1,7 @@
 import React from "react";
 import OrganizerAnalytics from "../components/analytics/Analytics.jsx";
 import { Hash, Search } from "lucide-react";
-
+//1
 function Analytics() {
     return (
         <div className="flex flex-col min-h-screen bg-white">
