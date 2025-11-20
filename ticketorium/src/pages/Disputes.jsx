@@ -39,7 +39,7 @@ function NewDisputeForm({ onSubmit, onCancel, username }) {
               value={body}
               onChange={(e) => setBody(e.target.value)}
               placeholder="Describe your issue"
-              className="w-full border border-[#E0E0E0] rounded-[10px] px-4 py-3 text-[14px] font-[Gilroy-Medium] outline-none placeholder:text-[#B5B5B5]"
+              className="w-full border border-[#E0E0E0] rounded-[10px] px-4 py-3 text-[14px] font-[Gilroy-Medium] outline-none placeholder:text-[#B5B5B5] h-[200px]"
           />
                 </div>
 
@@ -125,8 +125,6 @@ export default function MyDisputesPage(props) {
             createdAt: nowIso,
             lastActivityAt: nowIso,
             status: "open",
-            //Add the current user to the participants array
-            //System adds second user maybe by least busy admin?
             participants: [username, "so-cool"],
             messages: [
                 {
@@ -157,10 +155,8 @@ export default function MyDisputesPage(props) {
             const existing = prev[disputeId];
             if (!existing) return prev;
 
-            // 🔑 Prepare the new participants array
             let updatedParticipants = existing.participants ? [...existing.participants] : [];
 
-            // 🔑 Add the current username if they are not already in the list
             if (!updatedParticipants.includes(username)) {
                 updatedParticipants.push(username);
             }
@@ -170,7 +166,6 @@ export default function MyDisputesPage(props) {
                 [disputeId]: {
                     ...existing,
                     lastActivityAt: nowIso,
-                    // 🔑 Update the dispute with the potentially new participant list
                     participants: updatedParticipants,
                     messages: [
                         ...(existing.messages || []),
@@ -214,7 +209,7 @@ export default function MyDisputesPage(props) {
                 className="
                         flex flex-col md:flex-row
                         px-4 md:px-8 pb-6 gap-4 md:gap-6
-                        h-[300px] md:h-[700px] overflow-y-hidden
+                        h-[800px] md:h-[700px] overflow-y-hidden
                     "
             >                {/* Left: Dispute list */}
                 <DisputeList
@@ -224,7 +219,7 @@ export default function MyDisputesPage(props) {
                 />
 
                 {/* Right: main area (empty / new / chat) */}
-                <div className="flex-1 flex flex-col md:h-[600px] h-[450px] mt-3 md:mt-0">
+                <div className="flex-1 flex flex-col md:h-[600px] h-[850px] mt-3 md:mt-0">
 
                         {mode === "empty" && (
                             <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
