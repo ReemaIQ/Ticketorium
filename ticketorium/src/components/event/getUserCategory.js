@@ -10,9 +10,9 @@ export function getUserCategory(type) {
         return "attendee";
     }
 
-    if (normalized === "admin" || normalized === "organizer") {
-        return "other";
-    }
+    if (normalized === "organizer") return "organizer";   // r was "other"
+
+    if (normalized === "admin") return "admin";           // r was "other"
 
     // Default fallback (optional)
     return "other";

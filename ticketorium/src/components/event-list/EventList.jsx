@@ -9,6 +9,9 @@ import Event from "../event/Event";
  */
 
 export default function EventList(props) {
+
+    if (props.events)
+        props.filteredEvents = Object.keys(props.events)
     
     if (props.filteredEvents.length === 0) {
         return (
@@ -19,7 +22,7 @@ export default function EventList(props) {
         );
     }
 
-    return (
+    return ( //r
         <div className="flex flex-col justify-center items-center gap-5 p-3">
             {props.filteredEvents.map((event) => {
                 return <Event
