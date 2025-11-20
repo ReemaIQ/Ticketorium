@@ -1,7 +1,7 @@
 import {Route, Routes, Navigate} from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 
-import Nav from './components/nav/Nav.jsx'
+import Nav from './components/nav/nav.jsx'
 import Footer from './components/footer/Footer.jsx'
 
 import SignupLogin from './pages/SignupLogin.jsx'
@@ -522,49 +522,57 @@ function App() {
   const initialDummyBids = {
         1 : {
             user: "boring-user",
-            topBid: "99.99 $",
+            topBid: 99.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         2 : {
             user: "boring-user",
-            topBid: "89.99 $",
+            topBid: 89.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         3 : {
             user: "boring-user",
-            topBid: "79.99 $",
+            topBid: 79.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         4 : {
             user: "other-user",
-            topBid: "19.99 $",
+            topBid: 19.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         5 : {
             user: "other-user",
-            topBid: "29.99 $",
+            topBid: 29.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         6 : {
             user: "other-user",
-            topBid: "39.99 $",
+            topBid: 39.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         7 : {
             user: "other-user",
-            topBid: "49.99 $",
+            topBid: 49.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         },
         8 : {
             user: "other-user",
-            topBid: "49.99 $",
+            topBid: 49.99,
+            topBiddingUser: "imaginary-student-user",
             date: "Dec 28th 7:00 P.M.",
             year: "2025",
         }

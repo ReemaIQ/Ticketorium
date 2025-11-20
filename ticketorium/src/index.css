@@ -3,9 +3,20 @@
   --primary-color: #1a1a1a;
   --secondary-color: #1F4C76;
   --accent-color: #FFDF4F;
-  --bright-blue-color: #0800FF;
+  --secondary-accent-color: #0800FF;
   --warning-color: #F54141;
+  --footer-color: #11223B;
+  --primary-black: #1A1A1A;
+  --success-color: #46CA48;
 }
+
+/*    "primary-color": "#002147",
+      "secondary-color": "#00132B",
+      "accent-color": "#A8996E",
+      "secondary-accent-color": "#7A6A4A",
+      "filter-buttons": "#002147",
+      "warning-color": "#A8996E",
+      "footer-color": "#000D1A" */
 
 * {
   box-sizing: border-box;
@@ -13,6 +24,11 @@
   padding: 0; */
   scroll-behavior: smooth;
   /* overflow-x: hidden; */
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
 }
 
 /* html, body {
@@ -46,6 +62,14 @@
 }
 
 @font-face {
+    font-family: 'Gilroy-SemiBold';
+    src: url('../public/fonts/gilroy/Gilroy-SemiBold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
     font-family: 'Gilroy-BlackItalic';
     src: url('../public/fonts/gilroy/Gilroy-BlackItalic.ttf') format('truetype');
     font-weight: 900;
@@ -62,6 +86,13 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Epilogue-Bold';
+    src: url('../public/fonts/epilogue/Epilogue-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
 
 /* DM-Sans */
 @font-face {
