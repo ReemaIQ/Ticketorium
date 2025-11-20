@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import EventList from "../components/event-list/EventList.jsx";
 
-import { Search, Hash, Plus } from "lucide-react";
+import {Search, Hash, Plus} from "lucide-react";
 
 // Font Awesome Setup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,33 +10,22 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import SearchBtn from "../components/search-button/SearchBtn.jsx";
+import SearchBtn from "../components/SearchBtn/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
 
 library.add(fas, far, fab)
-import { useNavigate } from "react-router-dom"; //r: needed to navigate to the Create Event page
 
-function MyEvents(props) {
+function AllEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]);
     const originalState = useRef({});
 
-    const navigate = useNavigate(); //r: used when clicking "Create New Event" button
-
-    //r: user in props is the username; we must look up the type from users map
-    const userType = props.user ? props.users[props.user]?.type : null;
-
-    const getEventsTitle = (type) => {
+   const getEventsTitle = (type) => {
         const t = type?.toLowerCase();
         // There's some dead code here
 
         if (t === "organizer") {
             return <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]" >My Events</span>;
-            return (
-                <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-                    My Events
-                </span>
-            );
         }
 
         if (t === "visitor") {
@@ -44,30 +33,19 @@ function MyEvents(props) {
                 <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
                     My Events{" "}
                     <span>at Harvard</span>
-                    <span className="font-[Gilroy-Medium] text-[40px] text-[#1A1A1A] ">
-                        at Harvard
-                    </span>
                 </span>
             );
         }
 
         if (t === "student") {
-            return (
-                <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-                    My Events
-                </span>
-            );
+            return <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">My Events</span>;
         }
 
-        return (
-            <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-                My Events
-            </span>
-        );
+        return <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">My Events at {props.uni}</span>;
     };
 
     useEffect(() => {
-        props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, originalState, "event", "", { "list-type": "my-events", "university": props.university})
+        props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, originalState, "event", "", { "list-type": "my-events", "university": props.uni})
         console.log("Original State Set:", originalState.current);
         setFilteredEvents(Object.keys(originalState.current)); // ik its stupid, but it forces a re-render
     }, []);
@@ -75,10 +53,10 @@ function MyEvents(props) {
 
     return (
         <>
-            {/* Content */}
+            { /* Content */}
             <div id="page-content" className="flex flex-col items-center gap-30">
-                {/* Upcoming Events */}
 
+                {/* Upcoming Events */}
                 <div id="events-section" className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10">
                     <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3 px-3">
                         {/* Left: Title + Search */}
@@ -91,9 +69,8 @@ function MyEvents(props) {
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            {   (props.users[props.user]['type'] === "organizer") && (
+                            {   (props.user.type === "organizer") && (
                                 <button
-                                    onClick={() => navigate("/events/new")} //r: opens the Create Event full page
                                     className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
                                 text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
                                 >
@@ -102,14 +79,16 @@ function MyEvents(props) {
                                 </button>
                             )}
                         </div>
+
                     </div>
 
-                    <EventList events={originalState.current} filteredEvents={filteredEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events" variant="r"/>
+                    <EventList events={originalState.current} filteredEvents={filteredEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events"/>
                 </div>
+
             </div>
             {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess}  />}
         </>
-    );
+    )
 }
 
-export default MyEvents;
+export default AllEvents

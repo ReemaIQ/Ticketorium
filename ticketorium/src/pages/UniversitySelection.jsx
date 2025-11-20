@@ -1,4 +1,4 @@
-import SearchBtn from "../components/search-button/SearchBtn";
+import SearchBtn from "../components/SearchBtn/SearchBtn";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -30,7 +30,7 @@ function UniversitySelection(props) {
                 <h2 className="text-2xl font-[Epilogue-Bold] text-[var(--primary-color)]">Select University</h2>
                 <p className="text-gray-500 mb-6">If you don't see the school you are looking for below, it means it hasn't been registered to our system yet</p>
                 <div className="flex flex-col items-center gap-[13px]">
-                {/* <search-button content={props.universities} searchFor="university" setFiltered={setFilteredUnis} expandable={false} rounded={"6px"}/> */}
+                {/* <SearchBtn content={props.universities} searchFor="university" setFiltered={setFilteredUnis} expandable={false} rounded={"6px"}/> */}
                 <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", props.universities, setFilteredUnis, "university", searchValue)}} expandable={false} rounded={"6px"}/>
 
                 <div className="m-0 p-0"></div> {/* spacer */}

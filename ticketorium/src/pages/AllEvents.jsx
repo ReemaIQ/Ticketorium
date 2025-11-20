@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import SearchBtn from "../components/search-button/SearchBtn.jsx";
+import SearchBtn from "../components/SearchBtn/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
 
@@ -68,7 +68,7 @@ function AllEvents(props) {
                         </div>
                     </div>
 
-                    <EventList events={originalState.current} filteredEvents={filteredEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="all-events" variant="r"/>
+                    <EventList events={originalState.current} filteredEvents={filteredEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="all-events"/>
                 </div>
 
             </div>
