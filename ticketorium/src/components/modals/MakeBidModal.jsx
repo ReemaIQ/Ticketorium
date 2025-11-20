@@ -33,8 +33,7 @@ export default function MakeBidModal({
     if (!open || !bidding) return null;
 
     const numericBid = Number(bid);
-    const isValidBid =
-        bid.trim() !== "" && !Number.isNaN(numericBid) && numericBid > 0;
+    const isValidBid = bid.trim() !== "" && !Number.isNaN(numericBid) && numericBid > bidding.topBid;
 
     const handleSubmit = () => {
         if (!isValidBid) return;
@@ -95,7 +94,7 @@ export default function MakeBidModal({
                                             <span className="text-[#14113B]"> {bidding.date}</span>
                                         </p>
                                         <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Highest Bid:
-                                            <span className="text-[#14113B]"> {bidding.topBid}</span>
+                                            <span className="text-[#14113B]"> $ {bidding.topBid}</span>
                                         </p>
                                     </div>
                                 </div>

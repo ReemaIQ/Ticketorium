@@ -47,8 +47,8 @@ function InitialAvatar({ name, setOpen, open }) {
 
     return (
         <div onClick={() => setOpen(!open)}
-            aria-label="User menu"
-            className="w-8 h-8 rounded-full bg-[#404d71] text-white grid place-items-center select-none hover:bg-[#55608a] cursor-pointer outline-[rgba(255,255,255,0.2)] outline-4"
+             aria-label="User menu"
+             className="w-8 h-8 rounded-full bg-[#404d71] text-white grid place-items-center select-none hover:bg-[#55608a] cursor-pointer outline-[rgba(255,255,255,0.2)] outline-4"
         >
             <span className="text-sm font-semibold">{letter}</span>
         </div>

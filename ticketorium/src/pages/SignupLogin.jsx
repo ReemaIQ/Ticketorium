@@ -88,7 +88,7 @@ function SignupLogin(props) {
 
     // depending on option, redirect to different pages
     if (option == "sign-up") {
-         console.log(email);
+        //  console.log(email);
         // email field
         if (!email) {
             errorsFound["email"] = "Please enter your email"
@@ -125,7 +125,7 @@ function SignupLogin(props) {
         }
 
         if (Object.keys(errorsFound).length > 0) {
-            console.log("Errors found:", errorsFound)
+            // console.log("Errors found:", errorsFound)
             setErrors(errorsFound)
             return
         }
@@ -142,7 +142,7 @@ function SignupLogin(props) {
         const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
         // email or username field
         if (!emailOrUsername) {
-            console.log("bruh", emailOrUsername)
+            // console.log("bruh", emailOrUsername)
             errorsFound["email-or-username"] = "Please enter your email or username"
         }
         // first check format
@@ -173,7 +173,7 @@ function SignupLogin(props) {
 
 
         if (Object.keys(errorsFound).length > 0) {
-            console.log("Errors found:", errorsFound)
+            // console.log("Errors found:", errorsFound)
             setErrors(errorsFound)
             return
         }
@@ -189,7 +189,7 @@ function SignupLogin(props) {
     }
     
     else if (option == "sign-up-part-2") {
-        console.log(email)
+        // console.log(email)
         // username field
         if (!username) {
             errorsFound["username"] = "Please enter your username"
@@ -228,7 +228,7 @@ function SignupLogin(props) {
         } 
 
         if (Object.keys(errorsFound).length > 0) {
-            console.log("Errors found:", errorsFound)
+            // console.log("Errors found:", errorsFound)
             setErrors(errorsFound)
             return
         }
@@ -252,8 +252,6 @@ function SignupLogin(props) {
     }
 
 
-
-
     // empty input fields
     setEmailOrUsername("");
     setEmail("");
@@ -268,11 +266,11 @@ function SignupLogin(props) {
 }
 
     return (
-    <form onSubmit={(e) => handleSubmit(e, props.option)}>
+    <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center mb-[20vh]'>
         <div className="width-full h-full flex flex-col gap-10 m-16">
 
             {/* Header: Log in or Sign Up */}
-            <h1 className="text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
+            <h1 className="text-[50px] sm:text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
 
             {/* List of all inputs, depends if page is login, signup part 1 or 2 */}
             <SignupInputsList option={option} errors={errors} inputsAndSetters={inputsAndSetters} />
@@ -281,7 +279,7 @@ function SignupLogin(props) {
             {options[option]["linkText"] && (
                 <div className="text-[20px] font-[gilroy-medium] flex gap-2">
                     <span className="text-[var(--primary-color)]">{options[option]["linkText"]}</span> 
-                    <NavLink to={options[option]["linkPath"]} end className="text-[var(--bright-blue-color)] cursor-pointer">{options[option]["anchorText"]}</NavLink>
+                    <NavLink to={options[option]["linkPath"]} end className="text-[var(--secondary-accent-color)] cursor-pointer">{options[option]["anchorText"]}</NavLink>
                 </div>
             )}
 
@@ -292,7 +290,7 @@ function SignupLogin(props) {
             </button>
 
             {/* Decoration - Tilted Div */}
-            <div className="absolute bg-[#1F4C76] rotate-[13.21deg] h-[1200px] w-[576.1037586593156px] top-[-30px] right-[-300px] object-contain"></div>
+            {/* <div className="absolute bg-[#1F4C76] rotate-[13.21deg] h-[1200px] w-[576.1037586593156px] top-[-30px] right-[-300px] object-contain"></div> */}
         </div>
     </form>
     )
