@@ -8,6 +8,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import SearchBtn from "../../components/SearchBtn/SearchBtn.jsx";
+import { NavLink } from "react-router-dom";
 
 
 library.add(fas, far, fab)
@@ -207,7 +208,8 @@ function UserHome(props) {
             )}
 
         </div>
-        <button className="border-7 rounded-full py-3 px-15 m-10 self-center border-purple-200 cursor-pointer">Magic Button</button> {/**/}
+        <NavLink to="/checkout" onClick={() => props.setIsPurchasing(true)} className="border-7 rounded-full py-3 px-15 m-10 self-center border-purple-200 cursor-pointer">Magic Button</NavLink>
+        <div className="my-3">Remove later</div>
         </>
     )
 }
