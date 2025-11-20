@@ -1,7 +1,7 @@
-import EventList from "../../components/event-list/EventList.jsx";
+import EventList from "../components/event-list/EventList.jsx";
 import NotificationList from "../components/notification-list/NotificationList.jsx";
-import SearchBtn from "../../components/SearchBtn/SearchBtn.jsx";
-import WaitlistSuccess from "../../components/WaitlistSuccess.jsx";
+import SearchBtn from "../components/search-button/SearchBtn.jsx";
+import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
 import {Hash, Search} from "lucide-react";
 import { NavLink } from "react-router-dom";
@@ -194,15 +194,15 @@ function UserHome(props) {
                         ):
                     (key === "user-events" ?
                         (
-                        <EventList events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events"/>
+                        <EventList events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events" variant="r"/>
 
                         )
                     :
                     (key === "invites-received" ?
-                        <EventList events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received"/>
+                        <EventList events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received" variant="r"/>
                     :
                     (key === "invites-sent" ?
-                        <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
+                        <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent" variant="r"/>
                     :
                     "")
                     ))

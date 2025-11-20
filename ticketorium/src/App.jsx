@@ -22,9 +22,9 @@ import SystemPolicies from "./pages/SystemPolicies.jsx";
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
 function App() {
-  // to be replaced in the db, for now, this is just dummy data
-  // Dummy users format
-  const initialDummyUsers = {
+    // to be replaced in the db, for now, this is just dummy data
+    // Dummy users format
+    const initialDummyUsers = {
     "yo-shayma":
     {
       "first-name": "Shayma",
@@ -85,11 +85,11 @@ function App() {
       "gender": "male",
       "date-of-birth": "2004-10-01",
     }
-  }
+    }
 
-  // dummyUniversities format
-  // id is uni name abbreviated, e.g. kfupm, harvard, saud, etc. unique ids ofc
-  const initialDummyUniversities = {
+    // dummyUniversities format
+    // id is uni name abbreviated, e.g. kfupm, harvard, saud, etc. unique ids ofc
+    const initialDummyUniversities = {
     "kfupm": {
       "name": "King Fahd University of Petroleum and Minerals",
       "logo": "kfupm.png"
@@ -115,10 +115,10 @@ function App() {
       "logo": "cambridge.png"
     }
     // more can be added by system admins only!
-  }
+    }
 
-  // dummyNotifications format
-  const initialDummyNotifications = {
+    // dummyNotifications format
+    const initialDummyNotifications = {
           "event_join_success": {
                 "id":"event_join_success",
                 "category": "event",
@@ -386,10 +386,10 @@ function App() {
     //     "inApp": true,
     //     "email": true
     // }
-  }
+    }
 
-  // dummyDisputes format
-  const initialDummyDisputes = {
+    // dummyDisputes format
+    const initialDummyDisputes = {
         1: {
             title: "Ticket not received",
             subtitle: "Issue with email delivery for my ticket.",
@@ -452,7 +452,7 @@ function App() {
 
 
     // dummyEvents format
-  const initialDummyEvents = {
+    const initialDummyEvents = {
         1: {
             state: "joined",
             img: "group-hiking.png",
@@ -518,8 +518,8 @@ function App() {
         }
     }
 
-  // dummyBids format
-  const initialDummyBids = {
+    // dummyBids format
+    const initialDummyBids = {
         1 : {
             user: "boring-user",
             topBid: 99.99,
@@ -578,18 +578,20 @@ function App() {
         }
     }
 
-  const [loggedInUser, setLoggedInUser] = useState(null); //username only
-  const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
-  const [part1Data, setPart1Data] = useState({});
-  const dummyUsers = useRef({});
-  const dummyUniversities = useRef({});
-  const dummyEvents = useRef({});
-  const dummyBids = useRef({});
-  const dummyNotifications = useRef({});
-  const dummyDisputes = useRef({});
+    const [loggedInUser, setLoggedInUser] = useState(null); //username only
+    const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
+    const [part1Data, setPart1Data] = useState({});
+    const [selectedUni, setSelectedUni] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const dummyUsers = useRef({});
+    const dummyUniversities = useRef({});
+    const dummyEvents = useRef({});
+    const dummyBids = useRef({});
+    const dummyNotifications = useRef({});
+    const dummyDisputes = useRef({});
 
-  useEffect(() => {
-    // loggedInUser 
+    useEffect(() => {
+    // loggedInUser
     localStorage.getItem("loggedInUser") && setLoggedInUser(localStorage.getItem("loggedInUser")); // watch out for username = null
     !localStorage.getItem("loggedInUser") && setLoggedInUser(null);
 
@@ -637,55 +639,55 @@ function App() {
     console.log("Dummy Disputes:", dummyDisputes.current, localStorage.getItem("dummyDisputes"));
     console.log("Logged in", localStorage.getItem("loggedInUser"));
 
-  }, []);
+    }, []);
 
-  const checkIfEmailExists = (email) => {
+    const checkIfEmailExists = (email) => {
     for (const username in dummyUsers.current) {
       if (dummyUsers.current[username].email === email) {
         return true;
       }
     }
     return false;
-  }
+    }
 
-  const checkIfPhoneExists = (phone) => {
+    const checkIfPhoneExists = (phone) => {
     for (const username in dummyUsers.current) {
       if (dummyUsers.current[username].phone === phone) {
         return true;
       }
     }
     return false;
-  }
+    }
 
-  const checkIfUsernameExists = (username) => {
+    const checkIfUsernameExists = (username) => {
     return username in dummyUsers.current;
-  }
+    }
 
-  const checkUsernamePassword = (username, password) => {
+    const checkUsernamePassword = (username, password) => {
     if (username in dummyUsers.current) {
       return dummyUsers.current[username].password === password;
     }
-  }
+    }
 
-  const checkEmailPassword = (email, password) => {
+    const checkEmailPassword = (email, password) => {
     for (const username in dummyUsers.current) {
       if (dummyUsers.current[username].email === email) {
         return dummyUsers.current[username].password === password;
       }
     }
     return false;
-  }
+    }
 
-  const getUsernameFromEmail = (email) => {
+    const getUsernameFromEmail = (email) => {
     for (const username in dummyUsers.current) {
       if (dummyUsers.current[username].email  === email) {
         return username;
       }
     }
     return null;
-  }
+    }
 
-  const addNewUser = (data) => {
+    const addNewUser = (data) => {
     const userObject = {
       "first-name": data["first-name"],
       "last-name": data["last-name"],
@@ -699,10 +701,72 @@ function App() {
     }
     dummyUsers.current[data["username"]] = userObject;
     localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
-  }
+    }
+
+    const assignUni = (university) => {
+        if (loggedInUser) {
+            dummyUsers.current[loggedInUser].university = university;
+            localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
+        }
+    }
+
+// this is a very general function, to avoid repeating code in many places, it is anything and everything related to filtering content
+    // this func sets ids only, in a list, unless typeOfFilter is initial, then it is an object
+
+    const filterContent = (typeOfFilter, content, setter, searchFor, searchValue="", filterDetails) => { // we will utalize the fact that js makes unpassed arguments undefined
+        // content is the content we will filter
+        // searchFor is either university or event or event manager or student
+        // typeOfFilter is either search or filterBtn or initial filtering(my-events or all-events)
+        // search value is only if typeOfFilter is search
+        // filterDetails is only if typeOfFilter is filterBtn or initial filtering(my or all or home)
+        if (searchFor === "university") { // there is only one use of this, searching only, no filter, no initial state either
+            const filtered = Object.keys(content).filter(uniId => content[uniId]["name"].toLowerCase().includes(searchValue.toLowerCase()) || uniId.toLowerCase().includes(searchValue.toLowerCase()));
+            setter(filtered);
+        }
+        // if events, then search by event name, description, organizer
+        if (typeOfFilter === "search" && searchFor === "event") {
+            // console.log("HYYY", content)
+            // just get the events and joined events in content (only for my-events)
+            const filtered = Object.keys(content).filter(eventId => content[eventId]["title"].toLowerCase().includes(searchValue.toLowerCase()))
+            setter(filtered);
+        }
+        else if (typeOfFilter === "initial" && searchFor === "event") {
+            // console.log("Hi, I am here", filterDetails)
+            let results = {};
+            console.log("lol", filterDetails)
+            console.log("burger", loggedInUser)
+            console.log("nugget", filterDetails["list-type"] === "invites-received")
+            console.log("taco", content)
+
+            const ids = filterDetails["list-type"] === "all-events"?
+                Object.keys(content).filter(eventId => content[eventId]["university"] === filterDetails["university"])
+                : (filterDetails["list-type"] === "my-events"?
+
+                    Object.keys(content["eventsJoined"]).filter(eventJoinedId => content["events"][content["eventsJoined"][eventJoinedId]["eventId"]]["university"] === filterDetails["university"] &&
+                        content["eventsJoined"][eventJoinedId]["user"] === loggedInUser && content["eventsJoined"][eventJoinedId]["state"] !== "invited")
+
+                    : (filterDetails["list-type"] === "invites-received"? Object.keys(content["eventsJoined"]).filter(eventJoinedId => content["events"][content["eventsJoined"][eventJoinedId]["eventId"]]["university"] === filterDetails["university"] &&
+                            content["eventsJoined"][eventJoinedId]["state"] === "invited" &&
+                            content["eventsJoined"][eventJoinedId]["invitee"] === loggedInUser) // includes uni, this user, invites received
+
+                        :(filterDetails["list-type"] === "invites-sent"? Object.keys(content["eventsJoined"]).filter(eventJoinedId => content["events"][content["eventsJoined"][eventJoinedId]["eventId"]]["university"] === filterDetails["university"] &&
+                                content["eventsJoined"][eventJoinedId]["state"] === "invited" &&
+                                content["eventsJoined"][eventJoinedId]["user"] === loggedInUser)
+                            :[])));
+            console.log("IDs:", ids)
+
+            for (let id of ids) {
+                results[id] = filterDetails["list-type"] === "all-events"? content[id]: content["events"][content["eventsJoined"][id]["eventId"]];
+            }
+            // console.log("results:", results)
+            setter.current = results
+            // console.log("setter", setter)
+            // console.log("content", filterDetails, content)
+        }
+    }
 
 
-  return (
+    return (
     <>
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} />
       <Routes>
@@ -714,7 +778,7 @@ function App() {
                   ) : dummyUsers.current[loggedInUser]["type"] === "organizer" ? (
                       <OrganizerHomePage /> //reema: organizer home page
                   ) : (
-                      <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current} notifications={dummyNotifications.current} />
+                      <UserHome user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} events={dummyEvents.current} notifications={dummyNotifications.current} filterContent={filterContent}/>
                   )
               }
           />
@@ -726,8 +790,8 @@ function App() {
         <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
         <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
 
-        <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>} />
-        <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />} />
+        <Route path="/my-events" element={<MyEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} filterContent={filterContent}/>} />
+        <Route path="/events" element={<AllEvents user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} filterContent={filterContent}/>} />
         <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
 
         <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
@@ -739,6 +803,7 @@ function App() {
         <Route path="/manage-users" element={<ManageUsers users={dummyUsers.current} user={loggedInUser}/>}/>
         <Route path="/disputes" element={<Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
         <Route path="/system-policies" element={<SystemPolicies />}/>
+        <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection filterContent={filterContent} universities={dummyUniversities.current} assignUni={assignUni} setSelectedUni={setSelectedUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
 
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
 
