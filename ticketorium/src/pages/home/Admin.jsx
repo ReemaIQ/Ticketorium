@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "../../components/nav/Nav.jsx";
+import Nav from "../../components/nav/nav.jsx";
 import EventList from "../../components/event-list/EventList.jsx";
 
 import { Search, Hash } from "lucide-react";
