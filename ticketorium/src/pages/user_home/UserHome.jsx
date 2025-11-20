@@ -24,18 +24,6 @@ const contentOptions = {
         "invites-sent": {
             "header": "Invites Sent",
             "jump-to": "Invites"
-        },
-        "subscriptions-events": {
-            "header": "Events of Subscriptions",
-            "jump-to": "Events of Subscriptions"
-        },
-        "subscriptions": {
-            "header": "Subscriptions",
-            "jump-to": "Subscriptions"
-        },
-        "event-organizers": {
-            "header": "Event Organizers",
-            "jump-to": "Event Organizers"
         }
     }, 
     "visitor": {
@@ -46,18 +34,6 @@ const contentOptions = {
         "invites-received": {
             "header": "Invites Received",
             "jump-to": "Invites"
-        },
-        "subscriptions-events": {
-            "header": "Events of Subscriptions",
-            "jump-to": "Events of Subscriptions"
-        },
-        "subscriptions": {
-            "header": "Subscriptions",
-            "jump-to": "Subscriptions"
-        },
-        "event-organizers": {
-            "header": "Event Organizers",
-            "jump-to": "Event Organizers"
         }
     }, 
     "organizer": {
