@@ -83,6 +83,22 @@ function UserHome(props) {
     const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
     const invitesSentOriginalState = useRef({});
 
+    const [notifications, setNotifications] = useState(props.notifications || {});
+    const notificationArray = useMemo(() => {
+        if (!notifications) return [];
+
+        return Object.values(notifications)
+            .filter((n) => {
+                // If roles are defined, check if current userType is included
+                if (n.roles && Array.isArray(n.roles)) {
+                    return n.roles.includes(props.users[props.user]["type"]);
+                }
+                // If no roles defined, assume visible to all (or change to false to be strict)
+                return true;
+            })
+            .reverse(); // Sort new to old
+
+    }, [notifications, props.users[props.user]["type"]]);
 
     function getSearchBtn(key) {
         switch (key) {
@@ -105,22 +121,8 @@ function UserHome(props) {
             props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, invitesSentOriginalState, "event", "", { "list-type": "invites-sent", "university": props.uni})
             setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current)); // ik its stupid, but it forces a re-render
         }, []);
-    const [notifications, setNotifications] = useState(props.notifications || {});
-    const notificationArray = useMemo(() => {
-        if (!notifications) return [];
 
-        return Object.values(notifications)
-            .filter((n) => {
-                // If roles are defined, check if current userType is included
-                if (n.roles && Array.isArray(n.roles)) {
-                    return n.roles.includes(props.users[props.user]["type"]);
-                }
-                // If no roles defined, assume visible to all (or change to false to be strict)
-                return true;
-            })
-            .reverse(); // Sort new to old
 
-    }, [notifications, props.users[props.user]["type"]]);
 
     return (
         <>
@@ -202,7 +204,7 @@ function UserHome(props) {
                         <EventList events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received" variant="r"/>
                     :
                     (key === "invites-sent" ?
-                        <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent" variant="r"/>
+                        <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
                     :
                     "")
                     ))
