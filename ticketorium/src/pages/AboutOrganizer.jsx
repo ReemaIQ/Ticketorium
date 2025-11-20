@@ -1,6 +1,6 @@
 import EventList from "../components/event-list/EventList";
 import { useState, useEffect } from "react";
-
+//1
 function AboutOrganizer(props) {
     const [organizerEvents, setOrganizerEvents] = useState([]);
 

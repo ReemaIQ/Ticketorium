@@ -4,7 +4,7 @@ import AddListingModal from "../components/modals/AddListingModal.jsx";
 import {Hash, Plus} from "lucide-react";
 import {useState} from "react";
 import React from "react";
-
+//1
 function Bidding(props) {
     const [open, setOpen] = useState(false);
 

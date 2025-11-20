@@ -108,7 +108,7 @@ function MyEvents(props) {
                 </div>
             </div>
             {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess}  />}
-        </>
+        </>//1
     );
 }
 

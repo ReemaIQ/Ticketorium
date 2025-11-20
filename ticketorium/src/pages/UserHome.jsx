@@ -6,7 +6,7 @@ import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 import {Hash, Search} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {useMemo, useState, useRef, useEffect} from "react";
-
+//1
 // Font Awesome Setup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
