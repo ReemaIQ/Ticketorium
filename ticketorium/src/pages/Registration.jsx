@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import successImg from "../assets/images/registration/Correct.jpg";
 import failureImg from "../assets/images/registration/Wrong.jpg";
-
+//1
 function Registration() {
     const navigate = useNavigate();
     const location = useLocation();

@@ -1,7 +1,7 @@
 import SearchBtn from "../components/search-button/SearchBtn";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+//1
 function UniversitySelection(props) {
     const navigate = useNavigate();
 
