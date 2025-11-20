@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import listing from "../../assets/images/bidding/listing.png";
 import bids from "../../assets/images/bidding/bids.png";
-import MakeBidModal from "./MakeBidModal.jsx";
+import MakeBidModal from "../modals/MakeBidModal.jsx";
 
 export default function Bidding({type,bidding}) {
     const [open, setOpen] = useState(false);
@@ -71,7 +71,7 @@ export default function Bidding({type,bidding}) {
                             <span className="text-[#14113B]"> {bidding.date}</span>
                         </p>
                         <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Highest Bid:
-                            <span className="text-[#14113B]"> {bidding.topBid}</span>
+                            <span className="text-[#14113B]"> $ {bidding.topBid}</span>
                         </p>
                     </div>
 
