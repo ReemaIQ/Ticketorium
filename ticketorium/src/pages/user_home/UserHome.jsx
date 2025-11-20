@@ -9,6 +9,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import SearchBtn from "../../components/SearchBtn/SearchBtn.jsx";
 import { NavLink } from "react-router-dom";
+import WaitlistSuccess from "../../components/WaitlistSuccess.jsx";
 
 
 library.add(fas, far, fab)
@@ -209,6 +210,7 @@ function UserHome(props) {
 
         </div>
         <NavLink to="/checkout" onClick={() => props.setIsPurchasing(true)} className="border-7 rounded-full py-3 px-15 m-10 self-center border-purple-200 cursor-pointer">Magic Button</NavLink>
+        {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} />}
         <div className="my-3">Remove later</div>
         </>
     )
