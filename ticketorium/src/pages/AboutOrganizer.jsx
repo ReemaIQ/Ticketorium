@@ -28,7 +28,7 @@ function AboutOrganizer(props) {
             <h2 className="font-[Epilogue-Bold] text-3xl text-[var(--secondary-color)]">Events organized:</h2>
             <div className="flex flex-col justify-center items-center w-full">
                 <div className="max-w-5xl">
-                    <EventList filteredEvents={organizerEvents} events={props.events} userType={props.userType} />
+                    <EventList filteredEvents={organizerEvents} events={props.events} userType={props.userType} variant="r" />
                 </div>
             </div>
         </div>
