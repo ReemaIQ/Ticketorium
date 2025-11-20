@@ -1,21 +1,24 @@
 import EventList from "../../components/event-list/EventList.jsx";
-import {useState, useRef, useEffect} from "react";
+import NotificationList from "../components/notification-list/NotificationList.jsx";
+import SearchBtn from "../../components/SearchBtn/SearchBtn.jsx";
+import WaitlistSuccess from "../../components/WaitlistSuccess.jsx";
+
+import {Hash, Search} from "lucide-react";
+import { NavLink } from "react-router-dom";
+import {useMemo, useState, useRef, useEffect} from "react";
+
 // Font Awesome Setup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import SearchBtn from "../../components/SearchBtn/SearchBtn.jsx";
-import { NavLink } from "react-router-dom";
-import WaitlistSuccess from "../../components/WaitlistSuccess.jsx";
-
 
 library.add(fas, far, fab)
 
+
 const contentOptions = {
-    // student, visitor, organizer, admin, system-admin
+    // student, visitor, analytics, admin, system-admin
     "student": {
         "user-events": {
             "header": "Your Upcoming Events",
@@ -102,6 +105,23 @@ function UserHome(props) {
             props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, invitesSentOriginalState, "event", "", { "list-type": "invites-sent", "university": props.uni})
             setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current)); // ik its stupid, but it forces a re-render
         }, []);
+    const [notifications, setNotifications] = useState(props.notifications || {});
+    const notificationArray = useMemo(() => {
+        if (!notifications) return [];
+
+        return Object.values(notifications)
+            .filter((n) => {
+                // If roles are defined, check if current userType is included
+                if (n.roles && Array.isArray(n.roles)) {
+                    return n.roles.includes(props.users[props.user]["type"]);
+                }
+                // If no roles defined, assume visible to all (or change to false to be strict)
+                return true;
+            })
+            .reverse(); // Sort new to old
+
+    }, [notifications, props.users[props.user]["type"]]);
+
     return (
         <>
         <div className=" m-0 py-10 text-3xl flex flex-col xl:flex-row bg-[var(--secondary-color)] w-full relative xl:justify-between xl:items-center xl:content-center">
@@ -111,7 +131,7 @@ function UserHome(props) {
                     <p className="max-xl:flex flex-col items-center font-[DM-Sans-Light] text-[24px] text-white mt-7">All {(props.users[props.user]["type"] === "visitor" || props.users[props.user]["type"] === "system-admin")? "this": "your"} university's events in one place.</p>
                 </div>
             </div>
-            
+
             <img src={"/src/assets/images/home-main/unis/" + props.universities[props.users[props.user]["university"]]["logo"]} className="max-md:w-[40%] md:max-lg:w-[30%] lg:max-xl:w-[25%] xl:h-150 2xl:h-180 order-1 xl:order-2 self-center object-contain xl:max-w-2xl"/>
         </div>
 
@@ -132,19 +152,33 @@ function UserHome(props) {
                 <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3">
                     {/* Left: Title + Search */}
                     <div className="flex flex-col items-start gap-4 w-full">
-                        <h2 id={key} className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
+                        <h2 id={key} className="font-[Epilogue-Black] text-[50px] xl:text-[50px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
                         <div className="flex gap-4 self-start w-full justify-center">
                             {getSearchBtn(key)}
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <div className="flex w-full max-w-6xl">
                     {
                     key === "notifications" ?
                         (
-                            <h1 className="font-[Gilroy-Medium] text-[20px]"> notifications </h1>
+                            <div className="border-1 rounded-[6px] border-[#E0E0E0] w-full">
+                                <NotificationList
+                                    notifications={notificationArray}
+                                    onMarkAsRead={ (id) => {
+                                        setNotifications((prev) => {
+                                            if (!prev[id]) return prev;
+                                            return {
+                                                ...prev,
+                                                [id]: { ...prev[id], read: true }
+                                            };
+                                        });
+                                    }}
+                                />
+                            </div>
+
                         ) :
                     (key=== "subscriptions" ?
                         (
@@ -163,10 +197,10 @@ function UserHome(props) {
                         <EventList events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events"/>
 
                         )
-                    : 
+                    :
                     (key === "invites-received" ?
                         <EventList events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received"/>
-                    : 
+                    :
                     (key === "invites-sent" ?
                         <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
                     :

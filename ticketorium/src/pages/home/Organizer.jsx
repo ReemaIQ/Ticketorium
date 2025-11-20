@@ -1,7 +1,7 @@
 import React from "react";
 import EventList from "../../components/event-list/EventList.jsx";
 import { Search, Hash } from "lucide-react";
-import OrganizerAnalytics from "../../components/organizer/organizer_analytics.jsx";
+import OrganizerAnalytics from "../../components/analytics/Analytics.jsx";
 import heroImg from "../../assets/img.png";
 
 /* Dummy data – replace later with real events */

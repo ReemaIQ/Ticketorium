@@ -5,7 +5,7 @@ import Event from "../event/Event";
  * Displays a list of events.
  *
  * @param {{}} events - List of event objects
- * @param {string} userRole - Current user's role ("student", "visitor", "admin", "organizer")
+ * @param {string} userRole - Current user's role ("student", "visitor", "admin", "analytics")
  */
 
 export default function EventList(props) {

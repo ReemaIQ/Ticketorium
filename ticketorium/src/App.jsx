@@ -1,7 +1,7 @@
 import {Route, Routes, Navigate} from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 
-import Nav from './components/nav/Nav.jsx'
+import Nav from './components/nav/nav.jsx'
 import Footer from './components/footer/Footer.jsx'
 
 import SignupLogin from './pages/SignupLogin.jsx'
