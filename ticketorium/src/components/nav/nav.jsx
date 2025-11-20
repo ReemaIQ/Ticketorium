@@ -62,7 +62,7 @@ export default function Nav({userName, type, setLoggedInUser}) {
     }, []);
 
     useEffect(() => {
-        console.log("Dropdown open state:", open);
+        // console.log("Dropdown open state:", open);
     }, [open]);
 
     function handleLogout() {

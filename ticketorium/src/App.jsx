@@ -292,12 +292,6 @@ function App() {
     emptyDummyEventsJoined && localStorage.setItem("dummyEventsJoined", JSON.stringify(initialDummyEventsJoined));
     emptyDummyEventsJoined && (dummyEventsJoined.current = initialDummyEventsJoined);
 
-    // console logs of all dummy data, jus for testing
-    // console.log("Dummy Users:", dummyUsers.current);
-    // console.log("Dummy Universities:", dummyUniversities.current);
-    // console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
-    // console.log("Dummy Events Joined:", dummyEventsJoined.current, localStorage.getItem("dummyEventsJoined"));
-    // console.log("Logged in", localStorage.getItem("loggedInUser"));
     setSelectedUni(null);
 
     // testingForceUser("yo-shayma");
@@ -313,10 +307,8 @@ function App() {
     rootStyle.setProperty('--accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["accent-color"] : "#FFDF4F");
     rootStyle.setProperty('--secondary-accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-accent-color"] : "#0800FF");
     rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
-    rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
     rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
     rootStyle.setProperty('--success-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["success-color"] : "#46CA48");
-    // console.log("Current user university:", (loggedInUser && dummyUsers.current[loggedInUser]["university"])? dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]: "No user logged in");
 
     if (loggedInUser && dummyUsers.current[loggedInUser] && 
         dummyUsers.current[loggedInUser].type !== "visitor" && 

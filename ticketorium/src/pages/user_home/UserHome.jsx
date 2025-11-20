@@ -134,12 +134,6 @@ function UserHome(props) {
                     <div className="flex flex-col items-start gap-4 w-full">
                         <h2 id={key} className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
                         <div className="flex gap-4 self-start w-full justify-center">
-                            <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-                                <FontAwesomeIcon
-                                icon={"fa-solid fa-filter"}
-                                className="text-white"
-                                />
-                            </button>
                             {getSearchBtn(key)}
                         </div>
                     </div>
