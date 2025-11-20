@@ -11,13 +11,18 @@ import UserHome from './pages/UserHome.jsx'
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import EventPage from "./pages/Event.jsx";
+
 import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import Analytics from "./pages/Analytics.jsx"; //r
-import Registration from "./pages/Registration.jsx"; //r
+
 import ManageUsers from "./pages/ManageUsers.jsx";
-import Disputes from "./pages/Disputes.jsx";
-import Bidding from "./pages/Bidding.jsx"
+import UniversitySelection from './pages/UniversitySelection.jsx'
 import SystemPolicies from "./pages/SystemPolicies.jsx";
+
+
+import Bidding from "./pages/Bidding.jsx"
+import Checkout from './pages/payment/Checkout.jsx'
+import Registration from "./pages/Registration.jsx"; //r
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
