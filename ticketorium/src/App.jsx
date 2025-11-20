@@ -16,6 +16,7 @@ import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import Analytics from "./pages/Analytics.jsx"; //r
 
 import ManageUsers from "./pages/ManageUsers.jsx";
+import Disputes from "./pages/Disputes.jsx"
 import UniversitySelection from './pages/UniversitySelection.jsx'
 import SystemPolicies from "./pages/SystemPolicies.jsx";
 

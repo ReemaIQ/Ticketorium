@@ -46,9 +46,7 @@ export default function EventActions({ type, category, state , eventId, onAction
     const navigate = useNavigate();
     const [openModal, setOpenModal] = useState(null);
 
-    const actions =
-        eventActionsConfig[category]?.[state] ||
-        eventActionsConfig[category]?.default;
+    const actions = eventActionsConfig[category]?.[state] || eventActionsConfig[category]?.default;
 
     if (!actions) return null;
     const closeModal = () => setOpenModal(null);
