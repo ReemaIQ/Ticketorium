@@ -41,7 +41,7 @@ const footerContent = { // based on user type
     }
 }
 
-// student, analytics, admin, visitor, not-logged-in, system-admin
+// student, organizer, admin, visitor, not-logged-in, system-admin
 
 function Footer(props) {
     return (
