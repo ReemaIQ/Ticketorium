@@ -11,6 +11,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import SearchBtn from "../components/SearchBtn/SearchBtn.jsx";
+import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
 
 library.add(fas, far, fab)
@@ -91,6 +92,7 @@ function AllEvents(props) {
                 </div>
 
             </div>
+            {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess}  />}
         </>
     )
 }
