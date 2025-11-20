@@ -10,6 +10,7 @@ import MyEvents from "./pages/MyEvents.jsx";
 import Checkout from './pages/payment/Checkout.jsx'
 import UniversitySelection from './pages/UniversitySelection.jsx'
 import PaymentResult from './pages/payment/PaymentResult.jsx'
+import AboutOrganizer from './pages/AboutOrganizer.jsx'
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -62,6 +63,18 @@ function App() {
       "password": "Chicken!1111",
       "type": "organizer",
       "university": "KFUPM", // cannot belong to any other university
+      "gender": "male",
+      "date-of-birth": "1997-01-01",
+    },
+    "chicken-tender":
+    {
+      "first-name": "Tender",
+      "last-name": "Person",
+      "email": "tender@harvard.edu",
+      "phone": "01023456783",
+      "password": "Chicken!1111",
+      "type": "organizer",
+      "university": "Harvard", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "1997-01-01",
     },
@@ -177,17 +190,8 @@ function App() {
             img: "group-hiking.png",
             title: "2025 Group Hiking",
             date: "9:30 AM Nov 21, 2025",
-            organizer: "CS Department",
+            organizer: "chicken-nugget",
             price: 0,
-        },
-
-        2: {
-            university: "Manchester",
-            img: "game-dev.png",
-            title: "2025 GameDev Competition",
-            date: "Nov 21, 2025",
-            organizer: "CS Department",
-            price: 19.99,
         },
 
         3: {
@@ -195,7 +199,7 @@ function App() {
             img: "spelling-bee.png",
             title: "2025 Spelling Bee",
             date: "Nov 21, 2025",
-            organizer: "CS Department",
+            organizer: "chicken-tender",
             price: 0,
         },
 
@@ -204,7 +208,7 @@ function App() {
             img: "game-dev.png",
             title: "2025 Coding Competition",
             date: "Nov 21, 2025",
-            organizer: "CS Department",
+            organizer: "chicken-nugget",
             price: 19.99,
         },
 
@@ -213,7 +217,7 @@ function App() {
             img: "game-dev.png",
             title: "2025 Coding Competition",
             date: "Nov 21, 2025",
-            organizer: "CS Department",
+            organizer: "chicken-nugget",
             price: 0,
         },
 
@@ -222,18 +226,9 @@ function App() {
             img: "graduation.png",
             title: "2025 Graduation Ceremony",
             date: "March 6, 2026",
-            organizer: "Harvard",
+            organizer: "chicken-tender",
             price: 0,
         },
-        
-        7: {
-            university: "Manchester",
-            img: "game-dev.png",
-            title: "Shayma's Insanely Awesome Event",
-            date: "December 1, 2025",
-            organizer: "Shayma",
-            price: 0,
-        }
     }
 
     const initialDummyEventsJoined = {
@@ -241,11 +236,6 @@ function App() {
             eventId: 1, // just to be clear, event id here
             user: "yo-shayma", // user id
             state: "joined", // state: joined, waitlisted, invited
-        },
-        2: {
-            eventId: 2,
-            user: "yo-shayma",
-            state: "joined",
         },
 
         3: {
@@ -466,6 +456,7 @@ function App() {
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
   const [waitlistSuccess, setWaitlistSuccess] = useState(false);
+  const [organizerViewing, setOrganizerViewing] = useState(null); // use it later in home, event, my-events, all-events
 
   return (
     <>
@@ -482,6 +473,8 @@ function App() {
         <Route path="/events" element={loggedInUser?<AllEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess} setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
         <Route path="/checkout" element={!loggedInUser?<Navigate to="/log-in"/>: (!isPurchasing? <Navigate to="/home"/>: <Checkout setSuccess={setSuccessfulPayment} setProcessing={setProcessingPayment}/>)} />
         <Route path="/payment-outcome" element={processingPayment? <PaymentResult success={successfulPayment}/>: <Navigate to="/home" />} />
+        <Route path="/about-organizer" element={!loggedInUser? <Navigate to="/log-in"/>: <AboutOrganizer organizer={"chicken-tender"} users={dummyUsers.current} events={dummyEvents.current} userType={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} />} />
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--primary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
       </Routes>
       }
