@@ -54,10 +54,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
 
     /* ---------------- Role logic ---------------- */
     const currentRole = (currentType || "").toLowerCase();
-    const allowedTypes =
-        currentRole === "admin"
-            ? ["visitor", "student", "organizer", "admin"]
-            : ["visitor", "student", "organizer", "admin", "system admin"];
+
+    let allowedTypes = [];
+
+    if (currentRole === "system-admin") {
+        // RULE: System Admins can ONLY create/edit System Admins and Regular Admins
+        allowedTypes = ["admin", "system-admin"];
+    } else {
+        // RULE: Regular Admins can create everyone EXCEPT System Admins
+        // (Assuming currentRole is 'admin' here)
+        allowedTypes = ["visitor", "student", "organizer", "admin"];
+    }
 
     /* ---------------- Validation ---------------- */
     const validate = () => {

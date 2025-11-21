@@ -7,7 +7,8 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 
 import UserCard from "../components/user-card/UserCard.jsx";
-import { UserModal } from "../components/modals/UserModal.jsx"; // Updated import name recommended
+import { UserModal } from "../components/modals/UserModal.jsx";
+import SearchBtn from "../components/search-button/SearchBtn.jsx"; // Updated import name recommended
 
 library.add(fas, far, fab);
 
@@ -21,21 +22,31 @@ export default function ManageUsers(props) {
 
     const currentUser = props.users?.[props.user] || {};
     const currentType = (currentUser.type || currentUser.role || "").toLowerCase();
-    const isPlainAdmin = currentType === "admin";
+    const isRegularAdmin = currentType === "admin";
 
     // Filter Logic
     const filteredUsers = Object.entries(users)
         .filter(([id, u]) => {
             if (id === props.user) return false; // hide self
+
             const targetRole = (u.type || u.role || "").toLowerCase();
-            if (isPlainAdmin && targetRole === "system-admin") return false;
+
+            // RULE 1: Regular admins cannot see system admins
+            if (isRegularAdmin && targetRole === "system-admin") {
+                return false;
+            }
+
+            // System admins see everyone (no specific return false needed)
+
             return true;
         })
-        .filter(([id, u]) =>
-            (u["first-name"] + u["last-name"] + u["type"])
-                .toLowerCase()
-                .includes(search.toLowerCase())
-        )
+        .filter(([id, u]) => {
+            // Simple local search filter
+            // If props.filterContent handles this, you might render that data instead.
+            // Keeping this for immediate UI feedback based on your snippet.
+            const searchStr = (u["first-name"] + " " + u["last-name"] + " " + u["type"]).toLowerCase();
+            return searchStr.includes(search.toLowerCase());
+        })
         .map(([id, u]) => ({ id, ...u }));
 
     /* ---------------- Handlers ---------------- */
@@ -102,29 +113,44 @@ export default function ManageUsers(props) {
 
     return (
         <div className="min-h-screen bg-[#FAFAFA] text-[#1A1A1A]">
-            <header className="flex items-center justify-between max-w-5xl mx-auto px-2 pt-15 pb-4 gap-4">
-                <div className="flex items-center gap-4 flex-1">
+            <header className="flex flex-col items-center justify-between gap-10 max-w-5xl mx-auto px-2 pt-15 pb-4">
+                <div className="flex items-center justify-between w-full gap-4 flex-1">
                     <h1 className="font-[Gilroy-Black] text-[38px] md:text-[44px] leading-none">
                         Manage Users
                     </h1>
-                    <div className="w-9 h-9 md:w-10 md:h-10 rounded-full border border-[#E2E2E2] bg-white flex items-center justify-center shadow-sm">
-                        <Search className="w-4 h-4 text-[#8C8C8C]" />
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                    <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-                        <FontAwesomeIcon icon={"fa-solid fa-filter"} className="text-white" />
-                    </button>
 
                     <button
                         type="button"
                         onClick={handleCreateClick}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F] text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] font-[Gilroy-Medium]"
                     >
                         <Plus size={18} />
                         Create new user
                     </button>
+                </div>
+
+                <div className="flex justify-center items-center w-full gap-3 px-5">
+                    <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
+                        <FontAwesomeIcon icon={"fa-solid fa-filter"} className="text-white" />
+                    </button>
+
+                    <SearchBtn
+                        expandable={true}
+                        filterFunc={(searchValue) => {
+                            props.filterContent(
+                                "search",
+                                originalState.current,
+                                setFilteredEvents,
+                                "event",
+                                searchValue,
+                                {
+                                    "list-type": "all-events",
+                                    university: props.uni,
+                                }
+                            );
+                        }}
+                    />
+
                 </div>
             </header>
 
