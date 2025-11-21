@@ -65,7 +65,7 @@ function NewDisputeForm({ onSubmit, onCancel, username }) {
     );
 }
 
-export default function MyDisputesPage(props) {
+export default function Disputes(props) {
     const [disputes, setDisputes] = useState(props.disputes || {});
     const [selectedId, setSelectedId] = useState(null);
     const [mode, setMode] = useState("empty"); // 'empty' | 'new' | 'chat'
@@ -146,7 +146,6 @@ export default function MyDisputesPage(props) {
         setSelectedId(newId);
         setMode("chat");
     }
-
 
     function handleSendMessage(disputeId, text, username, type = "text", url = null) {
         const nowIso = new Date().toISOString();
