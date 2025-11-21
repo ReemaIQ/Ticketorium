@@ -16,11 +16,11 @@ function DisputeList({ disputes, selectedId, onSelect }) {
                 border-b md:border-b-0 md:border-r border-[#E0E0E0]
                 pb-3 md:pb-0 pr-0 md:pr-4
                 flex flex-col min-h-0
-                h-[250px] md:h-[600px]
+                h-[180px] md:h-[600px]
             "
         >
             <div className="mt-3 md:mt-2 space-y-2 flex-1 min-h-0 overflow-y-auto pr-1">
-                {disputes.map((d) => (
+                {list.map((d) => (
                     <DisputeItem
                         key={d.id}
                         dispute={d}
