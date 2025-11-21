@@ -574,10 +574,20 @@ function App() {
             title: "2025 Coding Competition",
             date: "Nov 21, 2025",
             organizer: "chicken-nugget",
-            price: 0,
+            state:"waitlist",
+            price: 19.99,
         },
 
         6: {
+            university: "KFUPM",
+            img: "game-dev.png",
+            title: "2025 Coding Competition",
+            date: "Nov 21, 2025",
+            organizer: "chicken-nugget",
+            price: 0,
+        },
+
+        7: {
             university: "Harvard",
             img: "graduation.png",
             title: "2025 Graduation Ceremony",
@@ -595,7 +605,7 @@ function App() {
             state: "joined", // state: joined, waitlisted, invited
         },
         2: {
-            eventId: 3,
+            eventId: 6,
             user: "boring-user",
             state: "joined",
         },
@@ -740,6 +750,7 @@ function App() {
     console.log("Dummy Users:", dummyUsers.current);
     console.log("Dummy Universities:", dummyUniversities.current);
     console.log("Dummy Events:", dummyEvents.current, localStorage.getItem("dummyEvents"));
+    console.log("Dummy Events Joined:", dummyEventsJoined.current, localStorage.getItem("dummyEventsJoined"));
     console.log("Dummy Bids:", dummyBids.current, localStorage.getItem("dummyBids"));
     console.log("Dummy Notifications:", dummyNotifications.current, localStorage.getItem("dummyNotifications"));
     console.log("Dummy Disputes:", dummyDisputes.current, localStorage.getItem("dummyDisputes"));

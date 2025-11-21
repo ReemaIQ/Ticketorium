@@ -7,7 +7,7 @@ export const eventActionsConfig = {
             { label: "Send Invite", icon: ArrowRight, variant: "secondary" },
             { label: "Resign", color: "text-red-500", variant: "border" },
         ],
-        "not-joined": [
+        undefined : [
             { label: "Join", icon: ArrowRight, variant: "primary" },
             { label: "Send Invite", variant: "border" },
         ],
