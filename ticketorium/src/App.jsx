@@ -18,6 +18,7 @@ import Analytics from "./pages/Analytics.jsx"; //r
 
 import Disputes from "./pages/Disputes.jsx";
 import ManageUsers from "./pages/ManageUsers.jsx";
+import ManageUniversities from "./pages/ManageUniversities.jsx"
 import UniversitySelection from './pages/UniversitySelection.jsx'
 import SystemPolicies from "./pages/SystemPolicies.jsx";
 
@@ -605,7 +606,7 @@ function App() {
             state: "joined", // state: joined, waitlisted, invited
         },
         2: {
-            eventId: 6,
+            eventId: 4,
             user: "boring-user",
             state: "joined",
         },
@@ -614,10 +615,16 @@ function App() {
             user: "yo-shayma",
             state: "joined",
         },
-        6: {
+        4: {
             eventId: 4,
             user: "boring-user",
             state: "invited",
+            invitee: "yo-shayma"
+        },
+        5: {
+            eventId: 6,
+            user: "yo-shayma",
+            state: "joined",
             invitee: "yo-shayma"
         },
     }
@@ -942,6 +949,7 @@ function App() {
         <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
 
         <Route path="/manage-users" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUsers users={dummyUsers.current} user={loggedInUser}/>: <Navigate to={`/home`}/> }/>
+        <Route path="/manage-universities" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUniversities initialUniversities={dummyUniversities.current}/>: <Navigate to={`/home`}/>} />
         <Route path="/disputes" element={!loggedInUser? <Navigate to="/log-in"/>: <Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
         <Route path="/system-policies" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <SystemPolicies />: <Navigate to={`/home`}/>}/>
 
