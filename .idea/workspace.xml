@@ -4,20 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="integrating changes into main">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/footer/Footer.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/user-card/UserCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/user-card/UserCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AboutOrganizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AboutOrganizer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/ManageUsers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/ManageUsers.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,12 +30,12 @@
     &quot;assignee&quot;: &quot;LenaAshqar&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;2d0816b8-e9a4-431c-8602-3612ebddd751&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ReemaIQ/Ticketorium.git",
+    "accountId": "68f66e2f-0677-471f-b9ae-311e0eedb4d5"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -59,23 +47,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "last-working-main",
-    "last_opened_file_path": "C:/Users/sweet/OneDrive - KFUPM/KFUPM/2025/251/SWE 363/Project/ticketorium",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;lena&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sweet/OneDrive - KFUPM/KFUPM/2025/251/SWE 363/Project/ticketorium&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -97,7 +85,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-WS-252.23892.411" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
       </set>
     </attachedChunks>
   </component>
@@ -127,6 +115,7 @@
       <workItem from="1763535245072" duration="4681000" />
       <workItem from="1763542604558" duration="2093000" />
       <workItem from="1763561015485" duration="8926000" />
+      <workItem from="1763716820941" duration="124000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
