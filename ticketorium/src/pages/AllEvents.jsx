@@ -84,7 +84,7 @@ function AllEvents(props) {
                 >
                     <div
                         id="section-header"
-                        className="flex flex-col items-start justify-between w-full mt-9 mb-3 px-3 gap-4"
+                        className="flex flex-col items-start justify-between max-w-5xl mt-9 mb-3 px-3 gap-4"
                     >
                         {/* Left: Title */}
                         <div className="flex items-center gap-3">

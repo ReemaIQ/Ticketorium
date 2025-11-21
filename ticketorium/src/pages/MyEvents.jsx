@@ -79,21 +79,22 @@ function MyEvents(props) {
     }, []);
 
     return (
-        <div className="w-full h-full">
+        <>
             {/* Content */}
             <div id="page-content" className="flex flex-col items-center gap-30">
                 {/* Upcoming Events */}
                 <div
                     id="events-section"
-                    className="flex flex-col w-full align-middle px-10 xl:px-15 pb-10"
+                    className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10"
                 >
                     <div
                         id="section-header"
-                        className="flex items-center justify-between max-w-5xl mt-9 mb-3 px-3"
+                        className="flex flex-col items-start justify-between max-w-5xl mt-9 mb-3 px-3"
                     >
                         {/* Left: Title + Search */}
-                        <div className="flex flex-col gap-4 w-full">
+                        <div className="flex items-center justify-start gap-4 w-full max-w-5xl">
                             <h1>{getEventsTitle(userType)}</h1>
+                        </div>
 
                             {userType === "organizer" && (
                                 <div className="flex justify-end gap-3">
@@ -115,6 +116,7 @@ function MyEvents(props) {
                                         className="text-white"
                                     />
                                 </button>
+
                                 <SearchBtn
                                     filterFunc={(searchValue) => {
                                         props.filterContent(
@@ -132,20 +134,17 @@ function MyEvents(props) {
                                     expandable={true}
                                 />
                             </div>
-                        </div>
 
                         {/* Right: Create New Event (organizers only) */}
 
                     </div>
 
                     <EventList
-                        events={originalState.current}
+                        events={filteredEvents}
+                        allEvents={props.events}
                         eventsJoined={props.eventsJoined}
-                        filteredEvents={filteredEvents}
-                        filterContent={props.filterContent}
                         userType={userType}
                         listType="my-events"
-                        variant="r"
                     />
                 </div>
             </div>
@@ -156,7 +155,7 @@ function MyEvents(props) {
                     waitlistSuccess={props.waitlistSuccess}
                 />
             )}
-        </div>
+        </>
     );
 }
 
