@@ -2,7 +2,6 @@ import Event from "../event/Event";
 
 // Displays a list of events.
 export default function EventList(props) {
-
     if (props.variant === "r") {
         const items = Object.entries(props.events); //r
 
@@ -18,16 +17,17 @@ export default function EventList(props) {
         return ( //r
             <div className="flex flex-col justify-center items-center gap-5 p-3">
                 {items.map(([id, ev]) => (
+
                     <Event
                         id={id}                 // pass id so card can link to /event/:id
                         type={props.userType}
-                        state={ev.state}
+                        state={props.eventsJoined[id].state}
                         img={ev.img}
                         title={ev.title}
                         date={ev.date}
                         organizer={ev.organizer}
                         price={ev.price}
-                        inviter={ev.inviter}
+                        inviter={props.eventsJoined[id].user}
                     />
                 ))}
             </div>
@@ -51,13 +51,13 @@ export default function EventList(props) {
                     return <Event
                         // key={props.events[event]}
                         type={props.userType}
-                        state={props.events[event].state}
+                        state={props.eventsJoined[event["id"]].state}
                         img={props.events[event].img}
                         title={props.events[event].title}
                         date={props.events[event].date}
                         organizer={props.events[event].organizer}
                         price={props.events[event].price}
-                        inviter={props.events[event].inviter}
+                        inviter={props.eventsJoined[event["id"]].user}
                     />
                 })}
             </div>

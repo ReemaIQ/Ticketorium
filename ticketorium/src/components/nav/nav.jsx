@@ -92,7 +92,7 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
 
     return (
         <>
-            <nav id="nav" className="w-full h-15 bg-[#1F4C76] text-white flex items-center justify-between px-3 py-4 md:px-6 md:py-5 relative">
+            <nav id="nav" className="w-full h-15 bg-[var(--secondary-color)] text-white flex items-center justify-between px-3 py-4 md:px-6 md:py-5 relative">
 
                 {/* Left*/}
                 <div id="nav-links" className="flex items-center gap-6 md:gap-10">
@@ -101,9 +101,8 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
                     <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={() => {navigate('/home');setMobileOpen(false);}}>
                         <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
-                        <div className="flex-direction-columns items-center">
-                            <span className="text-lg font-[Gilroy-Black] flex h-3 text-[#1F4C76]">-</span>
-                            <span className="font-[Gilroy-Black] font-black italic text-[20px] tracking-wide flex">Ticketorium.</span>
+                        <div className="flex-direction-columns relative items-center">
+                            <span className="font-[Gilroy-Black] font-black italic mt-3 text-[20px] tracking-wide flex">Ticketorium.</span>
                         </div>
                     </div>
 
@@ -181,7 +180,7 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
                             {/* Hamburger (mobile only) */}
                             <button
                                 type="button"
-                                className="md:hidden p-1 rounded bg-[#1F4C76] text-white focus:outline-none cursor-pointer hover:opacity-80 transition-opacity"
+                                className="md:hidden p-1 rounded bg-[var(--secondary-color)] text-white focus:outline-none cursor-pointer hover:opacity-80 transition-opacity"
                                 onClick={() => setMobileOpen((prev) => !prev)}
                                 aria-label="Toggle navigation menu"
                             >

@@ -1,11 +1,12 @@
 import EventList from "../components/event-list/EventList.jsx";
 import NotificationList from "../components/notification-list/NotificationList.jsx";
+import Analytics from "../components/analytics/Analytics.jsx";
 import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
 import {Hash, Search} from "lucide-react";
 import { NavLink } from "react-router-dom";
-import {useMemo, useState, useRef, useEffect} from "react";
+import React, {useMemo, useState, useRef, useEffect} from "react";
 
 // Font Awesome Setup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,6 +14,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
+import OrganizerAnalytics from "../components/analytics/Analytics.jsx";
 
 library.add(fas, far, fab)
 
@@ -40,7 +42,14 @@ const contentOptions = {
         }
     }, 
     "organizer": {
-
+        "analytics": {
+            "header": "Recent Analytics",
+            "jump-to": "Analytics"
+        },
+        "upcoming-events": {
+            "header": "Upcoming Events",
+            "jump-to": "Upcoming Events"
+        }
     }, 
     "admin": {
         "notifications": {
@@ -156,6 +165,12 @@ function UserHome(props) {
                     <div className="flex flex-col items-start gap-4 w-full">
                         <h2 id={key} className="font-[Epilogue-Black] text-[50px] xl:text-[50px] text-[var(--primary-color)]">{contentOptions[props.users[props.user]["type"]][key]["header"]}</h2>
                         <div className="flex gap-4 self-start w-full justify-center">
+                            <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
+                                <FontAwesomeIcon
+                                    icon={"fa-solid fa-filter"}
+                                    className="text-white"
+                                />
+                            </button>
                             {getSearchBtn(key)}
                         </div>
                     </div>
@@ -182,33 +197,37 @@ function UserHome(props) {
                             </div>
 
                         ) :
-                    (key=== "subscriptions" ?
+                    (key=== "analytics" ?
                         (
-                            <h1 className="font-[Gilroy-Medium] text-[20px]"> subscriptions </h1>
+                            <>
+                                <div className="w-full max-w-6xl px-15">
+                                    <Analytics />
+                                </div>
+                            </>
+
                         ) :
                     (key === "event-organizers" ?
                         (
                             <h1 className="font-[Gilroy-Medium] text-[20px]"> event-organizers </h1>
                         ) :
-                    (key === "universities" ?
-                        (
-                            <h1 className="font-[Gilroy-Medium] text-[20px]"> universities </h1>
-                        ):
+                    // (key === "universities" ?
+                    //     (
+                    //         <h1 className="font-[Gilroy-Medium] text-[20px]"> universities </h1>
+                    //     ):
                     (key === "user-events" ?
                         (
-                        <EventList events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events" variant="r"/>
-
+                        <EventList eventsJoined={props.eventsJoined} events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events" variant="r"/>
                         )
                     :
                     (key === "invites-received" ?
-                        <EventList events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received" variant="r"/>
+                        <EventList eventsJoined={props.eventsJoined} events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received" variant="r"/>
                     :
                     (key === "invites-sent" ?
-                        <EventList events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
+                        <EventList eventsJoined={props.eventsJoined} events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
                     :
                     "")
                     ))
-                )))
+                ))
                     }
                 </div>
                 </>

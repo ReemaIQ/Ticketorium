@@ -15,6 +15,7 @@ import EventPage from "./pages/Event.jsx";
 import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import Analytics from "./pages/Analytics.jsx"; //r
 
+import Disputes from "./pages/Disputes.jsx";
 import ManageUsers from "./pages/ManageUsers.jsx";
 import UniversitySelection from './pages/UniversitySelection.jsx'
 import SystemPolicies from "./pages/SystemPolicies.jsx";
@@ -25,8 +26,6 @@ import Checkout from './pages/payment/Checkout.jsx'
 import Registration from "./pages/Registration.jsx"; //r
 import PaymentResult from './pages/payment/PaymentResult.jsx'
 import AboutOrganizer from './pages/AboutOrganizer.jsx'
-
-import Disputes from "./pages/Disputes.jsx";
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
@@ -42,7 +41,7 @@ function App() {
       "phone": "01023456780",
       "password": "Shayma!1111",
       "type": "visitor",
-      "university": "harvard", // does not belong to any university. but can choose which university's events to explore
+      "university": "Harvard", // does not belong to any university. but can choose which university's events to explore
       "gender": "female",
       "date-of-birth": "2004-05-01",
     },
@@ -54,7 +53,7 @@ function App() {
       "phone": "01023456781",
       "password": "Cool!1111",
       "type": "admin",
-      "university": "kfupm", // cannot belong to any other university
+      "university": "KFUPM", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "1995-01-01",
     },
@@ -66,7 +65,7 @@ function App() {
       "phone": "01023456782",
       "password": "Dope!1111",
       "type": "system-admin",
-      "university": "harvard", // he is prompted upon login to choose which university to administer
+      "university": "Harvard", // he is prompted upon login to choose which university to administer
       "gender": "male",
       "date-of-birth": "1995-01-01",
     },
@@ -78,7 +77,7 @@ function App() {
       "phone": "01023456783",
       "password": "Chicken!1111",
       "type": "organizer",
-      "university": "kfupm", // cannot belong to any other university
+      "university": "KFUPM", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "1997-01-01",
     },
@@ -102,7 +101,7 @@ function App() {
       "phone": "01023456784",
       "password": "Boring!1111",
       "type": "student",
-      "university": "kfupm", // cannot belong to any other university
+      "university": "KFUPM", // cannot belong to any other university
       "gender": "male",
       "date-of-birth": "2004-10-01",
     }
@@ -119,7 +118,7 @@ function App() {
       "secondary-color": "#004B23",
       "accent-color": "#FFD700",
       "secondary-accent-color": "#003018",
-      "filter-buttons": "#FFD700",
+      "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#002E1A"
@@ -133,10 +132,10 @@ function App() {
       "secondary-color": "#4A0C15",
       "accent-color": "#C4B7A6",
       "secondary-accent-color": "#7A1A24",
-      "filter-buttons": "#A51C30",
+      "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
-      "footer-color": "#3B0A1E"
+      "footer-color": "#3B0A1E",
     }
   },
   "Saud": {
@@ -147,7 +146,7 @@ function App() {
       "secondary-color": "#002F5E",
       "accent-color": "#A5C8E1",
       "secondary-accent-color": "#013A73",
-      "filter-buttons": "#004B8D",
+      "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#001F3B"
@@ -175,7 +174,7 @@ function App() {
       "secondary-color": "#00132B",
       "accent-color": "#A8996E",
       "secondary-accent-color": "#7A6A4A",
-      "filter-buttons": "#002147",
+      "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#000D1A"
@@ -189,7 +188,7 @@ function App() {
       "secondary-color": "#6C8F7A",
       "accent-color": "#D6083B",
       "secondary-accent-color": "#8F062E",
-      "filter-buttons": "#A3C1AD",
+      "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#4A6350"
@@ -531,7 +530,6 @@ function App() {
         // add more disputes...
     };
 
-
     // dummyEvents format
     const initialDummyEvents = {
         1: {
@@ -541,6 +539,15 @@ function App() {
             date: "9:30 AM Nov 21, 2025",
             organizer: "chicken-nugget",
             price: 0,
+        },
+
+        2: {
+            university: "Harvard",
+            img: "group-hiking.png",
+            title: "2025 Group Hiking",
+            date: "9:30 AM Nov 21, 2025",
+            organizer: "chicken-nugget",
+            price: 10.00,
         },
 
         3: {
@@ -580,6 +587,7 @@ function App() {
         },
     }
 
+    // dummyEventsJoined format
     const initialDummyEventsJoined = {
         1: {
             eventId: 1, // just to be clear, event id here
@@ -746,6 +754,7 @@ function App() {
     rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
     rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
     rootStyle.setProperty('--success-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["success-color"] : "#46CA48");
+    rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
 
     if (loggedInUser && dummyUsers.current[loggedInUser] && 
         dummyUsers.current[loggedInUser].type !== "visitor" && 
@@ -894,31 +903,32 @@ function App() {
 
 
     return (
-    <>
+    <div className="flex-col">
       <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} />
       {isLoading && <h1 className='m-15 text-5xl self-center absolute h-[100vh]'>Loading...</h1>}
       {!isLoading &&
       <Routes>
 
-          <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (selectedUni? <UserHome setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} setWaitlistSuccess={setWaitlistSuccess} waitlistSuccess={waitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} uni={dummyUsers.current[loggedInUser].university} user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} notifications={dummyNotifications.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} /> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
+        <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (selectedUni? <UserHome setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} setWaitlistSuccess={setWaitlistSuccess} waitlistSuccess={waitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} uni={dummyUsers.current[loggedInUser].university} user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} notifications={dummyNotifications.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} /> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
 
         <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
         <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
         <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
 
         <Route path="/my-events" element={loggedInUser?<MyEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess}  setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
-        <Route path="/events" element={loggedInUser?<AllEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess} setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
+        <Route path="/events" element={loggedInUser?<AllEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess} setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} uni={dummyUsers.current[loggedInUser].university} eventsJoined={dummyEventsJoined.current}/>: <Navigate to="/log-in" />} />
         <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
 
         <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
 
         <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
         {/* reema: Checkout / Registration Status page */}
-        <Route path="/checkout" element={<Registration />} />
+        <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
 
-        <Route path="/manage-users" element={<ManageUsers users={dummyUsers.current} user={loggedInUser}/>}/>
-        <Route path="/disputes" element={<Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
-        <Route path="/system-policies" element={<SystemPolicies />}/>
+        <Route path="/manage-users" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUsers users={dummyUsers.current} user={loggedInUser}/>: <Navigate to={`/home`}/> }/>
+        <Route path="/disputes" element={!loggedInUser? <Navigate to="/log-in"/>: <Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
+        <Route path="/system-policies" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <SystemPolicies />: <Navigate to={`/home`}/>}/>
+
         <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection filterContent={filterContent} universities={dummyUniversities.current} assignUni={assignUni} setSelectedUni={setSelectedUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
         <Route path="/checkout" element={!loggedInUser?<Navigate to="/log-in"/>: (!isPurchasing? <Navigate to="/home"/>: <Checkout setSuccess={setSuccessfulPayment} setProcessing={setProcessingPayment}/>)} />
         <Route path="/payment-outcome" element={processingPayment? <PaymentResult success={successfulPayment}/>: <Navigate to="/home" />} />
@@ -929,7 +939,7 @@ function App() {
       </Routes>
     }
       <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
-    </>
+    </ div>
   )
 }
 
