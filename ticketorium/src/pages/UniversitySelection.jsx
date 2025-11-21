@@ -19,6 +19,8 @@ function UniversitySelection(props) {
         rootStyle.setProperty('--footer-color', props.universities[university]["theme-colors"]["footer-color"]);
         rootStyle.setProperty('--warning-color', props.universities[university]["theme-colors"]["warning-color"]);
         rootStyle.setProperty('--success-color', props.universities[university]["theme-colors"]["success-color"]);
+        rootStyle.setProperty('--filter-buttons', props.universities[university]["theme-colors"]["filter-buttons"]);
+
         navigate("/home");
     }
 
