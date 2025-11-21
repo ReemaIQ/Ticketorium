@@ -14,6 +14,7 @@ import EventPage from "./pages/Event.jsx";
 
 //import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import CreateEvent from "./pages/events/CreateEvent.jsx"
+import EditEvent from "./pages/events/EditEvent.jsx"
 import Analytics from "./pages/Analytics.jsx"; //r
 
 import Disputes from "./pages/Disputes.jsx";
@@ -66,7 +67,7 @@ function App() {
       "phone": "01023456782",
       "password": "Dope!1111",
       "type": "system-admin",
-      "university": "Harvard", // he is prompted upon login to choose which university to administer
+      "university": null, // he is prompted upon login to choose which university to administer
       "gender": "male",
       "date-of-birth": "1995-01-01",
     },
@@ -564,7 +565,7 @@ function App() {
             university: "KFUPM",
             img: "game-dev.png",
             title: "2025 Coding Competition",
-            date: "Nov 21, 2025",
+            date: "Nov 22, 2025",
             organizer: "chicken-nugget",
             price: 19.99,
         },
@@ -573,7 +574,7 @@ function App() {
             university: "KFUPM",
             img: "game-dev.png",
             title: "2025 Coding Competition",
-            date: "Nov 21, 2025",
+            date: "9:30 AM Nov 25, 2025",
             organizer: "chicken-nugget",
             state:"waitlist",
             price: 19.99,
@@ -583,7 +584,7 @@ function App() {
             university: "KFUPM",
             img: "game-dev.png",
             title: "2025 Coding Competition",
-            date: "Nov 21, 2025",
+            date: "Dec 25, 2025",
             organizer: "chicken-nugget",
             price: 0,
         },
@@ -926,7 +927,7 @@ function App() {
 
     return (
     <div className="flex-col">
-      <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} userName={loggedInUser? dummyUsers.current[loggedInUser]["first-name"]: ""} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} />
+      <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} users={dummyUsers.current} />
       {isLoading && <h1 className='m-15 text-5xl self-center absolute h-[100vh]'>Loading...</h1>}
       {!isLoading &&
       <Routes>
@@ -945,6 +946,7 @@ function App() {
 
         <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
         <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<CreateEvent />)}/>
+        <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : (dummyUsers.current[loggedInUser]["type"] === "student" || dummyUsers.current[loggedInUser]["type"] === "visitor") ? (<Navigate to="/home" />) : (<EditEvent user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />)}/>
           {/* reema: Checkout / Registration Status page */}
         <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
 
