@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="integrating changes into main">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="connected create new event page and button in my events page, fixed button placing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute-list/DisputeList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute-list/DisputeList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +125,7 @@
       <workItem from="1763535245072" duration="4681000" />
       <workItem from="1763542604558" duration="2093000" />
       <workItem from="1763561015485" duration="8926000" />
-      <workItem from="1763731001864" duration="3616000" />
+      <workItem from="1763731001864" duration="5321000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
@@ -487,7 +487,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763674045726</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="fixed disputes not showing">
+      <option name="closed" value="true" />
+      <created>1763746352033</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1763746352033</updated>
+    </task>
+    <task id="LOCAL-00047" summary="connected create new event page and button in my events page, fixed button placing">
+      <option name="closed" value="true" />
+      <created>1763746481378</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1763746481378</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -517,8 +533,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="created my events page" />
-    <MESSAGE value="updating fonts" />
     <MESSAGE value="moved images to organize directories" />
     <MESSAGE value="fixed mistake in passing user type to events list" />
     <MESSAGE value="working on event responsiveness" />
@@ -542,6 +556,8 @@
     <MESSAGE value="removed node modules folder" />
     <MESSAGE value="integrating changes from shayma's code into main" />
     <MESSAGE value="integrating changes into main" />
-    <option name="LAST_COMMIT_MESSAGE" value="integrating changes into main" />
+    <MESSAGE value="fixed disputes not showing" />
+    <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
+    <option name="LAST_COMMIT_MESSAGE" value="connected create new event page and button in my events page, fixed button placing" />
   </component>
 </project>
