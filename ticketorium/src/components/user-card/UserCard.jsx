@@ -15,7 +15,7 @@ export default function UserCard({ user, onDelete }) {
 
     return (
         <div className="max-w-5xl w-full mx-auto">
-            <div className="w-full rounded-[10px] border border-[#E6E6E6] bg-white px-6 py-4 flex items-center justify-between mb-4 shadow-sm">
+            <div className="w-full rounded-[6px] border border-gray-300 bg-white px-6 py-4 flex items-center justify-between mb-4">
 
                 {/* Left: avatar + info */}
                 <div className="flex items-center gap-4">

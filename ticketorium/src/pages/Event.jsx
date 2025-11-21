@@ -713,7 +713,7 @@ export default function EventPage(props) {
                                     closeModal();
 
                                     // 4) Go to checkout / registration status page
-                                    navigate("/checkout", {
+                                    navigate("/registration", {
                                         state: {
                                             isSuccess: true,
                                             eventId,
