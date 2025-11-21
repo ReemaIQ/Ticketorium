@@ -59,7 +59,7 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
     const [logoutOpen, setLogoutOpen] = useState(false); // avatar log out drop down
     const [notificationOpen, setNotificationOpen] = useState(false); //notifications modal
     const [mobileOpen, setMobileOpen] = useState(false); // hamburger menu
-
+    const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
@@ -77,9 +77,15 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
 
 
     function handleLogout() {
+        navigate("/log-in");
         localStorage.removeItem("loggedInUser");
         setLoggedInUser(null);
-        navigate("/log-in");
+        setLogoutOpen(false);
+    }
+
+    function handleChangeUni() {
+        setLogoutOpen(false);
+        navigate("/university-selection");
     }
 
     const items = navItems[type] || [];
@@ -156,6 +162,12 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
                                     }`}
                                     role="menu"
                                 >
+                                    <button className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                        Customize Profile
+                                    </button>
+                                    {(type === "visitor" || type === "system-admin") && <button onClick={handleChangeUni} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
+                                        Change University
+                                    </button>}
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-left px-4 py-2 hover:bg-gray-100"

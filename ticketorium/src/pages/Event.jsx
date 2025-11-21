@@ -7,7 +7,7 @@ import { getUserCategory } from "../components/event/getUserCategory.js";
 //import JoinModal from "./";
 //import SeatingModal from "./";
 
-import {createTicket, fetchTicketForEvent, verifyTicket,} from "../../api/tickets.js"; // tickets & verification
+import {createTicket, fetchTicketForEvent, verifyTicket,} from "../api/tickets.js"; // tickets & verification
 import QRCode from "react-qr-code"; // for QR codes
 import { Scanner } from "@yudiel/react-qr-scanner"; //for QR code scanner
 
