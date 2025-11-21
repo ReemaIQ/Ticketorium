@@ -14,7 +14,7 @@ function MessageBubble({ message, username }) {
                 >
                     <div className="w-[260px] h-[160px] bg-[#C8DAFF] rounded-xl" />
                     {message.caption && (
-                        <p className="mt-2 text-[12px] text-[#1A1A1A] font-[Gilroy-Medium]">
+                        <p className="mt-2 text-[12px] text-[var(--secondary-color)] font-[Gilroy-Medium]">
                             {message.caption}
                         </p>
                     )}
@@ -29,8 +29,8 @@ function MessageBubble({ message, username }) {
             <div
                 className={`px-3 py-2 rounded-2xl text-[13px] font-[Gilroy-Medium] ${
                     isUser
-                        ? "bg-[#14113B] text-white rounded-br-none"
-                        : "bg-[#ECF2FF] text-[#14113B] rounded-bl-none"
+                        ? "bg-[var(--secondary-color)] text-white rounded-br-none"
+                        : "bg-[#ECF2FF] text-[var(--secondary-color)] rounded-bl-none"
                 }`}
             >
                 {message.text}
@@ -121,14 +121,14 @@ function DisputeChat({ dispute, onSendMessage, username }) {
                     className="w-9 h-9 rounded-full border border-[#DADADA] flex items-center justify-center hover:bg-[#F7F7F7]"
                     onClick={() => fileInputRef.current.click()}
                 >
-                    <Paperclip className="w-4 h-4 text-[#14113B]" />
+                    <Paperclip className="w-4 h-4 text-gray-800" />
                 </button>
                 <button
                     type="button"
                     onClick={handleSend}
-                    className="w-9 h-9 rounded-full bg-[#14113B] flex items-center justify-center hover:brightness-110"
+                    className="w-9 h-9 rounded-full bg-[var(--accent-color)] flex items-center justify-center hover:brightness-110"
                 >
-                    <Send className="w-4 h-4 text-white" />
+                    <Send className="w-4 h-4 text-gray-800" />
                 </button>
             </div>
         </div>
