@@ -9,7 +9,7 @@ function getAvatarColor(type) {
     return "bg-[#D4D4D4]";
 }
 
-export default function UserCard({ user, onDelete }) {
+export default function UserCard({ user, onDelete, onEdit }) {
     const initial = user["first-name"]?.trim()?.charAt(0).toUpperCase() || "?";
     const avatarColor = getAvatarColor(user["type"] || "");
 
@@ -43,14 +43,25 @@ export default function UserCard({ user, onDelete }) {
                     </div>
                 </div>
 
-                {/* Right: delete button */}
-                <button
-                    type="button"
-                    onClick={() => onDelete?.(user.id)}
-                    className="px-5 py-1.5 rounded-[8px] border border-red-600 text-red-600 text-[13px] font-[Gilroy-Medium] hover:bg-[#FFF5F5] transition"
-                >
-                    Delete
-                </button>
+                {/* Right: edit and delete buttons */}
+                <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => onDelete?.(user.id)}
+                        className="px-5 py-1.5 rounded-[6px] border border-[var(--warning-color)] text-[var(--warning-color)] text-[14px] font-[Gilroy-Medium]"
+                    >
+                        Delete
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => onEdit?.(user.id)}
+                        className="px-5 py-1.5 rounded-[6px] border border-[var(--secondary-color)] text-[var(--secondary-color)] text-[14px] font-[Gilroy-Medium]"
+                    >
+                        Edit
+                    </button>
+                </div>
+
             </div>
         </div>
     );
