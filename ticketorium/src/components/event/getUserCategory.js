@@ -8,5 +8,5 @@ export function getUserCategory(type) {
         return "attendee";
     }
     if (normalized === "organizer") return "organizer";   // r was "other"
-    if (normalized === "admin") return "admin";           // r was "other"
+    if (normalized === "admin" || normalized === "system-admin") return "admin";           // r was "other"
 }
