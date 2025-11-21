@@ -594,7 +594,11 @@ function App() {
             user: "yo-shayma", // user id
             state: "joined", // state: joined, waitlisted, invited
         },
-
+        2: {
+            eventId: 3,
+            user: "boring-user",
+            state: "joined",
+        },
         3: {
             eventId: 3,
             user: "yo-shayma",

@@ -4,17 +4,7 @@ import { ChevronDown } from "lucide-react";
 import EventActions from "./EventActions";
 import { getUserCategory } from "./getUserCategory.js";
 
-export default function Event({
-                                  id,
-                                  type,
-                                  state,
-                                  img,
-                                  title,
-                                  date,
-                                  organizer,
-                                  price,
-                                  inviter,
-                              }) {
+export default function Event({id, type, state, img, title, date, organizer, price, inviter,}) {
     const category = getUserCategory(type);
     const [expanded, setExpanded] = useState(false); // mobile expand/collapse
 
