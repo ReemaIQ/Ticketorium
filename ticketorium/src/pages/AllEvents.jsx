@@ -1,30 +1,38 @@
 import { useState, useEffect, useRef } from "react";
 import EventList from "../components/event-list/EventList.jsx";
 
-import {Hash, Search} from "lucide-react";
+import { Hash, Search } from "lucide-react";
 
 // Font Awesome Setup
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import SearchBtn from "../components/SearchBtn/SearchBtn.jsx";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+
+// Use same path style as MyEvents
+import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
-
-library.add(fas, far, fab)
+library.add(fas, far, fab);
 
 function AllEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]);
     const originalState = useRef({});
 
+    // user in props is a username; look up in users map
+    const userType = props.user ? props.users[props.user]?.type : null;
+
     const getEventsTitle = (type) => {
         const t = type?.toLowerCase();
 
         if (t === "admin") {
-            return <span className="font-[Gilroy-Black] text-[40px] text-[var(--primary-color)]" >Manage Events</span>;
+            return (
+                <span className="font-[Gilroy-Black] text-[40px] text-[var(--primary-color)]">
+                    Manage Events
+                </span>
+            );
         }
 
         if (t === "visitor") {
@@ -36,48 +44,92 @@ function AllEvents(props) {
         }
 
         if (t === "student") {
-            return <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">Events</span>;
+            return (
+                <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
+                    Events
+                </span>
+            );
         }
 
-        return <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">Events</span>;
+        return (
+            <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
+                Events
+            </span>
+        );
     };
 
     useEffect(() => {
-        props.filterContent("initial", props.events, originalState, "event", "", { "list-type": "all-events", "university": props.uni})
+        props.filterContent(
+            "initial",
+            props.events,
+            originalState,
+            "event",
+            "",
+            { "list-type": "all-events", university: props.uni }
+        );
         console.log("Original State Set:", originalState.current);
-        setFilteredEvents(Object.keys(originalState.current)); // ik its stupid, but it forces a re-render
+        // force a re-render
+        setFilteredEvents(Object.keys(originalState.current));
     }, []);
-
 
     return (
         <>
-            { /* Content */}
+            {/* Content */}
             <div id="page-content" className="flex flex-col items-center gap-30">
-
                 {/* Upcoming Events */}
-                <div id="events-section" className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10">
-                    <div id="section-header" className="flex flex-col items-start justify-between w-full mt-9 mb-3 px-3 gap-4">
-                        {/* Left: Title + Search */}
+                <div
+                    id="events-section"
+                    className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10"
+                >
+                    <div
+                        id="section-header"
+                        className="flex flex-col items-start justify-between w-full mt-9 mb-3 px-3 gap-4"
+                    >
+                        {/* Left: Title */}
                         <div className="flex items-center gap-3">
-                            <h1>
-                                {getEventsTitle(props.users[props.user]['type'])}
-                            </h1>         
+                            <h1>{getEventsTitle(userType)}</h1>
                         </div>
+
+                        {/* Search */}
                         <div className="flex gap-4 self-start w-full justify-center">
-                            <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", originalState.current, setFilteredEvents, "event", searchValue, { "list-type": "all-events", "university": props.uni})}} expandable={true}/>
+                            <SearchBtn
+                                expandable={true}
+                                filterFunc={(searchValue) => {
+                                    props.filterContent(
+                                        "search",
+                                        originalState.current,
+                                        setFilteredEvents,
+                                        "event",
+                                        searchValue,
+                                        {
+                                            "list-type": "all-events",
+                                            university: props.uni,
+                                        }
+                                    );
+                                }}
+                            />
                         </div>
                     </div>
 
-                    <EventList events={originalState.current} filteredEvents={filteredEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="all-events"/>
+                    <EventList
+                        events={originalState.current}
+                        filteredEvents={filteredEvents}
+                        filterContent={props.filterContent}
+                        userType={userType}
+                        listType="all-events"
+                        variant="r"   // kept from your current version
+                    />
                 </div>
-
             </div>
 
-            {/* Footer */}
-            {/* <Footer type={user.type} /> */}
-            {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess} />}
+            {props.waitlistModalOpen && (
+                <WaitlistSuccess
+                    setWaitlistModalOpen={props.setWaitlistModalOpen}
+                    waitlistSuccess={props.waitlistSuccess}
+                />
+            )}
         </>
-    )
+    );
 }
 
-export default AllEvents
+export default AllEvents;
