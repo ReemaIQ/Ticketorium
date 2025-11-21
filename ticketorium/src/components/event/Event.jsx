@@ -7,7 +7,35 @@ import { getUserCategory } from "./getUserCategory.js";
 export default function Event({id, type, state, img, title, date, organizer, price, inviter,}) {
     const category = getUserCategory(type);
     const [expanded, setExpanded] = useState(false); // mobile expand/collapse
-    console.log(title, ": ",state)
+
+    const getRelativeTime = (dateString) => {
+        if (!dateString) return "";
+
+        // 1. Remove leading time (e.g. "9:30 AM ") to ensure 'new Date()' parses correctly
+        // Regex looks for: Digits, Colon, Digits, Space, AM/PM, Space
+        const cleanDateStr = dateString.replace(/^\d{1,2}:\d{2}\s(?:AM|PM)\s/i, '');
+
+        const eventDate = new Date(cleanDateStr);
+        const today = new Date();
+
+        // 2. Validate date
+        if (isNaN(eventDate.getTime())) return dateString; // Fallback if parsing fails
+
+        // 3. Reset time to midnight for accurate day calculation
+        eventDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        // 4. Calculate difference
+        const diffTime = eventDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // 5. Return formatted string
+        if (diffDays < 0) return "Event Ended";
+        if (diffDays === 0) return "Today!";
+        if (diffDays === 1) return "Tomorrow!";
+        return `in ${diffDays} days!`;
+    };
+    const daysLeftText = getRelativeTime(date);
 
     return (
         <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
@@ -34,12 +62,12 @@ export default function Event({id, type, state, img, title, date, organizer, pri
                                 You've been invited to this event by {inviter}!
                             </p>
                             <p className="font-[Gilroy-Bold] text-[var(--secondary-accent-color)] mb-1">
-                                in 3 days!
+                                {daysLeftText}
                             </p>
                         </div>
                     ) : (
                         <p className="font-[Gilroy-Bold] text-right text-[var(--secondary-accent-color)] mb-1">
-                            in 3 days!
+                            {daysLeftText}
                         </p>
                     )}
 
