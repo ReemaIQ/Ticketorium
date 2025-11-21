@@ -6,7 +6,7 @@ import {useState} from "react";
 
 //import ResignModal from "./ResignModal";
 
-function Modal({isOpen, onClose, children}) {
+function ResignModal({isOpen, onClose, children}) {
     useEffect(() => {
         if (!isOpen) return;
 
@@ -38,18 +38,18 @@ const baseBtn =
 
 const variants = {
     primary: "bg-[var(--accent-color)] text-[#14113B]",
-    secondary: "border bg-white text-[#14113B]",
+    secondary: "border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)]",
     border: "border bg-white",
 };
 
 export default function EventActions({ type, category, state , eventId, onAction}) {
     const navigate = useNavigate();
-    const [openModal, setOpenModal] = useState(null);
+    const [openResignModal, setOpenResignModal] = useState(null);
 
     const actions = eventActionsConfig[category]?.[state] || eventActionsConfig[category]?.default;
 
     if (!actions) return null;
-    const closeModal = () => setOpenModal(null);
+    const closeModal = () => setOpenResignModal(null);
 
     return (
         <>
@@ -84,7 +84,7 @@ export default function EventActions({ type, category, state , eventId, onAction
 
                             //Resign Button
                             if (action.label === "Resign") {
-                                setOpenModal("resign");
+                                setOpenResignModal("resign");
                                 return;
                             }
 
@@ -117,7 +117,7 @@ export default function EventActions({ type, category, state , eventId, onAction
                 })}
             </div>
 
-        <Modal isOpen={openModal === "resign"} onClose={closeModal}>
+        <ResignModal isOpen={openResignModal === "resign"} onClose={closeModal}>
             <div className="text-center">
                 <h3 className="text-xl font-semibold">
                     Resign from <span className="font-bold">title var</span>?
@@ -144,12 +144,12 @@ export default function EventActions({ type, category, state , eventId, onAction
 
                 <button
                     onClick={closeModal}
-                    className="px-4 py-2 text-sm font-medium border bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                    className="px-4 py-2 text-sm font-medium border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)] rounded-md shadow-sm hover:bg-slate-50"
                 >
                     Cancel
                 </button>
             </div>
-        </Modal>
+        </ResignModal>
     </>
 
     );

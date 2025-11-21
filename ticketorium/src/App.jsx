@@ -12,14 +12,14 @@ import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import EventPage from "./pages/Event.jsx";
 
-import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
+//import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
+import CreateEvent from "./pages/events/CreateEvent.jsx"
 import Analytics from "./pages/Analytics.jsx"; //r
 
 import Disputes from "./pages/Disputes.jsx";
 import ManageUsers from "./pages/ManageUsers.jsx";
 import UniversitySelection from './pages/UniversitySelection.jsx'
 import SystemPolicies from "./pages/SystemPolicies.jsx";
-
 
 import Bidding from "./pages/Bidding.jsx"
 import Checkout from './pages/payment/Checkout.jsx'
@@ -594,7 +594,11 @@ function App() {
             user: "yo-shayma", // user id
             state: "joined", // state: joined, waitlisted, invited
         },
-
+        2: {
+            eventId: 3,
+            user: "boring-user",
+            state: "joined",
+        },
         3: {
             eventId: 3,
             user: "yo-shayma",
@@ -922,7 +926,8 @@ function App() {
         <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
 
         <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
-        {/* reema: Checkout / Registration Status page */}
+        <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<CreateEvent />)}/>
+          {/* reema: Checkout / Registration Status page */}
         <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
 
         <Route path="/manage-users" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUsers users={dummyUsers.current} user={loggedInUser}/>: <Navigate to={`/home`}/> }/>
