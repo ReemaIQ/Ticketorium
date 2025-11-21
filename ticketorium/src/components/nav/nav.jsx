@@ -55,14 +55,23 @@ function InitialAvatar({ name, setOpen, open }) {
     );
 }
 
-export default function Nav({userName, type, setLoggedInUser, notifications}) {
+export default function Nav({type, setLoggedInUser, notifications, users, user}) {
+
+    const currentUser = user? users?.[user] : "";
+    const firstName = user? users[user]["first-name"]: "";
+    const hasUniversity = currentUser?.university;
+
     const [logoutOpen, setLogoutOpen] = useState(false); // avatar log out drop down
     const [notificationOpen, setNotificationOpen] = useState(false); //notifications modal
     const [mobileOpen, setMobileOpen] = useState(false); // hamburger menu
-    const [open, setOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
+
+    let items = navItems[type] || [];
+    if (user && !hasUniversity) {
+        items = [];
+    }
 
     useEffect(() => {
         function onDocClick(e) {
@@ -87,8 +96,6 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
         setLogoutOpen(false);
         navigate("/university-selection");
     }
-
-    const items = navItems[type] || [];
 
     return (
         <>
@@ -153,7 +160,7 @@ export default function Nav({userName, type, setLoggedInUser, notifications}) {
 
                             {/* Avatar + Logout dropdown */}
                             <div className="relative">
-                                <InitialAvatar name={userName} setOpen={setLogoutOpen} open={logoutOpen} />
+                                <InitialAvatar name={firstName} setOpen={setLogoutOpen} open={logoutOpen} />
 
                                 <div
                                     className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top ${
