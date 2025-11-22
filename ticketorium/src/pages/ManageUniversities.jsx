@@ -88,14 +88,14 @@ function ManageUniversities(props)  {
                 editId={editingId}
                 defaultTheme={editingId ? universities[editingId]["theme-colors"]:
                     {"primary-color": "#1A1A1A",
-                    "secondary-color": "#1F4C76",
-                    "accent-color": "#FFDF4F",
-                    "secondary-accent-color": "#0800FF",
-                    "filter-buttons": "#8200DB",
-                    "warning-color": "#F54141",
-                    "success-color": "#46CA48",
-                    "footer-color": "#11223B",
-                    "dispute-chat": "#d8e5dd"
+                        "secondary-color": "#1F4C76",
+                        "accent-color": "#FFDF4F",
+                        "secondary-accent-color": "#0800FF",
+                        "filter-buttons": "#8200DB",
+                        "warning-color": "#F54141",
+                        "success-color": "#46CA48",
+                        "footer-color": "#11223B",
+                        "dispute-chat": "#d8e5dd"
                     }}
             />
         </div>

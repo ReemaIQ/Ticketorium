@@ -16,7 +16,7 @@ export default function Bidding({type,bidding}) {
 
             {/* Left image */}
             <div className="md:w-1/3">
-                    <img src={`/src/assets/images/event/graduation.png`} alt="Event" className="w-full h-full object-cover"/>
+                <img src={`/src/assets/images/event/graduation.png`} alt="Event" className="w-full h-full object-cover"/>
             </div>
 
             {/* Right content */}
@@ -25,9 +25,9 @@ export default function Bidding({type,bidding}) {
                 {/* Top */}
                 <div>
                     {/* Title */}
-                        <h2 className="font-[Gilroy-Black] text-[#1A1A1A] text-[28px] leading-tight my-1">
-                            {bidding.year} Graduation Ceremony
-                        </h2>
+                    <h2 className="font-[Gilroy-Black] text-[#1A1A1A] text-[28px] leading-tight my-1">
+                        {bidding.year} Graduation Ceremony
+                    </h2>
 
 
                     <p className="font-[Gilroy-Medium] text-[20px] text-[#3E3E3E]">

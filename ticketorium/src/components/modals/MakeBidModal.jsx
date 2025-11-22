@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { X, BadgeDollarSign } from "lucide-react";
 
 export default function MakeBidModal({
-                                             open,
-                                             onClose,
-                                             bidding,              // { img, title, description, countdownText, biddingEnds, latestBid, dateText, analytics }
-                                             onBid,               // (amount: number) => void
-                                         }) {
+                                         open,
+                                         onClose,
+                                         bidding,              // { img, title, description, countdownText, biddingEnds, latestBid, dateText, analytics }
+                                         onBid,               // (amount: number) => void
+                                     }) {
     const [bid, setBid] = useState("");
     const dialogRef = useRef(null);
 
