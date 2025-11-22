@@ -97,7 +97,7 @@ function App() {
 
     const [successfulPayment, setSuccessfulPayment] = useState(false);
     const [processingPayment, setProcessingPayment] = useState(false);
-    const [isPurchasing, setIsPurchasing] = useState(false);
+    const [isPurchasing, setIsPurchasing] = useState(true);
     const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
     const [waitlistSuccess, setWaitlistSuccess] = useState(false);
     const [organizerViewing, setOrganizerViewing] = useState(null);
