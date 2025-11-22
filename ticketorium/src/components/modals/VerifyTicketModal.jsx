@@ -1,6 +1,3 @@
-// VERIFY modal
-// - organizer/admin can verify tickets by code or by scanning QR
-
 import React, { useState } from "react";
 import Modal from "./Modal.jsx";
 import { verifyTicket } from "../../api/tickets.js";
@@ -13,6 +10,9 @@ function VerifyForm({ eventId, onClose }) {
     const [loading, setLoading] = useState(false);
     const [lastScanned, setLastScanned] = useState("");
 
+    // ---------------------------
+    // Core verifier
+    // ---------------------------
     async function runVerify(payload) {
         setLoading(true);
         try {
@@ -29,6 +29,9 @@ function VerifyForm({ eventId, onClose }) {
         }
     }
 
+    // ---------------------------
+    // Verify by manual code
+    // ---------------------------
     async function handleVerifyByCode() {
         if (!code.trim()) {
             alert("Please enter a ticket code.");
@@ -37,10 +40,13 @@ function VerifyForm({ eventId, onClose }) {
         await runVerify({ code: code.trim(), eventId });
     }
 
+    // ---------------------------
+    // Verify scanned QR token
+    // ---------------------------
     async function handleVerifyByToken(token) {
         if (!token) return;
 
-        // avoid spamming same token
+        // Prevent repeated scanning of same token unless result changed
         if (token === lastScanned && result?.valid !== undefined) return;
         setLastScanned(token);
 
@@ -49,7 +55,7 @@ function VerifyForm({ eventId, onClose }) {
 
     return (
         <div>
-            {/* Tabs: Code vs QR */}
+            {/* Mode Tabs */}
             <div className="flex mb-4 border-b border-slate-200">
                 <button
                     type="button"
@@ -62,6 +68,7 @@ function VerifyForm({ eventId, onClose }) {
                 >
                     Enter Ticket Code
                 </button>
+
                 <button
                     type="button"
                     onClick={() => setMode("scan")}
@@ -75,12 +82,15 @@ function VerifyForm({ eventId, onClose }) {
                 </button>
             </div>
 
+            {/* ----------------------------------------- */}
             {/* CODE MODE */}
+            {/* ----------------------------------------- */}
             {mode === "code" && (
                 <>
                     <label className="block text-sm font-[Gilroy-Medium] text-slate-800 mb-1">
                         Ticket Code
                     </label>
+
                     <input
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
@@ -96,6 +106,7 @@ function VerifyForm({ eventId, onClose }) {
                         >
                             {loading ? "Verifying..." : "Verify"}
                         </button>
+
                         <button
                             onClick={onClose}
                             className="px-4 py-2 border border-[var(--secondary-color)] rounded-[6px] bg-white cursor-pointer text-[var(--secondary-color)]"
@@ -106,12 +117,14 @@ function VerifyForm({ eventId, onClose }) {
                 </>
             )}
 
-            {/* SCAN MODE */}
+            {/* ----------------------------------------- */}
+            {/* QR SCAN MODE */}
+            {/* ----------------------------------------- */}
             {mode === "scan" && (
                 <div className="mt-2 text-sm text-slate-600 space-y-3">
                     <p className="text-xs text-slate-500">
-                        Point the camera at the ticket&apos;s QR code. The
-                        ticket will be verified automatically when scanned.
+                        Point the camera at the ticket&apos;s QR code. Ticket
+                        will be automatically verified.
                     </p>
 
                     <div className="w-full max-w-xs mx-auto overflow-hidden rounded-lg border border-slate-200">
@@ -125,9 +138,7 @@ function VerifyForm({ eventId, onClose }) {
                                 console.log("Scanned QR:", token);
                                 handleVerifyByToken(token);
                             }}
-                            onError={(error) => {
-                                console.log("Scanner error:", error);
-                            }}
+                            onError={(error) => console.log("Scanner error:", error)}
                             styles={{
                                 container: { width: "100%" },
                                 video: { width: "100%" },
@@ -146,7 +157,9 @@ function VerifyForm({ eventId, onClose }) {
                 </div>
             )}
 
-            {/* Result panel */}
+            {/* ----------------------------------------- */}
+            {/* RESULT PANEL */}
+            {/* ----------------------------------------- */}
             {result && (
                 <div
                     className={`mt-6 rounded-md border px-4 py-3 text-sm ${
@@ -158,6 +171,7 @@ function VerifyForm({ eventId, onClose }) {
                     <div className="font-semibold mb-1">
                         {result.valid ? "Ticket Verified" : "Ticket Invalid"}
                     </div>
+
                     <div>{result.message}</div>
 
                     {result.ticket && (
@@ -170,9 +184,7 @@ function VerifyForm({ eventId, onClose }) {
                             </div>
                             <div>Event ID: {result.ticket.eventId}</div>
                             <div>Status: {result.ticket.status}</div>
-                            {result.ticket.seat && (
-                                <div>Seat: {result.ticket.seat}</div>
-                            )}
+                            {result.ticket.seat && <div>Seat: {result.ticket.seat}</div>}
                         </div>
                     )}
                 </div>
