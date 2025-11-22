@@ -25,13 +25,13 @@ function UniversityCard({ id, data, onEdit, onDelete }) {
                 <div className="grid grid-cols-2 gap-4 w-full mt-auto">
                     <button
                         onClick={() => onDelete(id)}
-                        className="px-4 py-2 border border-red-300 text-red-500 rounded hover:bg-red-50 hover:border-red-400 transition-colors font-medium"
+                        className="px-4 py-2 border border-[var(--warning-color)] text-[var(--warning-color)] rounded hover:bg-red-50 hover:border-red-400 transition-colors font-medium"
                     >
                         Delete
                     </button>
                     <button
                         onClick={() => onEdit(id, data)}
-                        className="px-4 py-2 border border-gray-300 text-gray-600 rounded hover:bg-gray-50 hover:border-gray-400 transition-colors font-medium"
+                        className="px-4 py-2 border border-[var(--secondary-color)] text-[var(--secondary-color)] rounded hover:bg-gray-50 hover:border-gray-400 transition-colors font-medium"
                     >
                         Edit
                     </button>

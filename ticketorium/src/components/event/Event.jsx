@@ -4,7 +4,19 @@ import { ChevronDown } from "lucide-react";
 import EventActions from "./EventActions";
 import { getUserCategory } from "./getUserCategory.js";
 
-export default function Event({id, type, state, img, title, date, organizer, price, inviter,}) {
+export default function Event({
+                                  event,
+                                  id,
+                                  user,
+                                  type,
+                                  state,
+                                  img,
+                                  title,
+                                  date,
+                                  organizer,
+                                  price,
+                                  inviter,
+                              }) {
     const category = getUserCategory(type);
     const [expanded, setExpanded] = useState(false); // mobile expand/collapse
 
@@ -13,7 +25,7 @@ export default function Event({id, type, state, img, title, date, organizer, pri
 
         // 1. Remove leading time (e.g. "9:30 AM ") to ensure 'new Date()' parses correctly
         // Regex looks for: Digits, Colon, Digits, Space, AM/PM, Space
-        const cleanDateStr = dateString.replace(/^\d{1,2}:\d{2}\s(?:AM|PM)\s/i, '');
+        const cleanDateStr = dateString.replace(/^\d{1,2}:\d{2}\s(?:AM|PM)\s/i, "");
 
         const eventDate = new Date(cleanDateStr);
         const today = new Date();
@@ -35,11 +47,11 @@ export default function Event({id, type, state, img, title, date, organizer, pri
         if (diffDays === 1) return "Tomorrow!";
         return `in ${diffDays} days!`;
     };
+
     const daysLeftText = getRelativeTime(date);
 
     return (
         <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
-
             {/* Left image (click to details) */}
             <div className="md:w-1/3">
                 <NavLink to={`/event/${id}`} aria-label={`Open details for ${title}`}>
@@ -53,7 +65,6 @@ export default function Event({id, type, state, img, title, date, organizer, pri
 
             {/* Right content */}
             <div className="flex flex-col justify-between pb-5 pt-3 pr-4 pl-5 md:w-2/3 md:pl-0 gap-5">
-
                 {/* Top section */}
                 <div>
                     {state === "invited" ? (
@@ -85,7 +96,9 @@ export default function Event({id, type, state, img, title, date, organizer, pri
                             type="button"
                             className="md:hidden p-1 mt-1 rounded-full hover:bg-gray-100 transition-transform"
                             onClick={() => setExpanded((prev) => !prev)}
-                            aria-label={expanded ? "Collapse event details" : "Expand event details"}
+                            aria-label={
+                                expanded ? "Collapse event details" : "Expand event details"
+                            }
                             aria-expanded={expanded}
                         >
                             <ChevronDown
@@ -111,20 +124,28 @@ export default function Event({id, type, state, img, title, date, organizer, pri
                         expanded ? "flex" : "hidden"
                     } md:flex`}
                 >
-                    <EventActions type={type} category={category} state={state} eventId={id} />
+                    {/* Integrated EventActions (single instance, with event + user) */}
+                    <EventActions
+                        user={user}
+                        type={type}
+                        category={category}
+                        state={state}
+                        eventId={id}
+                        event={event}
+                    />
 
                     <div className="flex-1 flex md:flex-row justify-between">
                         <div className="pl-2 flex align-center items-center">
                             {price === 0 && category === "attendee" && (
                                 <span className="font-[Gilroy-Medium] text-gray-700 text-[16px] self-center">
-                            Free
-                        </span>
+                                    Free
+                                </span>
                             )}
 
                             {price !== 0 && category === "attendee" && (
                                 <span className="font-[Gilroy-Bold] text-[var(--secondary-accent-color)] text-[18px] self-center">
-                        $ {price}
-                        </span>
+                                    $ {price}
+                                </span>
                             )}
                         </div>
 
@@ -132,7 +153,6 @@ export default function Event({id, type, state, img, title, date, organizer, pri
                             {date} <br /> by {organizer}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

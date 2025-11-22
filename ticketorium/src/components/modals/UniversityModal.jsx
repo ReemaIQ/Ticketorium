@@ -58,7 +58,7 @@ function UniversityModal ({defaultTheme, isOpen, onClose, onSave, initialData, e
 
                 {/* Modal Header */}
                 <div className="flex justify-between items-center p-6 border-b border-gray-100">
-                    <h2 className="text-2xl font-[Gilroy-Bold] text-gray-800">
+                    <h2 className="text-2xl font-[Gilroy-Bold] text-[#1A1A1A]">
                         {editId ? 'Edit University' : 'Add New University'}
                     </h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
@@ -173,7 +173,7 @@ function UniversityModal ({defaultTheme, isOpen, onClose, onSave, initialData, e
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 font-[Gilroy-Medium] text-red-600 border border-red-600 rounded-[6px] cursor-pointer"
+                            className="px-4 py-2 font-[Gilroy-Medium] text-[var(--warning-color)] border border-[var(--warning-color)]  rounded-[6px] cursor-pointer"
                         >
                             Cancel
                         </button>

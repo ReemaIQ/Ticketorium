@@ -11,6 +11,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 
 library.add(fas, far, fab);
 
+// Use same path style as MyEvents
 import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
@@ -27,7 +28,7 @@ function AllEvents(props) {
 
         if (t === "admin") {
             return (
-                <span className="font-[Gilroy-Black] text-[40px] text-[var(--primary-color)]">
+                <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
                     Manage Events
                 </span>
             );
@@ -35,22 +36,22 @@ function AllEvents(props) {
 
         if (t === "visitor") {
             return (
-                <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
-                    Events at {props.uni}
+                <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
+                    Events at <span className="text-[var(--primary-color)] font-[Gilroy-Medium]"> {props.uni} </span>
                 </span>
             );
         }
 
         if (t === "student") {
             return (
-                <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
+                <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
                     Events
                 </span>
             );
         }
 
         return (
-            <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
+            <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
                 Events
             </span>
         );
@@ -74,11 +75,11 @@ function AllEvents(props) {
     return (
         <>
             {/* Content */}
-            <div id="page-content" className="flex flex-col items-center gap-30">
+            <div id="page-content" className="flex flex-col items-center gap-30 min-h-screen">
                 {/* Upcoming Events */}
                 <div
                     id="events-section"
-                    className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10"
+                    className="flex flex-col w-full max-w-5xl align-middle px-10 xl:px-15 pb-10"
                 >
                     <div
                         id="section-header"

@@ -54,9 +54,9 @@ function VerifyForm({ eventId, onClose }) {
                 <button
                     type="button"
                     onClick={() => setMode("code")}
-                    className={`flex-1 py-2 text-sm font-medium ${
+                    className={`flex-1 py-2 text-sm font-[Gilroy-Medium] ${
                         mode === "code"
-                            ? "border-b-2 border-[#4F6FFF] text-[#4F6FFF]"
+                            ? "border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] cursor-pointer"
                             : "text-slate-500"
                     }`}
                 >
@@ -65,9 +65,9 @@ function VerifyForm({ eventId, onClose }) {
                 <button
                     type="button"
                     onClick={() => setMode("scan")}
-                    className={`flex-1 py-2 text-sm font-medium ${
+                    className={`flex-1 py-2 text-sm font-[Gilroy-Medium] ${
                         mode === "scan"
-                            ? "border-b-2 border-[#4F6FFF] text-[#4F6FFF]"
+                            ? "border-b-2 border-[var(--primary-color)] text-[var(--primary-color)] cursor-pointer"
                             : "text-slate-500"
                     }`}
                 >
@@ -78,7 +78,7 @@ function VerifyForm({ eventId, onClose }) {
             {/* CODE MODE */}
             {mode === "code" && (
                 <>
-                    <label className="block text-sm text-slate-600 mb-1">
+                    <label className="block text-sm font-[Gilroy-Medium] text-slate-800 mb-1">
                         Ticket Code
                     </label>
                     <input
@@ -92,13 +92,13 @@ function VerifyForm({ eventId, onClose }) {
                         <button
                             onClick={handleVerifyByCode}
                             disabled={loading}
-                            className="px-4 py-2 border rounded-md bg-yellow-400 hover:bg-yellow-300 disabled:opacity-60"
+                            className="px-4 py-2 rounded-[6px] bg-[var(--accent-color)] cursor-pointer disabled:opacity-60 text-[var(--secondary-color)]"
                         >
                             {loading ? "Verifying..." : "Verify"}
                         </button>
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"
+                            className="px-4 py-2 border border-[var(--secondary-color)] rounded-[6px] bg-white cursor-pointer text-[var(--secondary-color)]"
                         >
                             Close
                         </button>
@@ -151,8 +151,8 @@ function VerifyForm({ eventId, onClose }) {
                 <div
                     className={`mt-6 rounded-md border px-4 py-3 text-sm ${
                         result.valid
-                            ? "bg-emerald-50 border-emerald-400 text-emerald-700"
-                            : "bg-rose-50 border-rose-400 text-rose-700"
+                            ? "bg-emerald-50 border-[var(--success-color)] text-[var(--success-color)]"
+                            : "bg-rose-50 border-[var(--warning-color)] text-[var(--warning-color)]"
                     }`}
                 >
                     <div className="font-semibold mb-1">
@@ -191,7 +191,7 @@ function VerifyTicketsModal({ isOpen, onClose, eventId }) {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div>
-                <h3 className="text-xl font-semibold mb-4 text-center">
+                <h3 className="text-xl font-[Gilroy-Medium] mb-4 text-center">
                     Verify Tickets
                 </h3>
                 <VerifyForm eventId={eventId} onClose={onClose} />

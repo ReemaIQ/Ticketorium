@@ -20,7 +20,7 @@ export default function SystemPolicies() {
 
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
-                <h1 className="font-[Gilroy-Black] text-[40px] leading-none text-[#14113B]">
+                <h1 className="font-[Gilroy-Black] text-[40px] leading-none text-[#1A1A1a]">
                     System Policies
                 </h1>
             </div>
@@ -30,7 +30,7 @@ export default function SystemPolicies() {
 
                 {/* Section: General */}
                 <section>
-                    <h2 className="text-[28px] font-[Gilroy-Bold] text-[#14113B] mb-4">
+                    <h2 className="text-[28px] font-[Gilroy-Bold] text-[#1A1A1a] mb-4">
                         General
                     </h2>
 
@@ -53,7 +53,7 @@ export default function SystemPolicies() {
 
                 {/* Section: Event Managers */}
                 <section>
-                    <h2 className="text-[28px] font-[Gilroy-Bold] text-[#14113B] mb-4">
+                    <h2 className="text-[28px] font-[Gilroy-Bold] text-[#1A1A1a] mb-4">
                         Event Managers
                     </h2>
 
@@ -73,7 +73,7 @@ export default function SystemPolicies() {
 
                 {/* Section: Students & Visitors */}
                 <section>
-                    <h2 className="text-[28px] font-[Gilroy-Bold] text-[#14113B] mb-4">
+                    <h2 className="text-[28px] font-[Gilroy-Bold] text-[#1A1A1a] mb-4">
                         Students & Visitors
                     </h2>
 
@@ -124,7 +124,7 @@ export default function SystemPolicies() {
                 {/* Save Button */}
                 <div className="pt-4">
                     <button
-                        className="bg-[#FFDF4F] text-[#14113B] font-[Gilroy-Medium] text-[16px] px-8 py-3 rounded-[6px] hover:brightness-105 transition-all"
+                        className="bg-[var(--accent-color)] text-[var(--secondary-color)] font-[Gilroy-Medium] text-[16px] px-8 py-3 rounded-[6px] hover:brightness-105 transition-all"
                     >
                         Save Changes
                     </button>
