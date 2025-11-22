@@ -6,7 +6,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { useState, useEffect } from 'react'
-import DropdownPopup from '../../dropdown_popup/DropdownPopup'
+import DropdownPopup from './components/dropdown-popup/DropdownPopup.jsx'
 
 library.add(fas, far, fab)
 
