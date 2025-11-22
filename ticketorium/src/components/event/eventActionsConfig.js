@@ -4,10 +4,10 @@ export const eventActionsConfig = {
     attendee: {
         joined: [
             { label: "Your Ticket", icon: Tickets, variant: "primary" }, // opens QR ticket modal
-            { label: "Send Invite", icon: ArrowRight, variant: "secondary" }, //OPENS INVITE MODAL
+            { label: "Send Invite", icon: ArrowRight, variant: "secondary" }, // opens invite modal
             { label: "Resign", color: "text-red-500", variant: "border" }, // opens resign modal / flow
         ],
-        undefined : [
+        undefined: [
             { label: "Join", icon: ArrowRight, variant: "primary" },
             { label: "Send Invite", variant: "border" },
         ],
@@ -34,7 +34,7 @@ export const eventActionsConfig = {
             { label: "Delete", color: "text-[var(--warning-color)]", variant: "border" },
         ],
     },
-    
+
     admin: { //r
         default: [
             { label: "Edit", icon: ArrowRight, variant: "primary" }, // navigate to EditEvent page

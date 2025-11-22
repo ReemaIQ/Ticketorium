@@ -190,20 +190,20 @@ export default function Disputes(props) {
                 </h1>
 
                 {(props.users[props.user]['type'] !== "admin" && props.users[props.user]['type'] !== "system-admin") && (
-                        <div className="flex w-full justify-end">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setMode("new");
-                                    setSelectedId(null);
-                                }}
-                                className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
-                            >
-                                <Plus className="w-4 h-4" />
-                                New Dispute
-                            </button>
-                        </div>
-                    )}
+                    <div className="flex w-full justify-end">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setMode("new");
+                                setSelectedId(null);
+                            }}
+                            className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
+                        >
+                            <Plus className="w-4 h-4" />
+                            New Dispute
+                        </button>
+                    </div>
+                )}
             </header>
 
             <section
@@ -222,30 +222,30 @@ export default function Disputes(props) {
                 {/* Right: main area (empty / new / chat) */}
                 <div className="flex-1 flex flex-col md:h-[600px] h-[850px] mt-3 md:mt-0">
 
-                        {mode === "empty" && (
-                            <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
-                                Select a chat to start messaging.
-                            </div>
-                        )}
+                    {mode === "empty" && (
+                        <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
+                            Select a chat to start messaging.
+                        </div>
+                    )}
 
-                        {mode === "new" && (
-                            <NewDisputeForm
-                                username={props.user}
-                                onSubmit={handleCreateDispute}
-                                onCancel={() =>
-                                    selectedDispute ? setMode("chat") : setMode("empty")
-                                }
-                            />
-                        )}
+                    {mode === "new" && (
+                        <NewDisputeForm
+                            username={props.user}
+                            onSubmit={handleCreateDispute}
+                            onCancel={() =>
+                                selectedDispute ? setMode("chat") : setMode("empty")
+                            }
+                        />
+                    )}
 
-                        {mode === "chat" && selectedDispute && (
+                    {mode === "chat" && selectedDispute && (
 
-                            <DisputeChat
-                                dispute={selectedDispute}
-                                onSendMessage={handleSendMessage}
-                                username={props.user}
-                            />
-                        )}
+                        <DisputeChat
+                            dispute={selectedDispute}
+                            onSendMessage={handleSendMessage}
+                            username={props.user}
+                        />
+                    )}
                 </div>
             </section>
         </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { eventActionsConfig } from "./eventActionsConfig";
-import {useLocation, useNavigate} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowRight, Tickets } from "lucide-react";
 
 import JoinModal from "../modals/JoinModal.jsx";
@@ -9,7 +9,7 @@ import TicketModal from "../modals/TicketModal.jsx";
 import VerifyTicketsModal from "../modals/VerifyTicketModal.jsx";
 import ResignModal from "../modals/ResignModal.jsx";
 import DeleteEventModal from "../modals/DeleteEventModal.jsx";
-import {fetchTicketForEvent} from "../../api/tickets.js";
+import { fetchTicketForEvent } from "../../api/tickets.js";
 
 /* ----------------------------- Buttons styling ----------------------------- */
 
@@ -23,7 +23,6 @@ const variants = {
     border: "border bg-white",
 };
 
-
 /* ----------------------------- Main Component ----------------------------- */
 
 export default function EventActions({
@@ -35,27 +34,33 @@ export default function EventActions({
                                          eventId,
                                          onAction,
                                      }) {
-
     const navigate = useNavigate();
     const routerLocation = useLocation();
 
-    const passedEvent = event? event : {};
+    const passedEvent = event ? event : {};
+
+    const [viewState, setViewState] = useState(event?.state || null);
+    const [ticket, setTicket] = useState(null);
+    const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'verify' | 'delete' | 'ticket' | 'none'
+    const [showDeleteBanner, setShowDeleteBanner] = useState(false);
+
+    const closeModal = () => setOpenModal("none");
 
     /* AUTO-OPEN MODALS WHEN COMING FROM REGISTRATION PAGE */
     useEffect(() => {
-        const state = routerLocation.state;
-        if (!state) return;
+        const navState = routerLocation.state;
+        if (!navState) return;
 
-        if (state.openJoinModal) {
+        if (navState.openJoinModal) {
             setOpenModal("join");
-        } else if (state.openTicketModal) {
+        } else if (navState.openTicketModal) {
             setOpenModal("ticket");
         }
     }, [routerLocation.state]);
 
     // load existing ticket from backend when page mounts/user changes
     useEffect(() => {
-        if (!user) return;
+        if (!user || !eventId) return;
 
         async function loadTicket() {
             try {
@@ -72,13 +77,7 @@ export default function EventActions({
         loadTicket();
     }, [eventId, user]);
 
-    const [viewState, setViewState] = useState(event?.state || null);
-    const [ticket, setTicket] = useState(null);
-    const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'verify' | 'delete' | 'ticket' | 'none'
-    const closeModal = () => setOpenModal("none");
-    const [showDeleteBanner, setShowDeleteBanner] = useState(false);
-
-    // map EventActions button label → open correct modal / route
+    // map EventActions button label → open correct modal / route (for full event details view)
     function handleAction(label) {
         switch (label) {
             // attend / waitlist
@@ -163,14 +162,33 @@ export default function EventActions({
                         const isTickets = Icon === Tickets;
 
                         const handleClick = () => {
-                            // If the page provided a handler, let it decide (details page then open modals)
+                            const label = action.label;
+
+                            // If the page provided a handler, let it decide
+                            // (e.g. cards or details page can hook into this)
                             if (onAction) {
-                                onAction(action.label);
+                                onAction(label);
                                 return;
                             }
 
-                            handleAction(action.label);
-                            console.log(`${action.label} clicked`);
+                            // CARD / LIST FALLBACK:
+                            // If we are in a context where we only know eventId (no full `event` object),
+                            // make "View" / "Join" / "Pay & Join" / "Verify Tickets" go to the details page.
+                            if (
+                                !event &&
+                                eventId &&
+                                (label === "View" ||
+                                    label === "Join" ||
+                                    label === "Pay & Join" ||
+                                    label === "Verify Tickets")
+                            ) {
+                                navigate(`/event/${eventId}`);
+                                return;
+                            }
+
+                            // Default: use internal modal / routing logic
+                            handleAction(label);
+                            console.log(`${label} clicked`);
                         };
 
                         return (
@@ -206,7 +224,7 @@ export default function EventActions({
                 setViewState={setViewState}
             />
 
-            {/* INVITE modal: dummy invite UI */}
+            {/* INVITE modal */}
             <InviteModal
                 isOpen={openModal === "invite"}
                 onClose={closeModal}
@@ -229,7 +247,7 @@ export default function EventActions({
                 eventId={eventId}
             />
 
-            {/* RESIGN modal: move user from joined to not-joined */}
+            {/* RESIGN modal */}
             <ResignModal
                 isOpen={openModal === "resign"}
                 onClose={closeModal}
