@@ -114,7 +114,7 @@ function UserHome(props) {
             })
             .reverse(); // Sort new to old
 
-    }, [notifications, props.users[props.user]["type"]]);
+    }, [notifications, props.user, props.users]);
 
     function getSearchBtn(key) {
         switch (key) {
