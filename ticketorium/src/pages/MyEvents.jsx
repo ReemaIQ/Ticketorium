@@ -1,11 +1,6 @@
 // "My Events" page
-// - For students/visitors: shows events they joined (using EventList)
-// - For organizers: also shows "Create New Event" button → /create-event
-//   (CreateEvent.jsx handles the creation form)
-// - Event cards here still use Event → EventPage for:
-//     * joining
-//     * QR tickets
-//     * QR verification (via EventActions + EventPage)
+// - For students/visitors: shows events they joined (using EventList).
+// - For organizers: shows "Create New Event" button and their events (still using EventList).
 
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,9 +22,8 @@ function MyEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]);
     const originalState = useRef({});
 
-    const navigate = useNavigate(); // used when clicking "Create New Event" button
+    const navigate = useNavigate();
 
-    // user in props is the username; we must look up the type from users map
     const userType = props.user ? props.users[props.user]?.type : null;
 
     const getEventsTitle = (type) => {
@@ -54,6 +48,7 @@ function MyEvents(props) {
     };
 
     useEffect(() => {
+        // Initial build: joined events for this user and university.
         props.filterContent(
             "initial",
             { events: props.events, eventsJoined: props.eventsJoined },
@@ -62,17 +57,22 @@ function MyEvents(props) {
             "",
             { "list-type": "my-events", university: props.uni }
         );
-        console.log("Original State Set:", originalState.current);
-        // forces a re-render
-        setFilteredEvents(Object.keys(originalState.current));
-    }, []);
 
-    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv", filteredEvents)
+        console.log("MyEvents originalState:", originalState.current);
+
+        // Start with all items visible.
+        setFilteredEvents(Object.keys(originalState.current));
+    }, [props.events, props.eventsJoined, props.filterContent, props.uni]);
+
+    console.log("MyEvents filteredEvents ids:", filteredEvents);
 
     return (
         <>
             {/* Content */}
-            <div id="page-content" className="flex flex-col items-center gap-30 w-full min-h-screen">
+            <div
+                id="page-content"
+                className="flex flex-col items-center gap-30 w-full min-h-screen"
+            >
                 {/* Upcoming Events */}
                 <div
                     id="events-section"
@@ -82,11 +82,12 @@ function MyEvents(props) {
                         id="section-header"
                         className="flex flex-col items-start gap-5 max-w-5xl mt-9 mb-3 px-3"
                     >
-                        {/* Left: Title + Search */}
+                        {/* Header row: title + create button (for organizers) */}
                         <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full max-w-5xl">
-                            <h1 className="justify-end w-full">{getEventsTitle(userType)}</h1>
+                            <h1 className="justify-end w-full">
+                                {getEventsTitle(userType)}
+                            </h1>
 
-                            {/* Right: Create New Event (organizers only) */}
                             {userType === "organizer" && (
                                 <div className="flex justify-end w-full gap-3">
                                     <button
@@ -101,6 +102,7 @@ function MyEvents(props) {
                             )}
                         </div>
 
+                        {/* Search and filter */}
                         <div className="flex gap-4 self-start w-full justify-center">
                             <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
                                 <FontAwesomeIcon
@@ -111,6 +113,7 @@ function MyEvents(props) {
 
                             <SearchBtn
                                 filterFunc={(searchValue) => {
+                                    // Use search helper on the already filtered map (joined events).
                                     props.filterContent(
                                         "search",
                                         originalState.current,
@@ -128,23 +131,26 @@ function MyEvents(props) {
                         </div>
                     </div>
 
+                    {/* Organizer view can be different later if you want; for now keep same behavior */}
                     {userType === "organizer" && (
                         <EventList
-                            events={props.events}
+                            events={originalState.current}
                             allEvents={props.events}
                             eventsJoined={props.eventsJoined}
                             userType={userType}
                             listType="my-events"
+                            filterIds={filteredEvents}
                         />
                     )}
 
                     {userType !== "organizer" && (
                         <EventList
-                            events={filteredEvents}
+                            events={originalState.current}
                             allEvents={props.events}
                             eventsJoined={props.eventsJoined}
                             userType={userType}
                             listType="my-events"
+                            filterIds={filteredEvents}
                         />
                     )}
                 </div>
