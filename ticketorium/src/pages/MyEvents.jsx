@@ -79,21 +79,35 @@ function MyEvents(props) {
     }, []);
 
     return (
-        <>
+        <div className="w-full h-full">
             {/* Content */}
             <div id="page-content" className="flex flex-col items-center gap-30">
                 {/* Upcoming Events */}
                 <div
                     id="events-section"
-                    className="flex flex-col max-w-5xl align-middle px-10 xl:px-15 pb-10"
+                    className="flex flex-col w-full align-middle px-10 xl:px-15 pb-10"
                 >
                     <div
                         id="section-header"
-                        className="flex items-center justify-between w-full mt-9 mb-3 px-3"
+                        className="flex items-center justify-between max-w-5xl mt-9 mb-3 px-3"
                     >
                         {/* Left: Title + Search */}
                         <div className="flex flex-col gap-4 w-full">
                             <h1>{getEventsTitle(userType)}</h1>
+
+                            {userType === "organizer" && (
+                                <div className="flex justify-end gap-3">
+                                    <button
+                                        onClick={() => navigate("/create-event")}
+                                        className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
+                                            text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
+                                    >
+                                        <Plus size={18} />
+                                        Create New Event
+                                    </button>
+                                </div>
+                            )}
+
                             <div className="flex gap-4 self-start w-full justify-center">
                                 <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
                                     <FontAwesomeIcon
@@ -121,18 +135,7 @@ function MyEvents(props) {
                         </div>
 
                         {/* Right: Create New Event (organizers only) */}
-                        <div className="flex items-center gap-3">
-                            {userType === "organizer" && (
-                                <button
-                                    onClick={() => navigate("/events/new")}
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
-                                        text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
-                                >
-                                    <Plus size={18} />
-                                    Create New Event
-                                </button>
-                            )}
-                        </div>
+
                     </div>
 
                     <EventList
@@ -153,7 +156,7 @@ function MyEvents(props) {
                     waitlistSuccess={props.waitlistSuccess}
                 />
             )}
-        </>
+        </div>
     );
 }
 
