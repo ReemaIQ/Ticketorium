@@ -142,7 +142,7 @@ function App() {
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#3B0A1E",
-      "dispute-chat": "#d8e5dd"
+      "dispute-chat": "#ffe2e5"
     }
   },
   "Saud": {
@@ -157,7 +157,7 @@ function App() {
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#001F3B",
-        "dispute-chat": "#d8e5dd"
+      "dispute-chat": "#dce9f3"
     }
   },
   "Manchester": {
@@ -172,7 +172,7 @@ function App() {
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#3D0D5C",
-        "dispute-chat": "#d8e5dd"
+      "dispute-chat": "#ebe1f3"
     }
   },
   "Oxford": {
@@ -187,7 +187,7 @@ function App() {
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#000D1A",
-        "dispute-chat": "#d8e5dd"
+      "dispute-chat": "#dbe6f3"
     }
   },
   "Cambridge": {
@@ -202,7 +202,7 @@ function App() {
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#4A6350",
-        "dispute-chat": "#d8e5dd"
+      "dispute-chat": "#eaf8ee"
     }
   }
   // more can be added by system admins only!
@@ -800,13 +800,13 @@ function App() {
         const fallbackTheme = {
             "secondary-color": "#1F4C76",
             "primary-color": "#1a1a1a",
+            "dispute-chat": "#e6f3fa",
             "accent-color": "#FFDF4F",
             "secondary-accent-color": "#0800FF",
             "footer-color": "#11223B",
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "filter-buttons": "oklch(49.6% 0.265 301.924)",
-            "dispute-chat": "#e6f3fa"
         };
 
         const theme = uniTheme || fallbackTheme;
