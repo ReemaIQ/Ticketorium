@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 
 import ScrollToTop from "./components/scroll-to-top/scroll_to_top.jsx";
@@ -79,6 +79,7 @@ function RequireRole({ loggedInUser, dummyUsersRef, allowedRoles, children }) {
 // ---------- APP ----------
 
 function App() {
+    const navigate = useNavigate();
     // ---------------- STATE ----------------
     const [loggedInUser, setLoggedInUser] = useState(null); // username only
     const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
@@ -99,6 +100,12 @@ function App() {
     const [isPurchasing, setIsPurchasing] = useState(false);
     const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
     const [waitlistSuccess, setWaitlistSuccess] = useState(false);
+    const [organizerViewing, setOrganizerViewing] = useState(null);
+
+    useEffect(() => {
+    if (organizerViewing) // so to avoid navigation when val is changed to null
+      navigate("/about-organizer");
+  }, [organizerViewing]);
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
     useEffect(() => {
@@ -317,6 +324,7 @@ function App() {
                                         <DummyUserHome />
                                     ) : selectedUni ? (
                                         <UserHome
+                                            setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
                                             waitlistModalOpen={waitlistModalOpen}
                                             setWaitlistSuccess={setWaitlistSuccess}
@@ -398,6 +406,7 @@ function App() {
                                 element={
                                     <RequireAuth loggedInUser={loggedInUser}>
                                         <MyTickets
+                                            setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
                                             waitlistModalOpen={waitlistModalOpen}
                                             waitlistSuccess={waitlistSuccess}
@@ -419,6 +428,7 @@ function App() {
                                 element={
                                     <RequireAuth loggedInUser={loggedInUser}>
                                         <AllEvents
+                                            setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
                                             waitlistModalOpen={waitlistModalOpen}
                                             waitlistSuccess={waitlistSuccess}
@@ -622,12 +632,13 @@ function App() {
                                 path="/about-organizer"
                                 element={
                                     <RequireAuth loggedInUser={loggedInUser}>
-                                        <AboutOrganizer
-                                            organizer={"chicken-tender"}
+                                        {organizerViewing ? <AboutOrganizer
+                                            setOrganizerViewing={setOrganizerViewing}
+                                            organizer={organizerViewing}
                                             users={dummyUsers.current}
                                             events={dummyEvents.current}
                                             userType={currentUser?.type ?? "empty"}
-                                        />
+                                        /> : <Navigate to="/home" />}
                                     </RequireAuth>
                                 }
                             />

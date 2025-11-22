@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import EventActions from "./EventActions";
 import { getUserCategory } from "./getUserCategory.js";
@@ -16,9 +16,12 @@ export default function Event({
                                   organizer,
                                   price,
                                   inviter,
+                                  expired,
+                                  setOrganizerViewing
                               }) {
     const category = getUserCategory(type);
     const [expanded, setExpanded] = useState(false); // mobile expand/collapse
+    const navigate = useNavigate();
 
     const getRelativeTime = (dateString) => {
         if (!dateString) return "";
@@ -51,7 +54,7 @@ export default function Event({
     const daysLeftText = getRelativeTime(date);
 
     return (
-        <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
+        <div className={`sd:flex-col sd:align-center md:flex gap-5 rounded-[6px] ${expired ? "opacity-60 bg-gray-300" : "opacity-100 bg-white"} border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-smz`}>
             {/* Left image (click to details) */}
             <div className="md:w-1/3">
                 <NavLink to={`/event/${id}`} aria-label={`Open details for ${title}`}>
@@ -149,8 +152,8 @@ export default function Event({
                             )}
                         </div>
 
-                        <div className="font-[Gilroy-Medium] text-sm text-[var(--primary-color)] text-right whitespace-nowrap ml-auto flex align-center items-center">
-                            {date} <br /> by {organizer}
+                        <div className="font-[Gilroy-Medium] text-sm text-[var(--primary-color)] text-right whitespace-nowrap ml-auto align-center items-center">
+                            {date} <br /> by <span className="cursor-pointer" onClick={() => {setOrganizerViewing(organizer)}}>{organizer}</span>
                         </div>
                     </div>
                 </div>
