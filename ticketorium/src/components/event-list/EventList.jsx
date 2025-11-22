@@ -48,44 +48,69 @@ export default function EventList(props) {
             normalized = normalized.filter((item) => set.has(String(item.id)));
         }
 
-        // 3) Date Helper
+        // 3) Robust Date Parser for "MM/DD/YYYY-H:MMAM"
         const parseDate = (dateStr) => {
-            if (!dateStr) return null;
-            // Fix format: "11/21/2025-9:30AM" -> "11/21/2025 9:30AM"
-            const cleanDate = dateStr.replace('-', ' ');
-            const d = new Date(cleanDate);
-            return isNaN(d.getTime()) ? null : d;
+            if (!dateStr || typeof dateStr !== 'string') return null;
+
+            // Split "11/21/2025-9:30AM" into date and time
+            const parts = dateStr.split('-');
+            if (parts.length < 2) return null; // Invalid format
+
+            const datePart = parts[0]; // "11/21/2025"
+            const timePart = parts[1]; // "9:30AM"
+
+            const d = new Date(datePart);
+            if (isNaN(d.getTime())) return null;
+
+            // Parse time manually to handle "9:30AM" (no space) safely
+            const timeMatch = timePart.match(/(\d+):(\d+)\s?(AM|PM)/i);
+            if (timeMatch) {
+                let [_, hours, minutes, ampm] = timeMatch;
+                hours = parseInt(hours, 10);
+                minutes = parseInt(minutes, 10);
+
+                if (ampm.toUpperCase() === "PM" && hours < 12) hours += 12;
+                if (ampm.toUpperCase() === "AM" && hours === 12) hours = 0;
+
+                d.setHours(hours, minutes, 0, 0);
+            }
+
+            return d;
         };
 
-        const now = new Date(); // Compare against exact current time
+        const now = new Date();
 
-        // 4) Pre-calculate date objects and status for sorting
+        // 4) Pre-calculate Sort Data
         const processed = normalized.map(item => {
             const dateObj = parseDate(item.date);
-            // If invalid date, push to far future
-            const sortDate = dateObj || new Date(8640000000000000);
 
-            // Determine if event has ended based on exact time
-            const isEnded = dateObj ? dateObj < now : false;
+            // If date is invalid (null), push it to the far future so it doesn't break list
+            // Or set to epoch (0) if you want it at the bottom.
+            const validDate = dateObj || new Date(8640000000000000);
 
             return {
                 ...item,
-                _sortDate: sortDate, // Internal use for sorting
-                isEnded: isEnded     // Use this in your UI to show "Event Ended"
+                _sortDate: validDate,
+                // It is ended if we have a valid date AND that date is before now
+                isEnded: dateObj ? dateObj < now : false
             };
         });
 
         // 5) Sort
         return processed.sort((a, b) => {
-            // Rule 1: Active events first, Ended events last
-            if (a.isEnded && !b.isEnded) return 1;
-            if (!a.isEnded && b.isEnded) return -1;
+            // Primary Sort: Active events first, Ended events last
+            if (a.isEnded !== b.isEnded) {
+                return a.isEnded ? 1 : -1;
+            }
 
-            // Rule 2: Sort by Date (Earliest -> Latest)
-            // This works for both groups:
-            // - Upcoming: Sooner events appear first
-            // - Ended: Oldest ended events appear first in the "ended" section
-            return a._sortDate - b._sortDate;
+            // Secondary Sort:
+            // - Active events: Ascending (Soonest first)
+            // - Ended events: Descending (Most recently ended first) -> usually looks better
+            if (!a.isEnded) {
+                return a._sortDate - b._sortDate;
+            } else {
+                return b._sortDate - a._sortDate;
+            }
         });
     }, [props.events, props.filterIds]);
 
