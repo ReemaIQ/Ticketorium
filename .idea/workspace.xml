@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="integrating lena's work">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="fixed filtering issues">
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/DeclineInviteModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/DeleteEventModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/DeleteEventModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +65,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "lena",
-    "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
+    "last_opened_file_path": "D:/Leena/OneDrive - KFUPM/KFUPM/2025/251/SWE 363/Project/Ticketorium/ticketorium/src/components/modals",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -84,6 +86,9 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\Ticketorium\ticketorium\src\components\modals" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\components\dispute" />
       <recent name="D:\Leena\OneDrive - KFUPM\KFUPM\2025\251\SWE 363\Project\ticketorium\ticketorium\src\components" />
@@ -128,14 +133,6 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18548000" />
-    </task>
-    <task id="LOCAL-00004" summary="created event component">
-      <option name="closed" value="true" />
-      <created>1762006982178</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1762006982178</updated>
     </task>
     <task id="LOCAL-00005" summary="created event list component">
       <option name="closed" value="true" />
@@ -521,7 +518,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763826812429</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="fixed filtering issues">
+      <option name="closed" value="true" />
+      <created>1763835436622</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1763835436622</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -551,7 +556,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added dummy bids and other things" />
     <MESSAGE value="added bid and new listing modals" />
     <MESSAGE value="improved nav responsiveness" />
     <MESSAGE value="re-organizing files" />
@@ -576,7 +580,8 @@
     <MESSAGE value="Modularize the Code + README.md" />
     <MESSAGE value="Pass Price to Checkout.jsx" />
     <MESSAGE value="integrating lena's work" />
-    <option name="LAST_COMMIT_MESSAGE" value="integrating lena's work" />
+    <MESSAGE value="fixed filtering issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed filtering issues" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

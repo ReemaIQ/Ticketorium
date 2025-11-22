@@ -113,7 +113,6 @@ export const getInitialEventIdsForList = (
 
 /**
  * Builds the final event map.
- * FIX: Now merges user state even for "all-events".
  */
 export const buildInitialEventMapForList = (
     listType,
@@ -135,27 +134,22 @@ export const buildInitialEventMapForList = (
     );
 
     if (listType === "all-events") {
-        // 1. Create a lookup for what the CURRENT user has joined/received
-        // Map: eventId -> joinRecord
+        // [Logic for all-events remains the same]
         const userJoinMap = {};
 
         if (loggedInUser && eventsJoined) {
             Object.values(eventsJoined).forEach(join => {
-
                 // CASE 1: I am the receiver of an invite
                 if (join.invitee === loggedInUser && join.state === "invited") {
                     userJoinMap[join.eventId] = join;
                 }
-
-                    // CASE 2: I have interacted with the event (Joined, Waitlisted, etc.)
-                // CRITICAL FIX: We exclude cases where state is 'invited' but I am the 'user' (sender).
+                // CASE 2: I have interacted with the event (Joined, Waitlisted, etc.)
                 else if (join.user === loggedInUser && join.state !== "invited") {
                     userJoinMap[join.eventId] = join;
                 }
             });
         }
 
-        // 2. Map IDs to objects, merging state if found
         ids.forEach((id) => {
             const rawEvent = events[id];
             if(!rawEvent) return;
@@ -163,12 +157,10 @@ export const buildInitialEventMapForList = (
             const joinRecord = userJoinMap[id];
 
             if (joinRecord) {
-                // Merge the state!
                 results[id] = {
                     ...rawEvent,
-                    state: joinRecord.state, // "joined", "invited", etc.
+                    state: joinRecord.state,
                     joinId: joinRecord.id,
-                    // If invited, we want to know who invited ME (the user field of the join record)
                     inviter: joinRecord.state === 'invited' ? joinRecord.user : undefined
                 };
             } else {
@@ -177,20 +169,22 @@ export const buildInitialEventMapForList = (
         });
 
     } else {
-        // For My Events / Invites (keys are joinIDs)
-        // These lists are already filtered by getInitialEventIdsForList, so we just merge.
+        // For "my-events", "invites-sent", "invites-received"
         ids.forEach((joinedId) => {
             const joined = eventsJoined[joinedId];
             if (!joined) return;
             const event = events[joined.eventId];
             if (!event) return;
 
-            results[joinedId] = {
+            // FIX: Use 'joined.eventId' as the key, NOT 'joinedId'.
+            // This ensures the UI renders the Event ID, allowing correct navigation.
+            results[joined.eventId] = {
                 ...event,
+                id: joined.eventId, // Explicitly set the ID to the event ID
                 state: joined.state,
                 user: joined.user,
                 invitee: joined.invitee,
-                joinId: joinedId,
+                joinId: joinedId, // Keep track of the join record ID separately
                 eventId: joined.eventId,
             };
         });
