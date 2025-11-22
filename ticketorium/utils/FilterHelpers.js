@@ -65,15 +65,30 @@ export const getInitialEventIdsForList = (
         return filterEventsByUniversity(eventsMap, university);
     }
 
-    // "my-events": Joined by user (excluding invited)
+    // "my-events": Joined by user OR Organized by user
     if (listType === "my-events") {
-        return filterJoinedEvents(eventsMap, eventsJoinedMap, {
+        // 1. Get events the user JOINED (existing logic)
+        const joinedIds = filterJoinedEvents(eventsMap, eventsJoinedMap, {
             loggedInUser,
             university,
         }).filter((joinId) => {
             const joined = eventsJoinedMap[joinId];
             return joined.state !== "invited";
         });
+
+        // 2. Get events the user ORGANIZED (new logic)
+        // We filter the main events map for events belonging to this user
+        const organizedEventIds = Object.keys(eventsMap).filter((eventId) => {
+            const event = eventsMap[eventId];
+            return (
+                event.university === university &&
+                event.organizer === loggedInUser // Assumes 'organizer' field holds the user ID
+            );
+        });
+
+        // Combine both lists.
+        // Note: This array now contains a mix of JoinIDs and EventIDs.
+        return [...joinedIds, ...organizedEventIds];
     }
 
     // "invites-received"
@@ -139,11 +154,9 @@ export const buildInitialEventMapForList = (
 
         if (loggedInUser && eventsJoined) {
             Object.values(eventsJoined).forEach(join => {
-                // CASE 1: I am the receiver of an invite
                 if (join.invitee === loggedInUser && join.state === "invited") {
                     userJoinMap[join.eventId] = join;
                 }
-                // CASE 2: I have interacted with the event (Joined, Waitlisted, etc.)
                 else if (join.user === loggedInUser && join.state !== "invited") {
                     userJoinMap[join.eventId] = join;
                 }
@@ -170,23 +183,38 @@ export const buildInitialEventMapForList = (
 
     } else {
         // For "my-events", "invites-sent", "invites-received"
-        ids.forEach((joinedId) => {
-            const joined = eventsJoined[joinedId];
-            if (!joined) return;
-            const event = events[joined.eventId];
-            if (!event) return;
+        ids.forEach((id) => {
+            // Check if this ID is a Join ID (Existing Logic)
+            const joined = eventsJoined[id];
 
-            // FIX: Use 'joined.eventId' as the key, NOT 'joinedId'.
-            // This ensures the UI renders the Event ID, allowing correct navigation.
-            results[joined.eventId] = {
-                ...event,
-                id: joined.eventId, // Explicitly set the ID to the event ID
-                state: joined.state,
-                user: joined.user,
-                invitee: joined.invitee,
-                joinId: joinedId, // Keep track of the join record ID separately
-                eventId: joined.eventId,
-            };
+            if (joined) {
+                const event = events[joined.eventId];
+                if (!event) return;
+
+                results[joined.eventId] = {
+                    ...event,
+                    id: joined.eventId,
+                    state: joined.state,
+                    user: joined.user,
+                    invitee: joined.invitee,
+                    joinId: id,
+                    eventId: joined.eventId,
+                };
+            }
+            // Check if this ID is an Event ID (New Organizer Logic)
+            else {
+                const event = events[id];
+                // Only proceed if this is a valid event and the loggedInUser is indeed the organizer
+                if (event && event.organizer === loggedInUser) {
+                    results[id] = {
+                        ...event,
+                        id: id,
+                        eventId: id,
+                        state: "organizer", // Or "owner", establishes context for UI
+                        user: loggedInUser
+                    };
+                }
+            }
         });
     }
     return results;

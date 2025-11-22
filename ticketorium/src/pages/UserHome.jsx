@@ -142,6 +142,16 @@ function UserHome(props) {
         props.filterContent(
             "initial",
             { events: props.events, eventsJoined: props.eventsJoined },
+            upcomingEventsOriginalState,
+            "event",
+            "",
+            { "list-type": "all-events", university: props.uni }
+        );
+        setFilteredUpcomingEvents(Object.keys(upcomingEventsOriginalState.current));
+
+        props.filterContent(
+            "initial",
+            { events: props.events, eventsJoined: props.eventsJoined },
             invitesReceivedOriginalState,
             "event",
             "",
@@ -257,10 +267,9 @@ function UserHome(props) {
                                             </>
 
                                         ) :
-                                        (key === "event-organizers" ?
+                                        (key === "upcoming-events" ?
                                             (
-                                                <h1 className="font-[Gilroy-Medium] text-[20px]"> event-organizers </h1>
-                                            ) :
+                                                <EventList eventsJoined={props.eventsJoined} events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="all-events"/>                                            ) :
                                             (key === "universities" ?
                                                     (
                                                         <>
