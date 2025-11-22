@@ -20,6 +20,7 @@ function UniversitySelection(props) {
         rootStyle.setProperty('--warning-color', props.universities[university]["theme-colors"]["warning-color"]);
         rootStyle.setProperty('--success-color', props.universities[university]["theme-colors"]["success-color"]);
         rootStyle.setProperty('--filter-buttons', props.universities[university]["theme-colors"]["filter-buttons"]);
+        rootStyle.setProperty('--dispute-chat', props.universities[university]["theme-colors"]["dispute-chat"]);
 
         navigate("/home");
     }

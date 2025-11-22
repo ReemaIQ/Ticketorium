@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="trying to fix the filter and search algorithms">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="final edits: connected checkout page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -127,30 +125,6 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
-    </task>
-    <task id="LOCAL-00005" summary="created event list component">
-      <option name="closed" value="true" />
-      <created>1762007003827</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007003827</updated>
-    </task>
-    <task id="LOCAL-00006" summary="created admin home page">
-      <option name="closed" value="true" />
-      <created>1762007024912</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007024912</updated>
-    </task>
-    <task id="LOCAL-00007" summary="added font">
-      <option name="closed" value="true" />
-      <created>1762007032929</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007032929</updated>
     </task>
     <task id="LOCAL-00008" summary="edited navigation bar">
       <option name="closed" value="true" />
@@ -520,7 +494,31 @@
       <option name="project" value="LOCAL" />
       <updated>1763833386251</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="final edits">
+      <option name="closed" value="true" />
+      <created>1763845059175</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1763845059175</updated>
+    </task>
+    <task id="LOCAL-00055" summary="final edits: fixed sorting by date">
+      <option name="closed" value="true" />
+      <created>1763845219587</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1763845219587</updated>
+    </task>
+    <task id="LOCAL-00056" summary="final edits: connected checkout page">
+      <option name="closed" value="true" />
+      <created>1763845747276</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1763845747276</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -550,9 +548,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added bid and new listing modals" />
-    <MESSAGE value="improved nav responsiveness" />
-    <MESSAGE value="re-organizing files" />
     <MESSAGE value="polishing event responsiveness" />
     <MESSAGE value="fixed routes after reorganizing" />
     <MESSAGE value="notification modal skeleton" />
@@ -575,7 +570,10 @@
     <MESSAGE value="Pass Price to Checkout.jsx" />
     <MESSAGE value="integrating lena's work" />
     <MESSAGE value="trying to fix the filter and search algorithms" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying to fix the filter and search algorithms" />
+    <MESSAGE value="final edits" />
+    <MESSAGE value="final edits: fixed sorting by date" />
+    <MESSAGE value="final edits: connected checkout page" />
+    <option name="LAST_COMMIT_MESSAGE" value="final edits: connected checkout page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

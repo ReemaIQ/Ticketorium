@@ -24,6 +24,7 @@ function JoinModal({
     const [selectedSeat, setSelectedSeat] = useState(null);
     const [accessibilityNotes, setAccessibilityNotes] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isPurchasing, setIsPurchasing] = useState(true);
 
     const navigate = useNavigate();
 
@@ -32,6 +33,7 @@ function JoinModal({
             alert("Please choose a seat before joining.");
             return;
         }
+
 
         if (!userId) {
             alert("You must be logged in to join events.");
@@ -57,18 +59,25 @@ function JoinModal({
             setViewState("joined");
             onClose();
 
-            // go to registration status page
-            navigate("/registration", {
-                state: {
-                    isSuccess: true,
-                    eventId,
-                    ticketId: createdTicket.id,
-                    ticketCode: createdTicket.ticketCode,
-                    seat: createdTicket.seat,
-                    price: createdTicket.price,
-                    fromEventId: eventId,
-                },
-            });
+            if (price !== 0) {
+                setIsPurchasing(true)
+                navigate("/checkout")
+            }
+            else{
+                // go to registration status page
+                navigate("/registration", {
+                    state: {
+                        isSuccess: true,
+                        eventId,
+                        ticketId: createdTicket.id,
+                        ticketCode: createdTicket.ticketCode,
+                        seat: createdTicket.seat,
+                        price: createdTicket.price,
+                        fromEventId: eventId,
+                    },
+                });
+            }
+
         } catch (err) {
             console.error("Error creating ticket:", err);
 
