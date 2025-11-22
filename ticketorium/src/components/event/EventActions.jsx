@@ -1,37 +1,10 @@
 import React, {useEffect} from "react";
 import { eventActionsConfig } from "./eventActionsConfig";
-import { useNavigate } from "react-router-dom"; //r
 import { ArrowRight, Tickets } from "lucide-react";
+import { useNavigate } from "react-router-dom"; //r
 import {useState} from "react";
 
-//import ResignModal from "./ResignModal";
-
-function ResignModal({isOpen, onClose, children}) {
-    useEffect(() => {
-        if (!isOpen) return;
-
-        function onKey(e) { if (e.key === "Escape") onClose(); }
-        document.addEventListener("keydown", onKey);
-        return () => document.removeEventListener("keydown", onKey);
-    }, [isOpen, onClose]);
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-            <div className="relative mx-4 w-xl rounded-xl bg-white p-6 shadow-xl">
-                <button
-                    aria-label="Close"
-                    onClick={onClose}
-                    className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
-                >
-                    &times;
-                </button>
-                {children}
-            </div>
-        </div>
-    );
-}
+import ResignModal from "../modals/ResignModal";
 
 const baseBtn =
     "rounded-[6px] font-[Gilroy-Medium] text-[16px] px-3 py-2 flex items-center gap-1";
@@ -42,14 +15,22 @@ const variants = {
     border: "border bg-white",
 };
 
-export default function EventActions({ type, category, state , eventId, onAction}) {
+export default function EventActions({ type, category, state , eventId, onAction, eventTitle, price}) {
     const navigate = useNavigate();
     const [openResignModal, setOpenResignModal] = useState(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(null);
 
     const actions = eventActionsConfig[category]?.[state] || eventActionsConfig[category]?.default;
 
     if (!actions) return null;
-    const closeModal = () => setOpenResignModal(null);
+    const closeModal = () => {
+        setOpenResignModal(false);
+        setOpenDeleteModal(false);
+    }
+
+    const handleResignConfirm = () => {
+        closeModal();
+    }
 
     return (
         <>
@@ -88,6 +69,12 @@ export default function EventActions({ type, category, state , eventId, onAction
                                 return;
                             }
 
+                            //Delete Button
+                            if (action.label === "Delete") {
+                                setOpenDeleteModal("delete");
+                                return;
+                            }
+
                             //View button
                             // Default behavior (lists/cards): keep your previous behavior
                             if ((action.label === "View" || action.label === "Join") && eventId) {
@@ -117,39 +104,13 @@ export default function EventActions({ type, category, state , eventId, onAction
                 })}
             </div>
 
-        <ResignModal isOpen={openResignModal === "resign"} onClose={closeModal}>
-            <div className="text-center">
-                <h3 className="text-xl font-semibold">
-                    Resign from <span className="font-bold">title var</span>?
-                </h3>
-            </div>
-
-            {/*{price > 0 && (*/}
-            {/*    <p className="mt-2 text-slate-500 text-center">*/}
-            {/*        Refund: <span className="text-indigo-700 font-medium">${Number(price).toFixed(2)}</span>*/}
-            {/*    </p>*/}
-            {/*)}*/}
-
-            <div className="mt-6 flex justify-center gap-3">
-                <button
-                    onClick={() => {
-                        // Handle the actual resignation logic here
-                        if(onAction) onAction("Resign Confirmed");
-                        closeModal();
-                    }}
-                    className="px-4 py-2 text-sm font-medium bg-white border border-rose-600 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
-                >
-                    Resign
-                </button>
-
-                <button
-                    onClick={closeModal}
-                    className="px-4 py-2 text-sm font-medium border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)] rounded-md shadow-sm hover:bg-slate-50"
-                >
-                    Cancel
-                </button>
-            </div>
-        </ResignModal>
+            <ResignModal
+                isOpen={openResignModal}
+                onClose={closeModal}
+                onConfirm={handleResignConfirm}
+                eventName={eventTitle || `Event #${eventId}`} // Pass title if available
+                refundAmount={price} // Pass price if available
+            />
     </>
 
     );
