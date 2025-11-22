@@ -1,3 +1,7 @@
+// src/utils/FilterHelpers.js
+
+import * as events from "node:events";
+
 /**
  * Safely applies a value to either a React state setter or a ref.
  *
@@ -68,6 +72,7 @@ export const filterJoinedEvents = (
         resultIds.push(joinId);
     });
 
+    console.log("resultIds" + resultIds);
     return resultIds;
 };
 
@@ -112,6 +117,7 @@ export const getInitialEventIdsForList = (
             university,
         }).filter((joinId) => {
             const joined = eventsJoined[joinId];
+            console.log("joined.state" + joined.state)
             return joined.state !== "invited";
         });
     }
@@ -158,7 +164,23 @@ export const getInitialEventIdsForList = (
  *
  * For:
  *  - "all-events": keys are event IDs and values are event objects.
- *  - other list types: keys are join IDs and values are event objects, which matches your MyEvents usage.
+ *  - other list types: keys are join IDs and values are merged event objects:
+ *      {
+ *          ...event,
+ *          state,   // "joined" | "invited" | "waitlist" | ...
+ *          user,    // owner of the joined record (invitor after creation)
+ *          invitee, // the invited user (when applicable)
+ *          joinId,
+ *          eventId
+ *      }
+ *
+ * Note: when an invite is accepted, your update logic should make the
+ * eventsJoined record look like:
+ *    user = invitee
+ *    invitee = invitee
+ *    state = "joined"
+ *
+ * This function will then expose state="joined" correctly to the UI.
  *
  * @param {string} listType - The list type such as "all-events" or "my-events".
  * @param {object} content - Either an events map, or an object containing { events, eventsJoined }.
@@ -189,18 +211,24 @@ export const buildInitialEventMapForList = (
         // For other lists, content has { events, eventsJoined }.
         const events = content.events || {};
         const eventsJoined = content.eventsJoined || {};
-
+        console.log("event3:"+events)
         ids.forEach((joinedId) => {
             const joined = eventsJoined[joinedId];
             if (!joined) return;
             const event = events[joined.eventId];
-            if (event) {
-                // Here the key is the joinId to match how MyEvents previously used joined IDs.
-                results[joinedId] = event;
-            }
+            if (!event) return;
+
+            // Merge joined info into the event object
+            results[joinedId] = {
+                ...event,
+                state: joined.state,
+                user: joined.user,
+                invitee: joined.invitee,
+                joinId: joinedId,
+                eventId: joined.eventId,
+            };
         });
     }
-
     return results;
 };
 

@@ -30,16 +30,16 @@ export default function EventActions({
                                          user,
                                          type,
                                          category,
-                                         state,
+                                         state,          // current state: joined / invited / waitlist / undefined
                                          eventId,
                                          onAction,
+                                         onStateChange,  // callback to let parent update state
                                      }) {
     const navigate = useNavigate();
     const routerLocation = useLocation();
 
-    const passedEvent = event ? event : {};
+    const passedEvent = event || {};
 
-    const [viewState, setViewState] = useState(event?.state || null);
     const [ticket, setTicket] = useState(null);
     const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'verify' | 'delete' | 'ticket' | 'none'
     const [showDeleteBanner, setShowDeleteBanner] = useState(false);
@@ -58,7 +58,7 @@ export default function EventActions({
         }
     }, [routerLocation.state]);
 
-    // load existing ticket from backend when page mounts/user changes
+    // load existing ticket from backend when page mounts / user changes
     useEffect(() => {
         if (!user || !eventId) return;
 
@@ -77,7 +77,7 @@ export default function EventActions({
         loadTicket();
     }, [eventId, user]);
 
-    // map EventActions button label → open correct modal / route (for full event details view)
+    // map button label → open correct modal / route
     function handleAction(label) {
         switch (label) {
             // attend / waitlist
@@ -106,7 +106,6 @@ export default function EventActions({
             // organizer / admin tools
             case "Edit":
                 if (eventId) {
-                    // full-page Edit Event (not a modal anymore)
                     navigate(`/event/${eventId}/edit`);
                 }
                 break;
@@ -130,8 +129,11 @@ export default function EventActions({
         }
     }
 
+    // Effective state = what parent passed down
+    const effectiveState = state;
+
     const actions =
-        eventActionsConfig[category]?.[state] ||
+        eventActionsConfig[category]?.[effectiveState] ||
         eventActionsConfig[category]?.default;
 
     if (!actions) return null;
@@ -152,7 +154,6 @@ export default function EventActions({
                         return true;
                     })
 
-                    // Map each item to its information to return the right button shape
                     .map((action, index) => {
                         const Icon = action.icon;
                         const colorClass = action.color || "";
@@ -164,16 +165,13 @@ export default function EventActions({
                         const handleClick = () => {
                             const label = action.label;
 
-                            // If the page provided a handler, let it decide
-                            // (e.g. cards or details page can hook into this)
+                            // Let parent intercept if it wants
                             if (onAction) {
                                 onAction(label);
                                 return;
                             }
 
                             // CARD / LIST FALLBACK:
-                            // If we are in a context where we only know eventId (no full `event` object),
-                            // make "View" / "Join" / "Pay & Join" / "Verify Tickets" go to the details page.
                             if (
                                 !event &&
                                 eventId &&
@@ -186,7 +184,7 @@ export default function EventActions({
                                 return;
                             }
 
-                            // Default: use internal modal / routing logic
+                            // Default internal handling
                             handleAction(label);
                             console.log(`${label} clicked`);
                         };
@@ -221,7 +219,10 @@ export default function EventActions({
                 hasSeatingPlan={passedEvent.hasSeatingPlan}
                 userId={user}
                 setTicket={setTicket}
-                setViewState={setViewState}
+                // When join succeeds, JoinModal will call this:
+                setViewState={(newState) => {
+                    if (onStateChange) onStateChange(newState);
+                }}
             />
 
             {/* INVITE modal */}
@@ -254,7 +255,7 @@ export default function EventActions({
                 title={passedEvent.title}
                 price={passedEvent.price}
                 onConfirm={() => {
-                    setViewState(null);
+                    if (onStateChange) onStateChange(null); // user is no longer joined
                     closeModal();
                 }}
             />
@@ -270,6 +271,12 @@ export default function EventActions({
                     setTimeout(() => setShowDeleteBanner(false), 2500);
                 }}
             />
+
+            {showDeleteBanner && (
+                <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 rounded-md bg-emerald-600 px-4 py-2 text-white shadow">
+                    Event deleted (demo).
+                </div>
+            )}
         </>
     );
 }

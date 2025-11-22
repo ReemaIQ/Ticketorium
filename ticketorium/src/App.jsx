@@ -52,7 +52,6 @@ import {
     assignUni as assignUniHelper,
 } from "../utils/UserHelpers.js";
 
-// ⬇️ NEW: separate search + filter helpers
 import { searchContentHelper } from "../utils/SearchHelpers.js";
 import { filterContentHelper } from "../utils/FilterHelpers.js";
 
@@ -100,7 +99,6 @@ function App() {
     const [isPurchasing, setIsPurchasing] = useState(false);
     const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
     const [waitlistSuccess, setWaitlistSuccess] = useState(false);
-    const [organizerViewing, setOrganizerViewing] = useState(null); // reserved for later usage
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
     useEffect(() => {
@@ -260,16 +258,13 @@ function App() {
         filterDetails = {}
     ) => {
         if (typeOfFilter === "search") {
-            // delegate to SEARCH helpers
             return searchContentHelper(searchFor, content, setter, searchValue, {
-                // you can tweak this if you want keyword mode later
                 mode: searchFor === "event" ? "title" : undefined,
                 loggedInUser,
             });
         }
 
         if (typeOfFilter === "initial") {
-            // delegate to FILTER helpers (list-type logic)
             return filterContentHelper(
                 searchFor,
                 content,
@@ -284,12 +279,6 @@ function App() {
             typeOfFilter,
             searchFor
         );
-    };
-
-    // (optional) testing helper
-    const testingForceUser = (username) => {
-        setLoggedInUser(username);
-        localStorage.setItem("loggedInUser", username);
     };
 
     // ---------------- ROUTES ----------------
@@ -453,15 +442,19 @@ function App() {
                                         user={loggedInUser}
                                         users={dummyUsers.current}
                                         events={dummyEvents.current}
+                                        eventsJoined={dummyEventsJoined.current} // pass joined records
                                     />
                                 }
                             />
 
-                            {/* BIDDING (currently open even if not logged in) */}
+                            {/* BIDDING */}
                             <Route
                                 path="/bidding"
                                 element={
-                                    <Bidding user={loggedInUser} biddings={dummyBids.current} />
+                                    <Bidding
+                                        user={loggedInUser}
+                                        biddings={dummyBids.current}
+                                    />
                                 }
                             />
 
