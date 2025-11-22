@@ -218,7 +218,7 @@ function UserHome(props) {
             </div>
 
             {/* Sections */}
-            <div className="flex flex-col items-center xl:py-10 px-10 xl:px-15 gap-5 w-full">
+            <div className="flex flex-col items-center pb-15 xl:py-10 px-10 xl:px-15 gap-5 w-full">
                 {Object.keys(contentOptions[props.users[props.user]["type"]]).map(key =>
                     <>
                         <div id="section-header" className="flex items-center justify-between w-full mt-9 mb-3">
@@ -327,8 +327,8 @@ function UserHome(props) {
                 )}
 
             </div>
-            <NavLink to="/checkout" onClick={() => props.setIsPurchasing(true)} className="border-7 rounded-full py-3 px-15 m-10 self-center border-purple-200 cursor-pointer">Magic Button</NavLink>
-            <div className="my-3">Remove later</div>
+            {/*<NavLink to="/checkout" onClick={() => props.setIsPurchasing(true)} className="border-7 rounded-full py-3 px-15 m-10 self-center border-purple-200 cursor-pointer">Magic Button</NavLink>*/}
+            {/*<div className="my-3">Remove later</div>*/}
             {props.waitlistModalOpen && <WaitlistSuccess setWaitlistModalOpen={props.setWaitlistModalOpen} waitlistSuccess={props.waitlistSuccess} />}
         </>
     )
