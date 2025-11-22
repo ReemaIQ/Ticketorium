@@ -8,13 +8,14 @@ import InviteModal from "../modals/InviteModal.jsx";
 import TicketModal from "../modals/TicketModal.jsx";
 import VerifyTicketsModal from "../modals/VerifyTicketModal.jsx";
 import ResignModal from "../modals/ResignModal.jsx";
+import DeclineInviteModal from "../modals/DeclineInviteModal.jsx";
 import DeleteEventModal from "../modals/DeleteEventModal.jsx";
 import { fetchTicketForEvent } from "../../api/tickets.js";
 
 /* ----------------------------- Buttons styling ----------------------------- */
 
 const baseBtn =
-    "rounded-[6px] font-[Gilroy-Medium] text-[16px] px-3 py-2 flex items-center gap-1";
+    "rounded-[6px] font-[Gilroy-Medium] text-[16px] px-3 py-2 flex items-center gap-1 cursor-pointer";
 
 const variants = {
     primary: "bg-[var(--accent-color)] text-[var(--secondary-color)]",
@@ -83,8 +84,11 @@ export default function EventActions({
             // attend / waitlist
             case "Join":
             case "Pay & Join":
-            case "Join Waitlist":
                 setOpenModal("join");
+                break;
+
+            case "Join Waitlist":
+                setOpenModal("waitlist");
                 break;
 
             // ticket & invite
@@ -94,11 +98,13 @@ export default function EventActions({
 
             case "Send Invite":
             case "Offer Ticket":
-            case "Accept":
                 setOpenModal("invite");
                 break;
 
             case "Decline":
+                setOpenModal("decline");
+                break;
+
             case "Resign":
                 setOpenModal("resign");
                 break;
@@ -255,7 +261,17 @@ export default function EventActions({
                 title={passedEvent.title}
                 price={passedEvent.price}
                 onConfirm={() => {
-                    if (onStateChange) onStateChange(null); // user is no longer joined
+                    if (onStateChange) onStateChange(undefined); // user is no longer joined
+                    closeModal();
+                }}
+            />
+
+            {/* Decline modal */}
+            <DeclineInviteModal
+                isOpen={openModal === "decline"}
+                onClose={closeModal}
+                onConfirm={() => {
+                    if (onStateChange) onStateChange(undefined); // user is no longer joined
                     closeModal();
                 }}
             />

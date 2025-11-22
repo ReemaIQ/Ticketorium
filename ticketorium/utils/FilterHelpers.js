@@ -1,15 +1,5 @@
-// src/utils/FilterHelpers.js
-
-import * as events from "node:events";
-
 /**
  * Safely applies a value to either a React state setter or a ref.
- *
- * If `setter` is:
- *  - a function, it calls setter(value) to update state.
- *  - an object with a `current` property, it sets setter.current = value to update a ref.
- *
- * If `setter` is missing or of an unexpected type, it does nothing.
  */
 const applyToSetter = (setter, value) => {
     if (!setter) return;
@@ -22,13 +12,6 @@ const applyToSetter = (setter, value) => {
 
 // ---------- BASIC FILTER UTILITIES ----------
 
-/**
- * Filters events by a specific university ID.
- *
- * @param {object} events - Map from eventId to event object.
- * @param {string} universityId - The university identifier to filter by.
- * @returns {string[]} An array of event IDs that belong to the given university.
- */
 export const filterEventsByUniversity = (events, universityId) => {
     if (!events || !universityId) return [];
     return Object.keys(events).filter(
@@ -36,25 +19,10 @@ export const filterEventsByUniversity = (events, universityId) => {
     );
 };
 
-/**
- * Filters joined events with optional constraints on user, university, and state.
- *
- * @param {object} events - Map from eventId to event object.
- * @param {object} eventsJoined - Map from joinId to joined-event record.
- * @param {object} options - Optional filters.
- * @param {string|null} options.loggedInUser - If provided, only entries for this user are kept.
- * @param {string|null} options.university - If provided, only events in this university are kept.
- * @param {string|null} options.state - If provided, only joined records with this state are kept.
- * @returns {string[]} An array of join IDs that match all filters.
- */
 export const filterJoinedEvents = (
     events,
     eventsJoined,
-    {
-        loggedInUser = null,
-        university = null,
-        state = null, // for example: "joined" or "invited"; if null then any state is allowed
-    } = {}
+    { loggedInUser = null, university = null, state = null } = {}
 ) => {
     const resultIds = [];
 
@@ -72,26 +40,13 @@ export const filterJoinedEvents = (
         resultIds.push(joinId);
     });
 
-    console.log("resultIds" + resultIds);
     return resultIds;
 };
 
-// ---------- LIST HELPERS (BASED ON YOUR ORIGINAL LOGIC) ----------
+// ---------- LIST HELPERS ----------
 
 /**
  * Computes the IDs that should appear for a given listType and context.
- *
- * Supported listType values:
- *  - "all-events": returns event IDs from the events map for the given university.
- *  - "my-events": returns join IDs for events the user joined in the given university (excluding invites).
- *  - "invites-received": returns join IDs for invitations sent to the user in the given university.
- *  - "invites-sent": returns join IDs for invitations sent by the user in the given university.
- *
- * @param {string} listType - The type of list (for example "all-events" or "my-events").
- * @param {object} content - Either events map or an object containing { events, eventsJoined }.
- * @param {string} university - The university ID used to filter events.
- * @param {string} loggedInUser - The current logged-in user ID.
- * @returns {string[]} An array of IDs (event IDs or join IDs) depending on the list type.
  */
 export const getInitialEventIdsForList = (
     listType,
@@ -101,34 +56,32 @@ export const getInitialEventIdsForList = (
 ) => {
     if (!listType || !content) return [];
 
-    // For "all-events", content is the events map.
+    // Normalize content: might be just events map OR { events, eventsJoined }
+    const eventsMap = content.events || content;
+    const eventsJoinedMap = content.eventsJoined || {};
+
+    // "all-events": Returns all event IDs in the uni
     if (listType === "all-events") {
-        return filterEventsByUniversity(content, university);
+        return filterEventsByUniversity(eventsMap, university);
     }
 
-    // For other list types, content is expected to be { events, eventsJoined }.
-    const events = content.events || {};
-    const eventsJoined = content.eventsJoined || {};
-
-    // "my-events" means events joined by this user in this university, excluding invites.
+    // "my-events": Joined by user (excluding invited)
     if (listType === "my-events") {
-        return filterJoinedEvents(events, eventsJoined, {
+        return filterJoinedEvents(eventsMap, eventsJoinedMap, {
             loggedInUser,
             university,
         }).filter((joinId) => {
-            const joined = eventsJoined[joinId];
-            console.log("joined.state" + joined.state)
+            const joined = eventsJoinedMap[joinId];
             return joined.state !== "invited";
         });
     }
 
-    // "invites-received" means user is the invitee and state is "invited".
+    // "invites-received"
     if (listType === "invites-received") {
-        return Object.keys(eventsJoined).filter((joinedId) => {
-            const joined = eventsJoined[joinedId];
+        return Object.keys(eventsJoinedMap).filter((joinedId) => {
+            const joined = eventsJoinedMap[joinedId];
             if (!joined) return false;
-
-            const event = events[joined.eventId];
+            const event = eventsMap[joined.eventId];
             if (!event) return false;
 
             return (
@@ -139,13 +92,12 @@ export const getInitialEventIdsForList = (
         });
     }
 
-    // "invites-sent" means user is the one who sent the invite and state is "invited".
+    // "invites-sent"
     if (listType === "invites-sent") {
-        return Object.keys(eventsJoined).filter((joinedId) => {
-            const joined = eventsJoined[joinedId];
+        return Object.keys(eventsJoinedMap).filter((joinedId) => {
+            const joined = eventsJoinedMap[joinedId];
             if (!joined) return false;
-
-            const event = events[joined.eventId];
+            const event = eventsMap[joined.eventId];
             if (!event) return false;
 
             return (
@@ -160,33 +112,7 @@ export const getInitialEventIdsForList = (
 };
 
 /**
- * Builds the final event map for a given list type.
- *
- * For:
- *  - "all-events": keys are event IDs and values are event objects.
- *  - other list types: keys are join IDs and values are merged event objects:
- *      {
- *          ...event,
- *          state,   // "joined" | "invited" | "waitlist" | ...
- *          user,    // owner of the joined record (invitor after creation)
- *          invitee, // the invited user (when applicable)
- *          joinId,
- *          eventId
- *      }
- *
- * Note: when an invite is accepted, your update logic should make the
- * eventsJoined record look like:
- *    user = invitee
- *    invitee = invitee
- *    state = "joined"
- *
- * This function will then expose state="joined" correctly to the UI.
- *
- * @param {string} listType - The list type such as "all-events" or "my-events".
- * @param {object} content - Either an events map, or an object containing { events, eventsJoined }.
- * @param {string} university - The university ID used to filter events.
- * @param {string} loggedInUser - The current logged-in user ID.
- * @returns {object} A map that can be used directly by components to render lists.
+ * Builds the final event map.
  */
 export const buildInitialEventMapForList = (
     listType,
@@ -195,6 +121,11 @@ export const buildInitialEventMapForList = (
     loggedInUser
 ) => {
     const results = {};
+
+    // Normalize content
+    const events = content.events || content;
+    const eventsJoined = content.eventsJoined || {};
+
     const ids = getInitialEventIdsForList(
         listType,
         content,
@@ -203,28 +134,57 @@ export const buildInitialEventMapForList = (
     );
 
     if (listType === "all-events") {
-        // For "all-events", content is the events map, so we map event IDs to their event objects.
+        // [Logic for all-events remains the same]
+        const userJoinMap = {};
+
+        if (loggedInUser && eventsJoined) {
+            Object.values(eventsJoined).forEach(join => {
+                // CASE 1: I am the receiver of an invite
+                if (join.invitee === loggedInUser && join.state === "invited") {
+                    userJoinMap[join.eventId] = join;
+                }
+                // CASE 2: I have interacted with the event (Joined, Waitlisted, etc.)
+                else if (join.user === loggedInUser && join.state !== "invited") {
+                    userJoinMap[join.eventId] = join;
+                }
+            });
+        }
+
         ids.forEach((id) => {
-            results[id] = content[id];
+            const rawEvent = events[id];
+            if(!rawEvent) return;
+
+            const joinRecord = userJoinMap[id];
+
+            if (joinRecord) {
+                results[id] = {
+                    ...rawEvent,
+                    state: joinRecord.state,
+                    joinId: joinRecord.id,
+                    inviter: joinRecord.state === 'invited' ? joinRecord.user : undefined
+                };
+            } else {
+                results[id] = rawEvent;
+            }
         });
+
     } else {
-        // For other lists, content has { events, eventsJoined }.
-        const events = content.events || {};
-        const eventsJoined = content.eventsJoined || {};
-        console.log("event3:"+events)
+        // For "my-events", "invites-sent", "invites-received"
         ids.forEach((joinedId) => {
             const joined = eventsJoined[joinedId];
             if (!joined) return;
             const event = events[joined.eventId];
             if (!event) return;
 
-            // Merge joined info into the event object
-            results[joinedId] = {
+            // FIX: Use 'joined.eventId' as the key, NOT 'joinedId'.
+            // This ensures the UI renders the Event ID, allowing correct navigation.
+            results[joined.eventId] = {
                 ...event,
+                id: joined.eventId, // Explicitly set the ID to the event ID
                 state: joined.state,
                 user: joined.user,
                 invitee: joined.invitee,
-                joinId: joinedId,
+                joinId: joinedId, // Keep track of the join record ID separately
                 eventId: joined.eventId,
             };
         });
@@ -234,23 +194,6 @@ export const buildInitialEventMapForList = (
 
 // ---------- MAIN FILTER WRAPPER ----------
 
-/**
- * High-level filter helper that is used for initial list-type filtering (not search).
- *
- * Currently supports:
- *  - searchFor equals "event"
- *  - filterDetails containing:
- *      - "list-type" to indicate which list to build
- *      - "university" to scope events by university
- *
- * It computes the initial event map and writes it to the provided setter or ref.
- *
- * @param {string} searchFor - The type of data to filter, currently "event".
- * @param {object} content - Either an events map or an object containing { events, eventsJoined }.
- * @param {function|object} setter - A state setter function or a ref where the result will be stored.
- * @param {object} filterDetails - Configuration such as { "list-type": "...", "university": "..." }.
- * @param {string} loggedInUser - The currently logged-in user ID.
- */
 export const filterContentHelper = (
     searchFor,
     content,
@@ -263,9 +206,7 @@ export const filterContentHelper = (
         const university = filterDetails["university"];
 
         if (!listType || !university) {
-            console.warn(
-                "[filterContentHelper] Missing list-type or university in filterDetails."
-            );
+            console.warn("[filterContentHelper] Missing list-type or university.");
             return;
         }
 
@@ -279,10 +220,5 @@ export const filterContentHelper = (
         applyToSetter(setter, initialMap);
         return;
     }
-
-    // Additional filter types can be added here in the future.
-    console.warn(
-        "[filterContentHelper] No branch matched for searchFor:",
-        searchFor
-    );
+    console.warn("[filterContentHelper] No branch matched for searchFor:", searchFor);
 };

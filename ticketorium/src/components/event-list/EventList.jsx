@@ -100,13 +100,10 @@ export default function EventList(props) {
         // `item.state` is whatever we got from:
         //   - DummyData (for AllEvents, e.g. undefined or "waitlist"), or
         //   - merged eventsJoined record (for MyEvents, e.g. "joined" / "invited")
-        const passedState = item.state ?? null;
+        const passedState = item.state ?? undefined;
 
         // For invites, `user` = invitor, `invitee` = person invited
-        const inviter =
-            passedState === "invited" && item.user && item.invitee
-                ? item.user
-                : undefined;
+        const inviter = item.inviter || (passedState === "invited" ? item.user : undefined);
 
         if (
             !item.title &&

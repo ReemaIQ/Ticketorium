@@ -20,39 +20,53 @@ export default function EventPage(props) {
     // map type to EventActions category (attendee / organizer / admin)
     const category = getUserCategory(type);
 
-    // event info from dummyEvents
-    const raw = props?.events?.[eventId] || null;
-
     // joined record for THIS user and THIS event (if any)
     const joinedRecord = useMemo(() => {
         if (!props.eventsJoined || !props.user || !eventId) return null;
 
         const numericEventId = Number(eventId);
-        const entries = Object.entries(props.eventsJoined);
+        const records = Object.values(props.eventsJoined);
 
-        for (const [joinId, joined] of entries) {
-            if (
-                joined &&
-                joined.user === props.user &&
-                Number(joined.eventId) === numericEventId
-            ) {
-                return { joinId, ...joined };
-            }
-        }
+        // 1. Check for Incoming Invites (Highest Priority for display)
+        // (I am the invitee, and the state is 'invited')
+        const incomingInvite = records.find(j =>
+            Number(j.eventId) === numericEventId &&
+            j.invitee === props.user &&
+            j.state === "invited"
+        );
+        if (incomingInvite) return incomingInvite;
+
+        // 2. Check for Active Interactions (Joined, Waitlisted, etc.)
+        // (I am the owner 'user', BUT exclude state 'invited' because that means I sent an invite)
+        const myJoin = records.find(j =>
+            Number(j.eventId) === numericEventId &&
+            j.user === props.user &&
+            j.state !== "invited"
+        );
+        if (myJoin) return myJoin;
 
         return null;
     }, [props.eventsJoined, props.user, eventId]);
 
+    // event info from dummyEvents
+    const raw = props?.events?.[eventId] || null;
+
     // Initial state:
-    //  - if user has a join record → use its state ("joined", "invited", etc.)
-    //  - else, fall back to any static state on the event object (e.g. "waitlist")
-    const [viewState, setViewState] = useState(
-        joinedRecord?.state || raw?.state || null
-    );
+    //  - if user has a VALID join record (calculated above) → use its state
+    //  - else, fall back to any static state on the event object (raw.state)
+    //  - else, return undefined
+    const [viewState, setViewState] = useState(() => {
+        if (joinedRecord?.state) return joinedRecord.state;
+        if (raw?.state) return raw.state;
+        return undefined;
+    });
+
+    console.log("joinRecord:", joinedRecord);
+    console.log("viewState:", viewState);
 
     // If the event or joinRecord changes (e.g. user switches), sync state again
     useEffect(() => {
-        setViewState(joinedRecord?.state || raw?.state || null);
+        setViewState(joinedRecord?.state || raw?.state || undefined);
     }, [joinedRecord, raw, eventId]);
 
     // basic event display fields
