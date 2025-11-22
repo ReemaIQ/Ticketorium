@@ -58,28 +58,36 @@ function AllEvents(props) {
         );
     };
 
-    // 1) Initial: build a map of all events in this university (with their state)
+    // 1) Initial: build a map of all events (merged with state)
     useEffect(() => {
         props.filterContent(
             "initial",
-            props.events,          // full events map (with base state)
-            originalState,         // ref → will hold { [eventId]: eventObjWithState }
+            // FIX 1: Pass BOTH events and eventsJoined
+            { events: props.events, eventsJoined: props.eventsJoined },
+            originalState,
             "event",
             "",
-            { "list-type": "all-events", university: props.uni }
+            // FIX 2: Pass loggedInUser (props.user) so we can merge 'joined'/'invited' states
+            {
+                "list-type": "all-events",
+                university: props.uni,
+                loggedInUser: props.user
+            },
+            props.user // Pass user ID as the last arg if your app wrapper expects it here
         );
 
-        console.log("AllEvents originalState (with state):", originalState.current);
+        // Debug to ensure state is merging
+        console.log("AllEvents originalState:", originalState.current);
 
-        setFilteredEvents(Object.keys(originalState.current)); // start by showing all
-    }, [props.events, props.filterContent, props.uni]);
+        setFilteredEvents(Object.keys(originalState.current));
+    }, [props, props.events, props.eventsJoined, props.filterContent, props.uni, props.user]);
 
-    // 2) Search: DO NOT touch originalState.current, only change filteredEvents (ids)
+    // 2) Search
     const handleSearch = (searchValue) => {
         props.filterContent(
             "search",
-            originalState.current,     // we search inside the already-built map
-            setFilteredEvents,         // setter gets an array of ids
+            originalState.current,
+            setFilteredEvents,
             "event",
             searchValue,
             {
