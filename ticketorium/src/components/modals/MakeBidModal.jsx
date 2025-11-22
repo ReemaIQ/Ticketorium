@@ -90,11 +90,11 @@ export default function MakeBidModal({
                                 {/* Bottom */}
                                 <div className="flex justify-start md:flex-row gap-5">
                                     <div>
-                                        <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Bidding Ends:
-                                            <span className="text-[#14113B]"> {bidding.date}</span>
+                                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">Bidding Ends:
+                                            <span className="text-[#1A1A1A]"> {bidding.date}</span>
                                         </p>
-                                        <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Highest Bid:
-                                            <span className="text-[#14113B]"> $ {bidding.topBid}</span>
+                                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">Highest Bid:
+                                            <span className="text-[#1A1A1A]"> $ {bidding.topBid}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -125,8 +125,8 @@ export default function MakeBidModal({
                                 className={`inline-flex items-center gap-2 rounded-[6px] px-6 py-2 text-[14px] font-[Gilroy-Medium] transition
                 ${
                                     isValidBid
-                                        ? "bg-[#FFDF4F] text-[#14113B] hover:brightness-105"
-                                        : "bg-[#FFF5B8] text-gray-400 cursor-not-allowed"
+                                        ? "bg-[var(--accent-color)] text-[var(--secondary-color)] cursor-pointer"
+                                        : "border border-[var(--secondary-color)] text-[var(--secondary-color)] cursor-not-allowed"
                                 }`}
                             >
                                 Bid

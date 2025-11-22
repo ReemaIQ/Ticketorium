@@ -17,7 +17,7 @@ const baseBtn =
     "rounded-[6px] font-[Gilroy-Medium] text-[16px] px-3 py-2 flex items-center gap-1";
 
 const variants = {
-    primary: "bg-[var(--accent-color)] text-[#14113B]",
+    primary: "bg-[var(--accent-color)] text-[var(--secondary-color)]",
     secondary:
         "border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)]",
     border: "border bg-white",

@@ -68,7 +68,7 @@ function TicketModal({ isOpen, onClose, ticket, title }) {
 
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 text-sm font-medium border border-slate-300 bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                            className="px-4 py-2 text-sm font-[Gilroy-Medium] border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)] rounded-[6px] cursor-pointer"
                         >
                             Close
                         </button>

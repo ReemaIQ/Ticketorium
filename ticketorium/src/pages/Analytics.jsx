@@ -8,46 +8,13 @@ function Analytics() {
 
             {/* ---- Page Header ---- */}
             <section className="bg-white flex flex-col items-center py-20 px-20 gap-4 w-full">
-                <h1 className="font-[Epilogue-Black] text-[90px] leading-[1.0] text-[var(--primary-color)]">
+                <h1 className="font-[Epilogue-Black] text-[60px] leading-[1.0] text-[#1A1A1A]">
                     Analytics
                 </h1>
 
                 <p className="font-[DM-Sans-Light] text-[24px] text-[#4B5563] max-w-3xl">
                     Deep dive into how your events are performing: attendance, funnels, audience insights, and growth trends.
                 </p>
-            </section>
-
-
-            {/* ---- Centered Search + Filter ---- */}
-            <section className="bg-white flex flex-col items-center w-full px-20 mt-5">
-                <div className="flex items-center justify-center gap-6 w-full max-w-4xl">
-
-                    {/* Search Input */}
-                    <div className="relative flex-grow max-w-2xl">
-                        <input
-                            type="text"
-                            placeholder="Search analytics..."
-                            className="w-full h-14 rounded-full border border-gray-300 pl-14 pr-5
-                           text-[18px] font-[DM-Sans-Regular] shadow-sm
-                           focus:outline-none focus:ring-2 focus:ring-[#4F6FFF] transition"
-                        />
-                        <Search
-                            size={22}
-                            className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
-                        />
-                    </div>
-
-                    {/* Filter Button */}
-                    <button
-                        className="flex items-center gap-2 border-2 border-[#4F6FFF]
-                       text-[#14113B] px-8 py-3 rounded-full font-[Gilroy-Medium]
-                       hover:bg-[#4F6FFF] hover:text-white transition"
-                    >
-                        <Hash size={20} />
-                        Filter
-                    </button>
-
-                </div>
             </section>
 
 

@@ -20,13 +20,13 @@ function DeleteEventModal({ isOpen, onClose, title, onConfirm }) {
                         onClick={() => {
                             if (onConfirm) onConfirm();
                         }}
-                        className="px-4 py-2 rounded-md bg-rose-600 text-white hover:bg-rose-500"
+                        className="px-4 py-2 rounded-md bg-[var(--warning-color)] text-white cursor-pointer"
                     >
                         Delete
                     </button>
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 rounded-md border bg-white hover:bg-slate-50"
+                        className="px-4 py-2 rounded-[6px] border border-[var(--primary-color)] text-[var(--primary-color)] bg-white cursor-pointer"
                     >
                         Cancel
                     </button>

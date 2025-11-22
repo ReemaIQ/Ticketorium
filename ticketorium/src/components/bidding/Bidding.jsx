@@ -42,7 +42,7 @@ export default function Bidding({type,bidding}) {
                     <div>
                         {type === "listing"  && (
                             <button
-                                className="flex gap-3 bg-[#FFDF4F] text-[#14113B]
+                                className="flex gap-3 bg-[var(--accent-color)] text-[var(--secondary-color)]
                                         rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3 "
                             >
                                 End Bid
@@ -53,7 +53,7 @@ export default function Bidding({type,bidding}) {
                         {type === "bids" && (
                             <>
                                 <button
-                                    className="flex items-center gap-2 bg-[#FFDF4F] text-[#14113B]
+                                    className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)]
                                         rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3"
                                     onClick={() => setOpen(true)}
                                 >
@@ -67,11 +67,11 @@ export default function Bidding({type,bidding}) {
 
                     {/* Right */}
                     <div>
-                        <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Bidding Ends:
-                            <span className="text-[#14113B]"> {bidding.date}</span>
+                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">Bidding Ends:
+                            <span className="text-[#1A1A1A]"> {bidding.date}</span>
                         </p>
-                        <p className="font-[Gilroy-Medium] text-[#4F6FFF] text-[18px]">Highest Bid:
-                            <span className="text-[#14113B]"> $ {bidding.topBid}</span>
+                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">Highest Bid:
+                            <span className="text-[#1A1A1A]"> $ {bidding.topBid}</span>
                         </p>
                     </div>
 

@@ -46,13 +46,13 @@ function ManageUniversities(props)  {
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
-                    <h1 className="text-4xl font-[Gilroy-Black] text-gray-900 tracking-tight">
+                    <h1 className="text-[60px] font-[Gilroy-Black] text-[#1A1A1A] tracking-tight">
                         Manage Universities
                     </h1>
 
                     <button
                         onClick={handleAddNew}
-                        className="group bg-[var(--accent-color)] text-gray-900 font-[Gilroy-Medium] py-3 px-6 rounded-[6px] flex items-center transition-all"
+                        className="group bg-[var(--accent-color)] text-[var(--secondary-color)] font-[Gilroy-Medium] py-3 px-6 rounded-[6px] flex items-center transition-all"
                     >
                         Add new university
                         <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -94,7 +94,9 @@ function ManageUniversities(props)  {
                     "filter-buttons": "#8200DB",
                     "warning-color": "#F54141",
                     "success-color": "#46CA48",
-                    "footer-color": "#11223B"}}
+                    "footer-color": "#11223B",
+                    "dispute-chat": "#d8e5dd"
+                    }}
             />
         </div>
     );

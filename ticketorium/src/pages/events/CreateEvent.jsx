@@ -366,7 +366,7 @@ function CreateEventPage({ user, users, onCreate }) {
                     <div className="flex justify-end mt-6">
                         <button
                             type="submit"
-                            className="flex items-center gap-2 px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--primary-color)]"
+                            className="flex items-center gap-2 px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--secondary-color)]  cursor-pointer"
                         >
                             Create Event
                             <span className="text-lg">→</span>

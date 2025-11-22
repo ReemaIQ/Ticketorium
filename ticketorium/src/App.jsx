@@ -70,7 +70,7 @@ function App() {
       "phone": "01023456782",
       "password": "Dope!1111",
       "type": "system-admin",
-      "university": null, // he is prompted upon login to choose which university to administer
+      "university": "KFUPM", // he is prompted upon login to choose which university to administer
       "gender": "male",
       "date-of-birth": "1995-01-01",
     },
@@ -126,7 +126,8 @@ function App() {
       "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
-      "footer-color": "#002E1A"
+      "footer-color": "#002E1A",
+      "dispute-chat": "#d8e5dd"
     }
   },
   "Harvard": {
@@ -141,6 +142,7 @@ function App() {
       "warning-color": "#F54141",
       "success-color": "#46CA48",
       "footer-color": "#3B0A1E",
+      "dispute-chat": "#d8e5dd"
     }
   },
   "Saud": {
@@ -154,7 +156,8 @@ function App() {
       "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
-      "footer-color": "#001F3B"
+      "footer-color": "#001F3B",
+        "dispute-chat": "#d8e5dd"
     }
   },
   "Manchester": {
@@ -168,7 +171,8 @@ function App() {
       "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
-      "footer-color": "#3D0D5C"
+      "footer-color": "#3D0D5C",
+        "dispute-chat": "#d8e5dd"
     }
   },
   "Oxford": {
@@ -182,7 +186,8 @@ function App() {
       "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
-      "footer-color": "#000D1A"
+      "footer-color": "#000D1A",
+        "dispute-chat": "#d8e5dd"
     }
   },
   "Cambridge": {
@@ -196,7 +201,8 @@ function App() {
       "filter-buttons": "#6A1B9A",
       "warning-color": "#F54141",
       "success-color": "#46CA48",
-      "footer-color": "#4A6350"
+      "footer-color": "#4A6350",
+        "dispute-chat": "#d8e5dd"
     }
   }
   // more can be added by system admins only!
@@ -800,6 +806,7 @@ function App() {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "filter-buttons": "oklch(49.6% 0.265 301.924)",
+            "dispute-chat": "#e6f3fa"
         };
 
         const theme = uniTheme || fallbackTheme;

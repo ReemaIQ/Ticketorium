@@ -74,7 +74,7 @@ export default function AddListingModal({
                                     onClick={() => setSelectedId(id)}
                                     className={`cursor-pointer rounded-xl transition border-2 ${
                                         selectedId === id
-                                            ? "border-[#4F6FFF]"
+                                            ? "border-[var(--primary-color)]"
                                             : "border-transparent"
                                     }`}
                                 >
@@ -106,7 +106,7 @@ export default function AddListingModal({
                                             setDeadline("");
                                         } else setDeadline(picked);
                                     }}
-                                    className="w-full border-b border-gray-300 focus:border-[#4F6FFF] outline-none bg-transparent py-1"
+                                    className="w-full border-b border-gray-300 focus:border-[var(--primary-color)] outline-none bg-transparent py-1"
                                     placeholder="YYYY/MM/DD"
                                 />
                             </label>
@@ -123,7 +123,7 @@ export default function AddListingModal({
                                     step="0.01"
                                     value={startingBid}
                                     onChange={(e) => setStartingBid(e.target.value)}
-                                    className="w-full border-b border-gray-300 focus:border-[#4F6FFF] outline-none bg-transparent py-1"
+                                    className="w-full border-b border-gray-300 focus:border-[var(--primary-color)] outline-none bg-transparent py-1"
                                     placeholder="0.00"
                                 />
                             </label>
@@ -143,7 +143,7 @@ export default function AddListingModal({
                             className={`ml-auto rounded-[6px] px-5 py-2 text-[14px] font-[Gilroy-Medium] transition
                                 ${
                                 canCreate
-                                    ? "bg-[#4F6FFF] text-white hover:brightness-110"
+                                    ? "bg-[var(--accent-color)] text-[var(--secondary-color)] cursor-pointer"
                                     : "bg-gray-200 text-gray-500 cursor-not-allowed"
                             }`}
                         >

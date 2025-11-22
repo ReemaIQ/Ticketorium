@@ -60,7 +60,7 @@ export default function EventPage(props) {
                 {/* Back */}
                 <button
                     onClick={() => navigate(-1)}
-                    className="text-[#14113B] hover:underline font-[Gilroy-Medium] text-[16px]"
+                    className="text-[var(--primary-color)] hover:underline font-[Gilroy-Medium] text-[16px]"
                 >
                     ← Back
                 </button>
@@ -107,7 +107,7 @@ export default function EventPage(props) {
                 {/* Meta info */}
                 <div className="mt-6 border-t border-slate-200 pt-4">
                     <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
-                        <span className="text-indigo-700 font-medium">
+                        <span className="text-[var(--primary-color)] font-medium">
                             Time: {formatTimeRange(start, end)}
                         </span>
                         <div className="flex gap-8 text-slate-500">
@@ -118,7 +118,7 @@ export default function EventPage(props) {
                         </div>
                         <a
                             href={locationUrl}
-                            className="text-indigo-700 font-medium hover:underline"
+                            className="text-[var(--primary-color)] font-medium hover:underline"
                         >
                             Location: {location}
                         </a>

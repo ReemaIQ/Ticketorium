@@ -31,14 +31,14 @@ export const eventActionsConfig = {
         default: [
             { label: "Edit", icon: ArrowRight, variant: "primary" }, // navigate to EditEvent page
             { label: "Verify Tickets", icon: ArrowRight, variant: "secondary" }, // open QR verification modal
-            { label: "Delete", color: "text-red-500", variant: "border" },
+            { label: "Delete", color: "text-[var(--warning-color)]", variant: "border" },
         ],
     },
     
     admin: { //r
         default: [
             { label: "Edit", icon: ArrowRight, variant: "primary" }, // navigate to EditEvent page
-            { label: "Delete", color: "text-red-500", variant: "border" },
+            { label: "Delete", color: "text-[var(--warning-color)]", variant: "border" },
         ],
     },
 };
