@@ -1,39 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { eventActionsConfig } from "./eventActionsConfig";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { ArrowRight, Tickets } from "lucide-react";
 
-/* ----------------------------- Resign Modal ----------------------------- */
-
-function ResignModal({ isOpen, onClose, children }) {
-    useEffect(() => {
-        if (!isOpen) return;
-
-        function onKey(e) {
-            if (e.key === "Escape") onClose();
-        }
-        document.addEventListener("keydown", onKey);
-        return () => document.removeEventListener("keydown", onKey);
-    }, [isOpen, onClose]);
-
-    if (!isOpen) return null;
-
-    return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-            <div className="relative mx-4 w-full max-w-xl rounded-xl bg-white p-6 shadow-xl">
-                <button
-                    aria-label="Close"
-                    onClick={onClose}
-                    className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
-                >
-                    &times;
-                </button>
-                {children}
-            </div>
-        </div>
-    );
-}
+import JoinModal from "../modals/JoinModal.jsx";
+import InviteModal from "../modals/InviteModal.jsx";
+import TicketModal from "../modals/TicketModal.jsx";
+import VerifyTicketsModal from "../modals/VerifyTicketModal.jsx";
+import ResignModal from "../modals/ResignModal.jsx";
+import DeleteEventModal from "../modals/DeleteEventModal.jsx";
+import {fetchTicketForEvent} from "../../api/tickets.js";
 
 /* ----------------------------- Buttons styling ----------------------------- */
 
@@ -47,25 +23,119 @@ const variants = {
     border: "border bg-white",
 };
 
+
 /* ----------------------------- Main Component ----------------------------- */
 
 export default function EventActions({
+                                         event,
+                                         user,
                                          type,
                                          category,
                                          state,
                                          eventId,
                                          onAction,
                                      }) {
+
     const navigate = useNavigate();
-    const [openResignModal, setOpenResignModal] = useState(null);
+    const routerLocation = useLocation();
+
+    const passedEvent = event? event : {};
+
+    /* AUTO-OPEN MODALS WHEN COMING FROM REGISTRATION PAGE */
+    useEffect(() => {
+        const state = routerLocation.state;
+        if (!state) return;
+
+        if (state.openJoinModal) {
+            setOpenModal("join");
+        } else if (state.openTicketModal) {
+            setOpenModal("ticket");
+        }
+    }, [routerLocation.state]);
+
+    // load existing ticket from backend when page mounts/user changes
+    useEffect(() => {
+        if (!user) return;
+
+        async function loadTicket() {
+            try {
+                const existing = await fetchTicketForEvent({ eventId, user });
+                if (existing) {
+                    setTicket((prev) => prev || { ...existing, accessibilityNotes: "" });
+                    console.log("Loaded ticket from backend:", existing);
+                }
+            } catch (err) {
+                console.error("Failed to load ticket:", err);
+            }
+        }
+
+        loadTicket();
+    }, [eventId, user]);
+
+    const [viewState, setViewState] = useState(event?.state || null);
+    const [ticket, setTicket] = useState(null);
+    const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'verify' | 'delete' | 'ticket' | 'none'
+    const closeModal = () => setOpenModal("none");
+    const [showDeleteBanner, setShowDeleteBanner] = useState(false);
+
+    // map EventActions button label → open correct modal / route
+    function handleAction(label) {
+        switch (label) {
+            // attend / waitlist
+            case "Join":
+            case "Pay & Join":
+            case "Join Waitlist":
+                setOpenModal("join");
+                break;
+
+            // ticket & invite
+            case "Your Ticket":
+                setOpenModal("ticket");
+                break;
+
+            case "Send Invite":
+            case "Offer Ticket":
+            case "Accept":
+                setOpenModal("invite");
+                break;
+
+            case "Decline":
+            case "Resign":
+                setOpenModal("resign");
+                break;
+
+            // organizer / admin tools
+            case "Edit":
+                if (eventId) {
+                    // full-page Edit Event (not a modal anymore)
+                    navigate(`/event/${eventId}/edit`);
+                }
+                break;
+
+            case "Verify Tickets":
+            case "Verify Tickets →":
+                setOpenModal("verify");
+                break;
+
+            case "Delete":
+                setOpenModal("delete");
+                break;
+
+            // safety fallback
+            case "View":
+                if (eventId) navigate(`/event/${eventId}`);
+                break;
+
+            default:
+                break;
+        }
+    }
 
     const actions =
         eventActionsConfig[category]?.[state] ||
         eventActionsConfig[category]?.default;
 
     if (!actions) return null;
-
-    const closeModal = () => setOpenResignModal(null);
 
     return (
         <>
@@ -99,24 +169,7 @@ export default function EventActions({
                                 return;
                             }
 
-                            // Resign from cards / lists
-                            if (action.label === "Resign") {
-                                setOpenResignModal("resign");
-                                return;
-                            }
-
-                            // Default navigation for cards:
-                            // View, Join, Verify Tickets : go to event details page
-                            if (
-                                (action.label === "View" ||
-                                    action.label === "Join" ||
-                                    action.label === "Verify Tickets") &&
-                                eventId
-                            ) {
-                                navigate(`/event/${eventId}`);
-                                return;
-                            }
-
+                            handleAction(action.label);
                             console.log(`${action.label} clicked`);
                         };
 
@@ -138,38 +191,67 @@ export default function EventActions({
                     })}
             </div>
 
-            {/* Resign confirmation modal (used when no onAction is passed) */}
-            <ResignModal
-                isOpen={openResignModal === "resign"}
+            {/* -------------------------- MODALS -------------------------- */}
+
+            {/* JOIN modal: create ticket + redirect to /registration */}
+            <JoinModal
+                isOpen={openModal === "join"}
                 onClose={closeModal}
-            >
-                <div className="text-center">
-                    <h3 className="text-xl font-semibold">
-                        Resign from <span className="font-bold">title var</span>?
-                        {/* TODO: pass real title via props if you want */}
-                    </h3>
-                </div>
+                eventId={eventId}
+                title={passedEvent.title}
+                price={passedEvent.price}
+                hasSeatingPlan={passedEvent.hasSeatingPlan}
+                userId={user}
+                setTicket={setTicket}
+                setViewState={setViewState}
+            />
 
-                <div className="mt-6 flex justify-center gap-3">
-                    <button
-                        onClick={() => {
-                            // Let parent know the resignation was confirmed
-                            if (onAction) onAction("Resign Confirmed");
-                            closeModal();
-                        }}
-                        className="px-4 py-2 text-sm font-medium bg-white border border-rose-600 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
-                    >
-                        Resign
-                    </button>
+            {/* INVITE modal: dummy invite UI */}
+            <InviteModal
+                isOpen={openModal === "invite"}
+                onClose={closeModal}
+                title={passedEvent.title}
+                price={passedEvent.price}
+            />
 
-                    <button
-                        onClick={closeModal}
-                        className="px-4 py-2 text-sm font-medium border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)] rounded-md shadow-sm hover:bg-slate-50"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </ResignModal>
+            {/* TICKET modal: QR ticket */}
+            <TicketModal
+                isOpen={openModal === "ticket"}
+                onClose={closeModal}
+                ticket={ticket}
+                title={passedEvent.title}
+            />
+
+            {/* VERIFY modal: organizer/admin verifies ticket by code or QR scan */}
+            <VerifyTicketsModal
+                isOpen={openModal === "verify"}
+                onClose={closeModal}
+                eventId={eventId}
+            />
+
+            {/* RESIGN modal: move user from joined to not-joined */}
+            <ResignModal
+                isOpen={openModal === "resign"}
+                onClose={closeModal}
+                title={passedEvent.title}
+                price={passedEvent.price}
+                onConfirm={() => {
+                    setViewState(null);
+                    closeModal();
+                }}
+            />
+
+            {/* DELETE modal: demo-only delete (shows banner) */}
+            <DeleteEventModal
+                isOpen={openModal === "delete"}
+                onClose={closeModal}
+                title={passedEvent.title}
+                onConfirm={() => {
+                    closeModal();
+                    setShowDeleteBanner(true);
+                    setTimeout(() => setShowDeleteBanner(false), 2500);
+                }}
+            />
         </>
     );
 }
