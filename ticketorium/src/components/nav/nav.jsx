@@ -168,9 +168,6 @@ export default function Nav({type, setLoggedInUser, notifications, users, user})
                                     }`}
                                     role="menu"
                                 >
-                                    <button className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
-                                        Customize Profile
-                                    </button>
                                     {(type === "visitor" || type === "system-admin") && <button onClick={handleChangeUni} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
                                         Change University
                                     </button>}
