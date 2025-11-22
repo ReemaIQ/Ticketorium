@@ -1,81 +1,95 @@
-// Change this base URL later when you deploy or proxy through Vite
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "http://localhost:4000/api/tickets";
 
-export async function createTicket({ eventId, userId, seat, price }) {
-    const response = await fetch(`${BASE_URL}/api/tickets`, {
+/**
+ * Create a ticket for (eventId, userId).
+ * Used by JoinModal when a user joins an event.
+ */
+export async function createTicket({ eventId, userId, seat = null, price = 0 }) {
+    const res = await fetch(BASE_URL, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ eventId, userId, seat, price }),
     });
 
-    if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`Failed to create ticket: ${response.status} ${text}`);
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to create ticket: ${res.status} ${text}`);
     }
 
-    const data = await response.json();
-    return data; // { id, ticketCode, qrToken, qrData, eventId, userId, seat, price, status, createdAt }
+    return res.json();
 }
 
 /**
- * Get the latest active ticket for this user + event.
- * For now we just GET all tickets and filter on the frontend.
- * Later, you can replace this with a proper filtered backend query.
+ * Fetch the latest NON-CANCELLED ticket for this user+event.
+ * Returns `null` if none is found.
+ *
+ * This calls GET /api/tickets (all tickets) and filters client-side
+ * because the backend currently exposes that endpoint.
  */
-export async function fetchTicketForEvent({ eventId, userId }) {
-    const response = await fetch(`${BASE_URL}/api/tickets`);
+export async function fetchTicketForEvent({ eventId, user }) {
+    const res = await fetch(BASE_URL, { method: "GET" });
 
-    if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`Failed to fetch tickets: ${response.status} ${text}`);
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to fetch tickets: ${res.status} ${text}`);
     }
 
-    const all = await response.json();
+    const allTickets = await res.json();
 
-    // eventId from useParams is a string; backend also stores string "1"
-    const evId = String(eventId);
-
-    const matching = all.filter(
+    const matching = allTickets.filter(
         (t) =>
-            String(t.eventId) === evId &&
-            String(t.userId) === String(userId) &&
-            t.status === "active"
+            String(t.eventId) === String(eventId) &&
+            String(t.userId) === String(user) &&
+            t.status !== "cancelled"
     );
 
-    // Return the most recent one or null
-    return matching.length > 0 ? matching[matching.length - 1] : null;
+    if (matching.length === 0) return null;
+
+    // pick the latest by id
+    return matching.reduce((a, b) => (a.id > b.id ? a : b));
 }
 
 /**
- * Verify ticket by code or QR token.
- * Usage:
- *   verifyTicket({ code, eventId })
- *   verifyTicket({ token, eventId })
+ * Cancel a ticket (used when user RESIGNS).
+ * After this, admin verification will fail for that ticket
+ * because status !== "active".
+ */
+export async function cancelTicket(ticketId, userId) {
+    const res = await fetch(`${BASE_URL}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticketId, userId }),
+    });
+
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to cancel ticket: ${res.status} ${text}`);
+    }
+
+    return res.json();
+}
+
+/**
+ * It talks to backend route:
+ *   GET /api/tickets/verify?code=...&token=...&eventId=...
+ *
+ * pass either:
+ *   { code, eventId }   OR
+ *   { token, eventId }
  */
 export async function verifyTicket({ code, token, eventId }) {
-    const params = new URLSearchParams();
+    const url = new URL(`${BASE_URL}/verify`);
 
-    if (code) params.append("code", code);
-    if (token) params.append("token", token);
-    if (eventId) params.append("eventId", String(eventId));
+    if (code) url.searchParams.set("code", code);
+    if (token) url.searchParams.set("token", token);
+    if (eventId) url.searchParams.set("eventId", eventId);
 
-    try {
-        const res = await fetch(`${BASE_URL}/api/tickets/verify?${params.toString()}`);
+    const res = await fetch(url.toString(), { method: "GET" });
 
-        if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`Failed to verify ticket: ${res.status} ${text}`);
-        }
-
-        return await res.json(); // { valid, message, reason, ticket? }
-    } catch (err) {
-        console.error("Verify error:", err);
-        return {
-            valid: false,
-            reason: "error",
-            message: "Server error. Please try again.",
-        };
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Failed to verify ticket: ${res.status} ${text}`);
     }
+
+    return res.json();
 }
