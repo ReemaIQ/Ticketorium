@@ -25,8 +25,8 @@ const contentOptions = {
             header: "Your Upcoming Events",
             "jump-to": "Upcoming Events"
         },
-        "invites-sent": {
-            header: "Invites Sent",
+        "invites-received": {
+            header: "Invites Received",
             "jump-to": "Invites"
         }
     },
@@ -89,9 +89,9 @@ function UserHome(props) {
     const [filteredInvitesReceived, setFilteredInvitesReceived] = useState([]);
     const invitesReceivedOriginalState = useRef({});
 
-    // invites sent
-    const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
-    const invitesSentOriginalState = useRef({});
+    // // invites sent
+    // const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
+    // const invitesSentOriginalState = useRef({});
 
     // university section modal variables
     const [universities, setUniversities] = useState(props.universities);
@@ -115,18 +115,18 @@ function UserHome(props) {
 
     }, [notifications, props.user, props.users]);
 
-    function getSearchBtn(key) {
-        switch (key) {
-            case "user-events":
-                return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", upcomingEventsOriginalState.current, setFilteredUpcomingEvents, "event", searchValue, { "list-type": "my-events", "university": props.uni})}} expandable={true}/>
-            case "invites-received":
-                return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", invitesReceivedOriginalState.current, setFilteredInvitesReceived, "event", searchValue, { "list-type": "invites-received", "university": props.uni})}} expandable={true}/>
-            case "invites-sent":
-                return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", invitesSentOriginalState.current, setFilteredInvitesSent, "event", searchValue, { "list-type": "invites-sent", "university": props.uni})}} expandable={true}/>
-            default:
-                return null;
-        }
-    }
+    // function getSearchBtn(key) {
+    //     switch (key) {
+    //         case "user-events":
+    //             return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", upcomingEventsOriginalState.current, setFilteredUpcomingEvents, "event", searchValue, { "list-type": "my-events", "university": props.uni})}} expandable={true}/>
+    //         case "invites-received":
+    //             return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", invitesReceivedOriginalState.current, setFilteredInvitesReceived, "event", searchValue, { "list-type": "invites-received", "university": props.uni})}} expandable={true}/>
+    //         case "invites-sent":
+    //             return <SearchBtn filterFunc={(searchValue) => {props.filterContent("search", invitesSentOriginalState.current, setFilteredInvitesSent, "event", searchValue, { "list-type": "invites-sent", "university": props.uni})}} expandable={true}/>
+    //         default:
+    //             return null;
+    //     }
+    // }
 
     useEffect(() => {
         props.filterContent(
@@ -151,15 +151,15 @@ function UserHome(props) {
             Object.keys(invitesReceivedOriginalState.current)
         );
 
-        props.filterContent(
-            "initial",
-            { events: props.events, eventsJoined: props.eventsJoined },
-            invitesSentOriginalState,
-            "event",
-            "",
-            { "list-type": "invites-sent", university: props.uni }
-        );
-        setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current));
+        // props.filterContent(
+        //     "initial",
+        //     { events: props.events, eventsJoined: props.eventsJoined },
+        //     invitesSentOriginalState,
+        //     "event",
+        //     "",
+        //     { "list-type": "invites-sent", university: props.uni }
+        // );
+        // setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current));
     }, []);
 
     // Handlers
@@ -309,11 +309,8 @@ function UserHome(props) {
                                                         (key === "invites-received" ?
                                                                 <EventList eventsJoined={props.eventsJoined} events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received" variant="r"/>
                                                                 :
-                                                                (key === "invites-sent" ?
-                                                                    <EventList eventsJoined={props.eventsJoined} events={invitesSentOriginalState.current} filteredEvents={filteredInvitesSent} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-sent"/>
-                                                                    :
                                                                     "")
-                                                        ))
+                                                        )
                                             )))
                             }
                         </div>
