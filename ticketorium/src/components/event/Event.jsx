@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import EventActions from "./EventActions";
 import { getUserCategory } from "./getUserCategory.js";
 
-export default function Event({id, type, state, img, title, date, organizer, price, inviter,}) {
+export default function Event({event, id, user, type, state, img, title, date, organizer, price, inviter,}) {
     const category = getUserCategory(type);
     const [expanded, setExpanded] = useState(false); // mobile expand/collapse
 
@@ -111,7 +111,7 @@ export default function Event({id, type, state, img, title, date, organizer, pri
                         expanded ? "flex" : "hidden"
                     } md:flex`}
                 >
-                    <EventActions type={type} category={category} state={state} eventId={id} />
+                    <EventActions user={user} type={type} category={category} state={state} eventId={id} event={event}/>
 
                     <div className="flex-1 flex md:flex-row justify-between">
                         <div className="pl-2 flex align-center items-center">

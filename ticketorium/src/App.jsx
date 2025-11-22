@@ -861,6 +861,10 @@ function App() {
         return null;
     }
 
+    const updateEvent = () => {
+
+    }
+
     const addNewUser = (data) => {
         const userObject = {
           "first-name": data["first-name"],
@@ -973,7 +977,7 @@ function App() {
 
                         <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
                         <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<CreateEvent />)}/>
-                        <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : (dummyUsers.current[loggedInUser]["type"] === "student" || dummyUsers.current[loggedInUser]["type"] === "visitor") ? (<Navigate to="/home" />) : (<EditEvent user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />)}/>
+                        <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : (dummyUsers.current[loggedInUser]["type"] === "student" || dummyUsers.current[loggedInUser]["type"] === "visitor") ? (<Navigate to="/home" />) : (<EditEvent user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} onUpdate={updateEvent} />)}/>
                         {/* reema: Checkout / Registration Status page */}
                         <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
 
