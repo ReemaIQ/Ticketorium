@@ -1,6 +1,6 @@
 import EventList from "../components/event-list/EventList";
 import { useState, useEffect } from "react";
-//1
+
 function AboutOrganizer(props) {
     const [organizerEvents, setOrganizerEvents] = useState([]);
 
@@ -16,7 +16,11 @@ function AboutOrganizer(props) {
     }, [props.organizer]);
     useEffect(() => {
         updateOrganizerEvents();
+        window.scrollTo({ top: 0, behavior: "smooth" });
         // console.log(organizerEvents)
+        return () => {
+            props.setOrganizerViewing(null);
+        };
     }, []);
 
     return (
@@ -28,7 +32,7 @@ function AboutOrganizer(props) {
             <h2 className="font-[Epilogue-Bold] text-3xl text-[var(--secondary-color)]">Events organized:</h2>
             <div className="flex flex-col justify-center items-center w-full">
                 <div className="max-w-5xl">
-                    <EventList filteredEvents={organizerEvents} events={props.events} userType={props.userType} />
+                    <EventList eventsJoined={props.eventsJoined} filteredEvents={organizerEvents} events={props.events} userType={props.userType} setOrganizerViewing={props.setOrganizerViewing} variant="r" />
                 </div>
             </div>
         </div>

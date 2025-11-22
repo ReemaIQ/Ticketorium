@@ -60,9 +60,9 @@ export default function NotificationModal(props) {
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-[#E0E0E0]">
                 <div className="flex items-center gap-2">
-                    <h3 className="text-[16px] font-[Gilroy-Medium] text-[#14113B]">Notifications</h3>
+                    <h3 className="text-[16px] font-[Gilroy-Medium] text-[#1A1A1A]">Notifications</h3>
                     {unreadCount > 0 && (
-                        <span className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        <span className="bg-[var(--warning-color)] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                             {unreadCount} new
                         </span>
                     )}
@@ -71,7 +71,7 @@ export default function NotificationModal(props) {
                 {unreadCount > 0 && (
                     <button
                         onClick={handleMarkAllRead}
-                        className="text-[12px] text-[#14113B] font-[Gilroy-Bold] hover:underline flex items-center gap-1"
+                        className="text-[12px] text-[var(--secondary-color)] font-[Gilroy-Bold] hover:underline flex items-center gap-1"
                     >
                         <Check className="w-3 h-3" />
                         Mark all read

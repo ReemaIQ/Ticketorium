@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="trying to fix the filter and search algorithms">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="refining disputes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,17 +14,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JSX File" />
         <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -38,7 +31,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
+    &quot;accountId&quot;: &quot;2d0816b8-e9a4-431c-8602-3612ebddd751&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -52,24 +45,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "before-merging-final",
-    "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;lena&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sweet/OneDrive - KFUPM/KFUPM/2025/251/SWE 363/Project/ticketorium&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -121,9 +113,38 @@
       <workItem from="1763535245072" duration="4681000" />
       <workItem from="1763542604558" duration="2093000" />
       <workItem from="1763561015485" duration="8926000" />
-      <workItem from="1763731001864" duration="5321000" />
-      <workItem from="1763791730220" duration="4709000" />
-      <workItem from="1763809438468" duration="18705000" />
+    </task>
+    <task id="LOCAL-00001" summary="implementing tailwind">
+      <option name="closed" value="true" />
+      <created>1761683868931</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1761683868931</updated>
+    </task>
+    <task id="LOCAL-00002" summary="implementing navigation component">
+      <option name="closed" value="true" />
+      <created>1761683888266</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1761683888266</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Update the way fonts are called for unification">
+      <option name="closed" value="true" />
+      <created>1761736415366</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1761736415366</updated>
+    </task>
+    <task id="LOCAL-00004" summary="created event component">
+      <option name="closed" value="true" />
+      <created>1762006982178</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1762006982178</updated>
     </task>
     <task id="LOCAL-00005" summary="created event list component">
       <option name="closed" value="true" />
@@ -389,164 +410,25 @@
       <option name="project" value="LOCAL" />
       <updated>1763584327234</updated>
     </task>
-    <task id="LOCAL-00038" summary="finished disputes">
-      <option name="closed" value="true" />
-      <created>1763587714188</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1763587714188</updated>
-    </task>
-    <task id="LOCAL-00039" summary="finished disputes">
-      <option name="closed" value="true" />
-      <created>1763588076657</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1763588076657</updated>
-    </task>
-    <task id="LOCAL-00040" summary="system policies page">
-      <option name="closed" value="true" />
-      <created>1763588451466</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1763588451466</updated>
-    </task>
-    <task id="LOCAL-00041" summary="removed node modules folder">
-      <option name="closed" value="true" />
-      <created>1763648571831</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1763648571831</updated>
-    </task>
-    <task id="LOCAL-00042" summary="integrating changes from shayma's code into main">
-      <option name="closed" value="true" />
-      <created>1763671356590</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1763671356590</updated>
-    </task>
-    <task id="LOCAL-00043" summary="integrating changes from shayma's code into main">
-      <option name="closed" value="true" />
-      <created>1763673545885</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1763673545886</updated>
-    </task>
-    <task id="LOCAL-00044" summary="integrating changes from shayma's code into main">
-      <option name="closed" value="true" />
-      <created>1763673885895</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1763673885895</updated>
-    </task>
-    <task id="LOCAL-00045" summary="integrating changes into main">
-      <option name="closed" value="true" />
-      <created>1763674045726</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1763674045726</updated>
-    </task>
-    <task id="LOCAL-00046" summary="fixed disputes not showing">
-      <option name="closed" value="true" />
-      <created>1763746352033</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1763746352033</updated>
-    </task>
-    <task id="LOCAL-00047" summary="connected create new event page and button in my events page, fixed button placing">
-      <option name="closed" value="true" />
-      <created>1763746481378</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1763746481378</updated>
-    </task>
-    <task id="LOCAL-00048" summary="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
-      <option name="closed" value="true" />
-      <created>1763795146173</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1763795146173</updated>
-    </task>
-    <task id="LOCAL-00049" summary="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
-      <option name="closed" value="true" />
-      <created>1763813673692</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1763813673692</updated>
-    </task>
-    <task id="LOCAL-00050" summary="Modularize the Code + README.md">
-      <option name="closed" value="true" />
-      <created>1763822339034</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1763822339034</updated>
-    </task>
-    <task id="LOCAL-00051" summary="Pass Price to Checkout.jsx">
-      <option name="closed" value="true" />
-      <created>1763824064760</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1763824064760</updated>
-    </task>
-    <task id="LOCAL-00052" summary="integrating lena's work">
-      <option name="closed" value="true" />
-      <created>1763826812429</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1763826812429</updated>
-    </task>
-    <task id="LOCAL-00053" summary="trying to fix the filter and search algorithms">
-      <option name="closed" value="true" />
-      <created>1763833386251</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1763833386251</updated>
-    </task>
-    <option name="localTasksCounter" value="54" />
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="main" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="uploaded imaged for dummy events" />
+    <MESSAGE value="created event component" />
+    <MESSAGE value="created bidding component" />
+    <MESSAGE value="emptied app file" />
+    <MESSAGE value="created all events page" />
+    <MESSAGE value="created my events page" />
+    <MESSAGE value="updating fonts" />
+    <MESSAGE value="moved images to organize directories" />
+    <MESSAGE value="fixed mistake in passing user type to events list" />
+    <MESSAGE value="working on event responsiveness" />
+    <MESSAGE value="biddings and their page" />
+    <MESSAGE value="added dummy bids and other things" />
     <MESSAGE value="added bid and new listing modals" />
     <MESSAGE value="improved nav responsiveness" />
     <MESSAGE value="re-organizing files" />
@@ -560,29 +442,6 @@
     <MESSAGE value="worked on disputes page" />
     <MESSAGE value="quick attempt at adding notification modal" />
     <MESSAGE value="refining disputes" />
-    <MESSAGE value="finished disputes" />
-    <MESSAGE value="system policies page" />
-    <MESSAGE value="removed node modules folder" />
-    <MESSAGE value="integrating changes from shayma's code into main" />
-    <MESSAGE value="integrating changes into main" />
-    <MESSAGE value="fixed disputes not showing" />
-    <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
-    <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
-    <MESSAGE value="Modularize the Code + README.md" />
-    <MESSAGE value="Pass Price to Checkout.jsx" />
-    <MESSAGE value="integrating lena's work" />
-    <MESSAGE value="trying to fix the filter and search algorithms" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying to fix the filter and search algorithms" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx</url>
-          <line>126</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <option name="LAST_COMMIT_MESSAGE" value="refining disputes" />
   </component>
 </project>

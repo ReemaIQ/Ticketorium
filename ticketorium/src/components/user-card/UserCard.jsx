@@ -9,13 +9,13 @@ function getAvatarColor(type) {
     return "bg-[#D4D4D4]";
 }
 
-export default function UserCard({ user, onDelete }) {
+export default function UserCard({ user, onDelete, onEdit }) {
     const initial = user["first-name"]?.trim()?.charAt(0).toUpperCase() || "?";
     const avatarColor = getAvatarColor(user["type"] || "");
 
     return (
         <div className="max-w-5xl w-full mx-auto">
-            <div className="w-full rounded-[10px] border border-[#E6E6E6] bg-white px-6 py-4 flex items-center justify-between mb-4 shadow-sm">
+            <div className="w-full rounded-[6px] border border-gray-300 bg-white px-6 py-4 flex items-center justify-between mb-4">
 
                 {/* Left: avatar + info */}
                 <div className="flex items-center gap-4">
@@ -43,14 +43,25 @@ export default function UserCard({ user, onDelete }) {
                     </div>
                 </div>
 
-                {/* Right: delete button */}
-                <button
-                    type="button"
-                    onClick={() => onDelete?.(user.id)}
-                    className="px-5 py-1.5 rounded-[8px] border border-red-600 text-red-600 text-[13px] font-[Gilroy-Medium] hover:bg-[#FFF5F5] transition"
-                >
-                    Delete
-                </button>
+                {/* Right: edit and delete buttons */}
+                <div className="flex items-center gap-2">
+                    <button
+                        type="button"
+                        onClick={() => onDelete?.(user.id)}
+                        className="px-5 py-1.5 rounded-[6px] border border-[var(--warning-color)] text-[var(--warning-color)] text-[14px] font-[Gilroy-Medium]"
+                    >
+                        Delete
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => onEdit?.(user.id)}
+                        className="px-5 py-1.5 rounded-[6px] border border-[var(--secondary-color)] text-[var(--secondary-color)] text-[14px] font-[Gilroy-Medium]"
+                    >
+                        Edit
+                    </button>
+                </div>
+
             </div>
         </div>
     );
