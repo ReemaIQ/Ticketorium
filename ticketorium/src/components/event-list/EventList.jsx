@@ -116,6 +116,16 @@ export default function EventList(props) {
             return null;
         }
 
+        console.log("EventList Event:", props.eventsJoined);
+                    console.log("cheese", props.filteredEvents)
+                    // get event joined that is has event id equal to event
+
+                    const now = new Date();
+                    const eventMonthAndDay = item.date.match(/(\d+)\//g).map(e => e.replace('/', ''));
+                    const eventYear = item.date.match(/\/(\d+)-/g)[0].replace('/','').replace('-',''); // regex wizardry or sth
+                    const expired = eventYear < now.getFullYear() || (eventYear == now.getFullYear() && (parseInt(eventMonthAndDay[0]) < (now.getMonth() + 1) || (parseInt(eventMonthAndDay[0]) == (now.getMonth() + 1) && parseInt(eventMonthAndDay[1]) < now.getDate())));
+                        
+
         return (
             <Event
                 key={id}
@@ -128,6 +138,8 @@ export default function EventList(props) {
                 organizer={item.organizer}
                 price={item.price}
                 inviter={inviter}
+                expired={expired}
+                setOrganizerViewing={props.setOrganizerViewing} // don't worry about this, just passing it from App.jsx (Shayma)
             />
         );
     };

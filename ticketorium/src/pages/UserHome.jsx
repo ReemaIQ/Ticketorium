@@ -312,11 +312,11 @@ function UserHome(props) {
                                                     ):
                                                     (key === "user-events" ?
                                                         (
-                                                            <EventList eventsJoined={props.eventsJoined} events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events" variant="r"/>
+                                                            <EventList eventsJoined={props.eventsJoined} setOrganizerViewing={props.setOrganizerViewing} events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events"/>
                                                         )
                                                         :
                                                         (key === "invites-received" ?
-                                                                <EventList eventsJoined={props.eventsJoined} events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received" variant="r"/>
+                                                                <EventList eventsJoined={props.eventsJoined} setOrganizerViewing={props.setOrganizerViewing} events={invitesReceivedOriginalState.current} filteredEvents={filteredInvitesReceived} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="invites-received"/>
                                                                 :
                                                                     "")
                                                         )
