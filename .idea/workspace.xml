@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="final edits: fixed sorting by date">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="final edits: connected checkout page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,14 +125,6 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
-    </task>
-    <task id="LOCAL-00007" summary="added font">
-      <option name="closed" value="true" />
-      <created>1762007032929</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007032929</updated>
     </task>
     <task id="LOCAL-00008" summary="edited navigation bar">
       <option name="closed" value="true" />
@@ -519,7 +510,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763845219587</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="final edits: connected checkout page">
+      <option name="closed" value="true" />
+      <created>1763845747276</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1763845747276</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -549,7 +548,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="re-organizing files" />
     <MESSAGE value="polishing event responsiveness" />
     <MESSAGE value="fixed routes after reorganizing" />
     <MESSAGE value="notification modal skeleton" />
@@ -574,7 +572,8 @@
     <MESSAGE value="trying to fix the filter and search algorithms" />
     <MESSAGE value="final edits" />
     <MESSAGE value="final edits: fixed sorting by date" />
-    <option name="LAST_COMMIT_MESSAGE" value="final edits: fixed sorting by date" />
+    <MESSAGE value="final edits: connected checkout page" />
+    <option name="LAST_COMMIT_MESSAGE" value="final edits: connected checkout page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
