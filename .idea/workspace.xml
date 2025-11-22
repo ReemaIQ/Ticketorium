@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
-      <change afterPath="$PROJECT_DIR$/ticketorium/data/DummyData.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/theme/ThemeProvider.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/utils/SearchHelpers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/utils/UserHelpers.js" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Modularize the Code + README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/payment/Checkout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/payment/Checkout.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,15 +125,7 @@
       <workItem from="1763561015485" duration="8926000" />
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
-      <workItem from="1763809438468" duration="8299000" />
-    </task>
-    <task id="LOCAL-00001" summary="implementing tailwind">
-      <option name="closed" value="true" />
-      <created>1761683868931</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1761683868931</updated>
+      <workItem from="1763809438468" duration="9740000" />
     </task>
     <task id="LOCAL-00002" summary="implementing navigation component">
       <option name="closed" value="true" />
@@ -525,7 +511,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763813673692</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Modularize the Code + README.md">
+      <option name="closed" value="true" />
+      <created>1763822339034</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1763822339034</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,7 +549,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed mistake in passing user type to events list" />
     <MESSAGE value="working on event responsiveness" />
     <MESSAGE value="biddings and their page" />
     <MESSAGE value="added dummy bids and other things" />
@@ -580,6 +573,7 @@
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
     <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
-    <option name="LAST_COMMIT_MESSAGE" value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
+    <MESSAGE value="Modularize the Code + README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modularize the Code + README.md" />
   </component>
 </project>
