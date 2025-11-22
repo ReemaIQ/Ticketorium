@@ -1,3 +1,4 @@
+// ticketorium/src/components/event/eventActionsConfig.js
 import { ArrowRight, Tickets } from "lucide-react";
 
 export const eventActionsConfig = {
@@ -7,7 +8,7 @@ export const eventActionsConfig = {
             { label: "Send Invite", icon: ArrowRight, variant: "secondary" },
             { label: "Resign", color: "text-red-500", variant: "border" },
         ],
-        "not-joined": [
+        undefined: [
             { label: "Join", icon: ArrowRight, variant: "primary" },
             { label: "Send Invite", variant: "border" },
         ],
@@ -27,10 +28,26 @@ export const eventActionsConfig = {
         ],
     },
 
-    other: {
+    organizer: {
         default: [
-            { label: "View", icon: ArrowRight, variant: "primary" },
-            { label: "Delete", color: "text-red-500", variant: "border" },
+            { label: "Edit", icon: ArrowRight, variant: "primary" },
+            { label: "Verify Tickets", icon: ArrowRight, variant: "secondary" },
+            {
+                label: "Delete",
+                color: "text-[var(--warning-color)]",
+                variant: "border",
+            },
+        ],
+    },
+
+    admin: {
+        default: [
+            { label: "Edit", icon: ArrowRight, variant: "primary" },
+            {
+                label: "Delete",
+                color: "text-[var(--warning-color)]",
+                variant: "border",
+            },
         ],
     },
 };

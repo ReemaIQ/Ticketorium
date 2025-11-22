@@ -9,38 +9,32 @@ function Registration() {
     const location = useLocation();
 
     /* ---------------------------------------------------------
-       1) Determine if the registration is successful or not
-          - If a previous page passes `state: { isSuccess: true }`,
-            we use that.
-          - Otherwise we fall back to a demo default.
+       1) Determine if the registration is successful or not.
+          - Prefer location.state.isSuccess if passed.
+          - Fallback to DEMO_DEFAULT_SUCCESS for safety.
     --------------------------------------------------------- */
-    //
-    // const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
-    //
-    // const isSuccessFromState = location.state?.isSuccess;
-    // const isSuccess =
-    //     typeof isSuccessFromState === "boolean"
-    //         ? isSuccessFromState
-    //         : DEMO_DEFAULT_SUCCESS;
+    const DEMO_DEFAULT_SUCCESS = true; // change to false to test failure UI
 
-    let isSuccess = true;
+    const isSuccessFromState = location.state?.isSuccess;
+    const isSuccess =
+        typeof isSuccessFromState === "boolean"
+            ? isSuccessFromState
+            : DEMO_DEFAULT_SUCCESS;
 
     // event data from navigation state
     const eventId = location.state?.eventId || null;
     const fromEventId = location.state?.fromEventId || eventId || null;
 
     /* ---------------------------------------------------------
-       2) success could depend on:
-          - userType === "student" || "visitor"
-          - attendeesCount < eventCapacity
-          - paymentStatus === "paid"
-          - not banned / already registered, etc.
+       2) Text + image depend on success/failure
     --------------------------------------------------------- */
-
-    // Content that depends on success/failure
     const headingLine1 = isSuccess ? "Registration" : "Oops!";
-    const headingLine2 = isSuccess ? "Successful" : "Registration Unsuccessful!";
-    const smallText = isSuccess ? "Thank you for registering" : "Please try again";
+    const headingLine2 = isSuccess
+        ? "Successful"
+        : "Registration Unsuccessful!";
+    const smallText = isSuccess
+        ? "Thank you for registering"
+        : "Please try again";
 
     const badgeImage = isSuccess ? successImg : failureImg;
 
@@ -72,7 +66,7 @@ function Registration() {
 
     function handleSecondaryClick() {
         if (isSuccess) {
-            // SUCCESS: View Ticket: go to event page and open ticket modal
+            // SUCCESS: View Ticket → go to event page and open ticket modal
             const targetEventId = eventId || fromEventId;
             if (!targetEventId) {
                 alert("Missing event info – cannot open ticket.");
@@ -155,7 +149,11 @@ function Registration() {
                 <div className="flex-1 flex justify-center md:justify-end">
                     <img
                         src={badgeImage}
-                        alt={isSuccess ? "Registration successful" : "Registration unsuccessful"}
+                        alt={
+                            isSuccess
+                                ? "Registration successful"
+                                : "Registration unsuccessful"
+                        }
                         className="max-w-[280px] md:max-w-[340px] object-contain"
                     />
                 </div>

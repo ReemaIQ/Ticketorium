@@ -15,7 +15,7 @@ function Admin() {
         <>
             {/* Navigation */}
             <Nav
-                userName={user.name}
+                firstName={user.name}
                 type={user.type}/>
 
             {/* --- Hero Section --- */}
