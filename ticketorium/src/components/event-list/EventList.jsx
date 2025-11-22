@@ -84,9 +84,10 @@ export default function EventList(props) {
                 className="flex flex-col justify-center items-center gap-5
                         p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]"
             >
-                {props.listType === "my-events"
+                {(props.listType === "my-events" && props.userType !== "organizer")
                     ? "No events joined yet."
-                    : "No events available."}
+                    : props.userType === "organizer" ?
+                    "No events created." : "No events found"}
             </div>
         );
     }

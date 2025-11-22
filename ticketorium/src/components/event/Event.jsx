@@ -67,7 +67,7 @@ export default function Event({
             <div className="flex flex-col justify-between pb-5 pt-3 pr-4 pl-5 md:w-2/3 md:pl-0 gap-5">
                 {/* Top section */}
                 <div>
-                    {state === "invited" ? (
+                    {(state === "invited" && type !== "organizer") ? (
                         <div className="flex flex-row justify-between">
                             <p className="font-[Gilroy-Bold] text-[var(--secondary-accent-color)] text-[18px] my-1">
                                 You've been invited to this event by {inviter}!
