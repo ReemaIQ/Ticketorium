@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
+      <change afterPath="$PROJECT_DIR$/ticketorium/data/DummyData.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/theme/ThemeProvider.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/utils/SearchHelpers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/utils/UserHelpers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +24,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JavaScript File" />
         <option value="JSX File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -123,7 +131,7 @@
       <workItem from="1763561015485" duration="8926000" />
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
-      <workItem from="1763809438468" duration="688000" />
+      <workItem from="1763809438468" duration="8299000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
@@ -509,7 +517,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763795146173</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
+      <option name="closed" value="true" />
+      <created>1763813673692</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1763813673692</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

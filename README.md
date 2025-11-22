@@ -1,7 +1,17 @@
 # 🎟️ Ticketorium
+## Your Seat to Every Milestone
+
+---
 
 Ticketorium is a **React + Vite** web application for managing university events, ticketing, bidding, and dispute resolution.  
 It supports multiple user roles and provides a fully interactive event ecosystem with a polished UI and smooth user experience.
+
+---
+
+Ticketorium is a modern, campus-focused event ticketing and seat reservation platform designed to make university events smoother, fairer, and more accessible for everyone. Built for high-demand moments like graduations, ceremonies, and major campus experiences, Ticketorium replaces outdated and stressful ticket distribution with a clean, intuitive, digital-first solution.
+With Ticketorium, students, families, visitors, organizers, and administrators all get a tailored experience. Attendees can browse events, reserve seats, download tickets, join waitlists, and securely resell or transfer tickets within the community. This ensures that no seat is wasted and every opportunity is accessible. Organizers gain powerful tools to configure seating, validate tickets, monitor attendance, and view live event statistics, while administrators manage policies, pricing, user accounts, and event approvals through a simple centralized dashboard.
+By combining efficient ticket management, transparent reselling, and a polished user interface, Ticketorium improves the entire event journey from planning to participation. It provides reliability for organizers, fairness for students, and convenience for every user involved. Ticketorium’s mission is simple:
+Connect people to the moments that matter with ease, trust, and confidence.
 
 ---
 
@@ -73,26 +83,64 @@ cd Ticketorium
 ### 2. Install Dependencies
 
 ```bash
+
+# Install dependencies for the root project (if any)
+npm install
+
+# Install backend dependencies
+cd ticketorium-backend
+npm install
+
+# Install frontend dependencies
+cd ../ticketorium
 npm install
 ```
 ### 3. Run the Development Server
-
+#### Start the Backend:
 ```bash
+
+# From the root directory:
+cd ticketorium-backend
+node server.js
+
+# The backend will typically run on http://localhost:3001
+```
+
+#### Start the Frontend
+```bash
+
+# From the root directory:
+cd ticketorium
+
 npm run dev
+# The frontend will typically run on http://localhost:5173
 ```
 
 ---
 
 ## 📁 Project Structure
 
-    src/
-    |- assets/                ← images, fonts, icons
-    |- components/              ← UI components (EventActions, Tickets, Navbar, etc.)
-    |- pages/                 ← Full-page views (Events, Disputes, Users)
-    |- App.jsx                ← App routing
-    |- main.jsx               ← React root & bootstrap
-    |- public/                ← Static assets
-
+```
+ticketorium/
+│
+├── ticketorium-backend/      ← Node.js backend (Express server)
+│     └── server.js
+│
+├── ticketorium/              ← React (Vite) frontend
+│   ├── src/
+│   │   ├── api/              ← API helper file
+│   │   ├── assets/           ← Images, icons, fonts
+│   │   ├── components/       ← Reusable UI components
+│   │   ├── pages/            ← All page-level screens
+│   │   ├── App.css
+│   │   ├── App.jsx           ← App routing & providers
+│   │   ├── index.css
+│   │   └── main.jsx          ← React root entry
+│   │
+│   └── utils/                ← Shared utilities (formatting, helpers)
+│
+└── README.md                 ← Documentation
+```
 
 ---
 
@@ -153,9 +201,7 @@ Stored per user:
 --- 
 ## 👥 Team
 
-- Alshayma Alarfaj
-- Lena Ashqar
-- Reema Alqahtani
+- Alshayma Alarfaj & Lena Ashqar & Reema Al-Qahtani
 
 ---
  
