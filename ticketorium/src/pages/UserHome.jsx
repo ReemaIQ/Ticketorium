@@ -15,6 +15,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import OrganizerAnalytics from "../components/analytics/Analytics.jsx";
+import UniversityCard from "../components/university-card/UniversityCard.jsx";
+import UniversityModal from "../components/modals/UniversityModal.jsx";
 
 library.add(fas, far, fab)
 
@@ -92,6 +94,11 @@ function UserHome(props) {
     const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
     const invitesSentOriginalState = useRef({});
 
+    // university section modal variables
+    const [universities, setUniversities] = useState(props.universities);
+    const [universityEditingId, setUniversityEditingId] = useState(null);
+    const [isUniversityModalOpen, setIsUniversityModalOpen] = useState(false);
+
     const [notifications, setNotifications] = useState(props.notifications || {});
     const notificationArray = useMemo(() => {
         if (!notifications) return [];
@@ -131,7 +138,27 @@ function UserHome(props) {
             setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current)); // ik its stupid, but it forces a re-render
         }, []);
 
+    // Handlers
+        const handleUniversityDelete = (id) => {
+            if (window.confirm('Are you sure you want to delete this university?')) {
+                const newUniversities = { ...props.universities };
+                delete newUniversities[id];
+                setUniversities(newUniversities);
+            }
+        };
 
+        const handleUniversityEdit = (id) => {
+            setUniversityEditingId(id);
+            setIsUniversityModalOpen(true);
+        };
+
+    const handleUniversitySave = (key, data) => {
+        setUniversities(prev => ({
+            ...prev,
+            [key]: data
+        }));
+        setIsUniversityModalOpen(false);
+    };
 
     return (
         <>
@@ -210,10 +237,46 @@ function UserHome(props) {
                         (
                             <h1 className="font-[Gilroy-Medium] text-[20px]"> event-organizers </h1>
                         ) :
-                    // (key === "universities" ?
-                    //     (
-                    //         <h1 className="font-[Gilroy-Medium] text-[20px]"> universities </h1>
-                    //     ):
+                    (key === "universities" ?
+                        (
+                            <>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {Object.entries(universities).map(([key, data]) => (
+                                        <UniversityCard
+                                            key={key}
+                                            id={key}
+                                            data={data}
+                                            onEdit={handleUniversityEdit}
+                                            onDelete={handleUniversityDelete}
+                                        />
+                                    ))}
+
+                                    {/* Empty State Helper */}
+                                    {Object.keys(universities).length === 0 && (
+                                        <div className="col-span-full text-center py-20 text-gray-500">
+                                            No universities found. Click "Add new university" to get started.
+                                        </div>
+                                    )}
+
+                                    <UniversityModal
+                                        isOpen={isUniversityModalOpen}
+                                        onClose={() => setIsUniversityModalOpen(false)}
+                                        onSave={handleUniversitySave}
+                                        initialData={universityEditingId ? universities[universityEditingId] : null}
+                                        editId={universityEditingId}
+                                        defaultTheme={universityEditingId ? universities[universityEditingId]["theme-colors"]:
+                                            {"primary-color": "#1A1A1A",
+                                                "secondary-color": "#1F4C76",
+                                                "accent-color": "#FFDF4F",
+                                                "secondary-accent-color": "#0800FF",
+                                                "filter-buttons": "#8200DB",
+                                                "warning-color": "#F54141",
+                                                "success-color": "#46CA48",
+                                                "footer-color": "#11223B"}}
+                                    />
+                                </div>
+                            </>
+                        ):
                     (key === "user-events" ?
                         (
                         <EventList eventsJoined={props.eventsJoined} events={upcomingEventsOriginalState.current} filteredEvents={filteredUpcomingEvents} filterContent={props.filterContent} userType={props.users[props.user]['type']} listType="my-events" variant="r"/>
@@ -227,7 +290,7 @@ function UserHome(props) {
                     :
                     "")
                     ))
-                ))
+                )))
                     }
                 </div>
                 </>
