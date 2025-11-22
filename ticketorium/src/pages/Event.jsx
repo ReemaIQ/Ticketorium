@@ -10,7 +10,7 @@ import { fetchTicketForEvent } from "../api/tickets.js";
 import JoinModal from "../components/modals/JoinModal.jsx";
 import InviteModal from "../components/modals/InviteModal.jsx";
 import TicketModal from "../components/modals/TicketModal.jsx";
-import VerifyTicketsModal from "../components/modals/VerifyTicketsModal.jsx";
+import VerifyTicketsModal from "../components/modals/VerifyTicketModal.jsx";
 import ResignModal from "../components/modals/ResignModal.jsx";
 import DeleteEventModal from "../components/modals/DeleteEventModal.jsx";
 

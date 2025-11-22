@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-// initial state to reuse for resetting
-
 const initialFormState = {
     username: "",
     firstName: "",
@@ -16,18 +14,35 @@ const initialFormState = {
     dob: "",
 };
 
-export function CreateUserModal({ open, onClose, onCreate, currentType }) {
+export function UserModal({ open, onClose, onSave, currentType, initialData, takenUsernames = [] }) {
     const [form, setForm] = useState(initialFormState);
     const [errors, setErrors] = useState({});
 
-    // Update useEffect to handle Scroll Lock and Form Reset
+    const isEditMode = !!initialData;
+
     useEffect(() => {
         if (open) {
             document.body.style.overflow = 'hidden';
-
-            // Reset form and errors every time modal opens
-            setForm(initialFormState);
             setErrors({});
+
+            if (initialData) {
+                // Populate form for Edit Mode
+                setForm({
+                    username: initialData.id || "",
+                    firstName: initialData["first-name"] || "",
+                    lastName: initialData["last-name"] || "",
+                    email: initialData.email || "",
+                    phone: initialData.phone || "",
+                    password: "", // Keep empty for security; only fill if changing
+                    type: initialData.type || "",
+                    university: initialData.university || "",
+                    gender: initialData.gender || "",
+                    dob: initialData["date-of-birth"] || "",
+                });
+            } else {
+                // Reset for Create Mode
+                setForm(initialFormState);
+            }
         } else {
             document.body.style.overflow = 'unset';
         }
@@ -35,22 +50,39 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [open]);
+    }, [open, initialData]);
 
     /* ---------------- Role logic ---------------- */
-
     const currentRole = (currentType || "").toLowerCase();
-    const allowedTypes =
-        currentRole === "admin"
-            ? ["visitor", "student", "organizer", "admin"]
-            : ["visitor", "student", "organizer", "admin", "system admin"];
+
+    let allowedTypes = [];
+
+    if (currentRole === "system-admin") {
+        // RULE: System Admins can ONLY create/edit System Admins and Regular Admins
+        allowedTypes = ["admin", "system-admin"];
+    } else {
+        // RULE: Regular Admins can create everyone EXCEPT System Admins
+        // (Assuming currentRole is 'admin' here)
+        allowedTypes = ["visitor", "student", "organizer", "admin"];
+    }
 
     /* ---------------- Validation ---------------- */
-
     const validate = () => {
         const e = {};
 
-        if (!form.username.trim()) e.username = "Username is required.";
+        // 1. Check Username & Uniqueness
+        if (!form.username.trim()) {
+            e.username = "Username is required.";
+        } else {
+            // Check if username exists AND we are not just editing the same user
+            const isTaken = takenUsernames.includes(form.username.trim());
+            const isSameUser = isEditMode && form.username === initialData.id;
+
+            if (isTaken && !isSameUser) {
+                e.username = "This username is already taken.";
+            }
+        }
+
         if (!form.firstName.trim()) e.firstName = "First name is required.";
         if (!form.lastName.trim()) e.lastName = "Last name is required.";
 
@@ -66,11 +98,14 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
             e.phone = "Phone must be at least 10 digits.";
         }
 
-        if (!form.password.trim()) {
+        // Password Validation Logic
+        // - Create Mode: Required
+        // - Edit Mode: Optional (only validate if user typed something)
+        if (!isEditMode && !form.password) {
             e.password = "Password is required.";
-        } else if (
-            !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)
-        ) {
+        }
+
+        if (form.password && !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)) {
             e.password = "Password must contain 8+ chars, 1 upper, 1 number, 1 special.";
         }
 
@@ -89,14 +124,9 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
         return Object.keys(e).length === 0;
     };
 
-    /* ---------------- Handlers ---------------- */
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         setForm((prev) => ({ ...prev, [name]: value }));
-
-        //Clear the error for this specific field as the user types
         if (errors[name]) {
             setErrors((prev) => {
                 const newErrors = { ...prev };
@@ -108,31 +138,26 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Validate is called here. If it fails, errors are set, preventing submit.
         if (!validate()) return;
-
-        onCreate(form);
-        onClose();
+        onSave(form);
     };
 
     if (!open) return null;
-
-    /* ---------------- UI ---------------- */
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
             <div className="relative z-10 w-full max-w-xl rounded-2xl bg-white shadow-xl px-6 py-5 h-auto max-h-[90vh] overflow-y-auto">
-                {/* Header */}
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="font-[Gilroy-Black] text-[24px]">Create new user</h2>
+                    <h2 className="font-[Gilroy-Black] text-[24px]">
+                        {isEditMode ? "Edit User" : "Create New User"}
+                    </h2>
                     <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100">
                         <X className="w-4 h-4" />
                     </button>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Username + Email */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -142,8 +167,9 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                                 name="username"
                                 value={form.username}
                                 onChange={handleChange}
+                                // Optional: Disable username editing if you want to prevent ID changes
+                                // disabled={isEditMode}
                                 className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.username ? 'border-red-500' : 'border-gray-400'}`}
-                                placeholder="Username"
                             />
                             {errors.username && <span className="text-xs text-red-500">{errors.username}</span>}
                         </label>
@@ -161,7 +187,7 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                         </label>
                     </div>
 
-                    {/* First / Last Name */}
+                    {/* Names */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <label className="text-xs font-medium text-gray-600">
                             First Name
@@ -173,7 +199,6 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                             />
                             {errors.firstName && <span className="text-xs text-red-500">{errors.firstName}</span>}
                         </label>
-
                         <label className="text-xs font-medium text-gray-600">
                             Last Name
                             <input
@@ -200,7 +225,7 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
-                            Password
+                            Password {isEditMode && <span className="text-gray-400 font-normal">(Leave blank to keep current)</span>}
                             <input
                                 name="password"
                                 type="password"
@@ -229,7 +254,6 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                             </select>
                             {errors.type && <span className="text-xs text-red-500">{errors.type}</span>}
                         </label>
-
                         <label className="text-xs font-medium text-gray-600">
                             University
                             <input
@@ -273,7 +297,6 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                         </label>
                     </div>
 
-                    {/* Buttons */}
                     <div className="flex justify-end gap-3 pt-2">
                         <button
                             type="button"
@@ -282,12 +305,11 @@ export function CreateUserModal({ open, onClose, onCreate, currentType }) {
                         >
                             Cancel
                         </button>
-
                         <button
                             type="submit"
                             className="px-6 py-2 rounded-[6px] font-medium transition bg-[#FFDF4F] text-[#14113B] hover:bg-[#FFE77A]"
                         >
-                            Create user
+                            {isEditMode ? "Save Changes" : "Create User"}
                         </button>
                     </div>
                 </form>

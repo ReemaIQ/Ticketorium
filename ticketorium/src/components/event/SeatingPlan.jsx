@@ -1,5 +1,3 @@
-// reema: shared seating plan UI for events that have hasSeatingPlan === true
-
 import React from "react";
 
 function SeatingPlan({ selectedSeat, onSelect, occupiedSeats = [] }) {

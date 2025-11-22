@@ -1,6 +1,3 @@
-// TICKET modal
-// - shows ticket code + QR code + seat + price
-
 import React from "react";
 import Modal from "./Modal.jsx";
 import QRCode from "react-qr-code";
