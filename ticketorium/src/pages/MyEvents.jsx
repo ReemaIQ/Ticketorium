@@ -1,3 +1,12 @@
+// "My Events" page
+// - For students/visitors: shows events they joined (using EventList)
+// - For organizers: also shows "Create New Event" button → /create-event
+//   (CreateEvent.jsx handles the creation form)
+// - Event cards here still use Event → EventPage for:
+//     * joining
+//     * QR tickets
+//     * QR verification (via EventActions + EventPage)
+
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -65,6 +74,8 @@ function MyEvents(props) {
     };
 
     useEffect(() => {
+        // reema: initial filter to show only events joined by this user
+        //   - uses filterContent from App.jsx with list-type "my-events"
         props.filterContent(
             "initial",
             { events: props.events, eventsJoined: props.eventsJoined },
@@ -91,10 +102,11 @@ function MyEvents(props) {
                         id="section-header"
                         className="flex items-center justify-between max-w-5xl mt-9 mb-3 px-3"
                     >
-                        {/* Left: Title + Search */}
+                        {/* Left: Title + Search + (for organizers) Create button */}
                         <div className="flex flex-col gap-4 w-full">
                             <h1>{getEventsTitle(userType)}</h1>
 
+                            {/* reema: Organizer-only "Create New Event" (Edit/Create feature) */}
                             {userType === "organizer" && (
                                 <div className="flex justify-end gap-3">
                                     <button
@@ -108,6 +120,7 @@ function MyEvents(props) {
                                 </div>
                             )}
 
+                            {/* Search + filter (works on joined events list) */}
                             <div className="flex gap-4 self-start w-full justify-center">
                                 <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
                                     <FontAwesomeIcon
@@ -133,11 +146,16 @@ function MyEvents(props) {
                                 />
                             </div>
                         </div>
-
-                        {/* Right: Create New Event (organizers only) */}
-
                     </div>
 
+                    {/* reema: EventList here uses:
+                          - events = originalState.current (joined events)
+                          - eventsJoined = full join state map
+                          - listType = "my-events"
+                       Event list cards then route to EventPage for:
+                          * QR tickets
+                          * verification (for organizers)
+                          * seating, invite, etc. */}
                     <EventList
                         events={originalState.current}
                         eventsJoined={props.eventsJoined}

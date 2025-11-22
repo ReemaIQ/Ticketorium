@@ -161,7 +161,7 @@ app.get("/api/tickets/verify", (req, res) => {
         });
     }
 
-    // ✅ Optional: mark as used now
+    // Optional: mark as used now
     ticket.status = "used";
 
     return res.json({
