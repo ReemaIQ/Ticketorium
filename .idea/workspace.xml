@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="integrating lena's work">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/utils/SearchHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/utils/SearchHelpers.js" afterDir="false" />
-    </list>
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="trying to fix the filter and search algorithms" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -132,15 +121,7 @@
       <workItem from="1763561015485" duration="8926000" />
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
-      <workItem from="1763809438468" duration="18548000" />
-    </task>
-    <task id="LOCAL-00004" summary="created event component">
-      <option name="closed" value="true" />
-      <created>1762006982178</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1762006982178</updated>
+      <workItem from="1763809438468" duration="18705000" />
     </task>
     <task id="LOCAL-00005" summary="created event list component">
       <option name="closed" value="true" />
@@ -526,7 +507,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763826812429</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="trying to fix the filter and search algorithms">
+      <option name="closed" value="true" />
+      <created>1763833386251</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1763833386251</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -556,7 +545,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added dummy bids and other things" />
     <MESSAGE value="added bid and new listing modals" />
     <MESSAGE value="improved nav responsiveness" />
     <MESSAGE value="re-organizing files" />
@@ -581,7 +569,8 @@
     <MESSAGE value="Modularize the Code + README.md" />
     <MESSAGE value="Pass Price to Checkout.jsx" />
     <MESSAGE value="integrating lena's work" />
-    <option name="LAST_COMMIT_MESSAGE" value="integrating lena's work" />
+    <MESSAGE value="trying to fix the filter and search algorithms" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying to fix the filter and search algorithms" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
