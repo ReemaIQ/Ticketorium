@@ -1,64 +1,49 @@
-import React, { useEffect } from "react";
-import { X } from "lucide-react"; // Assuming you have lucide-react, or use &times;
+// RESIGN modal
+// - confirms that the user wants to resign from an event
+// - can optionally show refund amount if price > 0
+// - parent passes onConfirm() to update state (e.g., setViewState("not-joined"))
 
-export default function ResignModal({ isOpen, onClose, onConfirm, eventName, refundAmount }) {
-    useEffect(() => {
-        if (!isOpen) return;
+import React from "react";
+import Modal from "./Modal.jsx";
 
-        function onKey(e) { if (e.key === "Escape") onClose(); }
-        document.addEventListener("keydown", onKey);
-        return () => document.removeEventListener("keydown", onKey);
-    }, [isOpen, onClose]);
-
-    if (!isOpen) return null;
-
+function ResignModal({ isOpen, onClose, title, price = 0, onConfirm }) {
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center">
-            {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <div className="text-center">
+                <h3 className="text-xl font-semibold">
+                    Are you sure you want to resign from{" "}
+                    <span className="font-bold">{title}</span>?
+                </h3>
+            </div>
 
-            {/* Modal Content */}
-            <div className="relative mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl transform transition-all">
+            {price > 0 && (
+                <p className="mt-2 text-slate-500 text-center">
+                    You will receive a refund of:{" "}
+                    <span className="text-indigo-700 font-medium">
+                        ${price.toFixed(2)}
+                    </span>
+                </p>
+            )}
+
+            <div className="mt-6 flex justify-center gap-3">
                 <button
-                    aria-label="Close"
-                    onClick={onClose}
-                    className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
+                    onClick={() => {
+                        if (onConfirm) onConfirm();
+                    }}
+                    className="px-4 py-2 text-sm font-medium bg-white border border-rose-600 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
                 >
-                    <X size={20} />
+                    Resign
                 </button>
 
-                <div className="text-center mt-2">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                        Resign from <span className="font-bold text-[var(--secondary-color)]">{eventName || "this event"}</span>?
-                    </h3>
-
-                    {refundAmount !== undefined && refundAmount > 0 && (
-                        <p className="mt-2 text-slate-500">
-                            Refund: <span className="text-[var(--success-color)] font-bold">${Number(refundAmount).toFixed(2)}</span>
-                        </p>
-                    )}
-
-                    <p className="mt-2 text-sm text-gray-500">
-                        Are you sure you want to proceed? This action cannot be undone.
-                    </p>
-                </div>
-
-                <div className="mt-8 flex justify-center gap-3">
-                    <button
-                        onClick={onConfirm}
-                        className="px-6 py-2.5 text-sm font-medium bg-[var(--warning-color)] text-white rounded-[6px] hover:opacity-90 transition-opacity"
-                    >
-                        Confirm Resignation
-                    </button>
-
-                    <button
-                        onClick={onClose}
-                        className="px-6 py-2.5 text-sm font-medium border border-gray-300 bg-white text-gray-700 rounded-[6px] hover:bg-gray-50 transition-colors"
-                    >
-                        Cancel
-                    </button>
-                </div>
+                <button
+                    onClick={onClose}
+                    className="px-4 py-2 text-sm font-medium border bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                >
+                    Cancel
+                </button>
             </div>
-        </div>
+        </Modal>
     );
 }
+
+export default ResignModal;
