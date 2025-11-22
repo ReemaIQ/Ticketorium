@@ -52,7 +52,7 @@ export default function EventPage(props) {
 
     // If the event or joinRecord changes (e.g. user switches), sync state again
     useEffect(() => {
-        setViewState(joinedRecord?.state || raw?.state || null);
+        setViewState(joinedRecord?.state || raw?.state || undefined);
     }, [joinedRecord, raw, eventId]);
 
     // basic event display fields
