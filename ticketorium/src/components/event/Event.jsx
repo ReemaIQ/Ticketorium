@@ -66,7 +66,7 @@ export default function Event({event, id, user, type, state, img, title, date, o
                             </p>
                         </div>
                     ) : (
-                        <p className="font-[Gilroy-Bold] text-right text-[var(--secondary-accent-color)] mb-1">
+                        <p className="font-[Gilroy-Bold] text-right text-[var(--primary-color)] mb-1">
                             {daysLeftText}
                         </p>
                     )}

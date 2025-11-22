@@ -24,10 +24,10 @@ function InviteRow({ person, price }) {
             <button
                 disabled={invited}
                 onClick={() => setInvited(true)}
-                className={`inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium border border-slate-300 ${
+                className={`inline-flex items-center justify-center rounded-[6px] px-4 py-2 text-sm font-medium ${
                     invited
                         ? "bg-slate-200 text-slate-500 cursor-not-allowed"
-                        : "bg-yellow-400 text-slate-900 hover:bg-yellow-300"
+                        : "bg-[var(--accent-color)] text-[var(--secondary-color)] cursor-pointer"
                 }`}
             >
                 {invited ? "Invited" : price > 0 ? "Pay & Invite" : "Invite"}
@@ -99,7 +99,7 @@ function InviteModal({ isOpen, onClose, title, price }) {
                     {price > 0 ? (
                         <>
                             You will pay{" "}
-                            <span className="text-indigo-700 font-medium">
+                            <span className="text-[var(--primary-color)] font-medium">
                                 ${price.toFixed(2)}
                             </span>
                         </>

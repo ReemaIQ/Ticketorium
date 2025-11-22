@@ -281,14 +281,14 @@ function EditEventPage({ user, users, events, onUpdate }) {
                     <div className="flex justify-end gap-4 mt-10">
                         <button
                             type="button"
-                            className="px-6 py-3 border border-rose-200 text-rose-500 rounded-md bg-white hover:bg-rose-50"
+                            className="px-6 py-3 border border-[var(--warning-color)] text-[var(--warning-color)] rounded-[6px] bg-white cursor-pointer"
                             onClick={() => navigate(-1)}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--primary-color)]"
+                            className="px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--secondary-color)] cursor-pointer"
                         >
                             Apply Edits →
                         </button>

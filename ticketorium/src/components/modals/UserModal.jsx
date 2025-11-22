@@ -169,9 +169,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 onChange={handleChange}
                                 // Optional: Disable username editing if you want to prevent ID changes
                                 // disabled={isEditMode}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.username ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.username ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.username && <span className="text-xs text-red-500">{errors.username}</span>}
+                            {errors.username && <span className="text-xs text-[var(--warning-color)]">{errors.username}</span>}
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
@@ -181,9 +181,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 type="email"
                                 value={form.email}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.email ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.email ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.email && <span className="text-xs text-red-500">{errors.email}</span>}
+                            {errors.email && <span className="text-xs text-[var(--warning-color)]">{errors.email}</span>}
                         </label>
                     </div>
 
@@ -195,9 +195,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="firstName"
                                 value={form.firstName}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.firstName ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.firstName ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.firstName && <span className="text-xs text-red-500">{errors.firstName}</span>}
+                            {errors.firstName && <span className="text-xs text-[var(--warning-color)]">{errors.firstName}</span>}
                         </label>
                         <label className="text-xs font-medium text-gray-600">
                             Last Name
@@ -205,9 +205,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="lastName"
                                 value={form.lastName}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.lastName ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.lastName ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.lastName && <span className="text-xs text-red-500">{errors.lastName}</span>}
+                            {errors.lastName && <span className="text-xs text-[var(--warning-color)]">{errors.lastName}</span>}
                         </label>
                     </div>
 
@@ -219,9 +219,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="phone"
                                 value={form.phone}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.phone ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.phone ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.phone && <span className="text-xs text-red-500">{errors.phone}</span>}
+                            {errors.phone && <span className="text-xs text-[var(--warning-color)]">{errors.phone}</span>}
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
@@ -231,9 +231,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 type="password"
                                 value={form.password}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.password ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.password ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.password && <span className="text-xs text-red-500">{errors.password}</span>}
+                            {errors.password && <span className="text-xs text-[var(--warning-color)]">{errors.password}</span>}
                         </label>
                     </div>
 
@@ -245,14 +245,14 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="type"
                                 value={form.type}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.type ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.type ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             >
                                 <option value="">select…</option>
                                 {allowedTypes.map((t) => (
                                     <option key={t} value={t}>{t}</option>
                                 ))}
                             </select>
-                            {errors.type && <span className="text-xs text-red-500">{errors.type}</span>}
+                            {errors.type && <span className="text-xs text-[var(--warning-color)]">{errors.type}</span>}
                         </label>
                         <label className="text-xs font-medium text-gray-600">
                             University
@@ -260,9 +260,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="university"
                                 value={form.university}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.university ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.university ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.university && <span className="text-xs text-red-500">{errors.university}</span>}
+                            {errors.university && <span className="text-xs text-[var(--warning-color)]">{errors.university}</span>}
                         </label>
                     </div>
 
@@ -274,14 +274,14 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="gender"
                                 value={form.gender}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.gender ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.gender ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             >
                                 <option value="">Select…</option>
                                 <option value="female">Female</option>
                                 <option value="male">Male</option>
                                 <option value="other">Other</option>
                             </select>
-                            {errors.gender && <span className="text-xs text-red-500">{errors.gender}</span>}
+                            {errors.gender && <span className="text-xs text-[var(--warning-color)]">{errors.gender}</span>}
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
@@ -291,9 +291,9 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 type="date"
                                 value={form.dob}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.dob ? 'border-red-500' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.dob ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
                             />
-                            {errors.dob && <span className="text-xs text-red-500">{errors.dob}</span>}
+                            {errors.dob && <span className="text-xs text-[var(--warning-color)]">{errors.dob}</span>}
                         </label>
                     </div>
 
@@ -301,13 +301,13 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border border-red-600 text-red-600 rounded-[6px]"
+                            className="px-4 py-2 border border-[var(--warning-color)] text-[var(--warning-color)] rounded-[6px] cursor-pointer"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2 rounded-[6px] font-medium transition bg-[#FFDF4F] text-[#14113B] hover:bg-[#FFE77A]"
+                            className="px-6 py-2 rounded-[6px] font-medium transition bg-[var(--accent-color)] text-[var(--secondary-color)] cursor-pointer"
                         >
                             {isEditMode ? "Save Changes" : "Create User"}
                         </button>

@@ -96,7 +96,7 @@ function JoinModal({
                     {price > 0 ? (
                         <>
                             You will pay{" "}
-                            <span className="text-indigo-700 font-medium">
+                            <span className="text-[var(--primary-color)] font-medium">
                                 ${price.toFixed(2)}
                             </span>
                         </>
@@ -126,7 +126,7 @@ function JoinModal({
                 <div className="mt-6 flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium border border-slate-300 bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                        className="px-4 py-2 text-sm font-medium bg-white text-[var(--secondary-color)] border border-[var(--secondary-color)] rounded-[6px] cursor-pointer"
                     >
                         Cancel
                     </button>
@@ -134,7 +134,7 @@ function JoinModal({
                     <button
                         onClick={handleJoin}
                         disabled={loading}
-                        className="px-4 py-2 text-sm font-medium border border-slate-300 bg-yellow-400 text-slate-900 rounded-md shadow-sm hover:bg-yellow-300 disabled:opacity-60"
+                        className="px-4 py-2 text-sm font-medium bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] cursor-pointer disabled:opacity-60"
                     >
                         {loading
                             ? "Processing..."

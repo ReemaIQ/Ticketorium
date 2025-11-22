@@ -8,18 +8,18 @@ const NotificationIcon = ({ category }) => {
     switch (category) {
         case "event":
         case "organizer_event":
-            return <Calendar className={`${baseClass} text-[#14113B]`} />;
+            return <Calendar className={`${baseClass} text-[var(--secondary-color)]`} />;
         case "bidding":
-            return <Gavel className={`${baseClass} text-[#14113B]`} />;
+            return <Gavel className={`${baseClass} text-[var(--secondary-color)]`} />;
         case "listing":
-            return <Ticket className={`${baseClass} text-[#14113B]`} />;
+            return <Ticket className={`${baseClass} text-[var(--secondary-color)]`} />;
         case "dispute":
-            return <AlertCircle className={`${baseClass} text-[#14113B]`} />;
+            return <AlertCircle className={`${baseClass} text-[var(--secondary-color)]`} />;
         case "account":
         case "security":
-            return <Shield className={`${baseClass} text-[#14113B]`} />;
+            return <Shield className={`${baseClass} text-[var(--secondary-color)]`} />;
         default:
-            return <Clock className={`${baseClass} text-[#14113B]`} />;
+            return <Clock className={`${baseClass} text-[var(--secondary-color)]`} />;
     }
 };
 
@@ -29,7 +29,7 @@ function Notification({ notification, onRead }) {
             onClick={() => onRead(notification.id)}
             className={`
                 flex gap-3 p-4 border-b border-[#E0E0E0] cursor-pointer hover:bg-[#F9FAFB] transition-colors
-                ${!notification.read ? "bg-[#EFF7FF]" : "bg-white"}
+                ${!notification.read ? "bg-[var(--dispute-chat)]" : "bg-white"}
             `}
         >
             {/* Icon Container */}
@@ -42,12 +42,12 @@ function Notification({ notification, onRead }) {
             {/* Content */}
             <div className="flex-1">
                 <div className="flex justify-between items-start">
-                    <h4 className={`text-[14px] leading-tight mb-1 ${!notification.read ? "font-[Gilroy-Bold] text-[#14113B]" : "font-[Gilroy-Medium] text-[#505050]"}`}>
+                    <h4 className={`text-[14px] leading-tight mb-1 ${!notification.read ? "font-[Gilroy-Bold] text-[var(--secondary-color)]" : "font-[Gilroy-Medium] text-[var(--secondary-color)]"}`}>
                         {notification.titleTemplate}
                     </h4>
                     {/* Unread Dot */}
                     {!notification.read && (
-                        <span className="w-2 h-2 rounded-full bg-red-600 mt-1.5"></span>
+                        <span className="w-2 h-2 rounded-full bg-[var(--warning-color)] mt-1.5"></span>
                     )}
                 </div>
                 <p className="text-[13px] text-[#666] font-[Gilroy-Medium] leading-snug mb-2">

@@ -30,14 +30,14 @@ function ResignModal({ isOpen, onClose, title, price = 0, onConfirm }) {
                     onClick={() => {
                         if (onConfirm) onConfirm();
                     }}
-                    className="px-4 py-2 text-sm font-medium bg-white border border-rose-600 text-rose-600 rounded-md shadow-sm hover:bg-rose-50"
+                    className="px-4 py-2 text-sm font-medium bg-white border border-[var(--warning-color)] text-[var(--warning-color)] rounded-[6px] cursor-pointer"
                 >
                     Resign
                 </button>
 
                 <button
                     onClick={onClose}
-                    className="px-4 py-2 text-sm font-medium border bg-white text-slate-700 rounded-md shadow-sm hover:bg-slate-50"
+                    className="px-4 py-2 text-sm font-medium border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)] rounded-[6px] cursor-pointer"
                 >
                     Cancel
                 </button>

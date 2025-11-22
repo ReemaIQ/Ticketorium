@@ -48,14 +48,14 @@ function NewDisputeForm({ onSubmit, onCancel, username }) {
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="px-5 py-2 rounded-[6px] border border-[#14113B] text-[14px] font-[Gilroy-Medium] text-[#14113B] bg-white hover:bg-[#F7F7F7]"
+                            className="px-5 py-2 rounded-[6px] border border-[var(--secondary-color)] text-[14px] font-[Gilroy-Medium] text-[var(--secondary-color)] bg-white hover:bg-[#F7F7F7]"
                         >
                             Cancel
                         </button>
                     )}
                     <button
                         type="submit"
-                        className="px-8 py-2 rounded-[6px] bg-[#FFDF4F] text-[#14113B] text-[14px] font-[Gilroy-Medium] hover:brightness-105"
+                        className="px-8 py-2 rounded-[6px] bg-[var(--accent-color)] text-[var(--secondary-color)] text-[14px] font-[Gilroy-Medium] hover:brightness-105"
                     >
                         Submit
                     </button>
@@ -184,23 +184,25 @@ export default function Disputes(props) {
 
     return (
         <div className="flex flex-col h-screen bg-white text-[#1A1A1A]">
-            <header className="flex items-center justify-between px-4 md:px-8 py-4">
-                <h1 className="font-[Gilroy-Black] text-[40px] md:text-[48px] leading-none py-10">
+            <header className="flex flex-col md:flex-row items-center justify-between px-4 md:px-8 py-4">
+                <h1 className="font-[Gilroy-Black] text-[60px] w-full justify-start leading-none py-10">
                     My Disputes
                 </h1>
 
                 {(props.users[props.user]['type'] !== "admin" && props.users[props.user]['type'] !== "system-admin") && (
-                    <button
-                    type="button"
-                    onClick={() => {
-                        setMode("new");
-                        setSelectedId(null);
-                    }}
-                    className="flex items-center gap-2 bg-[#FFDF4F] text-[#14113B] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] hover:brightness-105"
-                >
-                    <Plus className="w-4 h-4" />
-                    New Dispute
-                </button>
+                        <div className="flex w-full justify-end">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setMode("new");
+                                    setSelectedId(null);
+                                }}
+                                className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
+                            >
+                                <Plus className="w-4 h-4" />
+                                New Dispute
+                            </button>
+                        </div>
                     )}
             </header>
 
