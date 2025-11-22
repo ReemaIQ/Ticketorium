@@ -1,3 +1,4 @@
+// src/pages/AllEvents.jsx
 import React, { useState, useEffect, useRef } from "react";
 import EventList from "../components/event-list/EventList.jsx";
 
@@ -11,16 +12,13 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 
 library.add(fas, far, fab);
 
-// Use same path style as MyEvents
 import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
-
 function AllEvents(props) {
-    const [filteredEvents, setFilteredEvents] = useState([]);
-    const originalState = useRef({});
+    const [filteredEvents, setFilteredEvents] = useState([]); // array of ids only
+    const originalState = useRef({}); // full event objects (with state)
 
-    // user in props is a username; look up in users map
     const userType = props.user ? props.users[props.user]?.type : null;
 
     const getEventsTitle = (type) => {
@@ -37,7 +35,10 @@ function AllEvents(props) {
         if (t === "visitor") {
             return (
                 <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
-                    Events at <span className="text-[var(--primary-color)] font-[Gilroy-Medium]"> {props.uni} </span>
+                    Events at{" "}
+                    <span className="text-[var(--primary-color)] font-[Gilroy-Medium]">
+                        {props.uni}
+                    </span>
                 </span>
             );
         }
@@ -57,26 +58,43 @@ function AllEvents(props) {
         );
     };
 
+    // 1) Initial: build a map of all events in this university (with their state)
     useEffect(() => {
-        // Initial load: filter events for this university
         props.filterContent(
             "initial",
-            props.events,
-            originalState,
+            props.events,          // full events map (with base state)
+            originalState,         // ref → will hold { [eventId]: eventObjWithState }
             "event",
             "",
             { "list-type": "all-events", university: props.uni }
         );
-        console.log("Original State Set:", originalState.current);
-        // force a re-render with keys of originalState
-        setFilteredEvents(Object.keys(originalState.current));
-    }, []);
+
+        console.log("AllEvents originalState (with state):", originalState.current);
+
+        setFilteredEvents(Object.keys(originalState.current)); // start by showing all
+    }, [props.events, props.filterContent, props.uni]);
+
+    // 2) Search: DO NOT touch originalState.current, only change filteredEvents (ids)
+    const handleSearch = (searchValue) => {
+        props.filterContent(
+            "search",
+            originalState.current,     // we search inside the already-built map
+            setFilteredEvents,         // setter gets an array of ids
+            "event",
+            searchValue,
+            {
+                "list-type": "all-events",
+                university: props.uni,
+            }
+        );
+    };
 
     return (
         <>
-            {/* Content */}
-            <div id="page-content" className="flex flex-col items-center gap-30 min-h-screen">
-                {/* Upcoming Events */}
+            <div
+                id="page-content"
+                className="flex flex-col items-center gap-30 min-h-screen"
+            >
                 <div
                     id="events-section"
                     className="flex flex-col w-full max-w-5xl align-middle px-10 xl:px-15 pb-10"
@@ -85,12 +103,10 @@ function AllEvents(props) {
                         id="section-header"
                         className="flex flex-col items-start justify-between max-w-5xl mt-9 mb-3 px-3 gap-4"
                     >
-                        {/* Left: Title */}
                         <div className="flex items-center gap-3">
                             <h1>{getEventsTitle(userType)}</h1>
                         </div>
 
-                        {/* Search */}
                         <div className="flex gap-4 self-start w-full justify-center">
                             <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
                                 <FontAwesomeIcon
@@ -100,30 +116,21 @@ function AllEvents(props) {
                             </button>
                             <SearchBtn
                                 expandable={true}
-                                filterFunc={(searchValue) => {
-                                    props.filterContent(
-                                        "search",
-                                        originalState.current,
-                                        setFilteredEvents,
-                                        "event",
-                                        searchValue,
-                                        {
-                                            "list-type": "all-events",
-                                            university: props.uni,
-                                        }
-                                    );
-                                }}
+                                filterFunc={handleSearch}
                             />
                         </div>
                     </div>
 
                     <EventList
+                        // Always pass the full objects (with state)
                         events={originalState.current}
+                        // Optional: the raw events map if EventList ever needs it
+                        allEvents={props.events}
                         eventsJoined={props.eventsJoined}
-                        filteredEvents={filteredEvents}
-                        filterContent={props.filterContent}
                         userType={userType}
                         listType="all-events"
+                        // Only filter by ids
+                        filterIds={filteredEvents}
                     />
                 </div>
             </div>
