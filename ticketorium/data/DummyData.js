@@ -513,6 +513,7 @@ export const initialDummyEvents = {
         title: "2025 Coding Competition",
         date: "Dec 25, 2025",
         organizer: "chicken-nugget",
+        hasSeatingPlan: true,
         price: 0,
     },
     7: {
