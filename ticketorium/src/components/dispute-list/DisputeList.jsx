@@ -28,6 +28,12 @@ function DisputeList({ disputes, selectedId, onSelect }) {
                         onSelect={() => onSelect(d.id)}
                     />
                 ))}
+
+                {list.length === 0 &&
+                    <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
+                        No disputes found.
+                    </div>
+                }
             </div>
         </aside>
     );

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import EventList from "../components/event-list/EventList.jsx";
 
-import { Hash, Search } from "lucide-react";
-
 // Font Awesome Setup
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -17,6 +15,7 @@ library.add(fas, far, fab);
 import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
+
 function AllEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]);
     const originalState = useRef({});
@@ -30,31 +29,31 @@ function AllEvents(props) {
         if (t === "admin") {
             return (
                 <span className="font-[Gilroy-Black] text-[40px] text-[var(--primary-color)]">
-          Manage Events
-        </span>
+                    Manage Events
+                </span>
             );
         }
 
         if (t === "visitor") {
             return (
                 <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
-          Events at {props.uni}
-        </span>
+                    Events at {props.uni}
+                </span>
             );
         }
 
         if (t === "student") {
             return (
                 <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-          Events
-        </span>
+                    Events
+                </span>
             );
         }
 
         return (
             <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-        Events
-      </span>
+                Events
+            </span>
         );
     };
 
@@ -68,6 +67,7 @@ function AllEvents(props) {
             "",
             { "list-type": "all-events", university: props.uni }
         );
+        console.log("Original State Set:", originalState.current);
         // force a re-render with keys of originalState
         setFilteredEvents(Object.keys(originalState.current));
     }, []);
@@ -83,7 +83,7 @@ function AllEvents(props) {
                 >
                     <div
                         id="section-header"
-                        className="flex flex-col items-start justify-between w-full mt-9 mb-3 px-3 gap-4"
+                        className="flex flex-col items-start justify-between max-w-5xl mt-9 mb-3 px-3 gap-4"
                     >
                         {/* Left: Title */}
                         <div className="flex items-center gap-3">

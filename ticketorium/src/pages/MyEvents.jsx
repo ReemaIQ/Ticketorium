@@ -9,22 +9,18 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
 
 import EventList from "../components/event-list/EventList.jsx";
-
-import { Search, Hash, Plus } from "lucide-react";
+import SearchBtn from "../components/search-button/SearchBtn.jsx";
+import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
 // Font Awesome Setup
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
-
-import SearchBtn from "../components/search-button/SearchBtn.jsx";
-import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
-
 library.add(fas, far, fab);
 
 function MyEvents(props) {
@@ -39,14 +35,6 @@ function MyEvents(props) {
     const getEventsTitle = (type) => {
         const t = type?.toLowerCase();
 
-        if (t === "organizer") {
-            return (
-                <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
-                    My Events
-                </span>
-            );
-        }
-
         if (t === "visitor") {
             return (
                 <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
@@ -54,14 +42,6 @@ function MyEvents(props) {
                     <span className="font-[Gilroy-Medium] text-[40px] text-[#1A1A1A]">
                         at {props.uni || "Harvard"}
                     </span>
-                </span>
-            );
-        }
-
-        if (t === "student") {
-            return (
-                <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-                    My Events
                 </span>
             );
         }
@@ -74,8 +54,6 @@ function MyEvents(props) {
     };
 
     useEffect(() => {
-        // reema: initial filter to show only events joined by this user
-        //   - uses filterContent from App.jsx with list-type "my-events"
         props.filterContent(
             "initial",
             { events: props.events, eventsJoined: props.eventsJoined },
@@ -89,82 +67,86 @@ function MyEvents(props) {
         setFilteredEvents(Object.keys(originalState.current));
     }, []);
 
+    console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv", filteredEvents)
+
     return (
-        <div className="w-full h-full">
+        <>
             {/* Content */}
-            <div id="page-content" className="flex flex-col items-center gap-30">
+            <div id="page-content" className="flex flex-col items-center gap-30 w-full min-h-148.5">
                 {/* Upcoming Events */}
                 <div
                     id="events-section"
-                    className="flex flex-col w-full align-middle px-10 xl:px-15 pb-10"
+                    className="flex flex-col w-full max-w-5xl gap-5 align-middle px-10 xl:px-15 pb-10"
                 >
                     <div
                         id="section-header"
-                        className="flex items-center justify-between max-w-5xl mt-9 mb-3 px-3"
+                        className="flex flex-col items-start gap-5 max-w-5xl mt-9 mb-3 px-3"
                     >
-                        {/* Left: Title + Search + (for organizers) Create button */}
-                        <div className="flex flex-col gap-4 w-full">
-                            <h1>{getEventsTitle(userType)}</h1>
+                        {/* Left: Title + Search */}
+                        <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full max-w-5xl">
+                            <h1 className="justify-end w-full">{getEventsTitle(userType)}</h1>
 
-                            {/* reema: Organizer-only "Create New Event" (Edit/Create feature) */}
+                            {/* Right: Create New Event (organizers only) */}
                             {userType === "organizer" && (
-                                <div className="flex justify-end gap-3">
+                                <div className="flex justify-end w-full gap-3">
                                     <button
                                         onClick={() => navigate("/create-event")}
                                         className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
-                                            text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
+                                        text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
                                     >
                                         <Plus size={18} />
                                         Create New Event
                                     </button>
                                 </div>
                             )}
+                        </div>
 
-                            {/* Search + filter (works on joined events list) */}
-                            <div className="flex gap-4 self-start w-full justify-center">
-                                <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-                                    <FontAwesomeIcon
-                                        icon={"fa-solid fa-filter"}
-                                        className="text-white"
-                                    />
-                                </button>
-                                <SearchBtn
-                                    filterFunc={(searchValue) => {
-                                        props.filterContent(
-                                            "search",
-                                            originalState.current,
-                                            setFilteredEvents,
-                                            "event",
-                                            searchValue,
-                                            {
-                                                "list-type": "my-events",
-                                                university: props.uni,
-                                            }
-                                        );
-                                    }}
-                                    expandable={true}
+                        <div className="flex gap-4 self-start w-full justify-center">
+                            <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
+                                <FontAwesomeIcon
+                                    icon={"fa-solid fa-filter"}
+                                    className="text-white"
                                 />
-                            </div>
+                            </button>
+
+                            <SearchBtn
+                                filterFunc={(searchValue) => {
+                                    props.filterContent(
+                                        "search",
+                                        originalState.current,
+                                        setFilteredEvents,
+                                        "event",
+                                        searchValue,
+                                        {
+                                            "list-type": "my-events",
+                                            university: props.uni,
+                                        }
+                                    );
+                                }}
+                                expandable={true}
+                            />
                         </div>
                     </div>
 
-                    {/* reema: EventList here uses:
-                          - events = originalState.current (joined events)
-                          - eventsJoined = full join state map
-                          - listType = "my-events"
-                       Event list cards then route to EventPage for:
-                          * QR tickets
-                          * verification (for organizers)
-                          * seating, invite, etc. */}
-                    <EventList
-                        events={originalState.current}
-                        eventsJoined={props.eventsJoined}
-                        filteredEvents={filteredEvents}
-                        filterContent={props.filterContent}
-                        userType={userType}
-                        listType="my-events"
-                        variant="r"
-                    />
+                    {userType === "organizer" && (
+                        <EventList
+                            events={props.events}
+                            allEvents={props.events}
+                            eventsJoined={props.eventsJoined}
+                            userType={userType}
+                            listType="my-events"
+                        />
+                    )}
+
+                    {userType !== "organizer" && (
+                        <EventList
+                            events={filteredEvents}
+                            allEvents={props.events}
+                            eventsJoined={props.eventsJoined}
+                            userType={userType}
+                            listType="my-events"
+                        />
+                    )}
                 </div>
             </div>
 
@@ -174,7 +156,7 @@ function MyEvents(props) {
                     waitlistSuccess={props.waitlistSuccess}
                 />
             )}
-        </div>
+        </>
     );
 }
 
