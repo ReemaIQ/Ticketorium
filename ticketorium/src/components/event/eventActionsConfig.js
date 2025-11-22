@@ -10,8 +10,7 @@ export const eventActionsConfig = {
         ],
         undefined: [
             { label: "Join", icon: ArrowRight, variant: "primary" },
-            { label: "Send Invite", variant: "border" },
-        ],
+            { label: "Send Invite", icon: ArrowRight, variant: "secondary" },        ],
         waitlist: [
             { label: "Join Waitlist", icon: ArrowRight, variant: "primary" },
         ],

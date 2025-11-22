@@ -19,7 +19,7 @@ function ResignModal({ isOpen, onClose, title, price = 0, onConfirm }) {
             {price > 0 && (
                 <p className="mt-2 text-slate-500 text-center">
                     You will receive a refund of:{" "}
-                    <span className="text-indigo-700 font-medium">
+                    <span className="text-[var(--primary-color)] font-medium">
                         ${price.toFixed(2)}
                     </span>
                 </p>

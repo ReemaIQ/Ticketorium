@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="added upcoming events">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="removed magic button">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,14 +129,6 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18548000" />
-    </task>
-    <task id="LOCAL-00008" summary="edited navigation bar">
-      <option name="closed" value="true" />
-      <created>1762007048484</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007048484</updated>
     </task>
     <task id="LOCAL-00009" summary="uploaded imaged for dummy events">
       <option name="closed" value="true" />
@@ -521,7 +514,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763841100226</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="removed magic button">
+      <option name="closed" value="true" />
+      <created>1763841218385</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1763841218385</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -551,7 +552,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="re-organizing files" />
     <MESSAGE value="polishing event responsiveness" />
     <MESSAGE value="fixed routes after reorganizing" />
     <MESSAGE value="notification modal skeleton" />
@@ -576,7 +576,8 @@
     <MESSAGE value="fixed filtering issues" />
     <MESSAGE value="added seating plan to one of the events" />
     <MESSAGE value="added upcoming events" />
-    <option name="LAST_COMMIT_MESSAGE" value="added upcoming events" />
+    <MESSAGE value="removed magic button" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed magic button" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
