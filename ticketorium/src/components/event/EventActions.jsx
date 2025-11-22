@@ -10,7 +10,12 @@ import VerifyTicketsModal from "../modals/VerifyTicketModal.jsx";
 import ResignModal from "../modals/ResignModal.jsx";
 import DeclineInviteModal from "../modals/DeclineInviteModal.jsx";
 import DeleteEventModal from "../modals/DeleteEventModal.jsx";
-import { fetchTicketForEvent } from "../../api/tickets.js";
+
+import {
+    createTicket,
+    fetchTicketForEvent,
+    cancelTicket,
+} from "../../api/tickets.js";
 
 /* ----------------------------- Buttons styling ----------------------------- */
 
@@ -28,13 +33,13 @@ const variants = {
 
 export default function EventActions({
                                          event,
-                                         user,
+                                         user,          // userId
                                          type,
                                          category,
-                                         state,          // current state: joined / invited / waitlist / undefined
+                                         state,         // joined / invited / waitlist / undefined
                                          eventId,
                                          onAction,
-                                         onStateChange,  // callback to let parent update state
+                                         onStateChange,
                                      }) {
     const navigate = useNavigate();
     const routerLocation = useLocation();
@@ -42,7 +47,7 @@ export default function EventActions({
     const passedEvent = event || {};
 
     const [ticket, setTicket] = useState(null);
-    const [openModal, setOpenModal] = useState("none"); // 'join' | 'resign' | 'invite' | 'verify' | 'delete' | 'ticket' | 'none'
+    const [openModal, setOpenModal] = useState("none");
     const [showDeleteBanner, setShowDeleteBanner] = useState(false);
 
     const closeModal = () => setOpenModal("none");
@@ -59,24 +64,59 @@ export default function EventActions({
         }
     }, [routerLocation.state]);
 
-    // load existing ticket from backend when page mounts / user changes
+    /**
+     * Load ticket on mount / when eventId or user changes.
+     *
+     * - If a ticket exists in backend (for this user+event), use it.
+     * - If NO ticket exists but `state === "joined"` (dummy data says already joined),
+     *   then auto-create a ticket ONCE.
+     * - If user joined via JoinModal, that already called createTicket + setTicket,
+     *   so this effect will only "see" existing ticket and not create a new one.
+     */
     useEffect(() => {
         if (!user || !eventId) return;
 
-        async function loadTicket() {
+        async function syncTicket() {
             try {
+                // 1) Try to load existing ticket
                 const existing = await fetchTicketForEvent({ eventId, user });
+
                 if (existing) {
                     setTicket((prev) => prev || { ...existing, accessibilityNotes: "" });
                     console.log("Loaded ticket from backend:", existing);
+                    return;
+                }
+
+                // 2) No ticket found in backend.
+                // If dummy data says this user is already joined, auto-generate a ticket.
+                if (state === "joined") {
+                    const created = await createTicket({
+                        eventId,
+                        userId: user,
+                        seat: null,
+                        price: passedEvent?.price ?? 0,
+                    });
+
+                    setTicket({ ...created, accessibilityNotes: "" });
+                    console.log("Auto-created ticket for joined user:", created);
                 }
             } catch (err) {
-                console.error("Failed to load ticket:", err);
+                console.error("Failed to load / auto-create ticket:", err);
             }
         }
 
-        loadTicket();
-    }, [eventId, user]);
+        syncTicket();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [eventId, user, state, passedEvent?.price]);
+
+    // Effective state = what parent passed down
+    const effectiveState = state;
+
+    const actions =
+        eventActionsConfig[category]?.[effectiveState] ||
+        eventActionsConfig[category]?.default;
+
+    if (!actions) return null;
 
     // map button label → open correct modal / route
     function handleAction(label) {
@@ -134,15 +174,6 @@ export default function EventActions({
                 break;
         }
     }
-
-    // Effective state = what parent passed down
-    const effectiveState = state;
-
-    const actions =
-        eventActionsConfig[category]?.[effectiveState] ||
-        eventActionsConfig[category]?.default;
-
-    if (!actions) return null;
 
     return (
         <>
@@ -202,12 +233,12 @@ export default function EventActions({
                                 onClick={handleClick}
                             >
                                 {/* Tickets icon BEFORE text */}
-                                {isTickets && <Icon size={16} />}
+                                {isTickets && Icon && <Icon size={16} />}
 
                                 {action.label}
 
                                 {/* ArrowRight AFTER text */}
-                                {isArrowRight && <Icon size={16} />}
+                                {isArrowRight && Icon && <Icon size={16} />}
                             </button>
                         );
                     })}
@@ -225,7 +256,6 @@ export default function EventActions({
                 hasSeatingPlan={passedEvent.hasSeatingPlan}
                 userId={user}
                 setTicket={setTicket}
-                // When join succeeds, JoinModal will call this:
                 setViewState={(newState) => {
                     if (onStateChange) onStateChange(newState);
                 }}
@@ -260,9 +290,24 @@ export default function EventActions({
                 onClose={closeModal}
                 title={passedEvent.title}
                 price={passedEvent.price}
-                onConfirm={() => {
-                    if (onStateChange) onStateChange(undefined); // user is no longer joined
-                    closeModal();
+                onConfirm={async () => {
+                    try {
+                        // If there is a ticket, cancel it in backend
+                        if (ticket?.id) {
+                            await cancelTicket(ticket.id, user);
+                            console.log("Ticket cancelled on resign:", ticket.id);
+                        }
+
+                        // User is no longer joined
+                        if (onStateChange) onStateChange(undefined);
+
+                        // Clear local ticket
+                        setTicket(null);
+                    } catch (err) {
+                        console.error("Failed to resign / cancel ticket:", err);
+                    } finally {
+                        closeModal();
+                    }
                 }}
             />
 
@@ -271,7 +316,7 @@ export default function EventActions({
                 isOpen={openModal === "decline"}
                 onClose={closeModal}
                 onConfirm={() => {
-                    if (onStateChange) onStateChange(undefined); // user is no longer joined
+                    if (onStateChange) onStateChange(undefined);
                     closeModal();
                 }}
             />
