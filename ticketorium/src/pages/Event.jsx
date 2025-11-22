@@ -41,7 +41,7 @@ export default function EventPage(props) {
     const [capacity] = useState(50);
     const [attendees] = useState(20);
     const [locationUrl] = useState("#");
-    const [viewState, setViewState] = useState(raw?.state || null);
+    const [viewState, setViewState] = useState(raw?.state || undefined);
 
     const formatTimeRange = (a, b) => {
         const fmt = (d) =>
@@ -125,9 +125,6 @@ export default function EventPage(props) {
                     </div>
                 </div>
             </main>
-
-            {/* -------------------------- MODALS -------------------------- */}
-
 
             {/*/!* Deletion banner (demo only) *!/*/}
             {/*{showDeleteBanner && (*/}
