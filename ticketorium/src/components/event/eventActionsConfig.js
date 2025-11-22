@@ -1,11 +1,12 @@
+// ticketorium/src/components/event/eventActionsConfig.js
 import { ArrowRight, Tickets } from "lucide-react";
 
 export const eventActionsConfig = {
     attendee: {
         joined: [
-            { label: "Your Ticket", icon: Tickets, variant: "primary" }, // opens QR ticket modal
-            { label: "Send Invite", icon: ArrowRight, variant: "secondary" }, // opens invite modal
-            { label: "Resign", color: "text-red-500", variant: "border" }, // opens resign modal / flow
+            { label: "Your Ticket", icon: Tickets, variant: "primary" },
+            { label: "Send Invite", icon: ArrowRight, variant: "secondary" },
+            { label: "Resign", color: "text-red-500", variant: "border" },
         ],
         undefined: [
             { label: "Join", icon: ArrowRight, variant: "primary" },
@@ -27,18 +28,26 @@ export const eventActionsConfig = {
         ],
     },
 
-    organizer: { //r
+    organizer: {
         default: [
-            { label: "Edit", icon: ArrowRight, variant: "primary" }, // navigate to EditEvent page
-            { label: "Verify Tickets", icon: ArrowRight, variant: "secondary" }, // open QR verification modal
-            { label: "Delete", color: "text-[var(--warning-color)]", variant: "border" },
+            { label: "Edit", icon: ArrowRight, variant: "primary" },
+            { label: "Verify Tickets", icon: ArrowRight, variant: "secondary" },
+            {
+                label: "Delete",
+                color: "text-[var(--warning-color)]",
+                variant: "border",
+            },
         ],
     },
 
-    admin: { //r
+    admin: {
         default: [
-            { label: "Edit", icon: ArrowRight, variant: "primary" }, // navigate to EditEvent page
-            { label: "Delete", color: "text-[var(--warning-color)]", variant: "border" },
+            { label: "Edit", icon: ArrowRight, variant: "primary" },
+            {
+                label: "Delete",
+                color: "text-[var(--warning-color)]",
+                variant: "border",
+            },
         ],
     },
 };

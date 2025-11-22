@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import EventActions from "../components/event/EventActions.jsx";
@@ -6,7 +6,7 @@ import { getUserCategory } from "../components/event/getUserCategory.js";
 
 export default function EventPage(props) {
     const navigate = useNavigate();
-    const { eventId } = useParams();
+    const { eventId } = useParams(); // string like "4"
 
     // user type: student / visitor / organizer / admin / system-admin
     const type = useMemo(() => {
@@ -23,10 +23,42 @@ export default function EventPage(props) {
     // event info from dummyEvents
     const raw = props?.events?.[eventId] || null;
 
-    // basic event state
-    const [title, setTitle] = useState(raw?.title || "Event");
-    const [location, setLocation] = useState(raw?.location || "Campus");
-    const [description, setDescription] = useState(
+    // joined record for THIS user and THIS event (if any)
+    const joinedRecord = useMemo(() => {
+        if (!props.eventsJoined || !props.user || !eventId) return null;
+
+        const numericEventId = Number(eventId);
+        const entries = Object.entries(props.eventsJoined);
+
+        for (const [joinId, joined] of entries) {
+            if (
+                joined &&
+                joined.user === props.user &&
+                Number(joined.eventId) === numericEventId
+            ) {
+                return { joinId, ...joined };
+            }
+        }
+
+        return null;
+    }, [props.eventsJoined, props.user, eventId]);
+
+    // Initial state:
+    //  - if user has a join record → use its state ("joined", "invited", etc.)
+    //  - else, fall back to any static state on the event object (e.g. "waitlist")
+    const [viewState, setViewState] = useState(
+        joinedRecord?.state || raw?.state || null
+    );
+
+    // If the event or joinRecord changes (e.g. user switches), sync state again
+    useEffect(() => {
+        setViewState(joinedRecord?.state || raw?.state || null);
+    }, [joinedRecord, raw, eventId]);
+
+    // basic event display fields
+    const [title] = useState(raw?.title || "Event");
+    const [location] = useState(raw?.location || "Campus");
+    const [description] = useState(
         raw?.description ||
         "Join us for an amazing event. (Demo description)"
     );
@@ -41,7 +73,6 @@ export default function EventPage(props) {
     const [capacity] = useState(50);
     const [attendees] = useState(20);
     const [locationUrl] = useState("#");
-    const [viewState, setViewState] = useState(raw?.state || null);
 
     const formatTimeRange = (a, b) => {
         const fmt = (d) =>
@@ -80,9 +111,10 @@ export default function EventPage(props) {
                         user={props.user}
                         type={type}
                         category={category}
-                        state={viewState}
+                        state={viewState}             // current state: joined / invited / null / ...
                         eventId={eventId}
-                        event={props.event}
+                        event={raw}                   // the actual event object
+                        onStateChange={setViewState}  // let EventActions update our state
                     />
                 </div>
 
@@ -125,16 +157,6 @@ export default function EventPage(props) {
                     </div>
                 </div>
             </main>
-
-            {/* -------------------------- MODALS -------------------------- */}
-
-
-            {/*/!* Deletion banner (demo only) *!/*/}
-            {/*{showDeleteBanner && (*/}
-            {/*    <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 rounded-md bg-emerald-600 px-4 py-2 text-white shadow">*/}
-            {/*        Event deleted (demo).*/}
-            {/*    </div>*/}
-            {/*)}*/}
         </div>
     );
 }
