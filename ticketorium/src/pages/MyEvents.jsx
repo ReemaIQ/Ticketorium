@@ -103,36 +103,37 @@ function MyEvents(props) {
                         </div>
 
                         {/* Search and filter */}
-                        <div className="flex gap-4 self-start w-full justify-center">
-                            <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-                                <FontAwesomeIcon
-                                    icon={"fa-solid fa-filter"}
-                                    className="text-white"
-                                />
-                            </button>
+                        {(userType !== "organizer" && (
+                            <div className="flex gap-4 self-start w-full justify-center">
+                                <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
+                                    <FontAwesomeIcon
+                                        icon={"fa-solid fa-filter"}
+                                        className="text-white"
+                                    />
+                                </button>
 
-                            <SearchBtn
-                                filterFunc={(searchValue) => {
-                                    // Use search helper on the already filtered map (joined events).
-                                    props.filterContent(
-                                        "search",
-                                        originalState.current,
-                                        setFilteredEvents,
-                                        "event",
-                                        searchValue,
-                                        {
-                                            "list-type": "my-events",
-                                            university: props.uni,
-                                        }
-                                    );
-                                }}
-                                expandable={true}
-                            />
-                        </div>
+                                <SearchBtn
+                                    filterFunc={(searchValue) => {
+                                        // Use search helper on the already filtered map (joined events).
+                                        props.filterContent(
+                                            "search",
+                                            originalState.current,
+                                            setFilteredEvents,
+                                            "event",
+                                            searchValue,
+                                            {
+                                                "list-type": "my-events",
+                                                university: props.uni,
+                                            }
+                                        );
+                                    }}
+                                    expandable={true}
+                                />
+                            </div>
+                        ))}
+
                     </div>
 
-                    {/* Organizer view can be different later if you want; for now keep same behavior */}
-                    {userType === "organizer" && (
                         <EventList
                             events={originalState.current}
                             allEvents={props.events}
@@ -141,18 +142,6 @@ function MyEvents(props) {
                             listType="my-events"
                             filterIds={filteredEvents}
                         />
-                    )}
-
-                    {userType !== "organizer" && (
-                        <EventList
-                            events={originalState.current}
-                            allEvents={props.events}
-                            eventsJoined={props.eventsJoined}
-                            userType={userType}
-                            listType="my-events"
-                            filterIds={filteredEvents}
-                        />
-                    )}
                 </div>
             </div>
 
