@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="final edits: connected checkout page">
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/VerifyTicketModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/VerifyTicketModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
