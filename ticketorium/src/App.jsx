@@ -574,7 +574,7 @@ function App() {
             university: "KFUPM",
             img: "game-dev.png",
             title: "2025 Coding Competition",
-            date: "9:30 AM Nov 25, 2025",
+            date: "9:30 AM Nov 21, 2025",
             organizer: "chicken-nugget",
             state:"waitlist",
             price: 19.99,
