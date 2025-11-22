@@ -4,13 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="connected create new event page and button in my events page, fixed button placing">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="added universities section to user home">
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/DeleteEventModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/InviteModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/Modal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/TicketModal.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/VerifyTicketModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Registration.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Registration.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets_verify.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/SeatingPlan.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +83,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -126,94 +139,6 @@
       <workItem from="1763542604558" duration="2093000" />
       <workItem from="1763561015485" duration="8926000" />
       <workItem from="1763731001864" duration="5321000" />
-    </task>
-    <task id="LOCAL-00001" summary="implementing tailwind">
-      <option name="closed" value="true" />
-      <created>1761683868931</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1761683868931</updated>
-    </task>
-    <task id="LOCAL-00002" summary="implementing navigation component">
-      <option name="closed" value="true" />
-      <created>1761683888266</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1761683888266</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Update the way fonts are called for unification">
-      <option name="closed" value="true" />
-      <created>1761736415366</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1761736415366</updated>
-    </task>
-    <task id="LOCAL-00004" summary="created event component">
-      <option name="closed" value="true" />
-      <created>1762006982178</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1762006982178</updated>
-    </task>
-    <task id="LOCAL-00005" summary="created event list component">
-      <option name="closed" value="true" />
-      <created>1762007003827</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007003827</updated>
-    </task>
-    <task id="LOCAL-00006" summary="created admin home page">
-      <option name="closed" value="true" />
-      <created>1762007024912</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007024912</updated>
-    </task>
-    <task id="LOCAL-00007" summary="added font">
-      <option name="closed" value="true" />
-      <created>1762007032929</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007032929</updated>
-    </task>
-    <task id="LOCAL-00008" summary="edited navigation bar">
-      <option name="closed" value="true" />
-      <created>1762007048484</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007048484</updated>
-    </task>
-    <task id="LOCAL-00009" summary="uploaded imaged for dummy events">
-      <option name="closed" value="true" />
-      <created>1762007070038</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007070038</updated>
-    </task>
-    <task id="LOCAL-00010" summary="created event component">
-      <option name="closed" value="true" />
-      <created>1762007089574</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007089574</updated>
-    </task>
-    <task id="LOCAL-00011" summary="created bidding component">
-      <option name="closed" value="true" />
-      <created>1762007096169</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007096169</updated>
     </task>
     <task id="LOCAL-00012" summary="emptied app file">
       <option name="closed" value="true" />
@@ -503,7 +428,111 @@
       <option name="project" value="LOCAL" />
       <updated>1763746481378</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="added a no disputes found message">
+      <option name="closed" value="true" />
+      <created>1763754172176</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1763754172176</updated>
+    </task>
+    <task id="LOCAL-00049" summary="fixed event list and updated: &#10;event list calling in my events page &#10;calling my events page in app">
+      <option name="closed" value="true" />
+      <created>1763757153128</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1763757153128</updated>
+    </task>
+    <task id="LOCAL-00050" summary="added manage universities page">
+      <option name="closed" value="true" />
+      <created>1763762658649</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1763762658649</updated>
+    </task>
+    <task id="LOCAL-00051" summary="added manage universities page">
+      <option name="closed" value="true" />
+      <created>1763762667979</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1763762667979</updated>
+    </task>
+    <task id="LOCAL-00052" summary="added editing user option and checking for taken usernames">
+      <option name="closed" value="true" />
+      <created>1763763422551</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1763763422551</updated>
+    </task>
+    <task id="LOCAL-00053" summary="fixed allowed users logic">
+      <option name="closed" value="true" />
+      <created>1763767158796</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1763767158796</updated>
+    </task>
+    <task id="LOCAL-00054" summary="event now dynamically displays days left">
+      <option name="closed" value="true" />
+      <created>1763769025674</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1763769025674</updated>
+    </task>
+    <task id="LOCAL-00055" summary="hide nav links from users with unchosen universities">
+      <option name="closed" value="true" />
+      <created>1763769065434</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1763769065434</updated>
+    </task>
+    <task id="LOCAL-00056" summary="updated to include system admin">
+      <option name="closed" value="true" />
+      <created>1763769081278</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1763769081278</updated>
+    </task>
+    <task id="LOCAL-00057" summary="events list now sorted by date">
+      <option name="closed" value="true" />
+      <created>1763771898978</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1763771898978</updated>
+    </task>
+    <task id="LOCAL-00058" summary="attempt to make modularized modals">
+      <option name="closed" value="true" />
+      <created>1763771937675</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1763771937675</updated>
+    </task>
+    <task id="LOCAL-00059" summary="added universities section to user home">
+      <option name="closed" value="true" />
+      <created>1763809969791</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1763809969791</updated>
+    </task>
+    <task id="LOCAL-00060" summary="added universities section to user home">
+      <option name="closed" value="true" />
+      <created>1763810083214</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1763810083214</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,17 +562,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="moved images to organize directories" />
-    <MESSAGE value="fixed mistake in passing user type to events list" />
-    <MESSAGE value="working on event responsiveness" />
-    <MESSAGE value="biddings and their page" />
-    <MESSAGE value="added dummy bids and other things" />
-    <MESSAGE value="added bid and new listing modals" />
-    <MESSAGE value="improved nav responsiveness" />
-    <MESSAGE value="re-organizing files" />
-    <MESSAGE value="polishing event responsiveness" />
-    <MESSAGE value="fixed routes after reorganizing" />
-    <MESSAGE value="notification modal skeleton" />
     <MESSAGE value="updated system-admin links" />
     <MESSAGE value="changed filter to sort" />
     <MESSAGE value="made manage users page" />
@@ -558,6 +576,47 @@
     <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
-    <option name="LAST_COMMIT_MESSAGE" value="connected create new event page and button in my events page, fixed button placing" />
+    <MESSAGE value="added a no disputes found message" />
+    <MESSAGE value="fixed event list and updated: &#10;event list calling in my events page &#10;calling my events page in app" />
+    <MESSAGE value="added manage universities page" />
+    <MESSAGE value="added editing user option and checking for taken usernames" />
+    <MESSAGE value="fixed allowed users logic" />
+    <MESSAGE value="event now dynamically displays days left" />
+    <MESSAGE value="hide nav links from users with unchosen universities" />
+    <MESSAGE value="updated to include system admin" />
+    <MESSAGE value="events list now sorted by date" />
+    <MESSAGE value="attempt to make modularized modals" />
+    <MESSAGE value="added universities section to user home" />
+    <option name="LAST_COMMIT_MESSAGE" value="added universities section to user home" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/App.jsx</url>
+          <line>605</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/App.jsx</url>
+          <line>932</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx</url>
+          <line>119</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx</url>
+          <line>132</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

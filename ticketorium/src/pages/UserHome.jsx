@@ -3,8 +3,9 @@ import NotificationList from "../components/notification-list/NotificationList.j
 import Analytics from "../components/analytics/Analytics.jsx";
 import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
+import UniversityCard from "../components/university-card/UniversityCard.jsx";
+import UniversityModal from "../components/modals/UniversityModal.jsx";
 
-import {Hash, Search} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import React, {useMemo, useState, useRef, useEffect} from "react";
 
@@ -14,66 +15,62 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import OrganizerAnalytics from "../components/analytics/Analytics.jsx";
-import UniversityCard from "../components/university-card/UniversityCard.jsx";
-import UniversityModal from "../components/modals/UniversityModal.jsx";
-
 library.add(fas, far, fab)
 
 
 const contentOptions = {
     // student, visitor, analytics, admin, system-admin
-    "student": {
+    student: {
         "user-events": {
-            "header": "Your Upcoming Events",
+            header: "Your Upcoming Events",
             "jump-to": "Upcoming Events"
         },
         "invites-sent": {
-            "header": "Invites Sent",
+            header: "Invites Sent",
             "jump-to": "Invites"
         }
     }, 
-    "visitor": {
+    visitor: {
         "user-events": {
-            "header": "Your Upcoming Events",
+            header: "Your Upcoming Events",
             "jump-to": "Upcoming Events"
         },
         "invites-received": {
-            "header": "Invites Received",
+            header: "Invites Received",
             "jump-to": "Invites"
         }
     }, 
-    "organizer": {
+    organizer: {
         "analytics": {
-            "header": "Recent Analytics",
+            header: "Recent Analytics",
             "jump-to": "Analytics"
         },
         "upcoming-events": {
-            "header": "Upcoming Events",
+            header: "Upcoming Events",
             "jump-to": "Upcoming Events"
         }
     }, 
-    "admin": {
+    admin: {
         "notifications": {
-            "header": "Notifications",
+            header: "Notifications",
             "jump-to": "Notifications"
         },
         "upcoming-events": {
-            "header": "Upcoming Events",
+            header: "Upcoming Events",
             "jump-to": "Upcoming Events"
         }
     },
     "system-admin": {
         "notifications": {
-            "header": "Notifications",
+            header: "Notifications",
             "jump-to": "Notifications"
         },
         "universities": {
-            "header": "Universities",
+            header: "Universities",
             "jump-to": "Universities"
         },
         "upcoming-events": {
-            "header": "Upcoming Events",
+            header: "Upcoming Events",
             "jump-to": "Upcoming Events"
         }
     }
@@ -87,9 +84,11 @@ function UserHome(props) {
     // upcoming events
     const [filteredUpcomingEvents, setFilteredUpcomingEvents] = useState([]);
     const upcomingEventsOriginalState = useRef({});
+
     // invites received
     const [filteredInvitesReceived, setFilteredInvitesReceived] = useState([]);
     const invitesReceivedOriginalState = useRef({});
+
     // invites sent
     const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
     const invitesSentOriginalState = useRef({});
@@ -130,13 +129,38 @@ function UserHome(props) {
     }
 
     useEffect(() => {
-            props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, upcomingEventsOriginalState, "event", "", { "list-type": "my-events", "university": props.uni})
-            setFilteredUpcomingEvents(Object.keys(upcomingEventsOriginalState.current)); // ik its stupid, but it forces a re-render
-            props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, invitesReceivedOriginalState, "event", "", { "list-type": "invites-received", "university": props.uni})
-            setFilteredInvitesReceived(Object.keys(invitesReceivedOriginalState.current)); // ik its stupid, but it forces a re-render
-            props.filterContent("initial", {"events": props.events, "eventsJoined": props.eventsJoined}, invitesSentOriginalState, "event", "", { "list-type": "invites-sent", "university": props.uni})
-            setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current)); // ik its stupid, but it forces a re-render
-        }, []);
+        props.filterContent(
+            "initial",
+            { events: props.events, eventsJoined: props.eventsJoined },
+            upcomingEventsOriginalState,
+            "event",
+            "",
+            { "list-type": "my-events", university: props.uni }
+        );
+        setFilteredUpcomingEvents(Object.keys(upcomingEventsOriginalState.current));
+
+        props.filterContent(
+            "initial",
+            { events: props.events, eventsJoined: props.eventsJoined },
+            invitesReceivedOriginalState,
+            "event",
+            "",
+            { "list-type": "invites-received", university: props.uni }
+        );
+        setFilteredInvitesReceived(
+            Object.keys(invitesReceivedOriginalState.current)
+        );
+
+        props.filterContent(
+            "initial",
+            { events: props.events, eventsJoined: props.eventsJoined },
+            invitesSentOriginalState,
+            "event",
+            "",
+            { "list-type": "invites-sent", university: props.uni }
+        );
+        setFilteredInvitesSent(Object.keys(invitesSentOriginalState.current));
+    }, []);
 
     // Handlers
         const handleUniversityDelete = (id) => {

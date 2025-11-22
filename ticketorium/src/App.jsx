@@ -1,16 +1,23 @@
 import {Route, Routes, Navigate} from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 
-import Nav from './components/nav/nav.jsx'
-import Footer from './components/footer/Footer.jsx'
+import ScrollToTop from "./components/scroll-to-top/scroll_to_top.jsx";
+import Nav from "./components/nav/nav.jsx"
+import Footer from "./components/footer/Footer.jsx"
 
-import SignupLogin from './pages/SignupLogin.jsx'
-import DummyUserHome from './pages/DummyUserHome.jsx'
-import UserHome from './pages/UserHome.jsx'
+import SignupLogin from "./pages/SignupLogin.jsx"
+import DummyUserHome from "./pages/DummyUserHome.jsx"
+import UserHome from "./pages/UserHome.jsx"
 
 import AllEvents from "./pages/AllEvents.jsx";
 import MyEvents from "./pages/MyEvents.jsx";
 import EventPage from "./pages/Event.jsx";
+import Bidding from "./pages/Bidding.jsx"
+
+import Checkout from "./pages/payment/Checkout.jsx"
+import Registration from "./pages/Registration.jsx"; //r
+import PaymentResult from "./pages/payment/PaymentResult.jsx"
+import AboutOrganizer from "./pages/AboutOrganizer.jsx"
 
 //import OrganizerHomePage from "./pages/home/Organizer.jsx" //r
 import CreateEvent from "./pages/events/CreateEvent.jsx"
@@ -20,18 +27,14 @@ import Analytics from "./pages/Analytics.jsx"; //r
 import Disputes from "./pages/Disputes.jsx";
 import ManageUsers from "./pages/ManageUsers.jsx";
 import ManageUniversities from "./pages/ManageUniversities.jsx"
-import UniversitySelection from './pages/UniversitySelection.jsx'
+import UniversitySelection from "./pages/UniversitySelection.jsx"
 import SystemPolicies from "./pages/SystemPolicies.jsx";
-
-import Bidding from "./pages/Bidding.jsx"
-import Checkout from './pages/payment/Checkout.jsx'
-import Registration from "./pages/Registration.jsx"; //r
-import PaymentResult from './pages/payment/PaymentResult.jsx'
-import AboutOrganizer from './pages/AboutOrganizer.jsx'
 
 // fyi, all uses of localstorage will be db later EXCEPT for loggedInUser
 
 function App() {
+
+    // ---------------- DUMMY DATA ----------------
     // to be replaced in the db, for now, this is just dummy data
     // Dummy users format
     const initialDummyUsers = {
@@ -690,6 +693,8 @@ function App() {
         }
     }
 
+
+    // ---------------- STATE ----------------
     const [loggedInUser, setLoggedInUser] = useState(null); //username only
     const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
     const [part1Data, setPart1Data] = useState({});
@@ -703,6 +708,15 @@ function App() {
     const dummyDisputes = useRef({});
     const dummyEventsJoined = useRef({});
 
+    const [successfulPayment, setSuccessfulPayment] = useState(false);
+    const [processingPayment, setProcessingPayment] = useState(false);
+    const [isPurchasing, setIsPurchasing] = useState(false);
+    const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
+    const [waitlistSuccess, setWaitlistSuccess] = useState(false);
+    const [organizerViewing, setOrganizerViewing] = useState(null); // reserved for later usage
+
+
+    // ---------------- LOCAL STORAGE HYDRATION ----------------
     useEffect(() => {
     // loggedInUser
     localStorage.getItem("loggedInUser") && setLoggedInUser(localStorage.getItem("loggedInUser")); // watch out for username = null
@@ -766,86 +780,101 @@ function App() {
 
     }, []);
 
+
+    // ---------------- THEME EFFECT ----------------
     useEffect(() => {
-    const rootStyle = document.querySelector(':root').style;
+        const rootStyle = document.documentElement.style;
 
-    // Take theme of logged in user's uni, or stick to default
-    rootStyle.setProperty('--secondary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-color"] : "#1F4C76");
-    rootStyle.setProperty('--primary-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["primary-color"] : "#1a1a1a");
-    rootStyle.setProperty('--accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["accent-color"] : "#FFDF4F");
-    rootStyle.setProperty('--secondary-accent-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["secondary-accent-color"] : "#0800FF");
-    rootStyle.setProperty('--footer-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["footer-color"] : "#11223B");
-    rootStyle.setProperty('--warning-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["warning-color"] : "#F54141");
-    rootStyle.setProperty('--success-color', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["success-color"] : "#46CA48");
-    rootStyle.setProperty('--filter-buttons', (loggedInUser && dummyUsers.current[loggedInUser]["university"])?dummyUniversities.current[dummyUsers.current[loggedInUser]["university"]]["theme-colors"]["filter-buttons"] : "oklch(49.6% 0.265 301.924)");
+        const user = loggedInUser ? dummyUsers.current?.[loggedInUser] : null;
+        const uniId = user?.university;
+        const uniTheme = uniId
+            ? dummyUniversities.current?.[uniId]?.["theme-colors"]
+            : null;
 
-    if (loggedInUser && dummyUsers.current[loggedInUser] && 
-        dummyUsers.current[loggedInUser].type !== "visitor" && 
-        dummyUsers.current[loggedInUser].type !== "system-admin") {
-      setSelectedUni(true);
-    }
-  }, [loggedInUser]);
+        const fallbackTheme = {
+            "secondary-color": "#1F4C76",
+            "primary-color": "#1a1a1a",
+            "accent-color": "#FFDF4F",
+            "secondary-accent-color": "#0800FF",
+            "footer-color": "#11223B",
+            "warning-color": "#F54141",
+            "success-color": "#46CA48",
+            "filter-buttons": "oklch(49.6% 0.265 301.924)",
+        };
 
+        const theme = uniTheme || fallbackTheme;
+
+        Object.entries(theme).forEach(([name, value]) => {
+            rootStyle.setProperty(`--${name}`, value);
+        });
+
+        if (user && user.type !== "visitor" && user.type !== "system-admin") {
+            setSelectedUni(true);
+        }
+    }, [loggedInUser]);
+
+
+    // ---------------- HELPERS ----------------
     const checkIfEmailExists = (email) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].email === email) {
-        return true;
-      }
-    }
-    return false;
+        for (const username in dummyUsers.current) {
+          if (dummyUsers.current[username].email === email) {
+            return true;
+          }
+        }
+        return false;
     }
 
     const checkIfPhoneExists = (phone) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].phone === phone) {
-        return true;
-      }
-    }
-    return false;
+        for (const username in dummyUsers.current) {
+          if (dummyUsers.current[username].phone === phone) {
+            return true;
+          }
+        }
+        return false;
     }
 
     const checkIfUsernameExists = (username) => {
-    return username in dummyUsers.current;
+        return username in dummyUsers.current;
     }
 
     const checkUsernamePassword = (username, password) => {
-    if (username in dummyUsers.current) {
-      return dummyUsers.current[username].password === password;
-    }
+        if (username in dummyUsers.current) {
+          return dummyUsers.current[username].password === password;
+        }
     }
 
     const checkEmailPassword = (email, password) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].email === email) {
-        return dummyUsers.current[username].password === password;
-      }
+        for (const username in dummyUsers.current) {
+          if (dummyUsers.current[username].email === email) {
+            return dummyUsers.current[username].password === password;
+          }
     }
-    return false;
+        return false;
     }
 
     const getUsernameFromEmail = (email) => {
-    for (const username in dummyUsers.current) {
-      if (dummyUsers.current[username].email  === email) {
-        return username;
-      }
-    }
-    return null;
+        for (const username in dummyUsers.current) {
+          if (dummyUsers.current[username].email  === email) {
+            return username;
+          }
+        }
+        return null;
     }
 
     const addNewUser = (data) => {
-    const userObject = {
-      "first-name": data["first-name"],
-      "last-name": data["last-name"],
-      "email": data["email"],
-      "phone": data["phone-number"],
-      "password": data["password"],
-      "type": "visitor",
-      "university": null,
-      "gender": data["gender"],
-      "date-of-birth": data["date-of-birth"]
-    }
-    dummyUsers.current[data["username"]] = userObject;
-    localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
+        const userObject = {
+          "first-name": data["first-name"],
+          "last-name": data["last-name"],
+          "email": data["email"],
+          "phone": data["phone-number"],
+          "password": data["password"],
+          "type": "visitor",
+          "university": null,
+          "gender": data["gender"],
+          "date-of-birth": data["date-of-birth"]
+        }
+        dummyUsers.current[data["username"]] = userObject;
+        localStorage.setItem("dummyUsers", JSON.stringify(dummyUsers.current));
     }
 
     const assignUni = (university) => {
@@ -903,6 +932,7 @@ function App() {
             for (let id of ids) {
                 results[id] = filterDetails["list-type"] === "all-events"? content[id]: content["events"][content["eventsJoined"][id]["eventId"]];
             }
+            console.log("IDs:", ids)
             // console.log("results:", results)
             setter.current = results
             // console.log("setter", setter)
@@ -917,55 +947,53 @@ function App() {
     localStorage.setItem("loggedInUser", username);
   }
 
-  const [successfulPayment, setSuccessfulPayment] = useState(false);
-  const [processingPayment, setProcessingPayment] = useState(false);
-  const [isPurchasing, setIsPurchasing] = useState(false);
-  const [waitlistModalOpen, setWaitlistModalOpen] = useState(false);
-  const [waitlistSuccess, setWaitlistSuccess] = useState(false);
-  const [organizerViewing, setOrganizerViewing] = useState(null); // use it later in home, event, my-events, all-events
 
+    // ---------------- ROUTES ----------------
 
     return (
-    <div className="flex-col">
-      <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} users={dummyUsers.current} />
-      {isLoading && <h1 className='m-15 text-5xl self-center absolute h-[100vh]'>Loading...</h1>}
-      {!isLoading &&
-      <Routes>
+        <>
+            <ScrollToTop />
+            <div className="flex-col">
+                <Nav type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} user={loggedInUser} setLoggedInUser={setLoggedInUser} notifications={dummyNotifications.current} users={dummyUsers.current} />
+                {isLoading && <h1 className='m-15 text-5xl self-center absolute h-[100vh]'>Loading...</h1>}
+                {!isLoading &&
+                    <Routes>
 
-        <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (selectedUni? <UserHome setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} setWaitlistSuccess={setWaitlistSuccess} waitlistSuccess={waitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} uni={dummyUsers.current[loggedInUser].university} user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} notifications={dummyNotifications.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} /> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
+                        <Route path="/home" element={!loggedInUser?<DummyUserHome/>: (selectedUni? <UserHome setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} setWaitlistSuccess={setWaitlistSuccess} waitlistSuccess={waitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} uni={dummyUsers.current[loggedInUser].university} user={loggedInUser} users={dummyUsers.current} universities={dummyUniversities.current} notifications={dummyNotifications.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} /> : <Navigate to="/university-selection" />)}/> {/* main home page for not logged in users */}
 
-        <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
-        <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
-        <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
+                        <Route path="/log-in" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"log-in"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} setLoggedInUser={setLoggedInUser} getUsernameFromEmail={getUsernameFromEmail}/>}/>
+                        <Route path="/sign-up" element={loggedInUser? <Navigate to={`/home`}/> : <SignupLogin option={"sign-up"} checkIfEmailExists={checkIfEmailExists} checkIfUsernameExists={checkIfUsernameExists} checkUsernamePassword={checkUsernamePassword} checkEmailPassword={checkEmailPassword} checkIfPhoneExists={checkIfPhoneExists} setFinishedPart1SignUp={setFinishedPart1SignUp} setPart1Data={setPart1Data}/>}/>
+                        <Route path="/sign-up-2" element={loggedInUser? <Navigate to={`/home`}/> : finishedPart1SignUp?<SignupLogin option={"sign-up-part-2"} setLoggedInUser={setLoggedInUser} checkIfUsernameExists={checkIfUsernameExists} addNewUser={addNewUser} part1Data={part1Data}/> : <Navigate to="/sign-up" />}/>
 
-        <Route path="/my-events" element={loggedInUser?<MyEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess}  setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
-        <Route path="/events" element={loggedInUser?<AllEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess} setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} uni={dummyUsers.current[loggedInUser].university} eventsJoined={dummyEventsJoined.current}/>: <Navigate to="/log-in" />} />
-        <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
+                        <Route path="/my-events" element={loggedInUser?<MyEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess}  setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} eventsJoined={dummyEventsJoined.current} uni={dummyUsers.current[loggedInUser].university}/>: <Navigate to="/log-in" />} />
+                        <Route path="/events" element={loggedInUser?<AllEvents setWaitlistModalOpen={setWaitlistModalOpen} waitlistModalOpen={waitlistModalOpen} waitlistSuccess={waitlistSuccess} setWaitlistSuccess={setWaitlistSuccess} setIsPurchasing={setIsPurchasing} filterContent={filterContent} user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} uni={dummyUsers.current[loggedInUser].university} eventsJoined={dummyEventsJoined.current}/>: <Navigate to="/log-in" />} />
+                        <Route path="/event/:eventId" element={<EventPage user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current}/>}/>
 
-        <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
+                        <Route path="/bidding" element={<Bidding user={loggedInUser} biddings={dummyBids.current} />} />
 
-        <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
-        <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<CreateEvent />)}/>
-        <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : (dummyUsers.current[loggedInUser]["type"] === "student" || dummyUsers.current[loggedInUser]["type"] === "visitor") ? (<Navigate to="/home" />) : (<EditEvent user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />)}/>
-          {/* reema: Checkout / Registration Status page */}
-        <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
+                        <Route path="/analytics" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<Analytics />) }/>
+                        <Route path="/create-event" element={!loggedInUser ? (<Navigate to="/log-in" />) : dummyUsers.current[loggedInUser]["type"] !== "organizer" ? (<Navigate to="/home" />) : (<CreateEvent />)}/>
+                        <Route path="/event/:eventId/edit" element={!loggedInUser ? (<Navigate to="/log-in" />) : (dummyUsers.current[loggedInUser]["type"] === "student" || dummyUsers.current[loggedInUser]["type"] === "visitor") ? (<Navigate to="/home" />) : (<EditEvent user={loggedInUser} users={dummyUsers.current} events={dummyEvents.current} />)}/>
+                        {/* reema: Checkout / Registration Status page */}
+                        <Route path="/registration" element={!loggedInUser? <Navigate to="/log-in"/>: <Registration />} />
 
-        <Route path="/manage-users" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUsers users={dummyUsers.current} user={loggedInUser}/>: <Navigate to={`/home`}/> }/>
-        <Route path="/manage-universities" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUniversities initialUniversities={dummyUniversities.current}/>: <Navigate to={`/home`}/>} />
-        <Route path="/disputes" element={!loggedInUser? <Navigate to="/log-in"/>: <Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
-        <Route path="/system-policies" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <SystemPolicies />: <Navigate to={`/home`}/>}/>
+                        <Route path="/manage-users" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUsers users={dummyUsers.current} user={loggedInUser}/>: <Navigate to={`/home`}/> }/>
+                        <Route path="/manage-universities" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "system-admin")? <ManageUniversities initialUniversities={dummyUniversities.current}/>: <Navigate to={`/home`}/>} />
+                        <Route path="/disputes" element={!loggedInUser? <Navigate to="/log-in"/>: <Disputes disputes={dummyDisputes.current} user={loggedInUser} users={dummyUsers.current}/>}/>
+                        <Route path="/system-policies" element={!loggedInUser? <Navigate to="/log-in"/>: (dummyUsers.current[loggedInUser]['type'] === "admin" || dummyUsers.current[loggedInUser]['type'] === "system-admin")? <SystemPolicies />: <Navigate to={`/home`}/>}/>
 
-        <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection filterContent={filterContent} universities={dummyUniversities.current} assignUni={assignUni} setSelectedUni={setSelectedUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
-        <Route path="/checkout" element={!loggedInUser?<Navigate to="/log-in"/>: (!isPurchasing? <Navigate to="/home"/>: <Checkout setSuccess={setSuccessfulPayment} setProcessing={setProcessingPayment}/>)} />
-        <Route path="/payment-outcome" element={processingPayment? <PaymentResult success={successfulPayment}/>: <Navigate to="/home" />} />
-        <Route path="/about-organizer" element={!loggedInUser? <Navigate to="/log-in"/>: <AboutOrganizer organizer={"chicken-tender"} users={dummyUsers.current} events={dummyEvents.current} userType={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} />} />
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
+                        <Route path="/university-selection" element={loggedInUser? ((dummyUsers.current[loggedInUser].type === "visitor" || dummyUsers.current[loggedInUser].type === "system-admin")? <UniversitySelection filterContent={filterContent} universities={dummyUniversities.current} assignUni={assignUni} setSelectedUni={setSelectedUni}/> : <Navigate to="/home" />): <Navigate to="/log-in" />}/>
+                        <Route path="/checkout" element={!loggedInUser?<Navigate to="/log-in"/>: (!isPurchasing? <Navigate to="/home"/>: <Checkout setSuccess={setSuccessfulPayment} setProcessing={setProcessingPayment}/>)} />
+                        <Route path="/payment-outcome" element={processingPayment? <PaymentResult success={successfulPayment}/>: <Navigate to="/home" />} />
+                        <Route path="/about-organizer" element={!loggedInUser? <Navigate to="/log-in"/>: <AboutOrganizer organizer={"chicken-tender"} users={dummyUsers.current} events={dummyEvents.current} userType={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"} />} />
+                        <Route path="/" element={<Navigate to="/home" />} />
+                        <Route path="*" element={loggedInUser? <h1 className='m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]'>404 - Page Not Found {":)"}</h1> : <Navigate to="/log-in" />}/>
 
-      </Routes>
-    }
-      <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
-    </ div>
+                    </Routes>
+                }
+                <Footer type={loggedInUser? dummyUsers.current[loggedInUser]["type"]: "empty"}/>
+            </ div>
+        </>
   )
 }
 
