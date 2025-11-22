@@ -24,57 +24,68 @@ export default function EventList(props) {
 
         let normalized = [];
 
-        // 1) Preferred: events is an object map { [id]: eventObj }
+        // 1) Normalize Data
         if (!Array.isArray(props.events) && typeof props.events === "object") {
             normalized = Object.entries(props.events).map(([id, ev]) => ({
                 id: String(id),
                 ...(ev || {}),
             }));
         } else if (Array.isArray(props.events)) {
-            // 2) Fallback: events is an array of full objects
             normalized = props.events
                 .map((entry, idx) => {
                     if (entry && typeof entry === "object" && !Array.isArray(entry)) {
                         const id = entry.id ?? entry.eventId ?? String(idx);
                         return { ...entry, id: String(id) };
                     }
-                    // If it's just an ID here, we **avoid** re-building from allEvents,
-                    // because that would drop any custom state. Safer to ignore.
                     return null;
                 })
                 .filter(Boolean);
         }
 
-        // 3) Apply filterIds if provided (we only hide/show, not touch data)
+        // 2) Apply Filters
         if (filterIds && filterIds.length > 0) {
             const set = new Set(filterIds);
             normalized = normalized.filter((item) => set.has(String(item.id)));
         }
 
-        // 4) Date helpers
+        // 3) Date Helper
         const parseDate = (dateStr) => {
-            if (!dateStr) return new Date(8640000000000000); // Far future if invalid
-
-            const cleanDate = dateStr.replace(/^\d{1,2}:\d{2}\s(?:AM|PM)\s/i, "");
+            if (!dateStr) return null;
+            // Fix format: "11/21/2025-9:30AM" -> "11/21/2025 9:30AM"
+            const cleanDate = dateStr.replace('-', ' ');
             const d = new Date(cleanDate);
-            return isNaN(d.getTime()) ? new Date(8640000000000000) : d;
+            return isNaN(d.getTime()) ? null : d;
         };
 
-        const now = new Date();
-        now.setHours(0, 0, 0, 0);
+        const now = new Date(); // Compare against exact current time
 
-        // 5) Sort: future first, then past; within each, earliest first
-        return normalized.sort((a, b) => {
-            const dateA = parseDate(a.date);
-            const dateB = parseDate(b.date);
+        // 4) Pre-calculate date objects and status for sorting
+        const processed = normalized.map(item => {
+            const dateObj = parseDate(item.date);
+            // If invalid date, push to far future
+            const sortDate = dateObj || new Date(8640000000000000);
 
-            const isPastA = dateA < now;
-            const isPastB = dateB < now;
+            // Determine if event has ended based on exact time
+            const isEnded = dateObj ? dateObj < now : false;
 
-            if (isPastA && !isPastB) return 1;
-            if (!isPastA && isPastB) return -1;
+            return {
+                ...item,
+                _sortDate: sortDate, // Internal use for sorting
+                isEnded: isEnded     // Use this in your UI to show "Event Ended"
+            };
+        });
 
-            return dateA - dateB;
+        // 5) Sort
+        return processed.sort((a, b) => {
+            // Rule 1: Active events first, Ended events last
+            if (a.isEnded && !b.isEnded) return 1;
+            if (!a.isEnded && b.isEnded) return -1;
+
+            // Rule 2: Sort by Date (Earliest -> Latest)
+            // This works for both groups:
+            // - Upcoming: Sooner events appear first
+            // - Ended: Oldest ended events appear first in the "ended" section
+            return a._sortDate - b._sortDate;
         });
     }, [props.events, props.filterIds]);
 
