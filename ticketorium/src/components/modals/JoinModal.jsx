@@ -72,11 +72,12 @@ function JoinModal({
         } catch (err) {
             console.error("Error creating ticket:", err);
 
-            // demo failure path → checkout
+            // demo failure path to checkout
             navigate("/checkout", {
                 state: {
                     isSuccess: false,
                     eventId,
+                    price, //pass the price to checkout page
                     fromEventId: eventId,
                 },
             });
