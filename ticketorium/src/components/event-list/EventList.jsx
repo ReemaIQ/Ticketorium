@@ -1,68 +1,80 @@
 import Event from "../event/Event";
 
-// Displays a list of events.
 export default function EventList(props) {
-    if (props.variant === "r") {
-        const items = Object.entries(props.events); //r
+    const {
+        events = {},
+        eventsJoined = {},
+        filteredEvents = [],
+        userType,
+        listType,
+    } = props;
 
-        if (items.length === 0) { //r
-            return (
-                <div className="flex flex-col justify-center items-center gap-5
-                            p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]">
-                    No events available.
-                </div>
+    // Decide which events to render: filtered list or all
+    const items =
+        filteredEvents && filteredEvents.length > 0
+            ? filteredEvents
+                .filter((id) => events[id]) // make sure event exists
+                .map((id) => [id, events[id]])
+            : Object.entries(events);
+
+    if (items.length === 0) {
+        return (
+            <div className="flex flex-col justify-center items-center gap-5 p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]">
+                {listType === "my-events" ? "No events joined yet." : "No events available."}
+            </div>
+        );
+    }
+
+    // Figure out join info for a given event key
+    const getJoinInfo = (eventKey) => {
+        let state = "not-joined";
+        let user = null;
+        let inviter = null;
+
+        if (listType === "all-events") {
+            // eventKey is the *event id*; search eventsJoined by eventId
+            const match = Object.values(eventsJoined).find(
+                (ej) => String(ej.eventId) === String(eventKey)
             );
+            if (match) {
+                state = match.state || state;
+                user = match.user ?? null;
+                inviter = match.invitee ?? null;
+            }
+        } else {
+            // my-events / invites-* : keys of events === keys of eventsJoined
+            const ej = eventsJoined[eventKey];
+            if (ej) {
+                state = ej.state || state;
+                user = ej.user ?? null;
+                inviter = ej.invitee ?? null;
+            }
         }
 
-        return ( //r
-            <div className="flex flex-col justify-center items-center gap-5 p-3">
-                {items.map(([id, ev]) => (
+        return { state, user, inviter };
+    };
 
+    return (
+        <div className="flex flex-col justify-center items-center gap-5 p-3">
+            {items.map(([id, ev]) => {
+                const { state, user, inviter } = getJoinInfo(id);
+
+                return (
                     <Event
-                        id={id}                 // pass id so card can link to /event/:id
-                        type={props.userType}
-                        state={props.eventsJoined[id].state}
+                        key={id}                 // fixes key warning here
+                        id={id}                  // event id (for all-events) or join-id (for others)
+                        type={userType}
+                        state={state}
+                        user={user}
                         img={ev.img}
                         title={ev.title}
                         date={ev.date}
                         organizer={ev.organizer}
                         price={ev.price}
-                        inviter={props.eventsJoined[id].user}
+                        inviter={inviter}
                     />
-                ))}
-            </div>
-        );
-
-    }
-
-    if (props.variant === "s") {
-        if (props.filteredEvents.length === 0) {
-            return (
-                <div className="flex flex-col justify-center items-center gap-5
-                            p-3 w-full text-gray-500 font-[Gilroy-Medium] text-[22px]">
-                    {props.listType === "my-events" ? "No events joined yet." : "No events available."}
-                </div>
-            );
-        }
-
-        return (
-            <div className="flex flex-col justify-center items-center gap-5 p-3">
-                {props.filteredEvents.map((event) => {
-                    return <Event
-                        // key={props.events[event]}
-                        type={props.userType}
-                        state={props.eventsJoined[event["id"]].state}
-                        img={props.events[event].img}
-                        title={props.events[event].title}
-                        date={props.events[event].date}
-                        organizer={props.events[event].organizer}
-                        price={props.events[event].price}
-                        inviter={props.eventsJoined[event["id"]].user}
-                    />
-                })}
-            </div>
-        );
-    }
-
-
+                );
+            })}
+        </div>
+    );
 }

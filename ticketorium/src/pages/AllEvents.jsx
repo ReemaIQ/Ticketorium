@@ -17,7 +17,6 @@ library.add(fas, far, fab);
 import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 
-
 function AllEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]);
     const originalState = useRef({});
@@ -31,35 +30,36 @@ function AllEvents(props) {
         if (t === "admin") {
             return (
                 <span className="font-[Gilroy-Black] text-[40px] text-[var(--primary-color)]">
-                    Manage Events
-                </span>
+          Manage Events
+        </span>
             );
         }
 
         if (t === "visitor") {
             return (
                 <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
-                    Events at {props.uni}
-                </span>
+          Events at {props.uni}
+        </span>
             );
         }
 
         if (t === "student") {
             return (
                 <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-                    Events
-                </span>
+          Events
+        </span>
             );
         }
 
         return (
             <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
-                Events
-            </span>
+        Events
+      </span>
         );
     };
 
     useEffect(() => {
+        // Initial load: filter events for this university
         props.filterContent(
             "initial",
             props.events,
@@ -68,8 +68,7 @@ function AllEvents(props) {
             "",
             { "list-type": "all-events", university: props.uni }
         );
-        console.log("Original State Set:", originalState.current);
-        // force a re-render
+        // force a re-render with keys of originalState
         setFilteredEvents(Object.keys(originalState.current));
     }, []);
 
@@ -125,7 +124,6 @@ function AllEvents(props) {
                         filterContent={props.filterContent}
                         userType={userType}
                         listType="all-events"
-                        variant="r"   // kept from your current version
                     />
                 </div>
             </div>
