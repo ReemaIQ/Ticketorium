@@ -19,6 +19,7 @@ function ThemeProvider({ loggedInUser, dummyUsersRef, dummyUniversitiesRef, chil
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "filter-buttons": "oklch(49.6% 0.265 301.924)",
+            "dispute-chat": "#e6f3fa",
         };
 
         const theme = uniTheme || fallbackTheme;

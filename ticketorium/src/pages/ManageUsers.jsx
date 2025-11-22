@@ -114,44 +114,46 @@ export default function ManageUsers(props) {
     return (
         <div className="min-h-screen bg-[#FAFAFA] text-[#1A1A1A]">
             <header className="flex flex-col items-center justify-between gap-10 max-w-5xl mx-auto px-2 pt-15 pb-4">
-                <div className="flex items-center justify-between w-full gap-4 flex-1">
-                    <h1 className="font-[Gilroy-Black] text-[38px] md:text-[44px] leading-none">
+                <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4 flex-1">
+                    <h1 className="font-[Gilroy-Black] text-[60px] leading-none w-full justify-start">
                         Manage Users
                     </h1>
 
-                    <button
-                        type="button"
-                        onClick={handleCreateClick}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] font-[Gilroy-Medium]"
-                    >
-                        <Plus size={18} />
-                        Create new user
-                    </button>
+                    <div className="flex w-full justify-end">
+                        <button
+                            type="button"
+                            onClick={handleCreateClick}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] font-[Gilroy-Medium]"
+                        >
+                            <Plus size={18} />
+                            Create new user
+                        </button>
+                    </div>
                 </div>
 
-                <div className="flex justify-center items-center w-full gap-3 px-5">
-                    <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-                        <FontAwesomeIcon icon={"fa-solid fa-filter"} className="text-white" />
-                    </button>
+                {/*<div className="flex justify-center items-center w-full gap-3 px-5">*/}
+                {/*    <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">*/}
+                {/*        <FontAwesomeIcon icon={"fa-solid fa-filter"} className="text-white" />*/}
+                {/*    </button>*/}
 
-                    <SearchBtn
-                        expandable={true}
-                        filterFunc={(searchValue) => {
-                            props.filterContent(
-                                "search",
-                                originalState.current,
-                                setFilteredEvents,
-                                "event",
-                                searchValue,
-                                {
-                                    "list-type": "all-events",
-                                    university: props.uni,
-                                }
-                            );
-                        }}
-                    />
+                {/*    <SearchBtn*/}
+                {/*        expandable={true}*/}
+                {/*        filterFunc={(searchValue) => {*/}
+                {/*            props.filterContent(*/}
+                {/*                "search",*/}
+                {/*                originalState.current,*/}
+                {/*                setFilteredEvents,*/}
+                {/*                "event",*/}
+                {/*                searchValue,*/}
+                {/*                {*/}
+                {/*                    "list-type": "all-events",*/}
+                {/*                    university: props.uni,*/}
+                {/*                }*/}
+                {/*            );*/}
+                {/*        }}*/}
+                {/*    />*/}
 
-                </div>
+                {/*</div>*/}
             </header>
 
             <main className="px-5 md:px-10 py-8">

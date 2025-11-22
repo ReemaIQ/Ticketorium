@@ -82,6 +82,7 @@ export const initialDummyUniversities = {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "footer-color": "#002E1A",
+            "dispute-chat": "#d8e5dd"
         },
     },
     Harvard: {
@@ -96,6 +97,7 @@ export const initialDummyUniversities = {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "footer-color": "#3B0A1E",
+            "dispute-chat": "#ffe2e5"
         },
     },
     Saud: {
@@ -110,6 +112,7 @@ export const initialDummyUniversities = {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "footer-color": "#001F3B",
+            "dispute-chat": "#dce9f3"
         },
     },
     Manchester: {
@@ -124,6 +127,7 @@ export const initialDummyUniversities = {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "footer-color": "#3D0D5C",
+            "dispute-chat": "#ebe1f3"
         },
     },
     Oxford: {
@@ -138,6 +142,7 @@ export const initialDummyUniversities = {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "footer-color": "#000D1A",
+            "dispute-chat": "#dbe6f3"
         },
     },
     Cambridge: {
@@ -152,6 +157,7 @@ export const initialDummyUniversities = {
             "warning-color": "#F54141",
             "success-color": "#46CA48",
             "footer-color": "#4A6350",
+            "dispute-chat": "#eaf8ee"
         },
     },
 };

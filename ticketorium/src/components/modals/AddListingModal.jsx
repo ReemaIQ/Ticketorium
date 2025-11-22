@@ -6,7 +6,7 @@ export default function AddListingModal({
                                             open,
                                             onClose,
                                             biddings = {}, // [{id, title, desc, img, countdownText, dateText, analytics}]
-                                            onCreate,     // ({ticketId, deadline, startingBid}) => void
+                                            onCreate,      // ({ticketId, deadline, startingBid}) => void
                                         }) {
     const items = Object.entries(biddings); // [ [id, bidding], ... ]
     const [selectedId, setSelectedId] = useState(null);
@@ -29,7 +29,7 @@ export default function AddListingModal({
         const onKey = (e) => e.key === "Escape" && onClose?.();
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, [open]);
+    }, [open, onClose]);
 
     /* Focus trap */
     useEffect(() => {
@@ -60,7 +60,10 @@ export default function AddListingModal({
                         <h2 className="font-[Gilroy-Black] text-[24px]">
                             Select a Ticket to Put on Sale
                         </h2>
-                        <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100">
+                        <button
+                            onClick={onClose}
+                            className="p-2 rounded-full hover:bg-gray-100"
+                        >
                             <X size={18} />
                         </button>
                     </div>
@@ -74,7 +77,7 @@ export default function AddListingModal({
                                     onClick={() => setSelectedId(id)}
                                     className={`cursor-pointer rounded-xl transition border-2 ${
                                         selectedId === id
-                                            ? "border-[#4F6FFF]"
+                                            ? "border-[var(--primary-color)]"
                                             : "border-transparent"
                                     }`}
                                 >
@@ -87,7 +90,6 @@ export default function AddListingModal({
                     {/* Bottom form */}
                     <div className="p-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
                         <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-
                             {/* Deadline */}
                             <label>
                                 <span className="text-[12px] text-[#7B7B7B] mb-1 block">
@@ -100,13 +102,15 @@ export default function AddListingModal({
                                     value={deadline}
                                     onChange={(e) => {
                                         const picked = e.target.value;
-                                        const today = new Date().toISOString().split("T")[0];
+                                        const today = new Date()
+                                            .toISOString()
+                                            .split("T")[0];
                                         if (picked < today) {
                                             alert("Deadline cannot be in the past.");
                                             setDeadline("");
                                         } else setDeadline(picked);
                                     }}
-                                    className="w-full border-b border-gray-300 focus:border-[#4F6FFF] outline-none bg-transparent py-1"
+                                    className="w-full border-b border-gray-300 focus:border-[var(--primary-color)] outline-none bg-transparent py-1"
                                     placeholder="YYYY/MM/DD"
                                 />
                             </label>
@@ -123,7 +127,7 @@ export default function AddListingModal({
                                     step="0.01"
                                     value={startingBid}
                                     onChange={(e) => setStartingBid(e.target.value)}
-                                    className="w-full border-b border-gray-300 focus:border-[#4F6FFF] outline-none bg-transparent py-1"
+                                    className="w-full border-b border-gray-300 focus:border-[var(--primary-color)] outline-none bg-transparent py-1"
                                     placeholder="0.00"
                                 />
                             </label>
@@ -143,7 +147,7 @@ export default function AddListingModal({
                             className={`ml-auto rounded-[6px] px-5 py-2 text-[14px] font-[Gilroy-Medium] transition
                                 ${
                                 canCreate
-                                    ? "bg-[#4F6FFF] text-white hover:brightness-110"
+                                    ? "bg-[var(--accent-color)] text-[var(--secondary-color)] cursor-pointer"
                                     : "bg-gray-200 text-gray-500 cursor-not-allowed"
                             }`}
                         >

@@ -15,7 +15,7 @@ export default function MiniBidding({bidding}) {
 
                 {/* Top */}
                 <div>
-                    <p className="font-[Gilroy-Bold] text-right text-[#4F6FFF] mb-1">
+                    <p className="font-[Gilroy-Bold] text-right text-[var(--primary-color)] mb-1">
                         in 3 days!
                     </p>
 
@@ -32,8 +32,8 @@ export default function MiniBidding({bidding}) {
                 {/* Bottom */}
                 <div className="flex flex-col items-center md:flex-row gap-2">
                     <button
-                        className="flex items-center gap-2 bg-[#FFDF4F] text-[#14113B]
-                                                rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3"
+                        className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)]
+                                                rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3 cursor-pointer"
                     >
                         Select
                     </button>

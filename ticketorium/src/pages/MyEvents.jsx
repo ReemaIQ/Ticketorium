@@ -37,9 +37,9 @@ function MyEvents(props) {
 
         if (t === "visitor") {
             return (
-                <span className="font-[Epilogue-Black] text-[50px] xl:text-[60px] text-[var(--primary-color)]">
+                <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
                     My Events{" "}
-                    <span className="font-[Gilroy-Medium] text-[40px] text-[#1A1A1A]">
+                    <span className="font-[Gilroy-Medium] text-[60px] text-[var(--primary-color)]">
                         at {props.uni || "Harvard"}
                     </span>
                 </span>
@@ -47,7 +47,7 @@ function MyEvents(props) {
         }
 
         return (
-            <span className="font-[Gilroy-Black] text-[40px] text-[#1A1A1A]">
+            <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
                 My Events
             </span>
         );
@@ -72,7 +72,7 @@ function MyEvents(props) {
     return (
         <>
             {/* Content */}
-            <div id="page-content" className="flex flex-col items-center gap-30 w-full min-h-148.5">
+            <div id="page-content" className="flex flex-col items-center gap-30 w-full min-h-screen">
                 {/* Upcoming Events */}
                 <div
                     id="events-section"
@@ -91,8 +91,8 @@ function MyEvents(props) {
                                 <div className="flex justify-end w-full gap-3">
                                     <button
                                         onClick={() => navigate("/create-event")}
-                                        className="flex items-center gap-2 px-5 py-2.5 bg-[#FFDF4F]
-                                        text-[#14113B] rounded-[6px] font-[Gilroy-Medium]"
+                                        className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)]
+                                        text-[var(--primary-color)] rounded-[6px] font-[Gilroy-Medium]"
                                     >
                                         <Plus size={18} />
                                         Create New Event
