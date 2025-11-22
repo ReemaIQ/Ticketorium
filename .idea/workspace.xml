@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="connected create new event page and button in my events page, fixed button placing">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +38,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;2d0816b8-e9a4-431c-8602-3612ebddd751&quot;
+    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -57,23 +52,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "lena",
-    "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;reema-final&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sweet/WebstormProjects/Ticketorium&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -126,6 +122,8 @@
       <workItem from="1763542604558" duration="2093000" />
       <workItem from="1763561015485" duration="8926000" />
       <workItem from="1763731001864" duration="5321000" />
+      <workItem from="1763791730220" duration="4709000" />
+      <workItem from="1763809438468" duration="688000" />
     </task>
     <task id="LOCAL-00001" summary="implementing tailwind">
       <option name="closed" value="true" />
@@ -503,7 +501,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763746481378</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Separated the modals into their own components + reconnected the Seating Component + fixed some errors">
+      <option name="closed" value="true" />
+      <created>1763795146173</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1763795146173</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,7 +539,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="moved images to organize directories" />
     <MESSAGE value="fixed mistake in passing user type to events list" />
     <MESSAGE value="working on event responsiveness" />
     <MESSAGE value="biddings and their page" />
@@ -558,6 +563,7 @@
     <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
-    <option name="LAST_COMMIT_MESSAGE" value="connected create new event page and button in my events page, fixed button placing" />
+    <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
   </component>
 </project>
