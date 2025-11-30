@@ -4,25 +4,25 @@ export const bidsSeed = [
     // Bids for listing1 (Coding Competition)
     {
         listingKey: "listing1",
-        bidderHandle: "visitor",
+        bidderHandle: "student2",
         amount: 25,
         isActive: true,
     },
     {
         listingKey: "listing1",
-        bidderHandle: "kfupm-organizer",
+        bidderHandle: "student3",
         amount: 30,
         isActive: true,
     },
     {
         listingKey: "listing1",
-        bidderHandle: "harvard-organizer",
+        bidderHandle: "student2",
         amount: 28,
         isActive: true,
     },
     {
         listingKey: "listing1",
-        bidderHandle: "student",
+        bidderHandle: "student3",
         amount: 22,
         isActive: true,
     },
@@ -30,19 +30,19 @@ export const bidsSeed = [
     // Bids for listing2 (Graduation VIP)
     {
         listingKey: "listing2",
-        bidderHandle: "visitor",
+        bidderHandle: "student",
         amount: 55,
         isActive: true,
     },
     {
         listingKey: "listing2",
-        bidderHandle: "kfupm-organizer",
+        bidderHandle: "student3",
         amount: 60,
         isActive: true,
     },
     {
         listingKey: "listing2",
-        bidderHandle: "harvard-organizer",
+        bidderHandle: "student",
         amount: 58,
         isActive: true,
     },
