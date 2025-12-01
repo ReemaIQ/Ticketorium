@@ -4,26 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="favicon added">
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/api/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/src/socket.js" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="editing data">
       <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/middleware/auth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/services/disputesService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/services/notificationsService.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/disputes.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/disputes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/bids.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/bids.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/disputes.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/disputes.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/listings.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/listings.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notificationInstances.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notificationInstances.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notifications.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notifications.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/users.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/users.data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,12 +47,12 @@
     &quot;assignee&quot;: &quot;LenaAshqar&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ReemaIQ/Ticketorium.git",
+    "accountId": "68f66e2f-0677-471f-b9ae-311e0eedb4d5"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -84,7 +78,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -109,7 +103,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-WS-252.23892.411" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
       </set>
     </attachedChunks>
   </component>
@@ -142,14 +136,7 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
-    </task>
-    <task id="LOCAL-00009" summary="uploaded imaged for dummy events">
-      <option name="closed" value="true" />
-      <created>1762007070038</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007070038</updated>
+      <workItem from="1764609260013" duration="10728000" />
     </task>
     <task id="LOCAL-00010" summary="created event component">
       <option name="closed" value="true" />
@@ -535,7 +522,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763847626681</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="editing data">
+      <option name="closed" value="true" />
+      <created>1764541777402</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1764541777402</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -565,7 +560,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed routes after reorganizing" />
     <MESSAGE value="notification modal skeleton" />
     <MESSAGE value="updated system-admin links" />
     <MESSAGE value="changed filter to sort" />
@@ -590,7 +584,8 @@
     <MESSAGE value="final edits: fixed sorting by date" />
     <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
-    <option name="LAST_COMMIT_MESSAGE" value="favicon added" />
+    <MESSAGE value="editing data" />
+    <option name="LAST_COMMIT_MESSAGE" value="editing data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

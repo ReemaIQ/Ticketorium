@@ -3,13 +3,34 @@ import listing from "../../assets/images/bidding/listing.png";
 import bids from "../../assets/images/bidding/bids.png";
 import MakeBidModal from "../modals/MakeBidModal.jsx";
 
-export default function Bidding({type,bidding}) {
+export default function Bidding({ type, bidding, onListingUpdated, user }) {
     const [open, setOpen] = useState(false);
 
-    const handleBid = ({ id, deadline, startingBid }) => {
-        console.log("Create listing:", { id, deadline, startingBid });
-        setOpen(false); // close after creating
+    const handleBid = async (amount) => {
+        try {
+            const listingId = bidding.id || bidding.raw?._id;
+            const res = await fetch(`/api/listings/${listingId}/bids`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bidderId: user, amount }),
+            });
+            const body = await res.json();
+            if (!res.ok) throw new Error(body.error || "Bid failed");
+
+            // backend returns { bid, listing }
+            const updatedListing = body.listing;
+            // tell parent to update UI with this listing
+            onListingUpdated?.(updatedListing);
+
+            alert("Bid placed successfully!");
+        } catch (err) {
+            console.error("Place bid error", err);
+            alert("Failed to place bid: " + err.message);
+        } finally {
+            setOpen(false);
+        }
     };
+
 
     return (
         <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
