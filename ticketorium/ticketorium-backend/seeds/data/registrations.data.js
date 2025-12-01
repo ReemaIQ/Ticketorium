@@ -7,12 +7,12 @@ export const registrationsSeed = [
         eventKey: "ev4",
         userHandle: "student",
         status: "invited",
-        invitedByHandle: "visitor",
+        invitedByHandle: "student2",
     },
     {
         eventKey: "ev6",
         userHandle: "visitor",
         status: "joined",
-        invitedByHandle: "visitor",
+        invitedByHandle: "student",
     },
 ];

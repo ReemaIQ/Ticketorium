@@ -3,7 +3,7 @@ import listing from "../../assets/images/bidding/listing.png";
 import bids from "../../assets/images/bidding/bids.png";
 import MakeBidModal from "../modals/MakeBidModal.jsx";
 
-export default function Bidding({ type, bidding, onListingUpdated, user }) {
+export default function Bidding({ type, bidding, setBiddings, listingToBidding, onListingUpdated,  user }) {
     const [open, setOpen] = useState(false);
 
     const handleBid = async (amount) => {
@@ -31,6 +31,26 @@ export default function Bidding({ type, bidding, onListingUpdated, user }) {
         }
     };
 
+    const endListing = async (listingId) => {
+        try {
+            const res = await fetch(`/api/listings/${listingId}/end`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sellerId: user.handle }), // use normalized user id
+            });
+            const body = await res.json();
+            if (!res.ok) throw new Error(body.error || "End failed");
+
+            // update local state: replace listing with returned listing or set its status
+            const updated = body.listing || body;
+            setBiddings(prev => ({ ...prev, [String(updated._id)]: listingToBidding(updated, user) }));
+
+            alert("Listing ended. Top bidder notified (if one exists).");
+        } catch (err) {
+            console.error("endListing error:", err);
+            alert("Could not end listing: " + err.message);
+        }
+    };
 
     return (
         <div className="sd:flex-col sd:align-center md:flex gap-5 bg-white rounded-[6px] border border-[rgba(0,0,0,0.15)] overflow-hidden shadow-sm">
@@ -65,6 +85,7 @@ export default function Bidding({ type, bidding, onListingUpdated, user }) {
                             <button
                                 className="flex gap-3 bg-[var(--accent-color)] text-[var(--secondary-color)]
                                         rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3 "
+                                onClick={() => endListing(bidding.raw._id || bidding.id)}
                             >
                                 End Bid
                                 <img src={listing} alt="Bid" className="w-5 h-5 object-cover"/>

@@ -1,7 +1,7 @@
 import Bidding from "../bidding/Bidding.jsx";
 import React from "react";
 
-export default function BiddingList({ biddings = {}, type, user, onListingUpdated }) {
+export default function BiddingList({ biddings = {}, type, user, onListingUpdated, listingToBidding, setBiddings }) {
     const items = Object.entries(biddings);
     const currentUserId = typeof user === "string" ? user : (user?._id || user?.id || null);
 
@@ -47,6 +47,8 @@ export default function BiddingList({ biddings = {}, type, user, onListingUpdate
                     type={type}
                     user={user}
                     onListingUpdated={onListingUpdated}
+                    listingToBidding={listingToBidding}
+                    setBiddings={setBiddings}
                 />
             ))}
         </div>
