@@ -46,7 +46,7 @@ const listingSchema = new Schema(
 
         status: {
             type: String,
-            enum: ["active", "sold", "expired", "cancelled"],
+            enum: ["active", "expired", "awaiting_payment"],
             default: "active",
             index: true,
         },

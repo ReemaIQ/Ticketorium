@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="biddings page connected to backend">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="fixing new listing modal and end bid button">
       <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/MiniBidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/MiniBidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Listing.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Listing.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/registrations.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/registrations.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,15 +128,7 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
-      <workItem from="1764609260013" duration="14368000" />
-    </task>
-    <task id="LOCAL-00011" summary="created bidding component">
-      <option name="closed" value="true" />
-      <created>1762007096169</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007096169</updated>
+      <workItem from="1764609260013" duration="15965000" />
     </task>
     <task id="LOCAL-00012" summary="emptied app file">
       <option name="closed" value="true" />
@@ -527,7 +514,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764626463630</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="fixing new listing modal and end bid button">
+      <option name="closed" value="true" />
+      <created>1764630012868</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1764630012868</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -557,7 +552,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated system-admin links" />
     <MESSAGE value="changed filter to sort" />
     <MESSAGE value="made manage users page" />
     <MESSAGE value="made section title font smaller" />
@@ -582,7 +576,8 @@
     <MESSAGE value="favicon added" />
     <MESSAGE value="editing data" />
     <MESSAGE value="biddings page connected to backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="biddings page connected to backend" />
+    <MESSAGE value="fixing new listing modal and end bid button" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing new listing modal and end bid button" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -596,6 +591,18 @@
           <url>file://$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx</url>
           <line>8</line>
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
+          <line>343</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
+          <line>140</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

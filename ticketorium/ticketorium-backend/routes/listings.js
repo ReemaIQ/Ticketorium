@@ -31,20 +31,95 @@ async function recomputeTopBids(listingId) {
 }
 
 /**
+ * Helper: run recomputeTopBids and transition expired listings to awaiting_payment (or delete if no bids).
+ * Called before GET /api/listings returns data so UI doesn't see awaiting_payment.
+ */
+async function processExpiredListings() {
+    try {
+        const now = new Date();
+        // find listings that are active and have expiresAt <= now (expired)
+        const expiredActives = await Listing.find({
+            status: "active",
+            expiresAt: { $lte: now },
+        });
+
+        if (!expiredActives.length) return;
+
+        for (const listing of expiredActives) {
+            try {
+                await recomputeTopBids(listing._id);
+
+                // re-fetch so we have updated topBids
+                const updated = await Listing.findById(listing._id).populate("topBids.bidder", "handle _id");
+
+                const top = (updated.topBids || [])[0];
+
+                if (!top) {
+                    // no bids — remove listing (or mark expired — you asked for deletion)
+                    await Listing.findByIdAndDelete(updated._id);
+                    // remove any stray bids just in case (should be none)
+                    await Bid.deleteMany({ listing: updated._id });
+                    console.log("[processExpiredListings] deleted listing with no bids:", updated._id);
+                } else {
+                    // has a top bidder -> mark awaiting_payment and notify winner
+                    updated.status = "awaiting_payment";
+                    updated.winner = top.bidder._id || top.bidder;
+                    updated.winningAmount = top.amount;
+                    await updated.save();
+
+                    // create notification for winner (silently continue on error)
+                    try {
+                        if (typeof Notification !== "undefined") {
+                            await Notification.create({
+                                user: updated.winner,
+                                type: "won_listing",
+                                data: {
+                                    listingId: updated._id,
+                                    amount: updated.winningAmount,
+                                    title: updated.title,
+                                },
+                            });
+                        }
+                    } catch (nErr) {
+                        console.warn("[processExpiredListings] Notification error:", nErr);
+                    }
+
+                    console.log("[processExpiredListings] set awaiting_payment and notified winner:", updated._id);
+                }
+            } catch (innerErr) {
+                console.error("[processExpiredListings] error processing listing:", listing._id, innerErr);
+            }
+        }
+    } catch (err) {
+        console.error("[processExpiredListings] top-level error:", err);
+    }
+}
+
+/**
  * GET /api/listings
  * Optional query:
  *   - status (active, expired, sold, cancelled)
+ *   - includeAwaiting=true  (optional; default false)
  */
 router.get("/", async (req, res) => {
     try {
-        const { status } = req.query;
+        // BEFORE returning anything, process expired listings (this transitions them)
+        await processExpiredListings();
+
+        const { status, includeAwaiting } = req.query;
         const filter = {};
+
         if (status) filter.status = status;
+
+        // by default exclude awaiting_payment from UI results
+        if (!includeAwaiting || String(includeAwaiting) !== "true") {
+            filter.status = filter.status ? filter.status : { $ne: "awaiting_payment" };
+        }
 
         const listings = await Listing.find(filter)
             .populate({
                 path: "ticket",
-                populate: { path: "event", select: "title eventId startAt" },
+                populate: { path: "event", select: "title eventId startAt imageUrl" },
             })
             .populate("seller", "handle firstName lastName")
             .populate("topBids.bidder", "handle firstName lastName")
@@ -56,6 +131,7 @@ router.get("/", async (req, res) => {
         res.status(500).json({ error: "Failed to load listings" });
     }
 });
+
 
 /**
  * POST /api/listings
@@ -165,36 +241,6 @@ router.post("/:id/bids", async (req, res) => {
 
 
 /**
- * POST /api/listings/:id/cancel
- * Body: { sellerId }
- */
-router.post("/:id/cancel", async (req, res) => {
-    try {
-        const { sellerId } = req.body || {};
-        if (!sellerId) {
-            return res.status(400).json({ error: "sellerId is required" });
-        }
-
-        const listing = await Listing.findOne({
-            _id: req.params.id,
-            seller: sellerId,
-        });
-
-        if (!listing) {
-            return res.status(404).json({ error: "Listing not found" });
-        }
-
-        listing.status = "cancelled";
-        await listing.save();
-
-        res.json({ ok: true, listing });
-    } catch (err) {
-        console.error("POST /api/listings/:id/cancel error:", err);
-        res.status(500).json({ error: "Failed to cancel listing" });
-    }
-});
-
-/**
  * POST /api/listings/:id/end
  * Body: { sellerId }
  *
@@ -203,71 +249,89 @@ router.post("/:id/cancel", async (req, res) => {
 router.post("/:id/end", async (req, res) => {
     try {
         const listingId = req.params.id;
-        const { sellerId } = req.body || {};
-        if (!sellerId) return res.status(400).json({ error: "sellerId is required" });
+        const { sellerId: providedSellerId } = req.body || {};
 
-        // load listing populated with topBids
-        const listing = await Listing.findById(listingId).populate("topBids.bidder");
-        if (!listing) return res.status(404).json({ error: "Listing not found" });
+        console.log("[SERVER] POST /api/listings/:id/end called:", { listingId, providedSellerId });
 
-        // only seller can end
-        if (String(listing.seller) !== String(sellerId)) {
-            return res.status(403).json({ error: "Only seller can end this listing" });
+        if (!providedSellerId) {
+            console.warn("[SERVER] Missing sellerId in request body");
+            return res.status(400).json({ error: "sellerId is required in body" });
         }
 
-        // make sure it's active
+        // Load listing, populate seller to see handle/_id
+        const listing = await Listing.findById(listingId).populate("seller", "handle _id").populate("topBids.bidder", "handle _id");
+        if (!listing) {
+            console.warn("[SERVER] Listing not found:", listingId);
+            return res.status(404).json({ error: "Listing not found" });
+        }
+
+        // Normalize listing seller id/handle
+        const listingSellerId = listing.seller ? String(listing.seller._id || listing.seller) : null;
+        const listingSellerHandle = listing.seller && listing.seller.handle ? String(listing.seller.handle) : null;
+
+        console.log("[SERVER] listingSellerId:", listingSellerId, "listingSellerHandle:", listingSellerHandle);
+        console.log("[SERVER] providedSellerId (raw):", providedSellerId);
+
+        // Accept match if providedSellerId equals listingSellerId OR equals handle
+        const matchesId = listingSellerId && (String(providedSellerId) === String(listingSellerId));
+        const matchesHandle = listingSellerHandle && (String(providedSellerId) === String(listingSellerHandle));
+
+        if (!matchesId && !matchesHandle) {
+            console.warn("[SERVER] Seller mismatch — provided does not match listing seller");
+            return res.status(403).json({
+                error: "Only the listing's seller can end this listing",
+                details: { listingSellerId, listingSellerHandle, providedSellerId }
+            });
+        }
+
         if (listing.status !== "active") {
-            return res.status(400).json({ error: "Listing is not active" });
+            console.warn("[SERVER] Listing not active:", listing.status);
+            return res.status(400).json({ error: `Listing not active (status=${listing.status})` });
         }
 
-        // recompute to be safe
+        // recompute top bids (existing helper)
         await recomputeTopBids(listing._id);
-        await listing.reload?.() || null; // mongoose < 6 reload not available; we'll re-query
-        const updatedListing = await Listing.findById(listingId).populate("topBids.bidder");
 
+        // re-query listing to read updated topBids
+        const updatedListing = await Listing.findById(listing._id).populate("topBids.bidder", "handle _id");
+
+        // if no top bid, delete listing
         const top = (updatedListing.topBids || [])[0];
         if (!top) {
-            // no bids — mark expired
-            updatedListing.status = "expired";
-            await updatedListing.save();
-            return res.json({ ok: true, listing: updatedListing, message: "No bids — listing expired" });
+            await Listing.findByIdAndDelete(updatedListing._id);
+            await Bid.deleteMany({ listing: updatedListing._id });
+            return res.json({ ok: true, message: "No bids — listing deleted." });
         }
 
-        // there is a winner candidate
+        // mark awaiting_payment and set winner/winningAmount
         updatedListing.status = "awaiting_payment";
-        updatedListing.winner = top.bidder._id || top.bidder;     // add these fields dynamically
+        updatedListing.winner = top.bidder._id || top.bidder;
         updatedListing.winningAmount = top.amount;
         await updatedListing.save();
 
-        // // create a notification for the winner (if Notification model exists)
-        // try {
-        //     await Notification.create({
-        //         user: top.bidder._id,
-        //         type: "won_listing",
-        //         data: {
-        //             listingId: updatedListing._id,
-        //             amount: top.amount,
-        //             sellerId: sellerId,
-        //             title: updatedListing.title,
-        //         },
-        //     });
-        // } catch (nErr) {
-        //     console.warn("Failed to create notification:", nErr);
-        // }
+        // optional notification creation
+        try {
+            if (typeof Notification !== "undefined") {
+                await Notification.create({
+                    user: updatedListing.winner,
+                    type: "won_listing",
+                    data: { listingId: updatedListing._id, amount: top.amount, title: updatedListing.title }
+                });
+            }
+        } catch (nErr) {
+            console.warn("[SERVER] Notification creation error:", nErr);
+        }
 
-        // return updated listing so frontend can update UI
         const populated = await Listing.findById(updatedListing._id)
-            .populate({
-                path: "ticket",
-                populate: { path: "event", select: "title eventId startAt" },
-            })
+            .populate({ path: "ticket", populate: { path: "event", select: "title startAt" } })
             .populate("seller", "handle firstName lastName")
             .populate("topBids.bidder", "handle firstName lastName");
 
-        res.json({ ok: true, listing: populated });
+        console.log("[SERVER] End successful, listing set to awaiting_payment:", updatedListing._id);
+        return res.json({ ok: true, listing: populated });
     } catch (err) {
-        console.error("POST /api/listings/:id/end error:", err);
-        res.status(500).json({ error: "Failed to end listing" });
+        console.error("[SERVER] POST /api/listings/:id/end error:", err);
+        return res.status(500).json({ error: "Internal server error while ending listing", details: err.message });
     }
 });
 
