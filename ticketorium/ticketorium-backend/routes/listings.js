@@ -61,27 +61,22 @@ router.get("/", async (req, res) => {
  * POST /api/listings
  * Body: { ticketId, sellerId, title?, startingPrice? }
  */
+// routes/listings.js (inside router.post("/", ...))
 router.post("/", async (req, res) => {
     try {
-        const { ticketId, sellerId, title, startingPrice = 0 } = req.body || {};
+        const { ticketId, sellerId, title, startingPrice = 0, deadline } = req.body || {};
 
         if (!ticketId || !sellerId) {
-            return res.status(400).json({
-                error: "ticketId and sellerId are required",
-            });
+            return res.status(400).json({ error: "ticketId and sellerId are required" });
         }
 
         const ticket = await Ticket.findById(ticketId).populate("event");
-        if (!ticket) {
-            return res.status(404).json({ error: "Ticket not found" });
-        }
+        if (!ticket) return res.status(404).json({ error: "Ticket not found" });
 
         const seller = await User.findById(sellerId);
-        if (!seller) {
-            return res.status(404).json({ error: "Seller not found" });
-        }
+        if (!seller) return res.status(404).json({ error: "Seller not found" });
 
-        const listing = await Listing.create({
+        const listingObj = {
             ticket: ticket._id,
             seller: seller._id,
             title: title || `${ticket.event?.title || "Event"} – Seat ${ticket.seat}`,
@@ -89,14 +84,31 @@ router.post("/", async (req, res) => {
             currentPrice: startingPrice,
             status: "active",
             topBids: [],
-        });
+        };
 
-        res.status(201).json(listing);
+        if (deadline) {
+            const d = new Date(deadline);
+            if (!isNaN(d.getTime())) listingObj.expiresAt = d;
+            // otherwise ignore invalid date — you may want to validate and return 400 instead
+        }
+
+        const listing = await Listing.create(listingObj);
+
+        // populate so frontend gets nested fields (ticket.event, seller)
+        const populated = await Listing.findById(listing._id)
+            .populate({
+                path: "ticket",
+                populate: { path: "event", select: "title eventId startAt" },
+            })
+            .populate("seller", "handle firstName lastName");
+
+        res.status(201).json(populated);
     } catch (err) {
         console.error("POST /api/listings error:", err);
         res.status(500).json({ error: "Failed to create listing" });
     }
 });
+
 
 /**
  * POST /api/listings/:id/bids
@@ -106,23 +118,18 @@ router.post("/:id/bids", async (req, res) => {
     try {
         const { bidderId, amount } = req.body || {};
         if (!bidderId || amount == null) {
-            return res.status(400).json({
-                error: "bidderId and amount are required",
-            });
+            return res.status(400).json({ error: "bidderId and amount are required" });
         }
 
         const listing = await Listing.findById(req.params.id);
-        if (!listing) {
-            return res.status(404).json({ error: "Listing not found" });
-        }
+        if (!listing) return res.status(404).json({ error: "Listing not found" });
+
         if (listing.status !== "active") {
             return res.status(400).json({ error: "Listing is not active" });
         }
 
         const bidder = await User.findById(bidderId);
-        if (!bidder) {
-            return res.status(404).json({ error: "Bidder not found" });
-        }
+        if (!bidder) return res.status(404).json({ error: "Bidder not found" });
 
         const bid = await Bid.create({
             listing: listing._id,
@@ -132,15 +139,30 @@ router.post("/:id/bids", async (req, res) => {
             isActive: true,
         });
 
-        // recompute top 3
+        // recompute top 3 and update listing.topBids + currentPrice
         await recomputeTopBids(listing._id);
 
-        res.status(201).json(bid);
+        // optional: set isWinningBid flags on Bid documents:
+        // find top bid and mark it as winning; mark others not winning (small performance cost)
+        // but since you store topBids on listing, frontend can read that to show top bids.
+        // If you want DB-level isWinningBid flags, you can implement here.
+
+        // return the created bid and the updated, populated listing
+        const updatedListing = await Listing.findById(listing._id)
+            .populate({
+                path: "ticket",
+                populate: { path: "event", select: "title eventId startAt" },
+            })
+            .populate("seller", "handle firstName lastName")
+            .populate("topBids.bidder", "handle firstName lastName");
+
+        res.status(201).json({ bid, listing: updatedListing });
     } catch (err) {
         console.error("POST /api/listings/:id/bids error:", err);
         res.status(500).json({ error: "Failed to place bid" });
     }
 });
+
 
 /**
  * POST /api/listings/:id/cancel

@@ -82,6 +82,8 @@ function App() {
     const navigate = useNavigate();
     // ---------------- STATE ----------------
     const [loggedInUser, setLoggedInUser] = useState(null); // username only
+    const [loggedInMongoUser, setLoggedInMongoUser] = useState(null); // full user object from DB
+
     const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
     const [part1Data, setPart1Data] = useState({});
     const [selectedUni, setSelectedUni] = useState(null);
@@ -112,6 +114,10 @@ function App() {
         // loggedInUser
         const storedUser = localStorage.getItem("loggedInUser");
         storedUser ? setLoggedInUser(storedUser) : setLoggedInUser(null);
+
+        const storedMongoUser = localStorage.getItem("loggedInMongoUser");
+        storedMongoUser ? setLoggedInMongoUser(JSON.parse(storedMongoUser)) : setLoggedInMongoUser(null);
+        console.log("loggedInMongoUser: ", loggedInMongoUser);
 
         // dummyUsers
         const emptyDummyUsers =
@@ -357,6 +363,7 @@ function App() {
                                             checkUsernamePassword={checkUsernamePassword}
                                             checkEmailPassword={checkEmailPassword}
                                             setLoggedInUser={setLoggedInUser}
+                                            setLoggedInMongoUser ={setLoggedInMongoUser}
                                             getUsernameFromEmail={getUsernameFromEmail}
                                         />
                                     </RequireNoAuth>
@@ -389,6 +396,7 @@ function App() {
                                             <SignupLogin
                                                 option={"sign-up-part-2"}
                                                 setLoggedInUser={setLoggedInUser}
+                                                setLoggedInMongoUser ={setLoggedInMongoUser}
                                                 checkIfUsernameExists={checkIfUsernameExists}
                                                 addNewUser={addNewUser}
                                                 part1Data={part1Data}
@@ -462,7 +470,7 @@ function App() {
                                 path="/bidding"
                                 element={
                                     <Bidding
-                                        user={loggedInUser}
+                                        user={loggedInMongoUser}
                                         biddings={dummyBids.current}
                                     />
                                 }

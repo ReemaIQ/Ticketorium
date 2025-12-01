@@ -79,188 +79,201 @@ function SignupLogin(props) {
         setErrors({});
     }, [props.option])
 
-    const handleSubmit = (e, option) => {
-    e.preventDefault()
-    let errorsFound = {} // This is then passed into setErrors()
+    const handleSubmit = async (e, option) => {
+        e.preventDefault()
+        let errorsFound = {} // This is then passed into setErrors()
 
-    // depending on option, redirect to different pages
-    if (option == "sign-up") {
-        //  console.log(email);
-        // email field
-        if (!email) {
-            errorsFound["email"] = "Please enter your email"
-        }
-        else if (!validator.isEmail(email)) {
-            errorsFound["email"] = "Please enter a valid email"
-        }
-        else if (props.checkIfEmailExists(email)) {
-            errorsFound["email"] = "An account with this email already exists"
-        }
-        // phone number field
-        if (!phoneNumber) {
-            errorsFound["phone-number"] = "Please enter your phone number"
-        }
-        else if (!validator.isMobilePhone(phoneNumber)) {
-            errorsFound["phone-number"] = "Please enter a valid phone number"
-        }
-        else if (props.checkIfPhoneExists(phoneNumber)) {
-            errorsFound["phone-number"] = "An account with this phone number already exists"
-        }
-        // password field
-        if (!password) {
-            errorsFound["password"] = "Please enter your password"
-        }
-        else if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})) {
-            errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
-        }
-        // confirm password field
-        if (!confirmPassword) {
-            errorsFound["confirm-password"] = "Please confirm your password"
-        }
-        else if (password !== confirmPassword) {
-            errorsFound["confirm-password"] = "Passwords do not match"
+        // depending on option, redirect to different pages
+        if (option == "sign-up") {
+            //  console.log(email);
+            // email field
+            if (!email) {
+                errorsFound["email"] = "Please enter your email"
+            } else if (!validator.isEmail(email)) {
+                errorsFound["email"] = "Please enter a valid email"
+            } else if (props.checkIfEmailExists(email)) {
+                errorsFound["email"] = "An account with this email already exists"
+            }
+            // phone number field
+            if (!phoneNumber) {
+                errorsFound["phone-number"] = "Please enter your phone number"
+            } else if (!validator.isMobilePhone(phoneNumber)) {
+                errorsFound["phone-number"] = "Please enter a valid phone number"
+            } else if (props.checkIfPhoneExists(phoneNumber)) {
+                errorsFound["phone-number"] = "An account with this phone number already exists"
+            }
+            // password field
+            if (!password) {
+                errorsFound["password"] = "Please enter your password"
+            } else if (!validator.isStrongPassword(password, {
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1
+            })) {
+                errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
+            }
+            // confirm password field
+            if (!confirmPassword) {
+                errorsFound["confirm-password"] = "Please confirm your password"
+            } else if (password !== confirmPassword) {
+                errorsFound["confirm-password"] = "Passwords do not match"
+            }
+
+            if (Object.keys(errorsFound).length > 0) {
+                // console.log("Errors found:", errorsFound)
+                setErrors(errorsFound)
+                return
+            }
+            props.setPart1Data({
+                "email": email,
+                "phone-number": phoneNumber,
+                "password": password,
+            });
+            props.setFinishedPart1SignUp(true);
+            navigate("/sign-up-2");
+        } else if (option == "log-in") {
+            const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
+            // email or username field
+            if (!emailOrUsername) {
+                // console.log("bruh", emailOrUsername)
+                errorsFound["email-or-username"] = "Please enter your email or username"
+            }
+            // first check format
+            else if (isUsername && !props.checkIfUsernameExists(emailOrUsername)) {
+                errorsFound["email-or-username"] = "There is no user with this username"
+            } else if (!isUsername && !validator.isEmail(emailOrUsername)) {
+                errorsFound["email-or-username"] = "Please enter a valid email address"
+            } else if (!isUsername && !props.checkIfEmailExists(emailOrUsername)) {
+                errorsFound["email-or-username"] = "There is no user with this email"
+            }
+
+            // password field
+            if (!password) {
+                errorsFound["password"] = "Please enter your password"
+            }
+            // check if password is strong enough
+            else if (!validator.isStrongPassword(password, {
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1
+            })) {
+                errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
+            } else if (isUsername && !props.checkUsernamePassword(emailOrUsername, password)) {
+                errorsFound["password"] = "Incorrect password for this username"
+            } else if (!isUsername && !props.checkEmailPassword(emailOrUsername, password)) {
+                errorsFound["password"] = "Incorrect password for this email"
+            }
+
+
+            if (Object.keys(errorsFound).length > 0) {
+                // console.log("Errors found:", errorsFound)
+                setErrors(errorsFound)
+                return
+            }
+
+            // no errors, log in user, direct to home
+            if (isUsername)
+                props.setLoggedInUser(() => emailOrUsername);
+            else
+                props.setLoggedInUser(() => props.getUsernameFromEmail(emailOrUsername));
+            // navigate("/home");
+            localStorage.setItem("loggedInUser", emailOrUsername);
+
+
+            // Call backend API to fetch the user object
+            const loginResponse = await fetch('/api/users/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({identifier: emailOrUsername, password}),
+            });
+            const user = await loginResponse.json();
+
+            if (!user || user.error) {
+                setErrors({"email-or-username": user.error || "Login failed"});
+                return;
+            }
+
+            // Save the full MongoDB user object
+            localStorage.setItem("loggedInMongoUser",JSON.stringify(user));
+            props.setLoggedInMongoUser(user);
+
+            navigate("/home");
+
+        } else if (option == "sign-up-part-2") {
+            // console.log(email)
+            // username field
+            if (!username) {
+                errorsFound["username"] = "Please enter your username"
+            } else if (/[^a-zA-Z0-9._-]/g.test(username)) {
+                errorsFound["username"] = "Username can only contain letters, numbers, dots, underscores, and hyphens"
+            } else if (username.length < 3 || username.length > 12) {
+                errorsFound["username"] = "Username must be between 3 and 12 characters long"
+            } else if (props.checkIfUsernameExists(username)) {
+                errorsFound["username"] = "This username is already taken"
+            }
+
+            // first name field
+            if (!firstName) {
+                errorsFound["first-name"] = "Please enter your first name"
+            } else if (validator.isAlpha(firstName) == false) {
+                errorsFound["first-name"] = "First name can only contain letters"
+            }
+            // last name field
+            if (!lastName) {
+                errorsFound["last-name"] = "Please enter your last name"
+            } else if (validator.isAlpha(lastName) == false) {
+                errorsFound["last-name"] = "Last name can only contain letters"
+            }
+            // gender field
+            if (!gender) {
+                errorsFound["gender"] = "Please select your gender"
+            }
+            // date of birth field
+            if (!dateOfBirth) {
+                errorsFound["date-of-birth"] = "Please enter your date of birth"
+            }
+
+            if (Object.keys(errorsFound).length > 0) {
+                // console.log("Errors found:", errorsFound)
+                setErrors(errorsFound)
+                return
+            }
+
+            // no errors, create account, direct to home
+            props.addNewUser({
+                "first-name": firstName,
+                "last-name": lastName,
+                "email": props.part1Data["email"],
+                "phone-number": props.part1Data["phone-number"],
+                "password": props.part1Data["password"],
+                "username": username,
+                "type": "visitor",
+                "gender": gender,
+                "date-of-birth": dateOfBirth,
+                "university": "kfupm" // come back here
+            })
+            props.setLoggedInUser(() => username);
+            localStorage.setItem("loggedInUser", username);
+            navigate("/home");
         }
 
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-        props.setPart1Data({
-            "email": email,
-            "phone-number": phoneNumber,
-            "password": password,
-        });
-        props.setFinishedPart1SignUp(true);
-        navigate("/sign-up-2");
+
+        // empty input fields
+        setEmailOrUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPhoneNumber("");
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setGender("");
+        setDateOfBirth("");
     }
-        
-    else if (option == "log-in") {
-        const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
-        // email or username field
-        if (!emailOrUsername) {
-            // console.log("bruh", emailOrUsername)
-            errorsFound["email-or-username"] = "Please enter your email or username"
-        }
-        // first check format
-        else if (isUsername && !props.checkIfUsernameExists(emailOrUsername)) {
-            errorsFound["email-or-username"] = "There is no user with this username"
-        }
-        else if (!isUsername && !validator.isEmail(emailOrUsername)) {
-            errorsFound["email-or-username"] = "Please enter a valid email address"
-        }
-        else if (!isUsername &&!props.checkIfEmailExists(emailOrUsername)) {
-            errorsFound["email-or-username"] = "There is no user with this email"
-        }
-
-        // password field
-        if (!password) {
-            errorsFound["password"] = "Please enter your password"
-        }
-        // check if password is strong enough
-        else if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})) {
-            errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
-        }
-        else if (isUsername && !props.checkUsernamePassword(emailOrUsername, password)) {
-            errorsFound["password"] = "Incorrect password for this username"
-        }
-        else if (!isUsername && !props.checkEmailPassword(emailOrUsername, password)) {
-            errorsFound["password"] = "Incorrect password for this email"
-        }
-
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-
-        // no errors, log in user, direct to home
-        if (isUsername)
-            props.setLoggedInUser(() =>emailOrUsername);
-        else
-            props.setLoggedInUser(() => props.getUsernameFromEmail(emailOrUsername));
-        navigate("/home");
-        localStorage.setItem("loggedInUser", emailOrUsername);
-        
-    }
-    
-    else if (option == "sign-up-part-2") {
-        // console.log(email)
-        // username field
-        if (!username) {
-            errorsFound["username"] = "Please enter your username"
-        }
-        else if (/[^a-zA-Z0-9._-]/g.test(username)) {
-            errorsFound["username"] = "Username can only contain letters, numbers, dots, underscores, and hyphens"
-        }
-        else if (username.length < 3 || username.length > 12) {
-            errorsFound["username"] = "Username must be between 3 and 12 characters long"
-        }
-        else if (props.checkIfUsernameExists(username)) {
-            errorsFound["username"] = "This username is already taken"
-        }
-
-        // first name field
-        if (!firstName) {
-            errorsFound["first-name"] = "Please enter your first name"
-        }
-        else if (validator.isAlpha(firstName) == false) {
-            errorsFound["first-name"] = "First name can only contain letters"
-        }
-        // last name field
-        if (!lastName) {
-            errorsFound["last-name"] = "Please enter your last name"
-        }
-        else if (validator.isAlpha(lastName) == false) {
-            errorsFound["last-name"] = "Last name can only contain letters"
-        }
-        // gender field
-        if (!gender) {
-            errorsFound["gender"] = "Please select your gender"
-        }
-        // date of birth field
-        if (!dateOfBirth) {
-            errorsFound["date-of-birth"] = "Please enter your date of birth"
-        } 
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-
-        // no errors, create account, direct to home
-        props.addNewUser({
-            "first-name": firstName,
-            "last-name": lastName,
-            "email": props.part1Data["email"],
-            "phone-number": props.part1Data["phone-number"],
-            "password": props.part1Data["password"],
-            "username": username,
-            "type": "visitor",
-            "gender": gender,
-            "date-of-birth": dateOfBirth,
-            "university": "kfupm" // come back here
-        })
-        props.setLoggedInUser(() => username);
-        localStorage.setItem("loggedInUser", username);
-        navigate("/home");
-    }
-
-
-    // empty input fields
-    setEmailOrUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setPhoneNumber("");
-    setFirstName("");
-    setLastName("");
-    setUsername("");
-    setGender("");
-    setDateOfBirth("");
-}
 
     return (
     <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center mb-[20vh]'>
