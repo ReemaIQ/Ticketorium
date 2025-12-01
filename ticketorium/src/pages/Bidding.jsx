@@ -4,6 +4,20 @@ import BiddingList from "../components/bidding-list/BiddingList.jsx";
 import AddListingModal from "../components/modals/AddListingModal.jsx";
 import { Plus } from "lucide-react";
 
+function ticketsToBiddings(tickets) {
+    const map = {};
+    tickets.forEach(t => {
+        map[t._id] = {
+            id: t._id,
+            title: t.event?.title || "Graduation Event",
+            description: `Seat: ${t.seat}`,
+            img: "/src/assets/images/event/graduation.png",
+            date: t.event?.startAt ? new Date(t.event.startAt).toLocaleDateString() : "",
+            raw: t,
+        };
+    });
+    return map;
+}
 function listingToBidding(l, currentUserId = null) {
     // normalize seller id
     const ownerId =
@@ -32,8 +46,6 @@ function listingToBidding(l, currentUserId = null) {
         raw: l,
     };
 }
-
-
 function transformListingsToBiddings(listings, currentUserId) {
     const map = {};
     listings.forEach(l => map[l._id || l.id] = listingToBidding(l, currentUserId));
@@ -43,8 +55,10 @@ function transformListingsToBiddings(listings, currentUserId) {
 export default function Bidding({ user }) {
     const [open, setOpen] = useState(false);
     const [biddings, setBiddings] = useState({});
+    const [unlistedTickets, setUnlistedTickets] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    console.log("[debug] loadUnlistedTickets userId:", user);
     const loadListings = useCallback(async () => {
         try {
             setLoading(true);
@@ -58,13 +72,27 @@ export default function Bidding({ user }) {
             setLoading(false);
         }
     }, []);
+    const loadUnlistedTickets = useCallback(async () => {
+        try {
+            const res = await fetch(`/api/tickets/unlisted?userId=${user.handle}`);
+            if (!res.ok) throw new Error("Failed to fetch unlisted tickets");
+            const tickets = await res.json();
+            const norm = (tickets || []).map(t => ({ ...t, _id: String(t._id) }));
+            setUnlistedTickets(norm);
+            console.log("Unlisted: ", tickets);
+        } catch (err) {
+            console.error("loadUnlistedTickets error:", err);
+            setUnlistedTickets([]);
+        }
+    }, [user]);
 
     useEffect(() => {
+        loadUnlistedTickets();
         loadListings();
         // optional: polling
         // const interval = setInterval(loadListings, 10000);
         // return () => clearInterval(interval);
-    }, [loadListings]);
+    }, [loadListings, loadUnlistedTickets]);
 
     const handleCreate = async ({ ticketId, deadline, startingBid }) => {
         try {
@@ -78,18 +106,23 @@ export default function Bidding({ user }) {
                     deadline,
                 }),
             });
-            const body = await res.json();
-            if (!res.ok) throw new Error(body.error || "Create failed");
+            const createdListing = await res.json();
+            if (!res.ok) throw new Error(createdListing.error || "Create failed");
 
-            // server returns populated listing
-            const createdListing = body;
-            setBiddings(prev => ({ ...prev, [createdListing._id]: listingToBidding(createdListing) }));
+            setBiddings(prev => ({
+                ...prev,
+                [createdListing._id]: listingToBidding(createdListing),
+            }));
+
+            // Remove ticket from unlisted tickets
+            setUnlistedTickets(prev => prev.filter(t => t._id !== ticketId));
             setOpen(false);
         } catch (err) {
-            console.error("Create listing error:", err);
+            console.error(err);
             alert("Could not create listing: " + err.message);
         }
     };
+
 
     return (
         <>
@@ -104,12 +137,12 @@ export default function Bidding({ user }) {
                         <AddListingModal
                             open={open}
                             onClose={() => setOpen(false)}
-                            biddings={biddings}
+                            biddings={ticketsToBiddings(unlistedTickets)}
                             onCreate={handleCreate}
                         />
                     </div>
 
-                    <BiddingList user={user} biddings={biddings} type="listing" />
+                    <BiddingList user={user} biddings={biddings} type="listing" listingToBidding={listingToBidding} setBiddings={setBiddings} />
                 </div>
 
                 <div id="current-bids-section" className="flex flex-col max-w-5xl align-middle w-full">
@@ -124,6 +157,8 @@ export default function Bidding({ user }) {
                         onListingUpdated={(listing) => {
                             setBiddings(prev => ({ ...prev, [(listing._id || listing.id)]: listingToBidding(listing) }));
                         }}
+                        listingToBidding={listingToBidding}
+                        setBiddings={setBiddings}
                     />
 
 

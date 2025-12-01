@@ -194,4 +194,145 @@ router.post("/:id/cancel", async (req, res) => {
     }
 });
 
+/**
+ * POST /api/listings/:id/end
+ * Body: { sellerId }
+ *
+ * Seller ends the auction early — if there's a top bidder, mark listing awaiting_payment and notify them.
+ */
+router.post("/:id/end", async (req, res) => {
+    try {
+        const listingId = req.params.id;
+        const { sellerId } = req.body || {};
+        if (!sellerId) return res.status(400).json({ error: "sellerId is required" });
+
+        // load listing populated with topBids
+        const listing = await Listing.findById(listingId).populate("topBids.bidder");
+        if (!listing) return res.status(404).json({ error: "Listing not found" });
+
+        // only seller can end
+        if (String(listing.seller) !== String(sellerId)) {
+            return res.status(403).json({ error: "Only seller can end this listing" });
+        }
+
+        // make sure it's active
+        if (listing.status !== "active") {
+            return res.status(400).json({ error: "Listing is not active" });
+        }
+
+        // recompute to be safe
+        await recomputeTopBids(listing._id);
+        await listing.reload?.() || null; // mongoose < 6 reload not available; we'll re-query
+        const updatedListing = await Listing.findById(listingId).populate("topBids.bidder");
+
+        const top = (updatedListing.topBids || [])[0];
+        if (!top) {
+            // no bids — mark expired
+            updatedListing.status = "expired";
+            await updatedListing.save();
+            return res.json({ ok: true, listing: updatedListing, message: "No bids — listing expired" });
+        }
+
+        // there is a winner candidate
+        updatedListing.status = "awaiting_payment";
+        updatedListing.winner = top.bidder._id || top.bidder;     // add these fields dynamically
+        updatedListing.winningAmount = top.amount;
+        await updatedListing.save();
+
+        // // create a notification for the winner (if Notification model exists)
+        // try {
+        //     await Notification.create({
+        //         user: top.bidder._id,
+        //         type: "won_listing",
+        //         data: {
+        //             listingId: updatedListing._id,
+        //             amount: top.amount,
+        //             sellerId: sellerId,
+        //             title: updatedListing.title,
+        //         },
+        //     });
+        // } catch (nErr) {
+        //     console.warn("Failed to create notification:", nErr);
+        // }
+
+        // return updated listing so frontend can update UI
+        const populated = await Listing.findById(updatedListing._id)
+            .populate({
+                path: "ticket",
+                populate: { path: "event", select: "title eventId startAt" },
+            })
+            .populate("seller", "handle firstName lastName")
+            .populate("topBids.bidder", "handle firstName lastName");
+
+        res.json({ ok: true, listing: populated });
+    } catch (err) {
+        console.error("POST /api/listings/:id/end error:", err);
+        res.status(500).json({ error: "Failed to end listing" });
+    }
+});
+
+/**
+ * POST /api/listings/:id/confirm-payment
+ * Body: { payerId }
+ *
+ * Called after successful payment by the winner. Transfers ticket ownership and cleans up listing/bids.
+ */
+router.post("/:id/confirm-payment", async (req, res) => {
+    try {
+        const listingId = req.params.id;
+        const { payerId } = req.body || {};
+        if (!payerId) return res.status(400).json({ error: "payerId is required" });
+
+        const listing = await Listing.findById(listingId).populate("ticket seller topBids.bidder");
+        if (!listing) return res.status(404).json({ error: "Listing not found" });
+
+        if (listing.status !== "awaiting_payment") {
+            return res.status(400).json({ error: "Listing is not awaiting payment" });
+        }
+
+        // Verify payer is the winner
+        const winnerId = listing.winner ? String(listing.winner) : String(listing.topBids?.[0]?.bidder?._id);
+        if (String(payerId) !== winnerId) {
+            return res.status(403).json({ error: "Payer is not the recorded winner" });
+        }
+
+        // Transfer ticket ownership
+        const ticket = await Ticket.findById(listing.ticket._id || listing.ticket);
+        if (!ticket) return res.status(404).json({ error: "Ticket not found" });
+
+        ticket.user = payerId;
+        await ticket.save();
+
+        // Delete related bids
+        await Bid.deleteMany({ listing: listing._id });
+
+        // Optionally: create a record of sale/payment (not implemented here)
+
+        // Remove the listing
+        await Listing.findByIdAndDelete(listing._id);
+
+        // // notify both parties (seller and buyer) if you use Notifications
+        // try {
+        //     await Notification.create({
+        //         user: payerId,
+        //         type: "listing_purchase_confirmed",
+        //         data: { listingId, ticketId: ticket._id, amount: listing.winningAmount },
+        //     });
+        //     await Notification.create({
+        //         user: listing.seller,
+        //         type: "listing_sold",
+        //         data: { listingId, ticketId: ticket._id, amount: listing.winningAmount, buyerId: payerId },
+        //     });
+        // } catch (nErr) {
+        //     console.warn("Notification failure:", nErr);
+        // }
+
+        res.json({ ok: true, ticket: ticket.toObject() });
+    } catch (err) {
+        console.error("POST /api/listings/:id/confirm-payment error:", err);
+        res.status(500).json({ error: "Failed to confirm payment and transfer ticket" });
+    }
+});
+
+
 export default router;

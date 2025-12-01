@@ -66,4 +66,12 @@ export const ticketsSeed = [
         price: 0,
         status: "active",
     },
+    {
+        key: "t9",
+        eventKey: "ev7",          // Graduation
+        userHandle: "student",
+        seat: "Seat A-02",
+        price: 0,
+        status: "active",
+    },
 ];
