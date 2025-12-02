@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import { Plus } from "lucide-react";
 
 import DisputeList from "../components/dispute-list/DisputeList.jsx";
@@ -6,7 +6,7 @@ import DisputeChat from "../components/dispute/DisputeChat.jsx";
 //1
 /* ---------------- New Dispute Form ---------------- */
 
-function NewDisputeForm({ onSubmit, onCancel, username }) {
+function NewDisputeForm({ onSubmit, onCancel }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
 
@@ -16,7 +16,7 @@ function NewDisputeForm({ onSubmit, onCancel, username }) {
             alert("Please fill in both fields.");
             return;
         }
-        onSubmit({ title, body }, username);
+        onSubmit({ title, body }); // parent will add createdById
         setTitle("");
         setBody("");
     }
@@ -66,121 +66,105 @@ function NewDisputeForm({ onSubmit, onCancel, username }) {
 }
 
 export default function Disputes(props) {
-    const [disputes, setDisputes] = useState(props.disputes || {});
+    const [disputesObj, setDisputesObj] = useState({}); // object keyed by dispute._id
     const [selectedId, setSelectedId] = useState(null);
     const [mode, setMode] = useState("empty"); // 'empty' | 'new' | 'chat'
-    //mode = props.mode || "empty";
+    const currentUserId = props.user._id;
 
-    // Turn object into array for lists (and make sure each item has an id)
-    const disputesArray = useMemo(
-        () => {
-            if (!disputes) return [];
-
-            const allDisputesArray = Object.entries(disputes).map(([id, d]) => ({
-                id,
-                ...d,
-            }));
-
-            // Filtering Logic: Show disputes only if the current user is a participant.
-            return allDisputesArray.filter(dispute => {
-                // A common check: See if the current user has sent or received *any* message.
-                // **BETTER**: Filter based on a dedicated `participants` array on the dispute object.
-
-                // Assuming you add a 'participants' array to your dispute objects:
-                if (dispute.participants && dispute.participants.includes(props.user)) {
-                    return true;
-                }
-
-                // Fallback check (less reliable, but works if participants aren't stored):
-                const messages = Array.isArray(dispute.messages) ? dispute.messages : [];
-                const isParticipant = messages.some(msg => msg.from === props.user);
-
-                return isParticipant;
-            });
-        },
-        [disputes, props.user]
-    );
-
-    // Get the currently selected dispute from the ARRAY, which always has id
-    const selectedDispute = useMemo(
-        () => disputesArray.find((d) => d.id === selectedId) || null,
-        [disputesArray, selectedId]
-    );
-
-
-    // When selecting from list → go to chat mode
-    function handleSelectDispute(id) {
-        setSelectedId(id);
-        setMode("chat");
-    }
-
-    function handleCreateDispute({ title, body }, username) {
-        const nowIso = new Date().toISOString();
-        const newId = `d_${Date.now()}`;
-
-        const newDispute = {
-            id: newId,
-            title,
-            subtitle: body.slice(0, 80) + (body.length > 80 ? "…" : ""),
-            createdAt: nowIso,
-            lastActivityAt: nowIso,
-            status: "open",
-            participants: [username, "so-cool"],
-            messages: [
-                {
-                    id: `m_${Date.now()}`,
-                    from: username,
-                    type: "text",
-                    text: body,
-                    createdAt: nowIso,
-                },
-            ],
-        };
-
-        // Add to object-of-objects
-        setDisputes((prev) => ({
-            ...prev,
-            [newId]: newDispute,
-        }));
-
-        setSelectedId(newId);
-        setMode("chat");
-    }
-
-    function handleSendMessage(disputeId, text, username, type = "text", url = null) {
-        const nowIso = new Date().toISOString();
-
-        setDisputes((prev) => {
-            const existing = prev[disputeId];
-            if (!existing) return prev;
-
-            let updatedParticipants = existing.participants ? [...existing.participants] : [];
-
-            if (!updatedParticipants.includes(username)) {
-                updatedParticipants.push(username);
+    // load disputes list on mount (optionally filter by participant/userId)
+    useEffect(() => {
+        async function load() {
+            try {
+                const q = currentUserId ? `?userId=${encodeURIComponent(currentUserId)}` : "";
+                const res = await fetch(`/api/disputes${q}`);
+                if (!res.ok) throw new Error("Failed to fetch disputes");
+                const data = await res.json(); // array of disputes (populated)
+                // convert to object keyed by _id so rest of your UI works
+                const obj = {};
+                data.forEach((d) => {
+                    obj[d._id] = { id: d._id, ...d };
+                });
+                console.log("Parent passes user prop to DisputeChat:", props.user);
+                setDisputesObj(obj);
+            } catch (err) {
+                console.error("Load disputes error", err);
             }
+        }
+        load();
+    }, [currentUserId]);
 
-            return {
-                ...prev,
-                [disputeId]: {
-                    ...existing,
-                    lastActivityAt: nowIso,
-                    participants: updatedParticipants,
-                    messages: [
-                        ...(existing.messages || []),
-                        {
-                            id: `m_${Date.now()}`,
-                            from: username,
-                            type: type,
-                            text: text,
-                            url: url,
-                            createdAt: nowIso,
-                        },
-                    ],
-                },
-            };
-        });
+    // fetch a single dispute (fresh messages / participants) when selecting
+    async function handleSelectDispute(id) {
+        try {
+            const res = await fetch(`/api/disputes/${id}`);
+            if (!res.ok) throw new Error("Failed to load dispute");
+            const d = await res.json(); // populated dispute
+            setDisputesObj((prev) => ({ ...prev, [d._id]: { id: d._id, ...d } }));
+            setSelectedId(d._id);
+            setMode("chat");
+        } catch (err) {
+            console.error("Select dispute error", err);
+        }
     }
+
+// create dispute -> POST /api/disputes
+    async function handleCreateDispute({ title, body }) {
+        try {
+            const payload = {
+                title,
+                subtitle: body.slice(0, 200),
+                createdById: currentUserId,
+                participantIds: [], // optionally pass other participant ids
+                type: "other",
+            };
+            const res = await fetch("/api/disputes", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error || "Failed to create dispute");
+            }
+            const d = await res.json(); // created dispute (has _id)
+            setDisputesObj((prev) => ({ ...prev, [d._id]: { id: d._id, ...d } }));
+            setSelectedId(d._id);
+            setMode("chat");
+        } catch (err) {
+            console.error("Create dispute error", err);
+            alert("Could not create dispute: " + err.message);
+        }
+    }
+
+    // handleSendMessage now POSTS to backend and updates local state with response
+    async function handleSendMessage(disputeId, text, fromId, type = "text", url = null, caption = null) {
+        try {
+            const payload = { fromId, type };
+            if (type === "text") payload.text = text;
+            if (url) {
+                payload.url = url;
+                if (caption) payload.caption = caption;
+            }
+            const res = await fetch(`/api/disputes/${disputeId}/messages`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (!res.ok) throw new Error("Failed to send message");
+            const updated = await res.json(); // full dispute returned
+            setDisputesObj((prev) => ({ ...prev, [updated._id]: { id: updated._id, ...updated } }));
+        } catch (err) {
+            console.error("Send message error", err);
+            alert("Message failed to send");
+        }
+    }
+
+    // convert object-of-objects to array for list component
+    const disputesArray = useMemo(() => {
+        return Object.values(disputesObj).sort((a, b) => new Date(b.lastActivityAt) - new Date(a.lastActivityAt));
+    }, [disputesObj]);
+
+    const selectedDispute = disputesObj[selectedId] || null;
 
     return (
         <div className="flex flex-col h-screen bg-white text-[#1A1A1A]">
@@ -189,7 +173,7 @@ export default function Disputes(props) {
                     My Disputes
                 </h1>
 
-                {(props.users[props.user]['type'] !== "admin" && props.users[props.user]['type'] !== "system-admin") && (
+                {(props.user.type !== "admin" && props.user.type !== "system-admin") && (
                     <div className="flex w-full justify-end">
                         <button
                             type="button"
@@ -243,7 +227,7 @@ export default function Disputes(props) {
                         <DisputeChat
                             dispute={selectedDispute}
                             onSendMessage={handleSendMessage}
-                            username={props.user}
+                            user={props.user}
                         />
                     )}
                 </div>

@@ -1,7 +1,5 @@
 import express from "express";
 import { User } from "../models/User.js";
-import bcrypt from 'bcryptjs';
-
 
 const router = express.Router();
 
@@ -62,28 +60,6 @@ router.post('/login', async (req, res) => {
         if (user.passwordHash !== password) return res.status(400).json({ error: 'Incorrect password' });
 
         res.json(user.toObject());
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// SIGNUP
-router.post('/signup', async (req, res) => {
-    const { email, username, password, firstName, lastName, ...rest } = req.body;
-    try {
-        const exists = await User.findOne({ $or: [{ email }, { username }] });
-        if (exists) return res.status(400).json({ error: 'Email or username already exists' });
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({
-            email,
-            handle,
-            password: hashedPassword,
-            firstName,
-            lastName,
-            ...rest
-        });
-        res.json(newUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
