@@ -72,6 +72,7 @@ export default function Bidding({ user }) {
             setLoading(false);
         }
     }, []);
+
     const loadUnlistedTickets = useCallback(async () => {
         try {
             const res = await fetch(`/api/tickets/unlisted?userId=${user.handle}`);

@@ -35,10 +35,8 @@ import {
     initialDummyUsers,
     initialDummyUniversities,
     initialDummyNotifications,
-    initialDummyDisputes,
     initialDummyEvents,
     initialDummyEventsJoined,
-    initialDummyBids,
 } from "../data/DummyData.js";
 
 import {
@@ -92,9 +90,7 @@ function App() {
     const dummyUsers = useRef({});
     const dummyUniversities = useRef({});
     const dummyEvents = useRef({});
-    const dummyBids = useRef({});
     const dummyNotifications = useRef({});
-    const dummyDisputes = useRef({});
     const dummyEventsJoined = useRef({});
 
     const [successfulPayment, setSuccessfulPayment] = useState(false);
@@ -157,17 +153,6 @@ function App() {
             dummyEvents.current = initialDummyEvents;
         }
 
-        // dummyBids
-        const emptyDummyBids =
-            localStorage.getItem("dummyBids") === "null" ||
-            !localStorage.getItem("dummyBids");
-        if (!emptyDummyBids) {
-            dummyBids.current = JSON.parse(localStorage.getItem("dummyBids"));
-        } else {
-            localStorage.setItem("dummyBids", JSON.stringify(initialDummyBids));
-            dummyBids.current = initialDummyBids;
-        }
-
         // dummyNotifications
         const emptyDummyNotifications =
             localStorage.getItem("dummyNotifications") === "null" ||
@@ -200,21 +185,6 @@ function App() {
             dummyEventsJoined.current = initialDummyEventsJoined;
         }
 
-        // dummyDisputes
-        const emptyDummyDisputes =
-            localStorage.getItem("dummyDisputes") === "null" ||
-            !localStorage.getItem("dummyDisputes");
-        if (!emptyDummyDisputes) {
-            dummyDisputes.current = JSON.parse(
-                localStorage.getItem("dummyDisputes")
-            );
-        } else {
-            localStorage.setItem(
-                "dummyDisputes",
-                JSON.stringify(initialDummyDisputes)
-            );
-            dummyDisputes.current = initialDummyDisputes;
-        }
 
         setSelectedUni(null);
         setIsLoading(false);
@@ -471,7 +441,6 @@ function App() {
                                 element={
                                     <Bidding
                                         user={loggedInMongoUser}
-                                        biddings={dummyBids.current}
                                     />
                                 }
                             />
@@ -608,9 +577,7 @@ function App() {
                                 element={
                                     <RequireAuth loggedInUser={loggedInUser}>
                                         <Disputes
-                                            disputes={dummyDisputes.current}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
+                                            user={loggedInMongoUser}
                                         />
                                     </RequireAuth>
                                 }
