@@ -2,7 +2,10 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import Stripe from "stripe";
 dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 import { connectDB } from "./database.js";
 
@@ -22,13 +25,44 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middlewares
-app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
+
+app.options("*", cors()); // <= this makes OPTIONS (preflight) succeed
+
 app.use(express.json());
 
 // Health check (before DB is fine)
 app.get("/", (_req, res) => {
     res.send("Ticketorium backend is running");
 });
+
+app.post('/checkout', async (req, res) => {
+    console.log("HERE")
+    const session = await stripe.checkout.sessions.create({
+        line_items: [
+            {
+                price_data: {
+                    currency: "sar",
+                    product_data: {
+                        name: "Best Event Ever",
+                        description: "Don't miss it"
+                    },
+                    unit_amount: 50 * 100
+                },
+                quantity: 1
+            }
+        ],
+        mode: 'payment',
+        success_url: process.env.BASE_URL + "/complete",
+        cancel_url: process.env.BASE_URL + "/cancel"
+    })
+    console.log(session)
+    res.json({url: session.url})
+})
 
 // Start server inside async function
 async function start() {

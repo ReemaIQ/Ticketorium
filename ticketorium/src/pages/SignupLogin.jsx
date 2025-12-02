@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 library.add(fas, far, fab)
 
@@ -78,6 +78,20 @@ function SignupLogin(props) {
         setOption(props.option);
         setErrors({});
     }, [props.option])
+
+    useEffect(() => {
+        // empty input fields
+        setEmailOrUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPhoneNumber("");
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setGender("");
+        setDateOfBirth("");
+    }, [])
 
     const handleSubmit = async (e, option) => {
     e.preventDefault()
@@ -192,6 +206,7 @@ function SignupLogin(props) {
             } else {
                 // store token in localstorage
                 localStorage.setItem("token", token["token"]);
+                props.setToken(token["token"]);
             }
         }
 
@@ -202,14 +217,7 @@ function SignupLogin(props) {
             return
         }
 
-        // no errors, log in user, direct to home
-        if (isUsername)
-            props.setLoggedInUser(() =>emailOrUsername);
-        else
-            props.setLoggedInUser(() => props.getUsernameFromEmail(emailOrUsername));
         navigate("/home");
-        localStorage.setItem("loggedInUser", emailOrUsername);
-        
     }
     
     else if (option == "sign-up-part-2") {
@@ -293,24 +301,9 @@ function SignupLogin(props) {
         }
         else {
             localStorage.setItem("token", token["token"]);
+            props.setToken(token["token"]);
             navigate("/home");
         }
-
-        // props.addNewUser({
-        //     "first-name": firstName,
-        //     "last-name": lastName,
-        //     "email": props.part1Data["email"],
-        //     "phone-number": props.part1Data["phone-number"],
-        //     "password": props.part1Data["password"],
-        //     "username": username,
-        //     "type": "visitor",
-        //     "gender": gender,
-        //     "date-of-birth": dateOfBirth,
-        //     "university": "kfupm" // come back here
-        // })
-        // props.setLoggedInUser(() => username);
-        // localStorage.setItem("loggedInUser", username);
-        // navigate("/home");
     }
 
 

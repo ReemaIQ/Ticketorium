@@ -19,7 +19,7 @@ function AllEvents(props) {
     const [filteredEvents, setFilteredEvents] = useState([]); // array of ids only
     const originalState = useRef({}); // full event objects (with state)
 
-    const userType = props.user ? props.users[props.user]?.type : null;
+    const userType = props.role
 
     const getEventsTitle = (type) => {
         const t = type?.toLowerCase();
@@ -37,7 +37,7 @@ function AllEvents(props) {
                 <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
                     Events at{" "}
                     <span className="text-[var(--primary-color)] font-[Gilroy-Medium]">
-                        {props.uni}
+                        {props.uni["code"]}
                     </span>
                 </span>
             );
@@ -70,7 +70,7 @@ function AllEvents(props) {
             // FIX 2: Pass loggedInUser (props.user) so we can merge 'joined'/'invited' states
             {
                 "list-type": "all-events",
-                university: props.uni,
+                university: props.uni["code"],
                 loggedInUser: props.user
             },
             props.user // Pass user ID as the last arg if your app wrapper expects it here
@@ -92,7 +92,7 @@ function AllEvents(props) {
             searchValue,
             {
                 "list-type": "all-events",
-                university: props.uni,
+                university: props.uni["code"],
             }
         );
     };

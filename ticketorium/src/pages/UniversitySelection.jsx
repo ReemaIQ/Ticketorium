@@ -6,22 +6,7 @@ function UniversitySelection(props) {
     const navigate = useNavigate();
 
     const handleSelectUniversity = (university) => {
-        // props.users[props.user].university = university;
-        // localStorage.setItem("users", JSON.stringify(props.users));
         props.assignUni(university);
-        props.setSelectedUni(university);
-        const rootStyle = document.querySelector(':root').style;
-        // console.log(rootStyle)
-        rootStyle.setProperty('--secondary-color', props.universities[university]["theme-colors"]["secondary-color"]);
-        rootStyle.setProperty('--primary-color', props.universities[university]["theme-colors"]["primary-color"]);
-        rootStyle.setProperty('--accent-color', props.universities[university]["theme-colors"]["accent-color"]);
-        rootStyle.setProperty('--secondary-accent-color', props.universities[university]["theme-colors"]["secondary-accent-color"]);
-        rootStyle.setProperty('--footer-color', props.universities[university]["theme-colors"]["footer-color"]);
-        rootStyle.setProperty('--warning-color', props.universities[university]["theme-colors"]["warning-color"]);
-        rootStyle.setProperty('--success-color', props.universities[university]["theme-colors"]["success-color"]);
-        rootStyle.setProperty('--filter-buttons', props.universities[university]["theme-colors"]["filter-buttons"]);
-        rootStyle.setProperty('--dispute-chat', props.universities[university]["theme-colors"]["dispute-chat"]);
-
         navigate("/home");
     }
 
@@ -39,7 +24,7 @@ function UniversitySelection(props) {
                 <div className="m-0 p-0"></div> {/* spacer */}
                 {filteredUnis.map(university => {
                     return (
-                        <button onClick={() => {handleSelectUniversity(university)}} className="p-4 border-gray-500 border rounded-[3px] cursor-pointer text-center font-[Gilroy-SemiBold] text-[var(--secondary-color)] ring-[var(--secondary-color)] hover:ring-1 transition-all duration-200 w-[90%] focus:border-[var(--secondary-accent-color)]">
+                        <button onClick={() => {console.log("basket", props.universities[university]); handleSelectUniversity(props.universities[university])}} className="p-4 border-gray-500 border rounded-[3px] cursor-pointer text-center font-[Gilroy-SemiBold] text-[var(--secondary-color)] ring-[var(--secondary-color)] hover:ring-1 transition-all duration-200 w-[90%] focus:border-[var(--secondary-accent-color)]">
                             {props.universities[university]["name"]}
                         </button>
                     );

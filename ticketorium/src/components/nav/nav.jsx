@@ -5,7 +5,6 @@ import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
 
 import NotificationModal from "../modals/NotificationModal.jsx";
-//import LogOutModal???? from;
 
 const navItems = {
     "": [],
@@ -55,11 +54,7 @@ function InitialAvatar({ name, setOpen, open }) {
     );
 }
 
-export default function Nav({type, setLoggedInUser, notifications, users, user}) {
-
-    const currentUser = user? users?.[user] : "";
-    const firstName = user? users[user]["first-name"]: "";
-    const hasUniversity = currentUser?.university;
+export default function Nav({type, setToken, notifications, user, firstName, hasUniversity}) {
 
     const [logoutOpen, setLogoutOpen] = useState(false); // avatar log out drop down
     const [notificationOpen, setNotificationOpen] = useState(false); //notifications modal
@@ -87,8 +82,8 @@ export default function Nav({type, setLoggedInUser, notifications, users, user})
 
     function handleLogout() {
         navigate("/log-in");
-        localStorage.removeItem("loggedInUser");
-        setLoggedInUser(null);
+        localStorage.removeItem("token");
+        setToken(null);
         setLogoutOpen(false);
     }
 
@@ -159,7 +154,7 @@ export default function Nav({type, setLoggedInUser, notifications, users, user})
 
 
                             {/* Avatar + Logout dropdown */}
-                            <div className="relative">
+                            <div className="relative"> 
                                 <InitialAvatar name={firstName} setOpen={setLogoutOpen} open={logoutOpen} />
 
                                 <div

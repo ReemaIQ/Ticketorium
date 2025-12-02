@@ -1,5 +1,7 @@
 import express from "express";
 import { Event } from "../models/Event.js";
+import { EventRegistration } from "../models/EventRegistration.js";
+
 
 const router = express.Router();
 
@@ -27,6 +29,19 @@ router.get("/", async (req, res) => {
         res.status(500).json({ error: "Failed to load events" });
     }
 });
+
+// router.get("/joined/:uniId", async (req, res) => {
+//     try {
+//         const eventsJoined = await EventRegistration.find().sort({startAt: 1});
+//         const events = await Event.find({university: req.params.uniId})
+//         console.log("Joined events for user fetched:", eventsJoined);
+//         res.json(eventsJoined);
+//     }
+//     catch (err) {
+//         console.error("GET /api/events/joined/:userId error:", err);
+//         res.status(500).json({ error: "Failed to load joined events for user" });
+//     }
+// })
 
 /**
  * GET /api/events/:id (Mongo _id)
@@ -71,4 +86,15 @@ router.get("/by-event-id/:eventId", async (req, res) => {
     }
 });
 
+router.get("/uni-all/:universityId", async (req, res) => {
+    try {
+        const events = await Event.find({university: req.params.universityId}).select("eventId title description startAt price state organizer img visibility").sort({startAt: 1});
+        console.log("Events for university fetched:", events);
+        res.json(events);
+    }
+    catch (err) {
+        console.error("GET /api/events/uni-all/:universityId error:", err);
+        res.status(500).json({ error: "Failed to load events for university" });
+    }
+})
 export default router;
