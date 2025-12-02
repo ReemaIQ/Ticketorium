@@ -202,14 +202,7 @@ function SignupLogin(props) {
             return
         }
 
-        // no errors, log in user, direct to home
-        if (isUsername)
-            props.setLoggedInUser(() =>emailOrUsername);
-        else
-            props.setLoggedInUser(() => props.getUsernameFromEmail(emailOrUsername));
         navigate("/home");
-        localStorage.setItem("loggedInUser", emailOrUsername);
-        
     }
     
     else if (option == "sign-up-part-2") {
@@ -295,22 +288,6 @@ function SignupLogin(props) {
             localStorage.setItem("token", token["token"]);
             navigate("/home");
         }
-
-        // props.addNewUser({
-        //     "first-name": firstName,
-        //     "last-name": lastName,
-        //     "email": props.part1Data["email"],
-        //     "phone-number": props.part1Data["phone-number"],
-        //     "password": props.part1Data["password"],
-        //     "username": username,
-        //     "type": "visitor",
-        //     "gender": gender,
-        //     "date-of-birth": dateOfBirth,
-        //     "university": "kfupm" // come back here
-        // })
-        // props.setLoggedInUser(() => username);
-        // localStorage.setItem("loggedInUser", username);
-        // navigate("/home");
     }
 
 

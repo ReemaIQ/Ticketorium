@@ -26,9 +26,8 @@ export async function loginUser(username, email, password) {
         }
         else {
             console.log("User fetched:", user);
-
             return jwt.sign(
-                {handle: user.handle},
+                {user: user.toObject()},
                 process.env.JWT_SECRET,
                 {expiresIn: "12d"}
             )

@@ -211,6 +211,14 @@ function App() {
         }
 
         setSelectedUni(null);
+
+        // SHAYMA - backend - DO NOT REMOVE IN MERGING - START
+        // if there is a token:
+        if (localStorage.getItem("token")) {
+
+        }
+        // SHAYMA - backend - DO NOT REMOVE IN MERGING - END
+
         setIsLoading(false);
     }, []);
 
