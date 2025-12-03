@@ -16,6 +16,7 @@ import ticketsRouter from "./routes/tickets.js";
 import listingsRouter from "./routes/listings.js";
 import disputesRouter from "./routes/disputes.js";
 import notificationsRouter from "./routes/notifications.js";
+import auth from "./routes/auth.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -44,6 +45,7 @@ async function start() {
         app.use("/api/listings", listingsRouter);
         app.use("/api/disputes", disputesRouter);
         app.use("/api/notifications", notificationsRouter);
+        app.use("/api/auth", auth);
 
         // 404 fallback
         app.use((req, res) => {
