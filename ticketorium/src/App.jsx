@@ -31,6 +31,7 @@ import SystemPolicies from "./pages/SystemPolicies.jsx";
 
 import ThemeProvider from "./components/theme/ThemeProvider.jsx";
 
+import { jwtDecode } from "jwt-decode";
 import {
     initialDummyUsers,
     initialDummyUniversities,
@@ -103,17 +104,36 @@ function App() {
     useEffect(() => {
     if (organizerViewing) // so to avoid navigation when val is changed to null
       navigate("/about-organizer");
-  }, [organizerViewing]);
+    }, [organizerViewing]);
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
     useEffect(() => {
-        // loggedInUser
-        const storedUser = localStorage.getItem("loggedInUser");
-        storedUser ? setLoggedInUser(storedUser) : setLoggedInUser(null);
+        async function initAuth() {
+            const token = localStorage.getItem("token");
 
-        const storedMongoUser = localStorage.getItem("loggedInMongoUser");
-        storedMongoUser ? setLoggedInMongoUser(JSON.parse(storedMongoUser)) : setLoggedInMongoUser(null);
-        console.log("loggedInMongoUser: ", loggedInMongoUser);
+            if (token) {
+                try {
+                    const decoded = jwtDecode(token);
+                    console.log("Decoded token:  ", decoded);
+                    setLoggedInMongoUser(decoded.user);
+                    setLoggedInUser(decoded.user.handle)
+                }
+                catch (err) {
+                        console.error("Token verification failed:", err);
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("loggedInMongoUser");
+                        setLoggedInMongoUser(null);
+                }
+            }
+            else {
+                setLoggedInMongoUser(null);
+            }
+
+            setIsLoading(false);
+        }
+
+        initAuth();
+
 
         // dummyUsers
         const emptyDummyUsers =
@@ -197,6 +217,10 @@ function App() {
 
         setIsLoading(false);
     }, []);
+
+    useEffect(() => {
+        console.log("loggedInMongoUser changed:", loggedInMongoUser);
+    }, [loggedInMongoUser]);
 
     // a safe current user reference (prevents crashes)
     const currentUser = loggedInUser
