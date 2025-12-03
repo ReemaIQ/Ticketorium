@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="end bid button and expired bids implemented">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="updated dispute assigment logic">
       <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,23 +127,9 @@
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
       <workItem from="1764609260013" duration="16177000" />
-      <workItem from="1764685354509" duration="9936000" />
-    </task>
-    <task id="LOCAL-00013" summary="created all events page">
-      <option name="closed" value="true" />
-      <created>1762007116024</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007116024</updated>
-    </task>
-    <task id="LOCAL-00014" summary="created my events page">
-      <option name="closed" value="true" />
-      <created>1762007121604</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007121604</updated>
+      <workItem from="1764685354509" duration="10485000" />
+      <workItem from="1764780458324" duration="36000" />
+      <workItem from="1764783728721" duration="491000" />
     </task>
     <task id="LOCAL-00015" summary="updating fonts">
       <option name="closed" value="true" />
@@ -525,7 +507,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764631600613</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="added disputes from backend">
+      <option name="closed" value="true" />
+      <created>1764710276397</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1764710276397</updated>
+    </task>
+    <task id="LOCAL-00063" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764710751342</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1764710751342</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,8 +553,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="made manage users page" />
-    <MESSAGE value="made section title font smaller" />
     <MESSAGE value="worked on disputes page" />
     <MESSAGE value="quick attempt at adding notification modal" />
     <MESSAGE value="refining disputes" />
@@ -580,7 +576,9 @@
     <MESSAGE value="biddings page connected to backend" />
     <MESSAGE value="fixing new listing modal and end bid button" />
     <MESSAGE value="end bid button and expired bids implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="end bid button and expired bids implemented" />
+    <MESSAGE value="added disputes from backend" />
+    <MESSAGE value="updated dispute assigment logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated dispute assigment logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -608,7 +606,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/data/DummyData.js</url>
           <line>467</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
