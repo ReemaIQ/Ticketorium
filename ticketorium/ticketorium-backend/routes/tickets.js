@@ -1,4 +1,5 @@
 // ticketorium/ticketorium-backend/routes/tickets.js
+
 import express from "express";
 import crypto from "crypto";
 
@@ -74,7 +75,7 @@ router.post("/", async (req, res) => {
 /**
  * GET /api/tickets
  * Optional query:
- *   - userId
+ * - userId
  */
 router.get("/", async (req, res) => {
     try {
@@ -231,11 +232,17 @@ router.get("/unlisted", async (req, res) => {
         const userHandle = req.query.userHandle;
         if (!userHandle) return res.status(400).json({ error: "userHandle required" });
 
-        // Find tickets owned by user
-        const tickets = await Ticket.find({ user: userHandle, status: "active" }).lean();
+        // CORRECTION: Find User by handle to get their Mongo _id
+        const user = await User.findOne({ handle: userHandle });
+        if (!user) return res.status(404).json({ error: "User not found" });
 
-        // Find tickets already listed
-        const listedTickets = await Listing.find({ seller: userHandle, status: "active" }).select("ticket").lean();
+        const userId = user._id; // Use the Mongo ObjectId for lookups
+
+        // Find tickets owned by user (using ObjectId)
+        const tickets = await Ticket.find({ user: userId, status: "active" }).lean();
+
+        // Find tickets already listed (using ObjectId for seller)
+        const listedTickets = await Listing.find({ seller: userId, status: "active" }).select("ticket").lean();
         const listedTicketIds = new Set(listedTickets.map(l => l.ticket.toString()));
 
         // Filter out tickets already listed
@@ -247,7 +254,6 @@ router.get("/unlisted", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch unlisted tickets" });
     }
 });
-
 
 
 export default router;
