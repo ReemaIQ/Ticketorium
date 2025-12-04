@@ -1,7 +1,8 @@
 // ticketorium-backend/routes/eventRegistrations.js
 import express from "express";
-import { EventRegistration } from "../models/EventRegistration.js";
+import mongoose from "mongoose";
 
+import { EventRegistration } from "../models/EventRegistration.js";
 const router = express.Router();
 
 /* -------------------------------------
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
             return res.status(400).json({ error: "Missing ?user=<userId>" });
         }
 
-        const regs = await EventRegistration.find({ user })
+        const regs = await EventRegistration.find({ user: user._id})
             .populate({
                 path: "event",
                 populate: [
@@ -31,5 +32,6 @@ router.get("/", async (req, res) => {
         res.status(500).json({ error: "Failed to load registrations" });
     }
 });
+
 
 export default router;

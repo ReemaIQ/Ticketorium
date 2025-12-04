@@ -1228,11 +1228,7 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
-                                            uni={currentUser?.university ?? null}
-                                            eventsJoined={dummyEventsJoined.current}
+                                            user={loggedInMongoUser}
                                         />
                                     </RequireAuth>
                                 }
