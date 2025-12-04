@@ -413,7 +413,7 @@ function App() {
             >
                 <div className="flex-col">
                     <Nav
-                        type={currentUser?.type ?? "empty"}
+                        type={loggedInMongoUser?.type ?? "empty"}
                         user={loggedInUser}
                         setLoggedInUser={setLoggedInUser}
                         notifications={dummyNotifications.current}
@@ -519,7 +519,7 @@ function App() {
                                 path="/my-events"
                                 element={
                                     <RequireAuth loggedInUser={loggedInUser}>
-                                        <MyTickets
+                                        <MyEvents
                                             setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
                                             waitlistModalOpen={waitlistModalOpen}
