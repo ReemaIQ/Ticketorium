@@ -1,6 +1,7 @@
 // src/api/users.js
+import { getApiBaseUrl } from "./client";
 
-const BASE = "http://localhost:4000/api";
+const BASE = `${getApiBaseUrl()}/api`;
 
 // ---------------- AUTH ----------------
 
@@ -57,11 +58,19 @@ export async function fetchMe() {
 }
 
 // Get user by username (for event registrations loading)
+// NOTE: This function's backend route needs to be implemented.
 export async function fetchUserByUsername(username) {
-    const res = await fetch(`${BASE}/users/username-exists/${encodeURIComponent(username)}`);
-    const exists = (await res.json()).exists;
+    // Check if the user exists first (re-using existing validation)
+    const existsRes = await fetch(`${BASE}/users/username-exists/${encodeURIComponent(username)}`);
+    const exists = (await existsRes.json()).exists;
     if (!exists) return null;
 
-    // Your backend does NOT have "get user by username"
-    // If needed I will create that route.
+    // --- MISSING BACKEND ROUTE ---
+    // Assuming a new route: GET /api/users/by-username/:username is implemented
+    // const userRes = await fetch(`${BASE}/users/by-username/${encodeURIComponent(username)}`);
+    // if (!userRes.ok) throw new Error("Failed to fetch user by username");
+    // return userRes.json();
+
+    console.warn("fetchUserByUsername requires implementation of GET /api/users/by-username/:username on the backend.");
+    return null;
 }
