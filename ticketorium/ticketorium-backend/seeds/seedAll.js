@@ -216,9 +216,11 @@ async function runSeed() {
         for (const L of listingsSeed) {
             const ticketDoc = ticketByKey[L.ticketKey];
             const sellerDoc = userByHandle[L.sellerHandle];
+            const eventDoc = eventByKey[L.eventKey];
 
             const listing = await Listing.create({
                 ticket: ticketDoc._id,
+                event: eventDoc._id,
                 seller: sellerDoc._id,
                 title: L.title,
                 startingPrice: L.startingPrice,
