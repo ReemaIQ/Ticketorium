@@ -33,5 +33,28 @@ router.get("/", async (req, res) => {
     }
 });
 
+/* -------------------------------------
+   GET ALL EVENT REGISTRATIONS
+   /api/event-registrations/all
+-------------------------------------- */
+router.get("/all", async (_req, res) => {
+    try {
+        const regs = await EventRegistration.find()
+            .populate({
+                path: "event",
+                populate: [
+                    { path: "university", select: "code name logo" },
+                    { path: "organizer", select: "handle firstName lastName role" }
+                ]
+            })
+            .populate("user", "handle firstName lastName email") // include user info
+            .sort({ joinedAt: -1 }); // newest first
+
+        res.json(regs);
+    } catch (err) {
+        console.error("GET /api/event-registrations/all error:", err);
+        res.status(500).json({ error: "Failed to load event registrations" });
+    }
+});
 
 export default router;

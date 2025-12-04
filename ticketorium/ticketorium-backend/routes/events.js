@@ -88,6 +88,7 @@ router.post("/", upload.single("img"), async (req, res) => {
     }
 });
 
+
 /* GET ALL EVENTS - accepts user object from client (no middleware required) */
 router.get("/", async (req, res) => {
     try {
