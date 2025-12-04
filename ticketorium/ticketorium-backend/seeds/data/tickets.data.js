@@ -44,7 +44,31 @@ export const ticketsSeed = [
         key: "t6",
         eventKey: 7,          // UPDATED: Must be Number (7)
         userHandle: "student",
+        seat: "Seat A-01",
+        price: 0,
+        status: "active",
+    },
+    {
+        key: "t7",
+        eventKey: 7,          // Graduation
+        userHandle: "student2",
         seat: "VIP-01",
+        price: 0,
+        status: "active",
+    },
+    {
+        key: "t8",
+        eventKey: 7,          // Graduation
+        userHandle: "student2",
+        seat: "VIP-02",
+        price: 0,
+        status: "active",
+    },
+    {
+        key: "t9",
+        eventKey: 7,          // Graduation
+        userHandle: "student",
+        seat: "Seat A-02",
         price: 0,
         status: "active",
     },

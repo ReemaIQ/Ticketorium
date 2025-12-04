@@ -1,6 +1,7 @@
-// ticketorium-backend/routes/users.js
 import express from "express";
 import { User } from "../models/User.js";
+import {loginUser} from "./auth.js";
+import argon2 from "argon2";
 
 const router = express.Router();
 
@@ -10,63 +11,84 @@ const router = express.Router();
  *   - role
  *   - university (university ObjectId)
  */
-router.get("/", async (req, res) => {
+router.get("/email-exists/:email", async (req, res) => {
+    const email = req.params.email
+    console.log("Checking if email exists:", email);
     try {
-        const { role, university } = req.query;
-        const filter = {};
-        if (role) filter.role = role;
-        if (university) filter.university = university;
-
-        const users = await User.find(filter)
-            .populate("university", "code name")
-            .sort({ createdAt: -1 });
-
-        res.json(users);
-    } catch (err) {
-        console.error("GET /api/users error:", err);
-        res.status(500).json({ error: "Failed to load users" });
-    }
-});
-
-/**
- * GET /api/users/by-handle/:handle
- * Used by frontend to fetch the logged-in user and their university
- */
-router.get("/by-handle/:handle", async (req, res) => {
-    try {
-        const { handle } = req.params;
-
-        const user = await User.findOne({ handle })
-            .populate("university", "code name logo");
-
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
+        const user = await User.findOne({ email: email });
+        if (user) {
+            console.log("Email exists in DB");
+            res.json({ exists: true });
         }
-
-        res.json(user);
-    } catch (err) {
-        console.error("GET /api/users/by-handle error:", err);
-        res.status(500).json({ error: "Failed to load user" });
-    }
-});
-
-/**
- * GET /api/users/:id
- */
-router.get("/:id", async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).populate(
-            "university",
-            "code name"
-        );
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
+        else {
+            console.log("Email available");
+            res.json({ exists: false });
         }
-        res.json(user);
-    } catch (err) {
-        console.error("GET /api/users/:id error:", err);
-        res.status(500).json({ error: "Failed to load user" });
     }
-});
+    catch {
+        console.log("Error checking email existence");
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+router.get("/username-exists/:username", async (req, res) => {
+    const username = req.params.username
+    console.log("Checking if username exists:", username);
+    try {
+        const user = await User.findOne({ handle: username });
+        if (user) {
+            console.log("Username exists in DB");
+            res.json({ exists: true });
+        }
+        else {
+            console.log("Username available");
+            res.json({ exists: false });
+        }
+    }
+    catch {
+        console.log("Error checking username existence");
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
+router.post("/add", async (req, res) => {
+    const payload = req.body;
+    console.log("Signup payload received:", payload);
+
+    const hashedPassword = await argon2.hash(payload.password);
+
+    try {
+        const newUser = new User({
+            handle: payload.username,
+            email: payload.email,
+            passwordHash: hashedPassword,
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            phone: payload.phoneNumber,
+            university: payload.university,
+            role: payload.type,
+            gender: payload.gender,
+            dateOfBirth: payload.dateOfBirth
+
+        });
+        await newUser.save()
+        
+        // now login the user and return token
+        console.log("Login payload received:", payload.username, payload.email, payload.password);
+        try {
+            const token = await loginUser(payload.username, payload.email, payload.password)
+            console.log("Login successful, token generated:", token);
+            res.json({token});
+        } catch (err) {
+            res.status(401).json({ errMsg: err.message });
+        }
+        
+    }
+    catch (error) {
+        console.log("Error creating new user:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
 
 export default router;

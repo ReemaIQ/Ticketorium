@@ -1,4 +1,3 @@
-// ticketorium/ticketorium-backend/routes/disputes.js
 import express from "express";
 import { Dispute } from "../models/Dispute.js";
 import { User } from "../models/User.js";
@@ -9,6 +8,9 @@ const router = express.Router();
 
 /**
  * GET /api/disputes
+ * Optional query:
+ *   - userId (participant)
+ *   - status
  */
 router.get("/", async (req, res) => {
     try {
@@ -59,6 +61,7 @@ router.get("/:id", async (req, res) => {
 
 /**
  * POST /api/disputes
+ * Body: { title, subtitle?, type, createdById, participantIds?, eventId?, ticketId? }
  */
 router.post("/", async (req, res) => {
     try {
@@ -73,20 +76,64 @@ router.post("/", async (req, res) => {
         } = req.body || {};
 
         if (!title || !createdById) {
-            return res
-                .status(400)
-                .json({ error: "title and createdById are required" });
+            return res.status(400).json({ error: "title and createdById are required" });
         }
 
+        // Fetch creator
         const creator = await User.findById(createdById);
         if (!creator) {
             return res.status(404).json({ error: "Creator user not found" });
         }
 
+        // -------------------------
+        // ADMIN ASSIGNMENT LOGIC
+        // -------------------------
+        let adminToAssign = null;
+
+        // helper → returns least busy admin from a list of roles
+        async function getLeastBusyAdmin(roles) {
+            const admins = await User.find({ role: { $in: roles } });
+
+            if (admins.length === 0) return null;
+
+            // Count how many disputes each admin is in
+            const counts = await Promise.all(
+                admins.map(async (adm) => {
+                    const num = await Dispute.countDocuments({
+                        participants: adm._id,
+                        status: { $in: ["open", "in_review"] }
+                    });
+                    return { admin: adm, count: num };
+                })
+            );
+
+            // Return admin with smallest count
+            counts.sort((a, b) => a.count - b.count);
+            return counts[0].admin;
+        }
+
+        // Apply your rules
+        if (creator.role === "visitor") {
+            adminToAssign = await getLeastBusyAdmin(["system-admin"]);
+        }
+        else if (creator.role === "student" || creator.role === "organizer") {
+            adminToAssign = await getLeastBusyAdmin(["admin"]);
+        }
+
+        // Push assigned admin to participants
+        const autoAssign = adminToAssign ? [adminToAssign._id] : [];
+
+        // Deduplicate
+        const uniqueParticipants = Array.from(
+            new Set([createdById, ...participantIds, ...autoAssign])
+        );
+
+        // Optional event/ticket linking
         let event = null;
         if (eventId) {
             // UPDATED: Just use findById
-            event = await Event.findById(eventId);
+            event = (await Event.findById(eventId)) ||
+                (await Event.findOne({ eventId: Number(eventId) }));
         }
 
         let ticket = null;
@@ -94,10 +141,7 @@ router.post("/", async (req, res) => {
             ticket = await Ticket.findById(ticketId);
         }
 
-        const uniqueParticipants = Array.from(
-            new Set([createdById, ...participantIds])
-        );
-
+        // Create dispute
         const dispute = await Dispute.create({
             title,
             subtitle,
@@ -112,14 +156,17 @@ router.post("/", async (req, res) => {
         });
 
         res.status(201).json(dispute);
+
     } catch (err) {
         console.error("POST /api/disputes error:", err);
         res.status(500).json({ error: "Failed to create dispute" });
     }
 });
 
+
 /**
  * POST /api/disputes/:id/messages
+ * Body: { fromId, type, text?, url?, caption? }
  */
 router.post("/:id/messages", async (req, res) => {
     try {
@@ -159,6 +206,7 @@ router.post("/:id/messages", async (req, res) => {
 
 /**
  * PATCH /api/disputes/:id/status
+ * Body: { status } // open, in_review, resolved, closed, etc.
  */
 router.patch("/:id/status", async (req, res) => {
     try {

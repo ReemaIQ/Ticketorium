@@ -1,6 +1,8 @@
 // ticketorium/ticketorium-backend/routes/tickets.js
 import express from "express";
 import crypto from "crypto";
+
+import { Listing } from "../models/Listing.js"
 import { Ticket } from "../models/Ticket.js";
 import { Event } from "../models/Event.js";
 import { User } from "../models/User.js";
@@ -46,7 +48,7 @@ router.post("/", async (req, res) => {
         }
 
         const qrToken = generateQrToken();
-        
+
         // Pass the actual event._id to the generator
         const ticketCode = generateTicketCode(event._id, user.handle);
 
@@ -71,6 +73,8 @@ router.post("/", async (req, res) => {
 
 /**
  * GET /api/tickets
+ * Optional query:
+ *   - userId
  */
 router.get("/", async (req, res) => {
     try {
@@ -219,5 +223,31 @@ router.get("/verify", async (req, res) => {
         });
     }
 });
+
+// GET /api/tickets/unlisted
+// Query param: userHandle
+router.get("/unlisted", async (req, res) => {
+    try {
+        const userHandle = req.query.userHandle;
+        if (!userHandle) return res.status(400).json({ error: "userHandle required" });
+
+        // Find tickets owned by user
+        const tickets = await Ticket.find({ user: userHandle, status: "active" }).lean();
+
+        // Find tickets already listed
+        const listedTickets = await Listing.find({ seller: userHandle, status: "active" }).select("ticket").lean();
+        const listedTicketIds = new Set(listedTickets.map(l => l.ticket.toString()));
+
+        // Filter out tickets already listed
+        const unlistedTickets = tickets.filter(t => !listedTicketIds.has(t._id.toString()));
+
+        res.json(unlistedTickets);
+    } catch (err) {
+        console.error("GET /api/tickets/unlisted error:", err);
+        res.status(500).json({ error: "Failed to fetch unlisted tickets" });
+    }
+});
+
+
 
 export default router;
