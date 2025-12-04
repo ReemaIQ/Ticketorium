@@ -4,20 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Trying to go back and so it step-by-step">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="all events now shows no errors but still no events">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/disputes.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/disputes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/disputes.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/disputes.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/eventStats.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/eventStats.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/registrations.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/registrations.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/events.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +69,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -526,13 +517,13 @@
       <option name="project" value="LOCAL" />
       <updated>1764851935355</updated>
     </task>
-    <task id="LOCAL-00067" summary="Trying to go back and so it step-by-step">
+    <task id="LOCAL-00067" summary="all events now shows no errors but still no events">
       <option name="closed" value="true" />
-      <created>1764859104385</created>
+      <created>1764864531433</created>
       <option name="number" value="00067" />
       <option name="presentableId" value="LOCAL-00067" />
       <option name="project" value="LOCAL" />
-      <updated>1764859104385</updated>
+      <updated>1764864531433</updated>
     </task>
     <option name="localTasksCounter" value="68" />
     <servers />
@@ -588,15 +579,15 @@
     <MESSAGE value="added disputes from backend" />
     <MESSAGE value="updated dispute assigment logic" />
     <MESSAGE value="merged Leena and Shayma work into my semi-working code" />
-    <MESSAGE value="Trying to go back and so it step-by-step" />
-    <option name="LAST_COMMIT_MESSAGE" value="Trying to go back and so it step-by-step" />
+    <MESSAGE value="all events now shows no errors but still no events" />
+    <option name="LAST_COMMIT_MESSAGE" value="all events now shows no errors but still no events" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx</url>
-          <line>129</line>
+          <line>339</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -606,18 +597,24 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
-          <line>346</line>
+          <line>343</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
-          <line>141</line>
+          <line>140</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/src/App.jsx</url>
-          <line>103</line>
+          <line>876</line>
           <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx</url>
+          <line>230</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
