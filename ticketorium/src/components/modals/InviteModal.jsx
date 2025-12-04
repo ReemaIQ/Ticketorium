@@ -1,12 +1,38 @@
 // INVITE modal
-// - dummy UI to invite other users (no backend yet)
+// - Currently uses local dummy invitees
+// - Designed so later you can pass real users + onInvite callback
 
 import React, { useState } from "react";
 import Modal from "./Modal.jsx";
 
-function InviteRow({ person, price }) {
+/* ------------------------------------------------------------------ */
+/* InviteRow                                                           */
+/* ------------------------------------------------------------------ */
+
+function InviteRow({ person, price, onInvite }) {
     const [invited, setInvited] = useState(false);
-    const initial = person.name.charAt(0).toUpperCase();
+
+    const safeName = person?.name || "Unknown user";
+    const initial = safeName.charAt(0).toUpperCase();
+    const subtitle = person?.subtitle || "";
+
+    const handleClick = async () => {
+        if (invited) return;
+
+        // Allow parent to hook into invitations (backend) later
+        if (typeof onInvite === "function") {
+            try {
+                await onInvite(person);
+            } catch (err) {
+                console.error("Invite failed:", err);
+                return; // don't mark as invited on error
+            }
+        }
+
+        setInvited(true);
+    };
+
+    const isPaid = typeof price === "number" && price > 0;
 
     return (
         <div className="flex items-center justify-between rounded-lg border border-slate-200 p-4">
@@ -15,37 +41,47 @@ function InviteRow({ person, price }) {
                     <span className="text-slate-600 text-sm">{initial}</span>
                 </div>
                 <div>
-                    <div className="font-semibold">{person.name}</div>
-                    <div className="text-xs text-slate-500">
-                        {person.subtitle}
-                    </div>
+                    <div className="font-semibold">{safeName}</div>
+                    {subtitle && (
+                        <div className="text-xs text-slate-500">
+                            {subtitle}
+                        </div>
+                    )}
                 </div>
             </div>
             <button
+                type="button"
                 disabled={invited}
-                onClick={() => setInvited(true)}
+                onClick={handleClick}
                 className={`inline-flex items-center justify-center rounded-[6px] px-4 py-2 text-sm font-medium ${
                     invited
                         ? "bg-slate-200 text-slate-500 cursor-not-allowed"
                         : "bg-[var(--accent-color)] text-[var(--secondary-color)] cursor-pointer"
                 }`}
             >
-                {invited ? "Invited" : price > 0 ? "Pay & Invite" : "Invite"}
+                {invited ? "Invited" : isPaid ? "Pay & Invite" : "Invite"}
             </button>
         </div>
     );
 }
 
-function InviteList({ price }) {
-    const [query, setQuery] = useState("");
-    const users = [
-        { name: "Ahmad Faisal", subtitle: "Student · CS Department" },
-        { name: "Alex White", subtitle: "Visitor · No Department" },
-        { name: "Sarah Salem", subtitle: "Student · EE Department" },
-    ];
+/* ------------------------------------------------------------------ */
+/* InviteList                                                          */
+/* ------------------------------------------------------------------ */
 
-    const filtered = users.filter((u) =>
-        u.name.toLowerCase().includes(query.toLowerCase())
+const DUMMY_USERS = [
+    { name: "Ahmad Faisal", subtitle: "Student · CS Department" },
+    { name: "Alex White", subtitle: "Visitor · No Department" },
+    { name: "Sarah Salem", subtitle: "Student · EE Department" },
+];
+
+function InviteList({ price, invitees = DUMMY_USERS, onInvite }) {
+    const [query, setQuery] = useState("");
+
+    const filtered = invitees.filter((u) =>
+        (u.name || "")
+            .toLowerCase()
+            .includes(query.toLowerCase())
     );
 
     return (
@@ -78,7 +114,12 @@ function InviteList({ price }) {
 
             <div className="mt-4 space-y-3">
                 {filtered.map((u) => (
-                    <InviteRow key={u.name} person={u} price={price} />
+                    <InviteRow
+                        key={u.name || u.id}
+                        person={u}
+                        price={price}
+                        onInvite={onInvite}
+                    />
                 ))}
                 {filtered.length === 0 && (
                     <div className="text-sm text-slate-500">No matches.</div>
@@ -88,26 +129,47 @@ function InviteList({ price }) {
     );
 }
 
-function InviteModal({ isOpen, onClose, title, price }) {
+/* ------------------------------------------------------------------ */
+/* InviteModal                                                         */
+/* ------------------------------------------------------------------ */
+
+function InviteModal({
+    isOpen,
+    onClose,
+    title,
+    price,
+    invitees,
+    onInvite,
+}) {
+    const safeTitle = title || "this event";
+    const numericPrice =
+        typeof price === "number" ? price : 0;
+    const isPaid = numericPrice > 0;
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div>
                 <h3 className="text-xl font-semibold text-center">
-                    Invite to <span className="font-bold">{title}</span>
+                    Invite to{" "}
+                    <span className="font-bold">{safeTitle}</span>
                 </h3>
                 <p className="mt-2 text-center text-slate-500">
-                    {price > 0 ? (
+                    {isPaid ? (
                         <>
                             You will pay{" "}
                             <span className="text-[var(--primary-color)] font-medium">
-                                ${price.toFixed(2)}
+                                ${numericPrice.toFixed(2)}
                             </span>
                         </>
                     ) : (
                         <>This invite is free</>
                     )}
                 </p>
-                <InviteList price={price} />
+                <InviteList
+                    price={numericPrice}
+                    invitees={invitees}
+                    onInvite={onInvite}
+                />
             </div>
         </Modal>
     );

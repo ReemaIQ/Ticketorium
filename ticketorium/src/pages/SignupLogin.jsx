@@ -2,20 +2,19 @@ import validator from "validator";
 import SignupInputsList from "../components/signup_login/signup_inputs_list/SignupInputsList.jsx";
 import rightArrow from "../assets/images/signup/right_arrow.svg";
 import { NavLink, useNavigate } from 'react-router-dom';
-//1
-// Font Awesome Setup
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { useEffect, useState } from 'react'
 
+// Font Awesome Setup
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { useEffect, useState } from 'react'
 
 library.add(fas, far, fab)
 
+// Configuration
+const BASE_URL = "http://localhost:4000/api";
 
-// Options based on props
 const options = {
     "log-in": {
         "title": "Log in",
@@ -38,17 +37,15 @@ const options = {
         "linkPath": null,
     },
 };
-        
-
-// Component
-
 
 function SignupLogin(props) {
-
     const navigate = useNavigate();
 
-    const [option, setOption] = useState(props.option); // "log-in", "sign-up", "signup-part-2"
-    const [errors, setErrors] = useState({}); // empty {} or object of errors
+    const [option, setOption] = useState(props.option);
+    const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false); // New Loading State
+
+    // Form States
     const [emailOrUsername, setEmailOrUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -60,7 +57,6 @@ function SignupLogin(props) {
     const [gender, setGender] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
 
-    // inputs and updater functions to pass to SignupInputsList component
     const inputsAndSetters = {
         "email-or-username": [emailOrUsername, setEmailOrUsername],
         "email": [email, setEmail],
@@ -79,217 +75,238 @@ function SignupLogin(props) {
         setErrors({});
     }, [props.option])
 
-    const handleSubmit = (e, option) => {
-    e.preventDefault()
-    let errorsFound = {} // This is then passed into setErrors()
-
-    // depending on option, redirect to different pages
-    if (option == "sign-up") {
-        //  console.log(email);
-        // email field
-        if (!email) {
-            errorsFound["email"] = "Please enter your email"
-        }
-        else if (!validator.isEmail(email)) {
-            errorsFound["email"] = "Please enter a valid email"
-        }
-        else if (props.checkIfEmailExists(email)) {
-            errorsFound["email"] = "An account with this email already exists"
-        }
-        // phone number field
-        if (!phoneNumber) {
-            errorsFound["phone-number"] = "Please enter your phone number"
-        }
-        else if (!validator.isMobilePhone(phoneNumber)) {
-            errorsFound["phone-number"] = "Please enter a valid phone number"
-        }
-        else if (props.checkIfPhoneExists(phoneNumber)) {
-            errorsFound["phone-number"] = "An account with this phone number already exists"
-        }
-        // password field
-        if (!password) {
-            errorsFound["password"] = "Please enter your password"
-        }
-        else if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})) {
-            errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
-        }
-        // confirm password field
-        if (!confirmPassword) {
-            errorsFound["confirm-password"] = "Please confirm your password"
-        }
-        else if (password !== confirmPassword) {
-            errorsFound["confirm-password"] = "Passwords do not match"
-        }
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-        props.setPart1Data({
-            "email": email,
-            "phone-number": phoneNumber,
-            "password": password,
-        });
-        props.setFinishedPart1SignUp(true);
-        navigate("/sign-up-2");
-    }
+    const handleSubmit = async (e, option) => {
+        e.preventDefault();
         
-    else if (option == "log-in") {
-        const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
-        // email or username field
-        if (!emailOrUsername) {
-            // console.log("bruh", emailOrUsername)
-            errorsFound["email-or-username"] = "Please enter your email or username"
-        }
-        // first check format
-        else if (isUsername && !props.checkIfUsernameExists(emailOrUsername)) {
-            errorsFound["email-or-username"] = "There is no user with this username"
-        }
-        else if (!isUsername && !validator.isEmail(emailOrUsername)) {
-            errorsFound["email-or-username"] = "Please enter a valid email address"
-        }
-        else if (!isUsername &&!props.checkIfEmailExists(emailOrUsername)) {
-            errorsFound["email-or-username"] = "There is no user with this email"
-        }
+        // Prevent double submission
+        if(isLoading) return;
 
-        // password field
-        if (!password) {
-            errorsFound["password"] = "Please enter your password"
-        }
-        // check if password is strong enough
-        else if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})) {
-            errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
-        }
-        else if (isUsername && !props.checkUsernamePassword(emailOrUsername, password)) {
-            errorsFound["password"] = "Incorrect password for this username"
-        }
-        else if (!isUsername && !props.checkEmailPassword(emailOrUsername, password)) {
-            errorsFound["password"] = "Incorrect password for this email"
-        }
+        let errorsFound = {};
+        setIsLoading(true); // Start loading
 
+        try {
+            // ==========================================
+            // OPTION: SIGN UP (PART 1)
+            // ==========================================
+            if (option === "sign-up") {
+                // Email Validation
+                if (!email) {
+                    errorsFound["email"] = "Please enter your email";
+                } else if (!validator.isEmail(email)) {
+                    errorsFound["email"] = "Please enter a valid email";
+                }
 
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
+                // Async Email Check
+                if (!errorsFound["email"]) {
+                    try {
+                        const response = await fetch(`${BASE_URL}/users/email-exists/${encodeURIComponent(email)}`);
+                        const data = await response.json();
+                        if (data["exists"]) {
+                            errorsFound["email"] = "An account with this email already exists";
+                        }
+                    } catch (err) {
+                        console.error("API Error checking email", err);
+                        errorsFound["email"] = "Unable to verify email at this time";
+                    }
+                }
+
+                // Phone Validation
+                if (!phoneNumber) {
+                    errorsFound["phone-number"] = "Please enter your phone number";
+                } else if (!validator.isMobilePhone(phoneNumber)) {
+                    errorsFound["phone-number"] = "Please enter a valid phone number";
+                }
+
+                // Password Validation
+                if (!password) {
+                    errorsFound["password"] = "Please enter your password";
+                } else if (!validator.isStrongPassword(password, { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 })) {
+                    errorsFound["password"] = "Password must be 8+ chars, with letters, numbers, and symbols.";
+                }
+
+                // Confirm Password
+                if (!confirmPassword) {
+                    errorsFound["confirm-password"] = "Please confirm your password";
+                } else if (password !== confirmPassword) {
+                    errorsFound["confirm-password"] = "Passwords do not match";
+                }
+
+                // Final Check for Part 1
+                if (Object.keys(errorsFound).length > 0) {
+                    setErrors(errorsFound);
+                    setIsLoading(false);
+                    return;
+                }
+
+                // Success Part 1
+                props.setPart1Data({
+                    "email": email,
+                    "phone-number": phoneNumber,
+                    "password": password,
+                });
+                props.setFinishedPart1SignUp(true);
+                navigate("/sign-up-2");
+            }
+
+            // ==========================================
+            // OPTION: LOG IN
+            // ==========================================
+            else if (option === "log-in") {
+                const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername));
+
+                if (!emailOrUsername) {
+                    errorsFound["email-or-username"] = "Please enter your email or username";
+                } else if (!isUsername && !validator.isEmail(emailOrUsername)) {
+                    errorsFound["email-or-username"] = "Please enter a valid email address";
+                }
+
+                if (!password) {
+                    errorsFound["password"] = "Please enter your password";
+                }
+
+                if (Object.keys(errorsFound).length > 0) {
+                    setErrors(errorsFound);
+                    setIsLoading(false);
+                    return;
+                }
+
+                // Prepare Payload
+                let jsonPayload = { "password": password };
+                if (isUsername) jsonPayload["username"] = emailOrUsername;
+                else jsonPayload["email"] = emailOrUsername;
+
+                const response = await fetch(`${BASE_URL}/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(jsonPayload),
+                });
+
+                const data = await response.json();
+
+                if (response.status !== 200) {
+                    // Combine errors to be safe or specific based on backend response
+                    errorsFound["email-or-username"] = "Incorrect credentials"; 
+                    errorsFound["password"] = "Incorrect credentials";
+                    setErrors(errorsFound);
+                } else {
+                    localStorage.setItem("token", data["token"]);
+                    navigate("/home");
+                }
+            }
+
+            // ==========================================
+            // OPTION: SIGN UP (PART 2)
+            // ==========================================
+            else if (option === "sign-up-part-2") {
+                // Validate Username
+                if (!username) {
+                    errorsFound["username"] = "Please enter your username";
+                } else if (/[^a-zA-Z0-9._-]/.test(username)) {
+                    errorsFound["username"] = "Letters, numbers, dots, underscores, hyphens only";
+                } else if (username.length < 3 || username.length > 12) {
+                    errorsFound["username"] = "Username must be 3-12 characters";
+                }
+
+                // Async Username Check
+                if (!errorsFound["username"]) {
+                    try {
+                        const response = await fetch(`${BASE_URL}/users/username-exists/${encodeURIComponent(username)}`);
+                        const data = await response.json();
+                        if (data["exists"]) {
+                            errorsFound["username"] = "This username is already taken";
+                        }
+                    } catch (err) {
+                        console.error("API Error checking username", err);
+                    }
+                }
+
+                // Personal Info Validation
+                if (!firstName) errorsFound["first-name"] = "Please enter your first name";
+                else if (!validator.isAlpha(firstName)) errorsFound["first-name"] = "Letters only";
+
+                if (!lastName) errorsFound["last-name"] = "Please enter your last name";
+                else if (!validator.isAlpha(lastName)) errorsFound["last-name"] = "Letters only";
+
+                if (!gender) errorsFound["gender"] = "Please select your gender";
+                if (!dateOfBirth) errorsFound["date-of-birth"] = "Please enter your date of birth";
+
+                // Final Check for Part 2
+                if (Object.keys(errorsFound).length > 0) {
+                    setErrors(errorsFound);
+                    setIsLoading(false);
+                    return;
+                }
+
+                // Create Account
+                const payload = {
+                    "firstName": firstName,
+                    "lastName": lastName,
+                    "email": props.part1Data ? props.part1Data["email"] : "", // Safety check
+                    "phoneNumber": props.part1Data ? props.part1Data["phone-number"] : "",
+                    "password": props.part1Data ? props.part1Data["password"] : "",
+                    "username": username,
+                    "type": "visitor",
+                    "gender": gender.toLowerCase(),
+                    "dateOfBirth": dateOfBirth,
+                    "university": undefined
+                };
+
+                const response = await fetch(`${BASE_URL}/users/add`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+
+                const token = await response.json();
+
+                if (response.status !== 200) {
+                    alert("Error creating account: " + (token.message || "Please try again"));
+                } else {
+                    localStorage.setItem("token", token["token"]);
+                    navigate("/home");
+                }
+            }
+
+        } catch (error) {
+            console.error("Critical Error in HandleSubmit:", error);
+            alert("A network error occurred. Is the server running?");
+        } finally {
+            setIsLoading(false); // Stop loading regardless of success/fail
         }
-
-        // no errors, log in user, direct to home
-        if (isUsername)
-            props.setLoggedInUser(() =>emailOrUsername);
-        else
-            props.setLoggedInUser(() => props.getUsernameFromEmail(emailOrUsername));
-        navigate("/home");
-        localStorage.setItem("loggedInUser", emailOrUsername);
-        
     }
-    
-    else if (option == "sign-up-part-2") {
-        // console.log(email)
-        // username field
-        if (!username) {
-            errorsFound["username"] = "Please enter your username"
-        }
-        else if (/[^a-zA-Z0-9._-]/g.test(username)) {
-            errorsFound["username"] = "Username can only contain letters, numbers, dots, underscores, and hyphens"
-        }
-        else if (username.length < 3 || username.length > 12) {
-            errorsFound["username"] = "Username must be between 3 and 12 characters long"
-        }
-        else if (props.checkIfUsernameExists(username)) {
-            errorsFound["username"] = "This username is already taken"
-        }
-
-        // first name field
-        if (!firstName) {
-            errorsFound["first-name"] = "Please enter your first name"
-        }
-        else if (validator.isAlpha(firstName) == false) {
-            errorsFound["first-name"] = "First name can only contain letters"
-        }
-        // last name field
-        if (!lastName) {
-            errorsFound["last-name"] = "Please enter your last name"
-        }
-        else if (validator.isAlpha(lastName) == false) {
-            errorsFound["last-name"] = "Last name can only contain letters"
-        }
-        // gender field
-        if (!gender) {
-            errorsFound["gender"] = "Please select your gender"
-        }
-        // date of birth field
-        if (!dateOfBirth) {
-            errorsFound["date-of-birth"] = "Please enter your date of birth"
-        } 
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-
-        // no errors, create account, direct to home
-        props.addNewUser({
-            "first-name": firstName,
-            "last-name": lastName,
-            "email": props.part1Data["email"],
-            "phone-number": props.part1Data["phone-number"],
-            "password": props.part1Data["password"],
-            "username": username,
-            "type": "visitor",
-            "gender": gender,
-            "date-of-birth": dateOfBirth,
-            "university": "kfupm" // come back here
-        })
-        props.setLoggedInUser(() => username);
-        localStorage.setItem("loggedInUser", username);
-        navigate("/home");
-    }
-
-
-    // empty input fields
-    setEmailOrUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setPhoneNumber("");
-    setFirstName("");
-    setLastName("");
-    setUsername("");
-    setGender("");
-    setDateOfBirth("");
-}
 
     return (
-    <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center mb-[20vh]'>
-        <div className="width-full h-full flex flex-col gap-10 m-16">
+        <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center mb-[20vh]'>
+            <div className="width-full h-full flex flex-col gap-10 m-16">
 
-            {/* Header: Log in or Sign Up */}
-            <h1 className="text-[50px] sm:text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
+                {/* Header */}
+                <h1 className="text-[50px] sm:text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
 
-            {/* List of all inputs, depends if page is login, signup part 1 or 2 */}
-            <SignupInputsList option={option} errors={errors} inputsAndSetters={inputsAndSetters} />
+                {/* Inputs */}
+                <SignupInputsList option={option} errors={errors} inputsAndSetters={inputsAndSetters} />
 
-            {/* Link to sign up or log in */}
-            {options[option]["linkText"] && (
-                <div className="text-[20px] font-[gilroy-medium] flex gap-2">
-                    <span className="text-[var(--primary-color)]">{options[option]["linkText"]}</span> 
-                    <NavLink to={options[option]["linkPath"]} end className="text-[var(--secondary-accent-color)] cursor-pointer">{options[option]["anchorText"]}</NavLink>
-                </div>
-            )}
+                {/* Links */}
+                {options[option]["linkText"] && (
+                    <div className="text-[20px] font-[gilroy-medium] flex gap-2">
+                        <span className="text-[var(--primary-color)]">{options[option]["linkText"]}</span>
+                        <NavLink to={options[option]["linkPath"]} end className="text-[var(--secondary-accent-color)] cursor-pointer">
+                            {options[option]["anchorText"]}
+                        </NavLink>
+                    </div>
+                )}
 
-            {/* Login or Sign up button */}
-            <button type="submit" className="bg-[var(--accent-color)] text-[var(--primary-color)] text-[32px] font-[DM-Sans-ExtraLight] font-extralight py-2 px-6 rounded h-[74px] w-[399px] flex items-center justify-between gap-4 cursor-pointer">
-                <span>{options[option]["buttonText"]}</span>
-                <img src={rightArrow} alt='arrow' />
-            </button>
+                {/* Submit Button */}
+                <button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className={`bg-[var(--accent-color)] text-[var(--primary-color)] text-[32px] font-[DM-Sans-ExtraLight] font-extralight py-2 px-6 rounded h-[74px] w-[399px] flex items-center justify-between gap-4 cursor-pointer ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                    <span>{isLoading ? "Processing..." : options[option]["buttonText"]}</span>
+                    {!isLoading && <img src={rightArrow} alt='arrow' />}
+                </button>
 
-            {/* Decoration - Tilted Div */}
-            {/* <div className="absolute bg-[#1F4C76] rotate-[13.21deg] h-[1200px] w-[576.1037586593156px] top-[-30px] right-[-300px] object-contain"></div> */}
-        </div>
-    </form>
+            </div>
+        </form>
     )
 }
 

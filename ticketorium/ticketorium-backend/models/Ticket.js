@@ -17,9 +17,12 @@ const ticketSchema = new Schema(
             index: true,
         },
 
-        // denormalized fields for pretty codes
-        eventId: { type: Number },
-        userCode: { type: Number }, // optional later
+        // REMOVED: eventId (numeric) to fix inconsistency. 
+        // We now rely on 'event' (ObjectId) above.
+        
+        // Optional: You can keep userCode if you have a system for it, 
+        // but if it was part of the numeric ID system, you might want to remove it too.
+        // userCode: { type: Number }, 
 
         ticketCode: {
             type: String,
@@ -37,13 +40,14 @@ const ticketSchema = new Schema(
 
         qrData: { type: String, required: true },
 
-        seat: { type: String },
+        seat: { type: String }, // e.g. "A1", "Row 3 Seat 5" or null/undefined
 
         price: { type: Number, default: 0 },
 
         status: {
             type: String,
-            enum: ["active", "used", "cancelled", "refunded"],
+            // Kept your specific enums here
+            enum: ["active", "used", "cancelled", "refunded"], 
             default: "active",
             index: true,
         },

@@ -1,3 +1,5 @@
+// /Users/reema/WebstormProjects/Ticketorium/ticketorium/src/api/tickets.js
+
 const BASE_URL = "http://localhost:4000/api/tickets";
 
 /**
@@ -38,9 +40,10 @@ export async function fetchTicketForEvent({ eventId, user }) {
 
     const matching = allTickets.filter(
         (t) =>
-            String(t.eventId) === String(eventId) &&
-            String(t.userId) === String(user) &&
-            t.status !== "cancelled"
+    String(t.event) === String(eventId) &&
+    String(t.user) === String(user) &&
+    t.status !== "cancelled"
+
     );
 
     if (matching.length === 0) return null;

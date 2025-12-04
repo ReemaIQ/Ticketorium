@@ -1,12 +1,24 @@
 /**
- * Returns the user category based on the type.
+ * Normalize user role → event-action category
+ *
+ * Used by Event & EventActions components.
  */
 export function getUserCategory(type) {
-    const normalized = type?.toLowerCase();
+    if (!type) return "attendee"; // safe fallback
+
+    const normalized = String(type).trim().toLowerCase();
 
     if (normalized === "student" || normalized === "visitor") {
         return "attendee";
     }
-    if (normalized === "organizer") return "organizer";   // r was "other"
-    if (normalized === "admin" || normalized === "system-admin") return "admin";           // r was "other"
+
+    if (normalized === "organizer") {
+        return "organizer";
+    }
+
+    if (normalized === "admin" || normalized === "system-admin") {
+        return "admin";
+    }
+
+    return "attendee"; // default fallback
 }

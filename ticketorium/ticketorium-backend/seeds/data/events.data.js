@@ -1,8 +1,7 @@
-// ticketorium-backend/seed/data/events.data.js
+// ticketorium-backend/seeds/data/events.data.js
 export const eventsSeed = [
     {
-        key: "ev1",
-        eventId: 1,
+        key: 1,
         universityCode: "Harvard",
         img: "group-hiking.png",
         title: "2025 Group Hiking",
@@ -13,8 +12,7 @@ export const eventsSeed = [
         hasSeatingPlan: false,
     },
     {
-        key: "ev2",
-        eventId: 2,
+        key: 2,
         universityCode: "Harvard",
         img: "group-hiking.png",
         title: "2025 Group Hiking (Paid)",
@@ -25,8 +23,7 @@ export const eventsSeed = [
         hasSeatingPlan: false,
     },
     {
-        key: "ev3",
-        eventId: 3,
+        key: 3,
         universityCode: "Harvard",
         img: "spelling-bee.png",
         title: "2025 Spelling Bee",
@@ -37,8 +34,7 @@ export const eventsSeed = [
         hasSeatingPlan: false,
     },
     {
-        key: "ev4",
-        eventId: 4,
+        key: 4,
         universityCode: "KFUPM",
         img: "game-dev.png",
         title: "2025 Coding Competition",
@@ -49,8 +45,7 @@ export const eventsSeed = [
         hasSeatingPlan: false,
     },
     {
-        key: "ev5",
-        eventId: 5,
+        key: 5,
         universityCode: "KFUPM",
         img: "game-dev.png",
         title: "2025 Coding Competition (Waitlist)",
@@ -61,8 +56,7 @@ export const eventsSeed = [
         hasSeatingPlan: false,
     },
     {
-        key: "ev6",
-        eventId: 6,
+        key: 6,
         universityCode: "KFUPM",
         img: "game-dev.png",
         title: "2025 Coding Competition (Dec, Seating)",
@@ -73,8 +67,7 @@ export const eventsSeed = [
         hasSeatingPlan: true,
     },
     {
-        key: "ev7",
-        eventId: 7,
+        key: 7,
         universityCode: "Harvard",
         img: "graduation.png",
         title: "2025 Graduation Ceremony",
@@ -85,8 +78,7 @@ export const eventsSeed = [
         hasSeatingPlan: false,
     },
     {
-        key: "ev8",
-        eventId: 8,
+        key: 8,
         universityCode: "Harvard",
         img: "spelling-bee.png",
         title: "2025 Spelling Bee (Dec, Seating)",
@@ -97,8 +89,7 @@ export const eventsSeed = [
         hasSeatingPlan: true,
     },
     {
-        key: "ev9",
-        eventId: 9,
+        key: 9,
         universityCode: "KFUPM",
         img: "game-dev.png",
         title: "2025 Coding Competition (Dec, Seating 2)",

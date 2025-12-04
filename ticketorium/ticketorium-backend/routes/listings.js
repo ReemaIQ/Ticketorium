@@ -1,3 +1,4 @@
+// ticketorium/ticketorium-backend/routes/listings.js
 import express from "express";
 import { Listing } from "../models/Listing.js";
 import { Ticket } from "../models/Ticket.js";
@@ -6,9 +7,6 @@ import { User } from "../models/User.js";
 
 const router = express.Router();
 
-/**
- * Helper: recompute top 3 bids and update listing.topBids + currentPrice
- */
 async function recomputeTopBids(listingId) {
     const bids = await Bid.find({ listing: listingId, isActive: true }).sort({
         amount: -1,
@@ -30,11 +28,6 @@ async function recomputeTopBids(listingId) {
     await listing.save();
 }
 
-/**
- * GET /api/listings
- * Optional query:
- *   - status (active, expired, sold, cancelled)
- */
 router.get("/", async (req, res) => {
     try {
         const { status } = req.query;
@@ -44,7 +37,8 @@ router.get("/", async (req, res) => {
         const listings = await Listing.find(filter)
             .populate({
                 path: "ticket",
-                populate: { path: "event", select: "title eventId startAt" },
+                // Removed 'eventId'
+                populate: { path: "event", select: "title startAt" },
             })
             .populate("seller", "handle firstName lastName")
             .populate("topBids.bidder", "handle firstName lastName")
@@ -57,10 +51,6 @@ router.get("/", async (req, res) => {
     }
 });
 
-/**
- * POST /api/listings
- * Body: { ticketId, sellerId, title?, startingPrice? }
- */
 router.post("/", async (req, res) => {
     try {
         const { ticketId, sellerId, title, startingPrice = 0 } = req.body || {};
@@ -98,10 +88,6 @@ router.post("/", async (req, res) => {
     }
 });
 
-/**
- * POST /api/listings/:id/bids
- * Body: { bidderId, amount }
- */
 router.post("/:id/bids", async (req, res) => {
     try {
         const { bidderId, amount } = req.body || {};
@@ -132,7 +118,6 @@ router.post("/:id/bids", async (req, res) => {
             isActive: true,
         });
 
-        // recompute top 3
         await recomputeTopBids(listing._id);
 
         res.status(201).json(bid);
@@ -142,10 +127,6 @@ router.post("/:id/bids", async (req, res) => {
     }
 });
 
-/**
- * POST /api/listings/:id/cancel
- * Body: { sellerId }
- */
 router.post("/:id/cancel", async (req, res) => {
     try {
         const { sellerId } = req.body || {};

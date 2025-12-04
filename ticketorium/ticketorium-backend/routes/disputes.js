@@ -1,3 +1,4 @@
+// ticketorium/ticketorium-backend/routes/disputes.js
 import express from "express";
 import { Dispute } from "../models/Dispute.js";
 import { User } from "../models/User.js";
@@ -8,9 +9,6 @@ const router = express.Router();
 
 /**
  * GET /api/disputes
- * Optional query:
- *   - userId (participant)
- *   - status
  */
 router.get("/", async (req, res) => {
     try {
@@ -22,7 +20,8 @@ router.get("/", async (req, res) => {
         const disputes = await Dispute.find(filter)
             .populate("createdBy", "handle firstName lastName role")
             .populate("participants", "handle firstName lastName role")
-            .populate("event", "eventId title")
+            // Removed 'eventId' from select
+            .populate("event", "title startAt")
             .populate("ticket", "ticketCode seat")
             .populate("messages.from", "handle firstName lastName role")
             .sort({ lastActivityAt: -1 });
@@ -42,7 +41,8 @@ router.get("/:id", async (req, res) => {
         const dispute = await Dispute.findById(req.params.id)
             .populate("createdBy", "handle firstName lastName role")
             .populate("participants", "handle firstName lastName role")
-            .populate("event", "eventId title")
+            // Removed 'eventId' from select
+            .populate("event", "title startAt")
             .populate("ticket", "ticketCode seat")
             .populate("messages.from", "handle firstName lastName role");
 
@@ -59,7 +59,6 @@ router.get("/:id", async (req, res) => {
 
 /**
  * POST /api/disputes
- * Body: { title, subtitle?, type, createdById, participantIds?, eventId?, ticketId? }
  */
 router.post("/", async (req, res) => {
     try {
@@ -69,7 +68,7 @@ router.post("/", async (req, res) => {
             type = "other",
             createdById,
             participantIds = [],
-            eventId,
+            eventId, // Expecting Mongo ObjectId now
             ticketId,
         } = req.body || {};
 
@@ -86,10 +85,8 @@ router.post("/", async (req, res) => {
 
         let event = null;
         if (eventId) {
-            // eventId can be Mongo _id or numeric eventId; we try both.
-            event =
-                (await Event.findById(eventId)) ||
-                (await Event.findOne({ eventId: Number(eventId) }));
+            // UPDATED: Just use findById
+            event = await Event.findById(eventId);
         }
 
         let ticket = null;
@@ -123,7 +120,6 @@ router.post("/", async (req, res) => {
 
 /**
  * POST /api/disputes/:id/messages
- * Body: { fromId, type, text?, url?, caption? }
  */
 router.post("/:id/messages", async (req, res) => {
     try {
@@ -163,7 +159,6 @@ router.post("/:id/messages", async (req, res) => {
 
 /**
  * PATCH /api/disputes/:id/status
- * Body: { status } // open, in_review, resolved, closed, etc.
  */
 router.patch("/:id/status", async (req, res) => {
     try {

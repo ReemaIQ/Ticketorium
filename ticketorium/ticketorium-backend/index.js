@@ -20,9 +20,14 @@ import notificationsRouter from "./routes/notifications.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use("/api/event-registrations", eventRegistrationsRouter);
+
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Serve uploaded images
+app.use("/uploads", express.static("uploads"));
 
 // Health check (before DB is fine)
 app.get("/", (_req, res) => {

@@ -1,12 +1,14 @@
-// ticketorium-backend/seeds/seedAll.js
+//ticketorium/ticketorium-backend/seeds/seedAll.js
 import dotenv from "dotenv";
 dotenv.config();
+
+console.log("DEBUG MONGO_URL from seedAll.js:", process.env.MONGO_URL);
 
 import crypto from "crypto";
 import mongoose from "mongoose";
 import { connectDB } from "../database.js";
 
-import { Counter } from "../models/Counter.js";
+// Models
 import { University } from "../models/University.js";
 import { User } from "../models/User.js";
 import { Event } from "../models/Event.js";
@@ -33,11 +35,12 @@ import { eventStatsSeed } from "./data/eventStats.data.js";
 import { notificationsSeed } from "./data/notificationInstances.data.js";
 
 // ---------- helpers ----------
-function generateTicketCode(eventId, userHandle) {
-    const cleanEvent = String(eventId).padStart(3, "0");
+function generateTicketCode(eventObjectId, userHandle) {
+    // UPDATED: Use last 4 digits of the ObjectId instead of numeric ID
+    const eventSuffix = eventObjectId.toString().slice(-4).toUpperCase(); 
     const cleanUser = (userHandle || "USER").toUpperCase().slice(0, 6);
     const randomPart = crypto.randomBytes(2).toString("hex").toUpperCase();
-    return `TKT-E${cleanEvent}-${cleanUser}-${randomPart}`;
+    return `TKT-E${eventSuffix}-${cleanUser}-${randomPart}`;
 }
 
 function generateQrToken() {
@@ -52,7 +55,6 @@ async function runSeed() {
 
         // 0) Wipe all relevant collections
         await Promise.all([
-            Counter.deleteMany({}),
             University.deleteMany({}),
             User.deleteMany({}),
             Event.deleteMany({}),
@@ -65,6 +67,15 @@ async function runSeed() {
             NotificationTemplate.deleteMany({}),
             Notification.deleteMany({}),
         ]);
+
+        // Drop Event indexes to remove any old "eventId" unique constraint
+        // This prevents the "duplicate key: null" error.
+        try {
+            await Event.collection.dropIndexes();
+            console.log("Dropped old Event indexes to clear eventId constraints");
+        } catch (e) {
+            // Ignore if collection didn't exist
+        }
 
         // 1) Universities
         const uniByCode = {};
@@ -96,13 +107,11 @@ async function runSeed() {
 
         // 3) Events
         const eventByKey = {};
-        const eventByEventId = {};
         for (const e of eventsSeed) {
             const uniDoc = uniByCode[e.universityCode];
             const organizer = userByHandle[e.organizerHandle];
 
             const doc = await Event.create({
-                eventId: e.eventId, // explicit; pre-save hook will not overwrite
                 university: uniDoc._id,
                 organizer: organizer._id,
                 title: e.title,
@@ -116,18 +125,8 @@ async function runSeed() {
             });
 
             eventByKey[e.key] = doc;
-            eventByEventId[e.eventId] = doc;
         }
         console.log("Seeded events:", Object.keys(eventByKey));
-
-        // 3b) Counter for eventId (so next created event gets eventId 10, etc.)
-        const maxEventId = Math.max(...eventsSeed.map((e) => e.eventId));
-        await Counter.findOneAndUpdate(
-            { name: "eventId" },
-            { $set: { name: "eventId", seq: maxEventId } },
-            { upsert: true }
-        );
-        console.log("Seeded Counter for eventId with seq =", maxEventId);
 
         // 4) EventStats
         for (const s of eventStatsSeed) {
@@ -150,30 +149,11 @@ async function runSeed() {
         }
         console.log("Seeded EventStats:", eventStatsSeed.length);
 
-        // // 5) Event registrations
-        // for (const r of registrationsSeed) {
-        //     const eventDoc = eventByKey[r.eventKey];
-        //     const userDoc = userByHandle[r.userHandle];
-        //     const invitedByDoc = r.invitedByHandle
-        //         ? userByHandle[r.invitedByHandle]
-        //         : null;
-        //
-        //     await EventRegistration.create({
-        //         event: eventDoc._id,
-        //         user: userDoc._id,
-        //         invitedBy: invitedByDoc ? invitedByDoc._id : null,
-        //         invitationSource: invitedByDoc ? "user-referral" : "direct",
-        //         status: r.status,
-        //         joinedAt: r.status === "joined" ? new Date() : null,
-        //     });
-        // }
-        // console.log("Seeded EventRegistrations:", registrationsSeed.length);
-        // 5) Event registrations (idempotent upsert by event+user)
-
+        // 5) Event registrations
         let regCount = 0;
 
         for (const r of registrationsSeed) {
-            const eventDoc = eventByKey[r.eventKey];
+            const eventDoc = eventByKey[r.eventKey]; 
             const userDoc = userByHandle[r.userHandle];
             const invitedByDoc = r.invitedByHandle
                 ? userByHandle[r.invitedByHandle]
@@ -182,7 +162,7 @@ async function runSeed() {
             if (!eventDoc || !userDoc) continue;
 
             const joinedAt =
-                r.status === "joined" ? new Date() : undefined; // keep old joinedAt if exists
+                r.status === "joined" ? new Date() : undefined;
 
             const update = {
                 invitedBy: invitedByDoc ? invitedByDoc._id : null,
@@ -205,20 +185,19 @@ async function runSeed() {
 
         console.log("Seeded/updated EventRegistrations rows:", regCount);
 
-
         // 6) Tickets
         const ticketByKey = {};
         const ticketDocs = [];
         for (const t of ticketsSeed) {
             const eventDoc = eventByKey[t.eventKey];
             const userDoc = userByHandle[t.userHandle];
+            
             const qrToken = generateQrToken();
-            const ticketCode = generateTicketCode(eventDoc.eventId, userDoc.handle);
+            const ticketCode = generateTicketCode(eventDoc._id, userDoc.handle);
 
             const ticket = await Ticket.create({
                 event: eventDoc._id,
                 user: userDoc._id,
-                eventId: eventDoc.eventId,
                 ticketCode,
                 qrToken,
                 qrData: `TICKET:${qrToken}`,
@@ -253,7 +232,7 @@ async function runSeed() {
         }
         console.log("Seeded Listings:", Object.keys(listingByKey).length);
 
-        // 8) Bids + compute top 3 per listing
+        // 8) Bids
         const listingToBidDocs = {};
         for (const b of bidsSeed) {
             const listing = listingByKey[b.listingKey];
@@ -271,7 +250,7 @@ async function runSeed() {
             listingToBidDocs[listing._id].push(bidDoc);
         }
 
-        // update topBids and currentPrice on each listing
+        // update topBids and currentPrice
         for (const [listingId, bids] of Object.entries(listingToBidDocs)) {
             const activeBids = bids.filter((b) => b.isActive);
 
@@ -314,11 +293,11 @@ async function runSeed() {
             await Dispute.create({
                 title: d.title,
                 subtitle: d.subtitle,
-                type: "ticket_issue", // you can specialize per dispute
+                type: "ticket_issue",
                 createdBy: participants[0],
                 status: d.status,
                 participants,
-                event: null, // could attach eventByKey["ev4"] for example
+                event: null, 
                 ticket: ticketDocs[0]?._id ?? null,
                 messages,
                 lastActivityAt: new Date(d.lastActivityAt),
@@ -326,7 +305,7 @@ async function runSeed() {
         }
         console.log("Seeded Disputes:", disputesSeed.length);
 
-        // 10) NotificationTemplates (ALL from notifications.data.js)
+        // 10) NotificationTemplates
         const templateByKey = {};
         for (const t of notificationTemplatesSeed) {
             const doc = await NotificationTemplate.create(t);
@@ -337,7 +316,7 @@ async function runSeed() {
             Object.keys(templateByKey).length
         );
 
-        // 11) Notification instances (Notification model)
+        // 11) Notifications
         for (const n of notificationsSeed) {
             const userDoc = userByHandle[n.userHandle];
             const templateDoc = templateByKey[n.templateKey];
@@ -346,7 +325,7 @@ async function runSeed() {
                 user: userDoc._id,
                 template: templateDoc._id,
                 data: n.data || {},
-                channels: templateDoc.channels, // inherit from template
+                channels: templateDoc.channels,
                 seen: n.seen ?? false,
                 readAt: n.seen ? new Date() : null,
             });

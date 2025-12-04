@@ -1,10 +1,8 @@
-// ticketorium-backend/seeds/data/tickets.data.js
-
-// key is just to connect tickets → listings easily
+// key is just to connect tickets -> listings easily
 export const ticketsSeed = [
     {
         key: "t1",
-        eventKey: "ev4",          // Coding Competition
+        eventKey: 4,          // UPDATED: Must be Number (4), not "ev4"
         userHandle: "student",
         seat: "A-01",
         price: 19.99,
@@ -12,7 +10,7 @@ export const ticketsSeed = [
     },
     {
         key: "t2",
-        eventKey: "ev4",
+        eventKey: 4,
         userHandle: "visitor",
         seat: "A-02",
         price: 19.99,
@@ -20,7 +18,7 @@ export const ticketsSeed = [
     },
     {
         key: "t3",
-        eventKey: "ev6",          // Dec competition with seating
+        eventKey: 6,          // UPDATED: Must be Number (6)
         userHandle: "visitor",
         seat: "B-01",
         price: 19.99,
@@ -28,7 +26,7 @@ export const ticketsSeed = [
     },
     {
         key: "t4",
-        eventKey: "ev6",
+        eventKey: 6,
         userHandle: "student",
         seat: "B-02",
         price: 19.99,
@@ -36,7 +34,7 @@ export const ticketsSeed = [
     },
     {
         key: "t5",
-        eventKey: "ev8",          // Spelling Bee (seating)
+        eventKey: 8,          // UPDATED: Must be Number (8)
         userHandle: "visitor",
         seat: "C-01",
         price: 0,
@@ -44,7 +42,7 @@ export const ticketsSeed = [
     },
     {
         key: "t6",
-        eventKey: "ev7",          // Graduation
+        eventKey: 7,          // UPDATED: Must be Number (7)
         userHandle: "student",
         seat: "VIP-01",
         price: 0,

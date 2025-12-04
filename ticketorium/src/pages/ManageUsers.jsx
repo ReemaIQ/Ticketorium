@@ -21,7 +21,7 @@ export default function ManageUsers(props) {
     const [editingUser, setEditingUser] = useState(null); // null = create mode, object = edit mode
 
     const currentUser = props.users?.[props.user] || {};
-    const currentType = (currentUser.type || currentUser.role || "").toLowerCase();
+    const currentType = (currentUser?.type || currentUser?.role || "").toLowerCase();
     const isRegularAdmin = currentType === "admin";
 
     // Filter Logic

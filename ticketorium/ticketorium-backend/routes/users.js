@@ -1,3 +1,4 @@
+// ticketorium-backend/routes/users.js
 import express from "express";
 import { User } from "../models/User.js";
 
@@ -24,6 +25,28 @@ router.get("/", async (req, res) => {
     } catch (err) {
         console.error("GET /api/users error:", err);
         res.status(500).json({ error: "Failed to load users" });
+    }
+});
+
+/**
+ * GET /api/users/by-handle/:handle
+ * Used by frontend to fetch the logged-in user and their university
+ */
+router.get("/by-handle/:handle", async (req, res) => {
+    try {
+        const { handle } = req.params;
+
+        const user = await User.findOne({ handle })
+            .populate("university", "code name logo");
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(user);
+    } catch (err) {
+        console.error("GET /api/users/by-handle error:", err);
+        res.status(500).json({ error: "Failed to load user" });
     }
 });
 
