@@ -4,20 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="all events now shows no errors but still no events">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/api/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Event.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Event.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/seedAll.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/seedAll.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,14 +133,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00019" summary="biddings and their page">
-      <option name="closed" value="true" />
-      <created>1763239146051</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1763239146051</updated>
     </task>
     <task id="LOCAL-00020" summary="added dummy bids and other things">
       <option name="closed" value="true" />
@@ -534,7 +518,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764864531433</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!">
+      <option name="closed" value="true" />
+      <created>1764880727248</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1764880727248</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -564,7 +556,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refining disputes" />
     <MESSAGE value="finished disputes" />
     <MESSAGE value="system policies page" />
     <MESSAGE value="removed node modules folder" />
@@ -589,7 +580,8 @@
     <MESSAGE value="updated dispute assigment logic" />
     <MESSAGE value="merged Leena and Shayma work into my semi-working code" />
     <MESSAGE value="all events now shows no errors but still no events" />
-    <option name="LAST_COMMIT_MESSAGE" value="all events now shows no errors but still no events" />
+    <MESSAGE value="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

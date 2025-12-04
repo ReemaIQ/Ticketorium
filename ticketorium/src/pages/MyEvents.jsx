@@ -1,393 +1,3 @@
-// // src/pages/MyEvents.jsx
-// import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { Plus } from "lucide-react";
-
-// import EventList from "../components/event-list/EventList.jsx";
-// import SearchBtn from "../components/search-button/SearchBtn.jsx";
-// import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
-
-// // Font Awesome Setup
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { library } from "@fortawesome/fontawesome-svg-core";
-// import { fas } from "@fortawesome/free-solid-svg-icons";
-// import { far } from "@fortawesome/free-regular-svg-icons";
-// import { fab } from "@fortawesome/free-brands-svg-icons";
-// library.add(fas, far, fab);
-
-// import { fetchEvents } from "../api/events.js";
-// import { fetchUserRegistrations } from "../api/eventRegistrations.js";
-// import { fetchUserByUsername } from "../api/users.js";
-
-// /* ------------------ helpers ------------------ */
-
-// function normalizeUserType(props) {
-//     const raw =
-//         (props.user && props.users?.[props.user]?.type) ||
-//         props.userType ||
-//         null;
-//     return raw ? String(raw).toLowerCase() : null;
-// }
-
-// function buildUniName(props) {
-//     return props.uni || "Harvard";
-// }
-
-// /**
-//  * Check if an event belongs to the “current” university for non-admin users.
-//  * Admin / system-admin see all their events.
-//  */
-// function eventMatchesUniversity(ev, uniKey, backendUser) {
-//     const rawType =
-//         backendUser?.role ||
-//         backendUser?.type ||
-//         backendUser?.userType ||
-//         "";
-//     const normalizedType = String(rawType).toLowerCase();
-
-//     // Admin / system-admin → see all their events regardless of uni
-//     if (normalizedType === "admin" || normalizedType === "system-admin") {
-//         return true;
-//     }
-
-//     // Preferred university filter:
-//     const uniFilter =
-//         uniKey ||
-//         backendUser?.university?.code ||
-//         backendUser?.university?.name ||
-//         "";
-
-//     if (!uniFilter) return true;
-
-//     const target = String(uniFilter).toLowerCase();
-//     const u = ev.university;
-
-//     if (!u) return false;
-
-//     if (typeof u === "string") {
-//         return u.toLowerCase() === target;
-//     }
-
-//     const code = u.code ? u.code.toLowerCase() : "";
-//     const name = u.name ? u.name.toLowerCase() : "";
-
-//     return code === target || name === target;
-// }
-
-// /**
-//  * Build "my events" list directly from registrations:
-//  * - Only events where the user has a registration (joined / waitlist / invited / etc.).
-//  * - Attach reg.status → viewEvent.state (the user–event relation).
-//  * - Attach inviter display name when present.
-//  */
-// function buildMyEventsFromRegistrations(registrations, uniKey, backendUser) {
-//     if (!Array.isArray(registrations)) return [];
-
-//     const result = [];
-
-//     registrations.forEach((reg) => {
-//         if (!reg || typeof reg !== "object") return;
-
-//         const ev = reg.event;
-//         if (!ev || typeof ev !== "object") return;
-
-//         // Optional: filter by university (non-admin)
-//         if (!eventMatchesUniversity(ev, uniKey, backendUser)) return;
-
-//         const viewEv = { ...ev };
-
-//         // Relation state (joined / waitlisted / invited / etc.)
-//         viewEv.state = reg.status;
-
-//         // Inviter name if present
-//         if (reg.invitedBy) {
-//             const inv = reg.invitedBy;
-//             const inviterName =
-//                 inv.handle ||
-//                 [inv.firstName, inv.lastName].filter(Boolean).join(" ") ||
-//                 "";
-//             if (inviterName) viewEv.inviter = inviterName;
-//         }
-
-//         result.push(viewEv);
-//     });
-
-//     return result;
-// }
-
-// /**
-//  * Build organizer/admin "my events" list:
-//  * - Events where backendUser is the organizer.
-//  * - Optionally filtered by university.
-//  */
-// function buildOrganizedEvents(events, uniKey, backendUser) {
-//     if (!Array.isArray(events)) return [];
-
-//     const backendUserId = backendUser?._id
-//         ? String(backendUser._id)
-//         : backendUser?.id
-//         ? String(backendUser.id)
-//         : null;
-
-//     if (!backendUserId) return [];
-
-//     const result = [];
-
-//     events.forEach((ev) => {
-//         if (!ev || typeof ev !== "object") return;
-
-//         const org = ev.organizer;
-//         if (!org) return;
-
-//         const orgId =
-//             typeof org === "string"
-//                 ? String(org)
-//                 : org._id
-//                 ? String(org._id)
-//                 : org.id
-//                 ? String(org.id)
-//                 : null;
-
-//         if (!orgId || orgId !== backendUserId) return;
-
-//         // Optional: filter by university (non-admin/system-admin already allowed in eventMatchesUniversity)
-//         if (!eventMatchesUniversity(ev, uniKey, backendUser)) return;
-
-//         result.push({ ...ev });
-//     });
-
-//     return result;
-// }
-
-// /* ------------------ component ------------------ */
-
-// function MyEvents(props) {
-//     const [allMyEvents, setAllMyEvents] = useState([]);
-//     const [filteredEvents, setFilteredEvents] = useState([]);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState("");
-
-//     const navigate = useNavigate();
-
-//     const userType = normalizeUserType(props);
-//     const uniName = buildUniName(props);
-
-//     const getEventsTitle = (type) => {
-//         const t = type?.toLowerCase();
-
-//         if (t === "visitor") {
-//             return (
-//                 <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
-//                     My Events{" "}
-//                     <span className="font-[Gilroy-Medium] text-[60px] text-[var(--primary-color)]">
-//                         at {uniName}
-//                     </span>
-//                 </span>
-//             );
-//         }
-
-//         return (
-//             <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
-//                 My Events
-//             </span>
-//         );
-//     };
-
-//     /* -----------------------------------------
-//        LOAD MY EVENTS (per page)
-//        → resolve backend user
-//        → attendee: build from registrations
-//        → organizer/admin: build from events they created
-//     ------------------------------------------ */
-//     useEffect(() => {
-//         let cancelled = false;
-
-//         async function load() {
-//             if (!props.user) {
-//                 setError("You must be logged in to view your events.");
-//                 setLoading(false);
-//                 return;
-//             }
-
-//             try {
-//                 setLoading(true);
-//                 setError("");
-
-//                 // 1) Backend user (lookup by username / handle, same style as AllEvents)
-//                 const backendUser = await fetchUserByUsername(props.user);
-//                 const userId = backendUser?._id || backendUser?.id;
-
-//                 if (!userId) {
-//                     throw new Error("Could not resolve backend user id.");
-//                 }
-
-//                 const rawRole =
-//                     backendUser?.role ||
-//                     backendUser?.type ||
-//                     backendUser?.userType ||
-//                     "";
-//                 const normalizedRole = String(rawRole).toLowerCase();
-
-//                 let myEvents = [];
-
-//                 if (
-//                     normalizedRole === "organizer" ||
-//                     normalizedRole === "admin" ||
-//                     normalizedRole === "system-admin"
-//                 ) {
-//                     // ------------ ORGANIZER / ADMIN VIEW ------------
-//                     // Fetch all events and keep only those where this user is the organizer
-//                     const events = await fetchEvents();
-//                     const organized = buildOrganizedEvents(
-//                         events,
-//                         props.uni,
-//                         backendUser
-//                     );
-//                     myEvents = organized;
-//                 } else {
-//                     // ------------ ATTENDEE / VISITOR VIEW ------------
-//                     // Registrations for this backend user
-//                     const registrations =
-//                         await fetchUserRegistrations(userId);
-
-//                     // Build "my events" directly from registrations
-//                     myEvents = buildMyEventsFromRegistrations(
-//                         registrations,
-//                         props.uni,
-//                         backendUser
-//                     );
-//                 }
-
-//                 if (!cancelled) {
-//                     setAllMyEvents(myEvents);
-//                     setFilteredEvents(myEvents);
-//                 }
-//             } catch (err) {
-//                 console.error("[MyEvents] load error:", err);
-//                 if (!cancelled) {
-//                     setError("Failed to load your events. Please try again.");
-//                     setAllMyEvents([]);
-//                     setFilteredEvents([]);
-//                 }
-//             } finally {
-//                 if (!cancelled) setLoading(false);
-//             }
-//         }
-
-//         load();
-
-//         return () => {
-//             cancelled = true;
-//         };
-//     }, [props.user, props.uni]);
-
-//     /* -----------------------------------------
-//        Simple client-side search on my events
-//     ------------------------------------------ */
-//     const handleSearch = (searchValue) => {
-//         const q = String(searchValue || "").trim().toLowerCase();
-//         if (!q) {
-//             setFilteredEvents(allMyEvents);
-//             return;
-//         }
-
-//         const next = allMyEvents.filter((ev) =>
-//             String(ev.title || "").toLowerCase().includes(q)
-//         );
-//         setFilteredEvents(next);
-//     };
-
-//     return (
-//         <>
-//             <div
-//                 id="page-content"
-//                 className="flex flex-col items-center gap-30 w-full min-h-screen"
-//             >
-//                 <div
-//                     id="events-section"
-//                     className="flex flex-col w-full max-w-5xl gap-5 align-middle px-10 xl:px-15 pb-10"
-//                 >
-//                     <div
-//                         id="section-header"
-//                         className="flex flex-col items-start gap-5 max-w-5xl mt-9 mb-3 px-3"
-//                     >
-//                         <div className="flex flex-col md:flex-row items-center justify-start gap-4 w-full max-w-5xl">
-//                             <h1 className="justify-end w-full">
-//                                 {getEventsTitle(userType)}
-//                             </h1>
-
-//                             {userType === "organizer" && (
-//                                 <div className="flex justify-end w-full gap-3">
-//                                     <button
-//                                         onClick={() => navigate("/create-event")}
-//                                         className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)]
-//                                         text-[var(--primary-color)] rounded-[6px] font-[Gilroy-Medium]"
-//                                     >
-//                                         <Plus size={18} /> Create New Event
-//                                     </button>
-//                                 </div>
-//                             )}
-//                         </div>
-
-//                         {userType !== "organizer" && (
-//                             <div className="flex gap-4 self-start w-full justify-center">
-//                                 <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-//                                     <FontAwesomeIcon
-//                                         icon={"fa-solid fa-filter"}
-//                                         className="text-white"
-//                                     />
-//                                 </button>
-
-//                                 <SearchBtn
-//                                     filterFunc={handleSearch}
-//                                     expandable={true}
-//                                 />
-//                             </div>
-//                         )}
-//                     </div>
-
-//                     {error && (
-//                         <div className="mb-4 rounded-md border border-[var(--warning-color)]/40 bg-[var(--warning-color)]/10 px-4 py-3 text-[13px] text-[var(--warning-color)] font-[Gilroy-Medium]">
-//                             {error}
-//                         </div>
-//                     )}
-
-//                     {loading ? (
-//                         <div className="flex justify-center items-center py-10 text-slate-500 text-sm">
-//                             Loading your events…
-//                         </div>
-//                     ) : (
-//                         <EventList
-//                             // For "my-events", we simply give it an array of full event objects
-//                             // where each event has, for attendees:
-//                             //   - state: reg.status (joined / waitlisted / invited ...)
-//                             //   - inviter: optional display name
-//                             // For organizers/admin:
-//                             //   - their events as organizer (no relation state needed; EventActions will use organizer category)
-//                             events={filteredEvents}
-//                             userType={userType}
-//                             listType="my-events"
-//                         />
-//                     )}
-//                 </div>
-//             </div>
-
-//             {props.waitlistModalOpen && (
-//                 <WaitlistSuccess
-//                     setWaitlistModalOpen={props.setWaitlistModalOpen}
-//                     waitlistSuccess={props.waitlistSuccess}
-//                 />
-//             )}
-//         </>
-//     );
-// }
-
-// export default MyEvents;
-
-
-
-
-
 // src/pages/MyEvents.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -404,13 +14,13 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 library.add(fas, far, fab);
 
-import { fetchEvents } from "../api/events.js";
+import { fetchEvents, fetchEventById } from "../api/events.js";
 import { fetchUserRegistrations } from "../api/eventRegistrations.js";
-import { fetchUserByUsername } from "../api/users.js";
 
-/* ------------------ helpers ------------------ */
+/* ------------------ small helpers ------------------ */
 
-function normalizeUserType(props) {
+// Only used as a fallback if backend role is missing
+function normalizeUserTypeFromProps(props) {
     const raw =
         (props.user && props.users?.[props.user]?.type) ||
         props.userType ||
@@ -418,108 +28,173 @@ function normalizeUserType(props) {
     return raw ? String(raw).toLowerCase() : null;
 }
 
-function eventMatchesUni(ev, uniKey, backendUser) {
-    const typeRaw =
-        backendUser?.role ||
-        backendUser?.type ||
-        backendUser?.userType ||
-        "";
+// Compare event.university vs user’s uni (for students/etc.)
+function sameUniversity(evUni, userUniId, userUniCode) {
+    let evUniId = null;
+    let evUniCode = null;
 
-    const normalizedType = String(typeRaw).toLowerCase();
+    if (typeof evUni === "string") {
+        evUniId = evUni;
+    } else if (evUni && typeof evUni === "object") {
+        evUniId = evUni._id || null;
+        evUniCode = evUni.code || evUni.name || null;
+    }
 
-    // admins can see everything
-    if (normalizedType === "admin" || normalizedType === "system-admin") {
+    if (userUniId && evUniId && String(userUniId) === String(evUniId)) {
         return true;
     }
 
-    // normal user → match their university
-    const uniFilter =
-        uniKey ||
-        backendUser?.university?.code ||
-        backendUser?.university?.name ||
-        "";
-
-    if (!uniFilter) return true;
-
-    const target = String(uniFilter).toLowerCase();
-    const u = ev.university;
-
-    if (!u) return false;
-
-    if (typeof u === "string") {
-        return u.toLowerCase() === target;
+    if (
+        userUniCode &&
+        evUniCode &&
+        String(userUniCode).toLowerCase() === String(evUniCode).toLowerCase()
+    ) {
+        return true;
     }
 
-    const code = u.code ? u.code.toLowerCase() : "";
-    const name = u.name ? u.name.toLowerCase() : "";
+    if (!userUniId && !userUniCode) return true;
 
-    return code === target || name === target;
+    return false;
 }
 
-function attachRegistrationState(events, registrations, backendUser) {
-    const regsByEventId = {};
-    if (Array.isArray(registrations)) {
-        registrations.forEach((reg) => {
-            const ev = reg.event;
-            const id = ev && (ev._id);
-            if (!id) return;
-            regsByEventId[String(id)] = reg;
-        });
+// registration.status → EventActions state
+function getActionStateFromRegistrationStatus(status) {
+    if (!status) return undefined;
+    const s = String(status).toLowerCase();
+
+    if (["joined", "attending", "registered"].includes(s)) return "joined";
+    if (["waitlist", "waitlisted"].includes(s)) return "waitlisted";
+    if (["invited", "invitation"].includes(s)) return "invited";
+
+    return undefined;
+}
+
+// event.state → fallback when no registration
+function getActionStateFromEvent(ev) {
+    const s = String(ev?.state || "").toLowerCase();
+    if (["waitlist", "waitlisted"].includes(s)) return "waitlist";
+    return undefined;
+}
+
+function getInviterLabelFromReg(reg) {
+    if (!reg || !reg.invitedBy) return undefined;
+
+    const inv = reg.invitedBy;
+    if (typeof inv === "string") return inv;
+
+    const handle = inv.handle;
+    const fullName = [inv.firstName, inv.lastName]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+
+    return fullName || handle || undefined;
+}
+
+function sortByStartAt(eventsArray) {
+    return [...eventsArray].sort((a, b) => {
+        const aDate = a.startAt ? new Date(a.startAt) : null;
+        const bDate = b.startAt ? new Date(b.startAt) : null;
+
+        if (!aDate && !bDate) return 0;
+        if (!aDate) return 1;
+        if (!bDate) return -1;
+
+        return aDate - bDate;
+    });
+}
+
+// Normalize event with actionState + inviter for UI
+function normalizeEventForUI(ev, { backendUser, reg } = {}) {
+    const id = (ev._id || ev.id || "").toString();
+    if (!id) return null;
+
+    const regState = reg ? getActionStateFromRegistrationStatus(reg.status) : undefined;
+    const eventState = !reg ? getActionStateFromEvent(ev) : undefined;
+
+    const actionState =
+        regState !== undefined
+            ? regState
+            : eventState !== undefined
+                ? eventState
+                : undefined;
+
+    const inviter = reg ? getInviterLabelFromReg(reg) : undefined;
+
+    let uniValue = "";
+    if (typeof ev.university === "string") {
+        uniValue = ev.university;
+    } else if (ev.university && typeof ev.university === "object") {
+        uniValue =
+            ev.university.code ||
+            ev.university.name ||
+            ev.university._id ||
+            "";
     }
 
-    const result = [];
-    const myId = backendUser?._id ? String(backendUser._id) : null;
+    let organizerDisplay = ev.organizer;
+    if (ev.organizer && typeof ev.organizer === "object") {
+        const full = [ev.organizer.firstName, ev.organizer.lastName]
+            .filter(Boolean)
+            .join(" ");
+        organizerDisplay = full || ev.organizer.handle || ev.organizer._id;
+    }
 
-    if (!Array.isArray(events)) return result;
+    return {
+        ...ev,
+        id,
+        university: uniValue,
+        date: ev.startAt || ev.endAt || ev.date || null,
+        organizer: organizerDisplay,
+        actionState,
+        inviter,
+    };
+}
 
-    events.forEach((ev) => {
-        if (!ev) return;
-        const id = ev._id;
-        if (!id) return;
+function isOrganizerEvent(ev, backendUser) {
+    if (!backendUser || !backendUser._id) return false;
 
-        const reg = regsByEventId[String(id)];
+    const myId = String(backendUser._id);
+    const org = ev.organizer;
 
-        const isOrganizerEvent =
-            myId &&
-            typeof ev.organizer === "object" &&
-            ev.organizer?._id &&
-            String(ev.organizer._id) === myId;
+    if (typeof org === "string") return String(org) === myId;
+    if (typeof org === "object" && org._id) return String(org._id) === myId;
 
-        if (!reg && !isOrganizerEvent) return;
-
-        const viewEv = { ...ev };
-
-        if (reg) {
-            viewEv.state = reg.status;
-            if (reg.invitedBy) {
-                const inv = reg.invitedBy;
-                const inviterName =
-                    inv.handle ||
-                    [inv.firstName, inv.lastName].filter(Boolean).join(" ") ||
-                    "";
-                if (inviterName) viewEv.inviter = inviterName;
-            }
-        } else {
-            viewEv.state = ev.state;
-        }
-
-        result.push(viewEv);
-    });
-
-    return result;
+    return false;
 }
 
 /* ------------------ component ------------------ */
 
 function MyEvents(props) {
+    const user = props.user || {};        // backend user from token
+    const userId = user._id || null;
+    const backendRole = user.role || null;
+
+    const fallbackType = normalizeUserTypeFromProps(props);
+    const userType =
+        (backendRole && String(backendRole).toLowerCase()) ||
+        fallbackType ||
+        null;
+
+    // Visitor’s currently selected university (dummy key like "KFUPM")
+    const visitorUniKey = props.uni || null;
+
+    // Student’s backend university info
+    const studentUniId =
+        typeof user.university === "string"
+            ? user.university
+            : user.university?._id || null;
+    const studentUniCode =
+        user.universityCode ||
+        (typeof user.university === "object" ? user.university.code : null) ||
+        null;
+
     const [allMyEvents, setAllMyEvents] = useState([]);
     const [filteredEvents, setFilteredEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
-
-    const userType = normalizeUserType(props);
 
     /* -----------------------------------------
        LOAD MY EVENTS
@@ -528,10 +203,19 @@ function MyEvents(props) {
         let cancelled = false;
 
         async function load() {
-            console.log("-------------- [MyEvents] START --------------");
-            console.log("[MyEvents] props.user:", props.user);
+            console.log("----- [MyEvents] Loading -----");
+            console.log("[MyEvents] user:", user);
+            console.log("[MyEvents] userType:", userType);
+            console.log(
+                "[MyEvents] studentUniId:",
+                studentUniId,
+                "studentUniCode:",
+                studentUniCode,
+                "visitorUniKey:",
+                visitorUniKey
+            );
 
-            if (!props.user) {
+            if (!userId) {
                 setError("You must be logged in to view your events.");
                 setLoading(false);
                 return;
@@ -541,60 +225,114 @@ function MyEvents(props) {
                 setLoading(true);
                 setError("");
 
-                /** -------------------------
-                 * 1) Get backend user
-                 * ------------------------*/
-                console.log("[MyEvents] Fetching backend user…");
-                const backendUser = await fetchUserByUsername(props.user);
-                console.log("[MyEvents] backendUser:", backendUser);
+                let myEventsForUI = [];
 
-                const userId = backendUser?._id || backendUser?.id;
-                if (!userId) {
-                    throw new Error("No backend _id found for user.");
+                if (userType === "organizer") {
+                    /* --------- ORGANIZER: events I created --------- */
+                    const events = await fetchEvents({}, user);
+                    const organizerEvents = events.filter((ev) =>
+                        isOrganizerEvent(ev, user)
+                    );
+
+                    const sorted = sortByStartAt(organizerEvents);
+                    myEventsForUI = sorted
+                        .map((ev) => normalizeEventForUI(ev, { backendUser: user }))
+                        .filter(Boolean);
+                } else {
+                    /* ------- STUDENT / VISITOR: my registrations ------- */
+
+                    // 1) Fetch regs for this user
+                    let registrations = await fetchUserRegistrations(userId);
+
+                    // 2) Hydrate event if reg.event is just an id
+                    registrations = await Promise.all(
+                        registrations.map(async (reg) => {
+                            if (reg.event && typeof reg.event === "object") return reg;
+
+                            const eventId =
+                                (typeof reg.event === "string" && reg.event) ||
+                                reg.event?._id;
+                            if (!eventId) return reg;
+
+                            try {
+                                const fullEvent = await fetchEventById(eventId);
+                                return { ...reg, event: fullEvent || reg.event };
+                            } catch (e) {
+                                console.error(
+                                    "[MyEvents] Failed to hydrate reg.event:",
+                                    e
+                                );
+                                return reg;
+                            }
+                        })
+                    );
+
+                    // 3) Filter registrations by university
+                    const filteredRegs = registrations.filter((reg) => {
+                        const ev = reg.event;
+                        if (!ev) return false;
+                        const evUni = ev.university;
+
+                        // VISITOR: use props.uni (runtime selected uni key)
+                        if (userType === "visitor") {
+                            if (!visitorUniKey) return true; // no selection → keep all
+
+                            if (!evUni || typeof evUni !== "object") return true;
+
+                            const evCode = String(
+                                evUni.code || evUni.name || ""
+                            ).toLowerCase();
+                            const key = String(visitorUniKey).toLowerCase();
+
+                            return evCode === key;
+                        }
+
+                        // STUDENT (or any non-visitor attendee)
+                        return sameUniversity(evUni, studentUniId, studentUniCode);
+                    });
+
+                    // 4) Map each registration → normalized event with actionState
+                    const eventsMap = {};
+                    filteredRegs.forEach((reg) => {
+                        const ev = reg.event;
+                        if (!ev) return;
+
+                        try {
+                            const normalized = normalizeEventForUI(ev, {
+                                backendUser: user,
+                                reg,
+                            });
+                            if (!normalized) return;
+                            eventsMap[normalized.id] = normalized;
+                        } catch (mergeErr) {
+                            console.error(
+                                "[MyEvents] Error merging reg → event, falling back to undefined state:",
+                                mergeErr
+                            );
+                            const id = (ev._id || ev.id || "").toString();
+                            if (!id) return;
+
+                            eventsMap[id] = {
+                                ...ev,
+                                id,
+                                date: ev.startAt || ev.date || ev.endAt || null,
+                                actionState: undefined, // safest fallback → "normal"
+                            };
+                        }
+                    });
+
+                    const eventsArray = Object.values(eventsMap);
+                    myEventsForUI = sortByStartAt(eventsArray);
+
+                    console.log(
+                        "[MyEvents] Attendee myEvents (after merge):",
+                        myEventsForUI
+                    );
                 }
 
-                /** -------------------------
-                 * 2) Fetch all events
-                 * ------------------------*/
-                console.log("[MyEvents] Fetching ALL events…");
-                const events = await fetchEvents();
-                console.log("[MyEvents] Events fetched:", events);
-
-                /** -------------------------
-                 * 3) Fetch registrations
-                 * ------------------------*/
-                console.log("[MyEvents] Fetching registrations for:", userId);
-                const registrations = await fetchUserRegistrations(userId);
-                console.log("[MyEvents] Registrations fetched:", registrations);
-
-                /** -------------------------
-                 * 4) Restrict to user university (unless admin)
-                 * ------------------------*/
-                const eventsByUni = events.filter((ev) =>
-                    eventMatchesUni(ev, props.uni, backendUser)
-                );
-                console.log(
-                    "[MyEvents] Events matching user's university:",
-                    eventsByUni
-                );
-
-                /** -------------------------
-                 * 5) Keep only MY events (registered or organizer)
-                 * ------------------------*/
-                const myFinalEvents = attachRegistrationState(
-                    eventsByUni,
-                    registrations,
-                    backendUser
-                );
-
-                console.log(
-                    "[MyEvents] FINAL myEvents (with state):",
-                    myFinalEvents
-                );
-
                 if (!cancelled) {
-                    setAllMyEvents(myFinalEvents);
-                    setFilteredEvents(myFinalEvents);
+                    setAllMyEvents(myEventsForUI);
+                    setFilteredEvents(myEventsForUI);
                 }
             } catch (err) {
                 console.error("[MyEvents] load error:", err);
@@ -606,7 +344,7 @@ function MyEvents(props) {
             } finally {
                 if (!cancelled) {
                     setLoading(false);
-                    console.log("-------------- [MyEvents] END --------------");
+                    console.log("----- [MyEvents] END -----");
                 }
             }
         }
@@ -615,10 +353,10 @@ function MyEvents(props) {
         return () => {
             cancelled = true;
         };
-    }, [props.user, props.uni]);
+    }, [userId, userType, studentUniId, studentUniCode, visitorUniKey]);
 
     /* -----------------------------------------
-       SEARCH
+       SEARCH (unchanged)
     ------------------------------------------ */
     const handleSearch = (value) => {
         const q = String(value).trim().toLowerCase();

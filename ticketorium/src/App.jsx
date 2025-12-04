@@ -994,7 +994,7 @@ function App() {
         // SHAYMA - backend - DO NOT REMOVE IN MERGING - START
         // if there is a token:
         if (localStorage.getItem("token")) {
-
+            console.log("")
         }
         // SHAYMA - backend - DO NOT REMOVE IN MERGING - END
 
@@ -1206,10 +1206,7 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
-                                            eventsJoined={dummyEventsJoined.current}
+                                            user={loggedInMongoUser}
                                             uni={currentUser?.university ?? null}
                                         />
                                     </RequireAuth>
