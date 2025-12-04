@@ -95,7 +95,7 @@ async function runSeed() {
                 lastName: u.lastName,
                 email: u.email,
                 phone: u.phone,
-                passwordHash: u.password, // TEMP: plain for seed
+                passwordHash: u.password,
                 role: u.role,
                 university: uniDoc ? uniDoc._id : null,
                 gender: u.gender,

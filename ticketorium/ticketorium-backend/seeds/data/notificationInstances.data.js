@@ -1,6 +1,3 @@
-// ticketorium-backend/seeds/data/notificationInstances.data.js
-
-// These will seed the Notification model
 export const notificationsSeed = [
     {
         userHandle: "student",
@@ -21,7 +18,7 @@ export const notificationsSeed = [
         seen: false,
     },
     {
-        userHandle: "harvard-organizer",
+        userHandle: "student",
         templateKey: "listing_received_bid",
         data: { listingTitle: "2025 Graduation Ceremony – VIP-01" },
         seen: true,

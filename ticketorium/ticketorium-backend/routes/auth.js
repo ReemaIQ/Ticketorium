@@ -1,37 +1,59 @@
-//ticketorium/ticketorium-backend/routes/auth.js
+import express from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
+import argon2 from "argon2";
 
-// GET /api/auth/me
-router.get("/me", async (req, res) => {
+const router = express.Router();
+
+// ------------------ LOGIN HELPER ------------------
+export async function loginUser(identifier, password) {
+    // identifier can be username OR email
+    const query = identifier.includes("@")
+        ? { email: identifier }
+        : { handle: identifier };
+
+    const user = await User.findOne(query).lean();
+
+    if (!user) throw new Error("Invalid username/email or password");
+
+    const valid = await argon2.verify(user.passwordHash, password);
+    if (!valid) throw new Error("Invalid username/email or password");
+
+    // sanitize user
+    const { passwordHash, ...safeUser } = user;
+
+    // sign jwt with safe user only
+    const token = jwt.sign(
+        { user: safeUser },
+        process.env.JWT_SECRET,
+        { expiresIn: "12d" }
+    );
+
+    return token;
+}
+
+router.post("/login", async (req, res) => {
+    const { username, email, password } = req.body;
+    const identifier = username || email;
+
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) return res.status(401).json({ error: "No token provided" });
-
-        const token = authHeader.split(" ")[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        const user = await User.findById(decoded.user._id)
-            .populate("university");
-
-        if (!user) return res.status(404).json({ error: "User not found" });
-
-        res.json({
-            user: {
-                id: user._id,
-                handle: user.handle,
-                role: user.role,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                phone: user.phone,
-                gender: user.gender,
-                dateOfBirth: user.dateOfBirth,
-                university: user.university, // populated object or null
-            }
-        });
+        const token = await loginUser(identifier, password);
+        console.log("Login successful, token generated:", token);
+        res.json({token});
     } catch (err) {
-        console.log("ME endpoint error:", err.message);
-        res.status(401).json({ error: "Invalid or expired token" });
+        res.status(401).json({ errMsg: err.message });
     }
+})
+
+router.post("/signup", async (req, res) => {
+
+})
+
+router.all("*", (req, res) => {
+  res.status(404).json({ message: "Auth Route not found" });
 });
+
+
+
+
+export default router;

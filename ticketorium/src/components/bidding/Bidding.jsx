@@ -1,14 +1,123 @@
-import React, {useState} from "react";
-import listing from "../../assets/images/bidding/listing.png";
+import React, { useState } from "react";
+import listingImg from "../../assets/images/bidding/listing.png";
 import bids from "../../assets/images/bidding/bids.png";
 import MakeBidModal from "../modals/MakeBidModal.jsx";
 
-export default function Bidding({type,bidding}) {
+/**
+ * Helper: normalize the `user` prop to an identifier string.
+ * Accepts: user = null | string (handle or id) | object (user object with _id/id/handle)
+ * Priority: _id -> id -> handle -> raw string
+ */
+const getUserId = (user) => {
+    if (!user) return null;
+    if (typeof user === "string") return user;
+    // object
+    return user._id || user.id || user.handle || null;
+};
+
+export default function Bidding({
+                                    type,
+                                    bidding,
+                                    setBiddings,
+                                    listingToBidding,
+                                    onListingUpdated,
+                                    user,
+                                }) {
     const [open, setOpen] = useState(false);
 
-    const handleBid = ({ id, deadline, startingBid }) => {
-        console.log("Create listing:", { id, deadline, startingBid });
-        setOpen(false); // close after creating
+    // normalized user identifier (string) - could be an ObjectId or handle,
+    // depending on how your app stores logged-in user. Prefer _id when available.
+    const userId = getUserId(user);
+
+    const handleBid = async (amount) => {
+        try {
+            const listingId = bidding.id || bidding.raw?._id;
+            if (!listingId) throw new Error("Missing listing id");
+
+            if (!userId) {
+                alert("You must be logged in to place a bid.");
+                return;
+            }
+
+            // debug
+            console.log("[client] placing bid:", { listingId, bidderId: userId, amount });
+
+            const res = await fetch(`/api/listings/${listingId}/bids`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bidderId: userId, amount }),
+            });
+
+            const body = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(body.error || "Bid failed");
+
+            // backend returns { bid, listing } (your code earlier used body.listing)
+            const updatedListing = body.listing || body;
+            onListingUpdated?.(updatedListing);
+
+            alert("Bid placed successfully!");
+        } catch (err) {
+            console.error("Place bid error", err);
+            alert("Failed to place bid: " + (err.message || err));
+        } finally {
+            setOpen(false);
+        }
+    };
+
+    const endListing = async (listingId) => {
+        try {
+            if (!listingId) {
+                console.warn("endListing called without listingId");
+                return;
+            }
+
+            // normalize user -> prefer _id, fallback to handle/string
+            const sellerId = (() => {
+                if (!user) return null;
+                if (typeof user === "string") return user;
+                return user._id || user.id || user.handle || null;
+            })();
+
+            console.log("[client] endListing called:", { listingId, sellerId, user });
+
+            if (!sellerId) {
+                alert("You must be logged in as the seller to end this listing.");
+                return;
+            }
+
+            const res = await fetch(`/api/listings/${listingId}/end`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sellerId }),
+            });
+
+            // read text first so we can show raw body even if non-json
+            const text = await res.text();
+            let json;
+            try { json = JSON.parse(text); } catch(e) { json = null; }
+
+            console.log("[client] /end response status:", res.status, res.statusText);
+            console.log("[client] /end response text:", text);
+            console.log("[client] /end response json:", json);
+
+            if (!res.ok) {
+                // show server-provided error if present, otherwise raw text
+                const errMsg = (json && json.error) ? json.error : (text || `${res.status} ${res.statusText}`);
+                throw new Error(errMsg);
+            }
+
+            // success path
+            const body = json || {};
+            const updated = body.listing || body;
+            if (setBiddings && listingToBidding && updated) {
+                setBiddings(prev => ({ ...prev, [String(updated._id)]: listingToBidding(updated, sellerId) }));
+            }
+            onListingUpdated?.(updated);
+            alert("Listing ended. Top bidder notified (if one exists).");
+        } catch (err) {
+            console.error("endListing error (verbose):", err);
+            alert("Could not end listing: " + (err.message || err));
+        }
     };
 
     return (
@@ -16,7 +125,7 @@ export default function Bidding({type,bidding}) {
 
             {/* Left image */}
             <div className="md:w-1/3">
-                <img src={`/src/assets/images/event/graduation.png`} alt="Event" className="w-full h-full object-cover"/>
+                <img src={`/src/assets/images/event/graduation.png`} alt="Event" className="w-full h-full object-cover" />
             </div>
 
             {/* Right content */}
@@ -29,7 +138,6 @@ export default function Bidding({type,bidding}) {
                         {bidding.year} Graduation Ceremony
                     </h2>
 
-
                     <p className="font-[Gilroy-Medium] text-[20px] text-[#3E3E3E]">
                         Join us in celebrating our beloved graduates. They have worked so hard to finally reach this day!
                     </p>
@@ -40,13 +148,14 @@ export default function Bidding({type,bidding}) {
 
                     {/* Left */}
                     <div>
-                        {type === "listing"  && (
+                        {type === "listing" && (
                             <button
                                 className="flex gap-3 bg-[var(--accent-color)] text-[var(--secondary-color)]
-                                        rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3 "
+                        rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3 "
+                                onClick={() => endListing(bidding.raw?._id || bidding.id)}
                             >
                                 End Bid
-                                <img src={listing} alt="Bid" className="w-5 h-5 object-cover"/>
+                                <img src={listingImg} alt="Bid" className="w-5 h-5 object-cover" />
                             </button>
                         )}
 
@@ -54,13 +163,13 @@ export default function Bidding({type,bidding}) {
                             <>
                                 <button
                                     className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)]
-                                        rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3"
+                        rounded-[6px] font-[Gilroy-Medium] text-[16px] px-5 py-3"
                                     onClick={() => setOpen(true)}
                                 >
                                     Bid
                                     <img src={bids} alt="Bid" className="w-5 h-5 object-cover" />
                                 </button>
-                                <MakeBidModal open={open} onClose={() => setOpen(false)} bidding={bidding} onBid={handleBid}/>
+                                <MakeBidModal open={open} onClose={() => setOpen(false)} bidding={bidding} onBid={handleBid} />
                             </>
                         )}
                     </div>

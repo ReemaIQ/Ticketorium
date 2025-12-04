@@ -1,4 +1,3 @@
-// ticketorium-backend/seed/data/notifications.data.js
 export const notificationTemplatesSeed = [
     // EVENTS
     {
