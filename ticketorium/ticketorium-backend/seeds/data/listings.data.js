@@ -3,6 +3,7 @@ export const listingsSeed = [
     {
         key: "listing1",
         ticketKey: "t6", // student’s comp ticket
+        eventKey: 7,
         sellerHandle: "student",
         title: "2025 Graduation Ceremony – Seat A-01",
         startingPrice: 20,
@@ -12,6 +13,7 @@ export const listingsSeed = [
     {
         key: "listing2",
         ticketKey: "t7", // graduation VIP ticket
+        eventKey: 7,
         sellerHandle: "student2",
         title: "2025 Graduation Ceremony – VIP-01",
         startingPrice: 50,
@@ -21,6 +23,7 @@ export const listingsSeed = [
     {
         key: "listing3",
         ticketKey: "t8", // graduation VIP ticket
+        eventKey: 7,
         sellerHandle: "student2",
         title: "2025 Graduation Ceremony – VIP-02",
         startingPrice: 80,

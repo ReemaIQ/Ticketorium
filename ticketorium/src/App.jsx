@@ -1229,10 +1229,6 @@ function App() {
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
                                             user={loggedInMongoUser}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
-                                            uni={currentUser?.university ?? null}
-                                            eventsJoined={dummyEventsJoined.current}
                                         />
                                     </RequireAuth>
                                 }

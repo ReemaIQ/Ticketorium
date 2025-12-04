@@ -1,170 +1,104 @@
-// src/pages/Event.jsx
 import React, { useMemo, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import EventActions from "../components/event/EventActions.jsx";
 import { getUserCategory } from "../components/event/getUserCategory.js";
-import { getApiBaseUrl } from "../api/client";
 
 export default function EventPage(props) {
     const navigate = useNavigate();
-    const { eventId: eventIdParam } = useParams(); // can be Mongo _id OR numeric eventId
+    const { eventId } = useParams(); // string like "4"
 
-    // --------------------------------------------------------------------
-    // User type & category
-    // --------------------------------------------------------------------
+    // user type: student / visitor / organizer / admin / system-admin
     const type = useMemo(() => {
         const t =
-            props?.user &&
-            props?.users &&
-            props.users[props.user]?.type
-                ? props.users[props.user].type
+            props?.users && props?.user
+                ? props.users[props.user]?.type
                 : "visitor";
         return (t || "visitor").toLowerCase();
     }, [props?.users, props?.user]);
 
+    // map type to EventActions category (attendee / organizer / admin)
     const category = getUserCategory(type);
 
-    // --------------------------------------------------------------------
-    // Backend event + local viewState (joined / invited / etc.)
-    // --------------------------------------------------------------------
-    const [event, setEvent] = useState(null);
-    const [viewState, setViewState] = useState(undefined);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    // joined record for THIS user and THIS event (if any)
+    const joinedRecord = useMemo(() => {
+        if (!props.eventsJoined || !props.user || !eventId) return null;
 
-    const url = `${base}/api/events/${eventIdParam}`;
+        const numericEventId = Number(eventId);
+        const records = Object.values(props.eventsJoined);
 
+        // 1. Check for Incoming Invites (Highest Priority for display)
+        // (I am the invitee, and the state is 'invited')
+        const incomingInvite = records.find(j =>
+            Number(j.eventId) === numericEventId &&
+            j.invitee === props.user &&
+            j.state === "invited"
+        );
+        if (incomingInvite) return incomingInvite;
 
+        // 2. Check for Active Interactions (Joined, Waitlisted, etc.)
+        // (I am the owner 'user', BUT exclude state 'invited' because that means I sent an invite)
+        const myJoin = records.find(j =>
+            Number(j.eventId) === numericEventId &&
+            j.user === props.user &&
+            j.state !== "invited"
+        );
+        if (myJoin) return myJoin;
+
+        return null;
+    }, [props.eventsJoined, props.user, eventId]);
+
+    // event info from dummyEvents
+    const raw = props?.events?.[eventId] || null;
+
+    // Initial state:
+    //  - if user has a VALID join record (calculated above) → use its state
+    //  - else, fall back to any static state on the event object (raw.state)
+    //  - else, return undefined
+    const [viewState, setViewState] = useState(() => {
+        if (joinedRecord?.state) return joinedRecord.state;
+        if (raw?.state) return raw.state;
+        return undefined;
+    });
+
+    console.log("joinRecord:", joinedRecord);
+    console.log("viewState:", viewState);
+
+    // If the event or joinRecord changes (e.g. user switches), sync state again
     useEffect(() => {
-        if (!eventIdParam) {
-            setError("No event id provided.");
-            setLoading(false);
-            return;
-        }
+        setViewState(joinedRecord?.state || raw?.state || undefined);
+    }, [joinedRecord, raw, eventId]);
 
-        let cancelled = false;
+    // basic event display fields
+    const [title] = useState(raw?.title || "Event");
+    const [location] = useState(raw?.location || "Campus");
+    const [description] = useState(
+        raw?.description ||
+        "Join us for an amazing event. (Demo description)"
+    );
+    const [cover] = useState(
+        `/src/assets/images/event/${raw?.img || "graduation.png"}`
+    );
+    const [organizerName] = useState(raw?.organizer || "Organizer");
 
-        async function loadEvent() {
-            try {
-                setLoading(true);
-                setError("");
+    // TODO: later replace these static times with real event times from DB
+    const [start] = useState("2025-11-21T06:30:00Z");
+    const [end] = useState("2025-11-21T12:30:00Z");
+    const [capacity] = useState(50);
+    const [attendees] = useState(20);
+    const [locationUrl] = useState("#");
 
-                const base = getApiBaseUrl();
-                
-                let url = `${base}/api/events/${eventIdParam}`;
-                
-
-                const res = await fetch(url);
-                const data = await res.json();
-
-                if (!res.ok) {
-                    throw new Error(data?.error || "Failed to load event.");
-                }
-
-                if (!cancelled) {
-                    setEvent(data);
-                    // Reset viewState when event changes. Actual ticket/join info
-                    // will be handled by EventActions + tickets API.
-                    setViewState(undefined);
-                }
-            } catch (err) {
-                console.error("Failed to load event:", err);
-                if (!cancelled) {
-                    setError(err.message || "Failed to load event.");
-                    setEvent(null);
-                }
-            } finally {
-                if (!cancelled) {
-                    setLoading(false);
-                }
-            }
-        }
-
-        loadEvent();
-        return () => {
-            cancelled = true;
-        };
-    }, [eventIdParam, url]);
-
-    // --------------------------------------------------------------------
-    // Derived display fields from backend event
-    // --------------------------------------------------------------------
-    const title = event?.title || "Event";
-    const description =
-        event?.description ||
-        "Join us for an amazing event. (Description coming soon.)";
-
-    // Organizer display (similar logic as in Event card)
-    let organizerName = "Organizer";
-    if (event?.organizer) {
-        if (typeof event.organizer === "string") {
-            organizerName = event.organizer;
-        } else {
-            const { handle, firstName, lastName, name } = event.organizer;
-            organizerName =
-                handle ||
-                name ||
-                [firstName, lastName].filter(Boolean).join(" ") ||
-                "Organizer";
-        }
-    }
-
-    // Cover image: resolve backend /uploads path if needed
-    let coverSrc = "/src/assets/images/event/graduation.png";
-    if (event?.img && typeof event.img === "string") {
-        if (event.img.startsWith("/uploads")) {
-            coverSrc = `${getApiBaseUrl()}${event.img}`;
-        } else {
-            coverSrc = event.img;
-        }
-    }
-
-    // Time range from startAt / endAt
-    const formatTime = (value) => {
-        if (!value) return "";
-        const d = new Date(value);
-        if (Number.isNaN(d.getTime())) return "";
-        return d.toLocaleString(undefined, {
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
+    const formatTimeRange = (a, b) => {
+        const fmt = (d) =>
+            new Date(d).toLocaleString(undefined, {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+        return `${fmt(a)} – ${fmt(b)}`;
     };
 
-    const startLabel = formatTime(event?.startAt);
-    const endLabel = formatTime(event?.endAt);
-    const timeRange =
-        startLabel && endLabel
-            ? `${startLabel} – ${endLabel}`
-            : startLabel || "Time to be announced";
-
-    // Capacity & attendees from backend
-    const capacityTotal = typeof event?.capacityTotal === "number"
-        ? event.capacityTotal
-        : 0;
-    const capacityReserved = typeof event?.capacityReserved === "number"
-        ? event.capacityReserved
-        : 0;
-
-    const seatsTaken = capacityTotal > 0 ? capacityReserved : 0;
-    const seatsLeft =
-        capacityTotal > 0
-            ? Math.max(0, capacityTotal - capacityReserved)
-            : null; // null means "not tracked"
-
-    // Location: we don't have building/room in schema yet, so use university
-    const locationLabel =
-        (event?.university &&
-            (typeof event.university === "string"
-                ? event.university
-                : event.university.name || event.university.code)) ||
-        "Campus";
-
-    // --------------------------------------------------------------------
-    // UI
-    // --------------------------------------------------------------------
     return (
         <div className="bg-white text-[#1A1A1A] min-h-screen">
             <main className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 py-8">
@@ -176,96 +110,66 @@ export default function EventPage(props) {
                     ← Back
                 </button>
 
-                {/* Loading & error */}
-                {loading && (
-                    <div className="mt-6 text-sm text-slate-500">
-                        Loading event…
+                {/* Header */}
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <h1 className="font-[Gilroy-Black] text-[#1A1A1A] text-[36px] leading-tight">
+                            {title}
+                        </h1>
+                        <p className="font-[Gilroy-Medium] text-[16px] text-[#3E3E3E]">
+                            by {organizerName}
+                        </p>
                     </div>
-                )}
 
-                {!loading && error && (
-                    <div className="mt-6 rounded-md border border-[var(--warning-color)]/40 bg-[var(--warning-color)]/10 px-4 py-3 text-[13px] text-[var(--warning-color)] font-[Gilroy-Medium]">
-                        {error}
-                    </div>
-                )}
+                    <EventActions
+                        user={props.user}
+                        type={type}
+                        category={category}
+                        state={viewState}             // current state: joined / invited / null / ...
+                        eventId={eventId}
+                        event={raw}                   // the actual event object
+                        onStateChange={setViewState}  // let EventActions update our state
+                    />
+                </div>
 
-                {!loading && !error && !event && (
-                    <div className="mt-6 text-sm text-slate-500">
-                        Event not found.
-                    </div>
-                )}
+                {/* Cover image */}
+                <figure className="mt-6 overflow-hidden rounded-xl shadow-sm">
+                    <img
+                        className="h-auto w-full object-cover"
+                        alt={title}
+                        src={cover}
+                        onError={(e) => {
+                            e.currentTarget.src =
+                                "/src/assets/images/event/graduation.png";
+                        }}
+                    />
+                </figure>
 
-                {!loading && !error && event && (
-                    <>
-                        {/* Header */}
-                        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                            <div>
-                                <h1 className="font-[Gilroy-Black] text-[#1A1A1A] text-[36px] leading-tight">
-                                    {title}
-                                </h1>
-                                <p className="font-[Gilroy-Medium] text-[16px] text-[#3E3E3E]">
-                                    by {organizerName}
-                                </p>
-                            </div>
+                {/* Description */}
+                <article className="prose max-w-none mt-6 text-slate-700">
+                    <p>{description}</p>
+                </article>
 
-                            <EventActions
-                                user={props.user}          // current user id
-                                type={type}                // role string
-                                category={category}
-                                state={viewState}          // "joined" / "invited" / etc.
-                                eventId={event._id}        // we now consistently use Mongo _id
-                                event={event}              // full backend event doc
-                                onStateChange={setViewState}
-                            />
+                {/* Meta info */}
+                <div className="mt-6 border-t border-slate-200 pt-4">
+                    <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+                        <span className="text-[var(--primary-color)] font-medium">
+                            Time: {formatTimeRange(start, end)}
+                        </span>
+                        <div className="flex gap-8 text-slate-500">
+                            <span>{attendees} Seats taken</span>
+                            <span>
+                                {Math.max(0, capacity - attendees)} Seats left
+                            </span>
                         </div>
-
-                        {/* Cover image */}
-                        <figure className="mt-6 overflow-hidden rounded-xl shadow-sm">
-                            <img
-                                className="h-auto w-full object-cover"
-                                alt={title}
-                                src={coverSrc}
-                                onError={(e) => {
-                                    e.currentTarget.src =
-                                        "/src/assets/images/event/graduation.png";
-                                }}
-                            />
-                        </figure>
-
-                        {/* Description */}
-                        <article className="prose max-w-none mt-6 text-slate-700">
-                            <p>{description}</p>
-                        </article>
-
-                        {/* Meta info */}
-                        <div className="mt-6 border-t border-slate-200 pt-4">
-                            <div className="flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
-                                <span className="text-[var(--primary-color)] font-medium">
-                                    Time: {timeRange}
-                                </span>
-
-                                <div className="flex gap-8 text-slate-500">
-                                    {capacityTotal > 0 ? (
-                                        <>
-                                            <span>
-                                                {seatsTaken} seats taken
-                                            </span>
-                                            <span>
-                                                {seatsLeft} seats left
-                                            </span>
-                                        </>
-                                    ) : (
-                                        <span>Capacity not limited</span>
-                                    )}
-                                </div>
-
-                                <span className="text-[var(--primary-color)] font-medium">
-                                    Location: {locationLabel}
-                                </span>
-                            </div>
-                        </div>
-                    </>
-                )}
+                        <a
+                            href={locationUrl}
+                            className="text-[var(--primary-color)] font-medium hover:underline"
+                        >
+                            Location: {location}
+                        </a>
+                    </div>
+                </div>
             </main>
         </div>
     );

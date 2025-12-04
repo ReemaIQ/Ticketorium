@@ -1,7 +1,8 @@
 // ticketorium-backend/routes/eventRegistrations.js
 import express from "express";
-import { EventRegistration } from "../models/EventRegistration.js";
+import mongoose from "mongoose";
 
+import { EventRegistration } from "../models/EventRegistration.js";
 const router = express.Router();
 
 /* -------------------------------------
@@ -15,7 +16,7 @@ router.get("/", async (req, res) => {
             return res.status(400).json({ error: "Missing ?user=<userId>" });
         }
 
-        const regs = await EventRegistration.find({ user })
+        const regs = await EventRegistration.find({ user: user._id})
             .populate({
                 path: "event",
                 populate: [
@@ -29,6 +30,30 @@ router.get("/", async (req, res) => {
     } catch (err) {
         console.error("GET /api/event-registrations error:", err);
         res.status(500).json({ error: "Failed to load registrations" });
+    }
+});
+
+/* -------------------------------------
+   GET ALL EVENT REGISTRATIONS
+   /api/event-registrations/all
+-------------------------------------- */
+router.get("/all", async (_req, res) => {
+    try {
+        const regs = await EventRegistration.find()
+            .populate({
+                path: "event",
+                populate: [
+                    { path: "university", select: "code name logo" },
+                    { path: "organizer", select: "handle firstName lastName role" }
+                ]
+            })
+            .populate("user", "handle firstName lastName email") // include user info
+            .sort({ joinedAt: -1 }); // newest first
+
+        res.json(regs);
+    } catch (err) {
+        console.error("GET /api/event-registrations/all error:", err);
+        res.status(500).json({ error: "Failed to load event registrations" });
     }
 });
 

@@ -2,27 +2,28 @@
 import { getApiBaseUrl } from "./client";
 
 /**
- * Fetch all events (optionally filtered)
+ * Fetch all events. The client passes a user object (no auth middleware required).
+ *
+ * params: { state?: "normal"|"waitlist"|"cancelled" }
+ * user: { university: "<universityObjectId>" } or { university: { _id: "..." } } or { universityId: "..." }
  */
-export async function fetchEvents(params = {}) {
+export async function fetchEvents(params = {}, user) {
     const search = new URLSearchParams();
-
-    if (params.university) {
-        // Mongo ObjectId of university (if you ever use it)
-        search.set("university", params.university);
-    }
-    if (params.universityCode) {
-        // e.g. "KFUPM", "Harvard"
-        search.set("universityCode", params.universityCode);
-    }
-    if (params.state) {
-        search.set("state", params.state);
-    }
+    if (params.state) search.set("state", params.state);
 
     const qs = search.toString();
     const url = `${getApiBaseUrl()}/api/events${qs ? `?${qs}` : ""}`;
 
-    const res = await fetch(url);
+    const headers = {};
+    if (user) {
+        try {
+            headers["x-user"] = JSON.stringify(user);
+        } catch (err) {
+            throw new Error("Failed to serialize user for request");
+        }
+    }
+
+    const res = await fetch(url, { headers });
     if (!res.ok) {
         throw new Error("Failed to load events");
     }
@@ -34,12 +35,15 @@ export async function fetchEvents(params = {}) {
  */
 export async function fetchEventById(id) {
     if (!id) throw new Error("Missing event id");
+
     const url = `${getApiBaseUrl()}/api/events/${id}`;
-    const res = await fetch(url);
+    const res = await fetch(url); // no credentials
+
     if (res.status === 404) return null;
     if (!res.ok) {
         throw new Error("Failed to load event");
     }
+
     return res.json();
 }
 
@@ -48,6 +52,7 @@ export async function fetchEventById(id) {
  */
 export async function updateEvent(id, updates) {
     if (!id) throw new Error("Missing event id");
+
     const url = `${getApiBaseUrl()}/api/events/${id}`;
     const res = await fetch(url, {
         method: "PUT",
@@ -64,10 +69,11 @@ export async function updateEvent(id, updates) {
 }
 
 /**
- * Delete event.
+ * Delete an event.
  */
 export async function deleteEvent(id) {
     if (!id) throw new Error("Missing event id");
+
     const url = `${getApiBaseUrl()}/api/events/${id}`;
     const res = await fetch(url, { method: "DELETE" });
 

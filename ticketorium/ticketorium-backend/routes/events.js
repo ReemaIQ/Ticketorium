@@ -88,29 +88,64 @@ router.post("/", upload.single("img"), async (req, res) => {
     }
 });
 
-/* GET ALL EVENTS */
+
+/* GET ALL EVENTS - accepts user object from client (no middleware required) */
 router.get("/", async (req, res) => {
     try {
-        const { university, universityCode, state } = req.query;
+        // First prefer any existing req.user (if present)
+        let user = req.user || null;
 
-        const filter = {};
-        if (university) filter.university = university; // Mongo ObjectId string
+        // If not present, try to read user from a custom header 'x-user' (JSON string)
+        if (!user) {
+            const userHeader = req.headers["x-user"];
+            if (userHeader) {
+                try {
+                    user = JSON.parse(userHeader);
+                } catch (err) {
+                    return res.status(400).json({ error: "Invalid x-user header JSON" });
+                }
+            }
+        }
+
+        // If still no user, we can't scope events
+        if (!user) {
+            return res
+                .status(400)
+                .json({ error: "Missing user information. Pass user in 'x-user' header." });
+        }
+
+        // Extract university id from user object.
+        // Acceptable shapes:
+        //  - user.university is a string ObjectId
+        //  - user.university is an object with _id
+        //  - user.universityId
+        let userUniversityId = null;
+        if (user.university) {
+            userUniversityId =
+                typeof user.university === "string"
+                    ? user.university
+                    : user.university._id || null;
+        } else if (user.universityId) {
+            userUniversityId = user.universityId;
+        } else if (user.univ) {
+            userUniversityId = user.univ;
+        }
+
+        if (!userUniversityId) {
+            return res
+                .status(400)
+                .json({ error: "User object missing university id (user.university/_id/universityId)" });
+        }
+
+        // Build filter: always scope to the user's university
+        const { state } = req.query;
+        const filter = { university: userUniversityId };
         if (state) filter.state = state;
 
-        let events = await Event.find(filter)
+        const events = await Event.find(filter)
             .populate("university", "code name logo")
             .populate("organizer", "handle firstName lastName role")
             .sort({ startAt: 1 });
-
-        // Extra filtering by university code (e.g. "KFUPM", "Harvard")
-        if (universityCode) {
-            events = events.filter(
-                (ev) =>
-                    ev.university &&
-                    ev.university.code &&
-                    ev.university.code === universityCode
-            );
-        }
 
         res.json(events);
     } catch (err) {
