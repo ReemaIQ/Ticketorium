@@ -98,8 +98,8 @@ async function processExpiredListings() {
 /**
  * GET /api/listings
  * Optional query:
- *   - status (active, expired, sold, cancelled)
- *   - includeAwaiting=true  (optional; default false)
+ * - status (active, expired, sold, cancelled)
+ * - includeAwaiting=true  (optional; default false)
  */
 router.get("/", async (req, res) => {
     try {
@@ -119,7 +119,8 @@ router.get("/", async (req, res) => {
         const listings = await Listing.find(filter)
             .populate({
                 path: "ticket",
-                populate: { path: "event", select: "title eventId startAt imageUrl" },
+                // CORRECTED: Removed 'eventId' from select
+                populate: { path: "event", select: "title startAt imageUrl" },
             })
             .populate("seller", "handle firstName lastName")
             .populate("topBids.bidder", "handle firstName lastName")
@@ -174,7 +175,8 @@ router.post("/", async (req, res) => {
         const populated = await Listing.findById(listing._id)
             .populate({
                 path: "ticket",
-                populate: { path: "event", select: "title eventId startAt" },
+                // CORRECTED: Removed 'eventId' from select
+                populate: { path: "event", select: "title startAt" },
             })
             .populate("seller", "handle firstName lastName");
 
@@ -227,7 +229,8 @@ router.post("/:id/bids", async (req, res) => {
         const updatedListing = await Listing.findById(listing._id)
             .populate({
                 path: "ticket",
-                populate: { path: "event", select: "title eventId startAt" },
+                // CORRECTED: Removed 'eventId' from select
+                populate: { path: "event", select: "title startAt" },
             })
             .populate("seller", "handle firstName lastName")
             .populate("topBids.bidder", "handle firstName lastName");

@@ -1,4 +1,4 @@
-// /Users/reema/Desktop/Ticketorium - R backend/ticketorium/ticketorium-backend/routes/notifications.js
+// ticketorium-backend/routes/notifications.js
 import express from "express";
 import { NotificationTemplate } from "../models/NotificationTemplate.js";
 import { Notification } from "../models/Notification.js";

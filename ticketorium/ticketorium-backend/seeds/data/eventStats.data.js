@@ -1,8 +1,6 @@
-// ticketorium-backend/seeds/data/eventStats.data.js
-
 export const eventStatsSeed = [
     {
-        eventKey: 4, // Changed "ev4" -> 4 (Coding Competition)
+        eventKey: 4, // Coding Competition
         totals: {
             totalEvents: 1,
             upcomingEvents: 1,
@@ -27,7 +25,7 @@ export const eventStatsSeed = [
         },
     },
     {
-        eventKey: 1, // Changed "ev1" -> 1 (Harvard Hiking)
+        eventKey: 1, // Harvard Hiking
         totals: {
             totalEvents: 1,
             upcomingEvents: 1,

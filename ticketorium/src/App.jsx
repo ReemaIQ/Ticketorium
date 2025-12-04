@@ -1228,7 +1228,7 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={loggedInUser}
+                                            user={loggedInMongoUser}
                                             users={dummyUsers.current}
                                             events={dummyEvents.current}
                                             uni={currentUser?.university ?? null}

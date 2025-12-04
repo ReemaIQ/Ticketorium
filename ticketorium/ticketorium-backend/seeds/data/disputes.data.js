@@ -1,4 +1,4 @@
-// ticketorium-backend/seed/data/disputes.data.js
+// ticketorium/ticketorium-backend/seeds/data/disputes.data.js
 export const disputesSeed = [
     {
         title: "Ticket not received",
@@ -7,6 +7,8 @@ export const disputesSeed = [
         lastActivityAt: "2025-11-21T09:20:00Z",
         status: "open",
         participantsHandles: ["visitor", "system-admin"],
+        eventKey: 4,
+        ticketKey: "t1",
         messages: [
             {
                 fromHandle: "visitor",
@@ -36,6 +38,8 @@ export const disputesSeed = [
         lastActivityAt: "2025-11-21T08:50:00Z",
         status: "open",
         participantsHandles: ["kfupm-organizer", "admin"],
+        eventKey: 6,
+        ticketKey: "t3",
         messages: [
             {
                 fromHandle: "kfupm-organizer",
