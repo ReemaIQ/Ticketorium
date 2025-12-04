@@ -1,3 +1,4 @@
+// ticketorium/ticketorium-backend/routes/analytics.js
 import express from "express";
 import { Event } from "../models/Event.js";
 import { EventStats } from "../models/EventStats.js";
@@ -5,13 +6,12 @@ import { EventStats } from "../models/EventStats.js";
 const router = express.Router();
 
 /**
- * GET /api/analytics/events/:eventId
- * eventId is numeric external ID (1..9)
+ * GET /api/analytics/events/:id
+ * Use Mongo _id
  */
-router.get("/events/:eventId", async (req, res) => {
+router.get("/events/:id", async (req, res) => {
     try {
-        const numericId = Number(req.params.eventId);
-        const event = await Event.findOne({ eventId: numericId });
+        const event = await Event.findById(req.params.id);
 
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
@@ -78,7 +78,7 @@ router.get("/events/:eventId", async (req, res) => {
 
         res.json({ totals, attendance, funnel, audience });
     } catch (err) {
-        console.error("GET /api/analytics/events/:eventId error:", err);
+        console.error("GET /api/analytics/events/:id error:", err);
         res.status(500).json({ error: "Failed to load analytics" });
     }
 });

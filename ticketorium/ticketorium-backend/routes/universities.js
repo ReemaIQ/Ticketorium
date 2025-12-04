@@ -1,3 +1,4 @@
+// ticketorium/ticketorium-backend/routes/universities.js
 import express from "express";
 import { University } from "../models/University.js";
 

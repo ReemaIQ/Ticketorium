@@ -1,37 +1,43 @@
-import {useEffect, useRef, useState } from "react";
-import {NavLink, useNavigate} from "react-router-dom";
+// src/components/nav/nav.jsx
+import { useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Bell, MessageCircle, Menu, X } from "lucide-react";
 import logoUrl from "../../assets/images/nav/Logo.png";
 import "./Nav.css";
 
 import NotificationModal from "../modals/NotificationModal.jsx";
-//import LogOutModal???? from;
 
+// NAV ITEMS BASED ON ROLE
 const navItems = {
     "": [],
-    "student": [
+
+    student: [
         { label: "All Events", href: "/events" },
         { label: "My Events", href: "/my-events" },
         { label: "Bidding", href: "/bidding" },
         { label: "My Disputes", href: "/disputes" },
     ],
-    "visitor": [
+
+    visitor: [
         { label: "All Events", href: "/events" },
         { label: "My Events", href: "/my-events" },
         { label: "My Disputes", href: "/disputes" },
     ],
-    "organizer": [
+
+    organizer: [
         { label: "My Events", href: "/my-events" },
         { label: "Create Event", href: "/create-event" },
         { label: "Analytics", href: "/analytics" },
         { label: "My Disputes", href: "/disputes" },
     ],
-    "admin": [
+
+    admin: [
         { label: "Manage Events", href: "/events" },
         { label: "Manage Users", href: "/manage-users" },
         { label: "Manage Disputes", href: "/disputes" },
         { label: "System Policies", href: "/system-policies" },
     ],
+
     "system-admin": [
         { label: "Manage Events", href: "/events" },
         { label: "Manage Universities", href: "/manage-universities" },
@@ -41,38 +47,39 @@ const navItems = {
     ],
 };
 
-
+// INITIAL AVATAR
 function InitialAvatar({ name, setOpen, open }) {
-    const letter = (name && name.trim().charAt(0).toUpperCase()) || "U"; // U = Unknown
+    const letter = (name && name.trim()[0]?.toUpperCase()) || "U";
 
     return (
-        <div onClick={() => setOpen(!open)}
-             aria-label="User menu"
-             className="w-8 h-8 rounded-full bg-[#404d71] text-white grid place-items-center select-none hover:bg-[#55608a] cursor-pointer outline-[rgba(255,255,255,0.2)] outline-4"
+        <div
+            onClick={() => setOpen(!open)}
+            aria-label="User menu"
+            className="w-8 h-8 rounded-full bg-[#404d71] text-white grid place-items-center select-none hover:bg-[#55608a] cursor-pointer"
         >
             <span className="text-sm font-semibold">{letter}</span>
         </div>
     );
 }
 
-export default function Nav({type, setLoggedInUser, notifications, users, user}) {
-
-    const currentUser = user? users?.[user] : "";
-    const firstName = user? users[user]["first-name"]: "";
-    const hasUniversity = currentUser?.university;
-
-    const [logoutOpen, setLogoutOpen] = useState(false); // avatar log out drop down
-    const [notificationOpen, setNotificationOpen] = useState(false); //notifications modal
-    const [mobileOpen, setMobileOpen] = useState(false); // hamburger menu
+export default function Nav({ user, setUser }) {
+    const navigate = useNavigate();
     const dropdownRef = useRef(null);
 
-    const navigate = useNavigate();
+    const [logoutOpen, setLogoutOpen] = useState(false);
+    const [notificationOpen, setNotificationOpen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
-    let items = navItems[type] || [];
-    if (user && !hasUniversity) {
-        items = [];
-    }
+    const firstName = user?.firstName || "";
+    const role = user?.role || "empty";
+    const hasUniversity = !!user?.university;
 
+    let items = navItems[role] || [];
+
+    // If user exists but has no university → hide links
+    if (user && !hasUniversity) items = [];
+
+    // CLOSE DROPDOWNS WHEN CLICK OUTSIDE
     useEffect(() => {
         function onDocClick(e) {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -84,12 +91,12 @@ export default function Nav({type, setLoggedInUser, notifications, users, user})
         return () => document.removeEventListener("mousedown", onDocClick);
     }, []);
 
-
+    // LOGOUT
     function handleLogout() {
-        navigate("/log-in");
-        localStorage.removeItem("loggedInUser");
-        setLoggedInUser(null);
+        localStorage.removeItem("token");
+        setUser(null);
         setLogoutOpen(false);
+        navigate("/log-in");
     }
 
     function handleChangeUni() {
@@ -99,113 +106,148 @@ export default function Nav({type, setLoggedInUser, notifications, users, user})
 
     return (
         <>
-            <nav id="nav" className="w-full h-15 bg-[var(--secondary-color)] text-white flex items-center justify-between px-3 py-4 md:px-6 md:py-5 relative">
-
-                {/* Left*/}
+            <nav
+                id="nav"
+                className="w-full h-15 bg-[var(--secondary-color)] text-white flex items-center justify-between px-3 py-4 md:px-6 md:py-5 relative"
+            >
+                {/* LEFT SIDE */}
                 <div id="nav-links" className="flex items-center gap-6 md:gap-10">
-
-                    {/* Logo */}
-                    <div id="nav-logo" className="flex items-center gap-1 cursor-pointer" onClick={() => {navigate('/home');setMobileOpen(false);}}>
+                    {/* LOGO */}
+                    <div
+                        id="nav-logo"
+                        className="flex items-center gap-1 cursor-pointer"
+                        onClick={() => {
+                            navigate("/home");
+                            setMobileOpen(false);
+                        }}
+                    >
                         <img src={logoUrl} alt="Ticketorium logo" className="w-10 h-10" />
 
-                        <div className="flex-direction-columns relative items-center">
-                            <span className="font-[Gilroy-Black] font-black italic mt-3 text-[20px] tracking-wide flex">Ticketorium.</span>
-                        </div>
+                        <span className="font-[Gilroy-Black] font-black italic mt-3 text-[20px] tracking-wide">
+                            Ticketorium.
+                        </span>
                     </div>
 
-
-                    {/* Desktop links */}
-                    <div id="nav-links-inner" className="hidden md:flex gap-6 font-[Gilroy-Medium]">
+                    {/* DESKTOP LINKS */}
+                    <div
+                        id="nav-links-inner"
+                        className="hidden md:flex gap-6 font-[Gilroy-Medium]"
+                    >
                         {items.map((item) => (
-                            <NavLink to={item.href} className="text-white hover:underline">
+                            <NavLink
+                                key={item.href}
+                                to={item.href}
+                                className="text-white hover:underline"
+                            >
                                 {item.label}
                             </NavLink>
                         ))}
                     </div>
                 </div>
 
-
-                {/* Right: Icons + Avatar + Hamburger */}
-                <div id="nav-buttons"
-                     className="flex items-center gap-3 md:gap-4 relative"
-                     ref={dropdownRef}
+                {/* RIGHT SIDE */}
+                <div
+                    id="nav-buttons"
+                    className="flex items-center gap-3 md:gap-4 relative"
+                    ref={dropdownRef}
                 >
-
-                    {/* Specific User Types' Buttons*/}
-                    {(type === "student" || type === "visitor" || type === "organizer") && (
-                        <>
-                            <NavLink to={"/disputes"}>
-                                <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
-                            </NavLink>
-                        </>
+                    {/* DISPUTES ICON FOR NORMAL USERS */}
+                    {(role === "student" ||
+                        role === "visitor" ||
+                        role === "organizer") && (
+                        <NavLink to={"/disputes"}>
+                            <MessageCircle className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                        </NavLink>
                     )}
 
-                    {type && type !== "empty" && (
+                    {role !== "empty" && (
                         <>
+                            {/* NOTIFICATIONS */}
                             <div className="relative cursor-pointer">
-                                <div onClick={() => setNotificationOpen(!notificationOpen)} aria-label="User menu">
-                                    <Bell className="w-5 h-5 cursor-pointer hover:opacity-80 transition-opacity" />
+                                <div
+                                    onClick={() => setNotificationOpen(!notificationOpen)}
+                                    aria-label="Notifications"
+                                >
+                                    <Bell className="w-5 h-5 hover:opacity-80 transition-opacity" />
                                 </div>
 
-                                <div className={`absolute right-0 top-12 bg-white text-black rounded-[6px] border-white shadow-xl z-20 transform transition-all duration-200 ease-out origin-top ${
-                                    notificationOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}
-                                     role="menu">
-
-                                    {/* Render the Modal Component */}
-                                    <NotificationModal notifications={notifications} type={type}/>
-
+                                <div
+                                    className={`absolute right-0 top-12 bg-white text-black rounded-[6px] border shadow-xl z-20 transform transition-all duration-200 origin-top ${
+                                        notificationOpen
+                                            ? "opacity-100 scale-100"
+                                            : "opacity-0 scale-95 pointer-events-none"
+                                    }`}
+                                >
+                                    <NotificationModal
+                                        notifications={user?.notifications || []}
+                                        type={role}
+                                    />
                                 </div>
                             </div>
 
-
-                            {/* Avatar + Logout dropdown */}
+                            {/* AVATAR */}
                             <div className="relative">
-                                <InitialAvatar name={firstName} setOpen={setLogoutOpen} open={logoutOpen} />
+                                <InitialAvatar
+                                    name={firstName}
+                                    open={logoutOpen}
+                                    setOpen={setLogoutOpen}
+                                />
 
                                 <div
-                                    className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 ease-out origin-top ${
-                                        logoutOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+                                    className={`absolute right-0 top-12 bg-white text-black rounded-lg shadow-lg w-40 py-2 z-10 transform transition-all duration-200 origin-top ${
+                                        logoutOpen
+                                            ? "opacity-100 scale-100"
+                                            : "opacity-0 scale-95 pointer-events-none"
                                     }`}
-                                    role="menu"
                                 >
-                                    {(type === "visitor" || type === "system-admin") && <button onClick={handleChangeUni} className="w-full text-left px-4 py-2 hover:bg-gray-100" role="menuitem">
-                                        Change University
-                                    </button>}
+                                    {(role === "visitor" ||
+                                        role === "system-admin") && (
+                                        <button
+                                            onClick={handleChangeUni}
+                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                        >
+                                            Change University
+                                        </button>
+                                    )}
+
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                                        role="menuitem"
                                     >
                                         Logout
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Hamburger (mobile only) */}
+                            {/* MOBILE MENU BUTTON */}
                             <button
                                 type="button"
-                                className="md:hidden p-1 rounded bg-[var(--secondary-color)] text-white focus:outline-none cursor-pointer hover:opacity-80 transition-opacity"
+                                className="md:hidden p-1 rounded bg-[var(--secondary-color)] hover:opacity-80 transition-opacity"
                                 onClick={() => setMobileOpen((prev) => !prev)}
-                                aria-label="Toggle navigation menu"
+                                aria-label="Toggle navigation"
                             >
-                                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                                {mobileOpen ? (
+                                    <X className="w-5 h-5" />
+                                ) : (
+                                    <Menu className="w-5 h-5" />
+                                )}
                             </button>
                         </>
                     )}
                 </div>
             </nav>
 
-            {/* Mobile Menu (only logged in) */}
-            {type && type !== "empty" && (
+            {/* MOBILE MENU */}
+            {role !== "empty" && (
                 <div
-                    className={`md:hidden w-full bg-white text-black transition-[max-height,opacity] duration-200 ease-out overflow-hidden ${
+                    className={`md:hidden w-full bg-white text-black transition-[max-height,opacity] duration-200 overflow-hidden ${
                         mobileOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
                     }`}
                 >
                     <div className="flex flex-col items-center text-center py-2 font-[Gilroy-Medium]">
                         {items.map((item) => (
                             <NavLink
-                                key={item.label}
+                                key={item.href}
                                 to={item.href}
                                 onClick={() => setMobileOpen(false)}
                                 className="w-full py-2 hover:bg-gray-100"

@@ -1,3 +1,4 @@
+// Ticketorium/ticketorium/src/components/event/EventActions.jsx
 import React, { useEffect, useState } from "react";
 import { eventActionsConfig } from "./eventActionsConfig";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -16,6 +17,7 @@ import {
     fetchTicketForEvent,
     cancelTicket,
 } from "../../api/tickets.js";
+import { deleteEvent } from "../../api/events.js"; // real delete
 
 /* ----------------------------- Buttons styling ----------------------------- */
 
@@ -32,15 +34,15 @@ const variants = {
 /* ----------------------------- Main Component ----------------------------- */
 
 export default function EventActions({
-                                         event,
-                                         user,          // userId
-                                         type,
-                                         category,
-                                         state,         // joined / invited / waitlist / undefined
-                                         eventId,
-                                         onAction,
-                                         onStateChange,
-                                     }) {
+    event,
+    user,          // userId (required)
+    type,          // "student" / "organizer" / "visitor" etc.
+    category,      // derived with getUserCategory(type)
+    state,         // joined / invited / waitlist / undefined (from backend)
+    eventId,       // Mongo _id of event (required)
+    onAction,
+    onStateChange,
+}) {
     const navigate = useNavigate();
     const routerLocation = useLocation();
 
@@ -67,49 +69,34 @@ export default function EventActions({
     /**
      * Load ticket on mount / when eventId or user changes.
      *
-     * - If a ticket exists in backend (for this user+event), use it.
-     * - If NO ticket exists but `state === "joined"` (dummy data says already joined),
-     *   then auto-create a ticket ONCE.
-     * - If user joined via JoinModal, that already called createTicket + setTicket,
-     *   so this effect will only "see" existing ticket and not create a new one.
+     * REAL BEHAVIOR (no dummy hacks):
+     * - Only load ticket if it exists in backend.
+     * - Ticket creation happens explicitly via JoinModal (createTicket),
+     *   not magically here based on some "state === joined" flag.
      */
     useEffect(() => {
         if (!user || !eventId) return;
 
-        async function syncTicket() {
+        async function loadTicket() {
             try {
-                // 1) Try to load existing ticket
                 const existing = await fetchTicketForEvent({ eventId, user });
 
                 if (existing) {
+                    // Allow frontend-only field like accessibilityNotes
                     setTicket((prev) => prev || { ...existing, accessibilityNotes: "" });
                     console.log("Loaded ticket from backend:", existing);
-                    return;
-                }
-
-                // 2) No ticket found in backend.
-                // If dummy data says this user is already joined, auto-generate a ticket.
-                if (state === "joined") {
-                    const created = await createTicket({
-                        eventId,
-                        userId: user,
-                        seat: null,
-                        price: passedEvent?.price ?? 0,
-                    });
-
-                    setTicket({ ...created, accessibilityNotes: "" });
-                    console.log("Auto-created ticket for joined user:", created);
+                } else {
+                    setTicket(null);
                 }
             } catch (err) {
-                console.error("Failed to load / auto-create ticket:", err);
+                console.error("Failed to load ticket:", err);
             }
         }
 
-        syncTicket();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [eventId, user, state, passedEvent?.price]);
+        loadTicket();
+    }, [eventId, user]);
 
-    // Effective state = what parent passed down
+    // Effective state = what parent (and modals) pass down
     const effectiveState = state;
 
     const actions =
@@ -293,9 +280,12 @@ export default function EventActions({
                 onConfirm={async () => {
                     try {
                         // If there is a ticket, cancel it in backend
-                        if (ticket?.id) {
-                            await cancelTicket(ticket.id, user);
-                            console.log("Ticket cancelled on resign:", ticket.id);
+                        if (ticket) {
+                            const ticketId = ticket._id || ticket.id;
+                            if (ticketId) {
+                                await cancelTicket(ticketId, user);
+                                console.log("Ticket cancelled on resign:", ticketId);
+                            }
                         }
 
                         // User is no longer joined
@@ -321,21 +311,37 @@ export default function EventActions({
                 }}
             />
 
-            {/* DELETE modal: demo-only delete (shows banner) */}
+            {/* DELETE modal: now actually calls backend */}
             <DeleteEventModal
                 isOpen={openModal === "delete"}
                 onClose={closeModal}
                 title={passedEvent.title}
-                onConfirm={() => {
-                    closeModal();
-                    setShowDeleteBanner(true);
-                    setTimeout(() => setShowDeleteBanner(false), 2500);
+                onConfirm={async () => {
+                    if (!eventId) return;
+
+                    try {
+                        await deleteEvent(eventId);
+                        console.log("Event deleted:", eventId);
+
+                        closeModal();
+                        setShowDeleteBanner(true);
+
+                        // Optional: if on StateChange or onAction should reflect removal,
+                        // parent can listen to that and refetch lists.
+                        if (onAction) {
+                            onAction("Deleted");
+                        }
+                    } catch (err) {
+                        console.error("Failed to delete event:", err);
+                    } finally {
+                        setTimeout(() => setShowDeleteBanner(false), 2500);
+                    }
                 }}
             />
 
             {showDeleteBanner && (
                 <div className="fixed left-1/2 top-4 z-[60] -translate-x-1/2 rounded-md bg-emerald-600 px-4 py-2 text-white shadow">
-                    Event deleted (demo).
+                    Event deleted.
                 </div>
             )}
         </>

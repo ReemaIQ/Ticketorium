@@ -14,41 +14,63 @@ const initialFormState = {
     dob: "",
 };
 
-export function UserModal({ open, onClose, onSave, currentType, initialData, takenUsernames = [] }) {
+export function UserModal({
+    open,
+    onClose,
+    onSave,
+    currentType,
+    initialData,
+    takenUsernames = [],
+}) {
     const [form, setForm] = useState(initialFormState);
     const [errors, setErrors] = useState({});
 
     const isEditMode = !!initialData;
 
-    useEffect(() => {
-        if (open) {
-            document.body.style.overflow = 'hidden';
-            setErrors({});
+    // Normalize initial data into the form shape (supports both old and new keys)
+    const mapInitialDataToForm = (data) => {
+        if (!data || typeof data !== "object") return initialFormState;
 
-            if (initialData) {
-                // Populate form for Edit Mode
-                setForm({
-                    username: initialData.id || "",
-                    firstName: initialData["first-name"] || "",
-                    lastName: initialData["last-name"] || "",
-                    email: initialData.email || "",
-                    phone: initialData.phone || "",
-                    password: "", // Keep empty for security; only fill if changing
-                    type: initialData.type || "",
-                    university: initialData.university || "",
-                    gender: initialData.gender || "",
-                    dob: initialData["date-of-birth"] || "",
-                });
-            } else {
-                // Reset for Create Mode
-                setForm(initialFormState);
-            }
+        return {
+            username:
+                data.username ||
+                data.handle ||
+                data.id ||
+                "",
+            firstName: data.firstName || data["first-name"] || "",
+            lastName: data.lastName || data["last-name"] || "",
+            email: data.email || "",
+            phone: data.phone || "",
+            password: "", // keep empty; only filled if changing
+            type: data.type || "",
+            university:
+                data.university ||
+                data.universityName ||
+                "",
+            gender: data.gender || "",
+            dob: data.dob || data["date-of-birth"] || "",
+        };
+    };
+
+    useEffect(() => {
+        if (!open) return;
+
+        // reset validation state
+        setErrors({});
+
+        // populate form for edit or reset for create
+        if (initialData) {
+            setForm(mapInitialDataToForm(initialData));
         } else {
-            document.body.style.overflow = 'unset';
+            setForm(initialFormState);
         }
 
+        // lock body scroll while modal is open
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
         return () => {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = prevOverflow;
         };
     }, [open, initialData]);
 
@@ -56,13 +78,11 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
     const currentRole = (currentType || "").toLowerCase();
 
     let allowedTypes = [];
-
     if (currentRole === "system-admin") {
-        // RULE: System Admins can ONLY create/edit System Admins and Regular Admins
+        // System Admins → can manage regular Admins + System Admins
         allowedTypes = ["admin", "system-admin"];
     } else {
-        // RULE: Regular Admins can create everyone EXCEPT System Admins
-        // (Assuming currentRole is 'admin' here)
+        // Regular Admins → can manage everyone except System Admins
         allowedTypes = ["visitor", "student", "organizer", "admin"];
     }
 
@@ -70,14 +90,13 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
     const validate = () => {
         const e = {};
 
-        // 1. Check Username & Uniqueness
-        if (!form.username.trim()) {
+        // Username + uniqueness
+        const usernameTrimmed = form.username.trim();
+        if (!usernameTrimmed) {
             e.username = "Username is required.";
         } else {
-            // Check if username exists AND we are not just editing the same user
-            const isTaken = takenUsernames.includes(form.username.trim());
-            const isSameUser = isEditMode && form.username === initialData.id;
-
+            const isTaken = takenUsernames.includes(usernameTrimmed);
+            const isSameUser = isEditMode && usernameTrimmed === (initialData?.id || initialData?.username);
             if (isTaken && !isSameUser) {
                 e.username = "This username is already taken.";
             }
@@ -98,15 +117,19 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
             e.phone = "Phone must be at least 10 digits.";
         }
 
-        // Password Validation Logic
-        // - Create Mode: Required
-        // - Edit Mode: Optional (only validate if user typed something)
+        // Password validation:
+        // - Create: required
+        // - Edit: optional, validate only if provided
         if (!isEditMode && !form.password) {
             e.password = "Password is required.";
         }
 
-        if (form.password && !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)) {
-            e.password = "Password must contain 8+ chars, 1 upper, 1 number, 1 special.";
+        if (
+            form.password &&
+            !/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(form.password)
+        ) {
+            e.password =
+                "Password must contain 8+ chars, 1 upper, 1 number, 1 special.";
         }
 
         if (!form.type) e.type = "User type is required.";
@@ -116,8 +139,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
         if (!form.dob) {
             e.dob = "Date of birth is required.";
         } else {
-            const age = (Date.now() - new Date(form.dob)) / (365.25 * 24 * 60 * 60 * 1000);
-            if (age < 16) e.dob = "User must be at least 16 years old.";
+            const dobDate = new Date(form.dob);
+            if (Number.isNaN(dobDate.getTime())) {
+                e.dob = "Invalid date of birth.";
+            } else {
+                const ageYears =
+                    (Date.now() - dobDate.getTime()) /
+                    (365.25 * 24 * 60 * 60 * 1000);
+                if (ageYears < 16) {
+                    e.dob = "User must be at least 16 years old.";
+                }
+            }
         }
 
         setErrors(e);
@@ -127,6 +159,7 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
+
         if (errors[name]) {
             setErrors((prev) => {
                 const newErrors = { ...prev };
@@ -139,21 +172,42 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!validate()) return;
-        onSave(form);
+
+        if (typeof onSave === "function") {
+            onSave(form);
+        }
+    };
+
+    const handleClose = () => {
+        if (typeof onClose === "function") {
+            onClose();
+        }
     };
 
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+        >
+            <div
+                className="absolute inset-0 bg-black/40"
+                onClick={handleClose}
+            />
 
             <div className="relative z-10 w-full max-w-xl rounded-2xl bg-white shadow-xl px-6 py-5 h-auto max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="font-[Gilroy-Black] text-[24px]">
                         {isEditMode ? "Edit User" : "Create New User"}
                     </h2>
-                    <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100">
+                    <button
+                        type="button"
+                        onClick={handleClose}
+                        className="p-1 rounded-full hover:bg-gray-100"
+                        aria-label="Close"
+                    >
                         <X className="w-4 h-4" />
                     </button>
                 </div>
@@ -167,11 +221,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="username"
                                 value={form.username}
                                 onChange={handleChange}
-                                // Optional: Disable username editing if you want to prevent ID changes
-                                // disabled={isEditMode}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.username ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.username
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.username && <span className="text-xs text-[var(--warning-color)]">{errors.username}</span>}
+                            {errors.username && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.username}
+                                </span>
+                            )}
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
@@ -181,9 +241,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 type="email"
                                 value={form.email}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.email ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.email
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.email && <span className="text-xs text-[var(--warning-color)]">{errors.email}</span>}
+                            {errors.email && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.email}
+                                </span>
+                            )}
                         </label>
                     </div>
 
@@ -195,9 +263,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="firstName"
                                 value={form.firstName}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.firstName ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.firstName
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.firstName && <span className="text-xs text-[var(--warning-color)]">{errors.firstName}</span>}
+                            {errors.firstName && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.firstName}
+                                </span>
+                            )}
                         </label>
                         <label className="text-xs font-medium text-gray-600">
                             Last Name
@@ -205,9 +281,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="lastName"
                                 value={form.lastName}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.lastName ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.lastName
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.lastName && <span className="text-xs text-[var(--warning-color)]">{errors.lastName}</span>}
+                            {errors.lastName && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.lastName}
+                                </span>
+                            )}
                         </label>
                     </div>
 
@@ -219,21 +303,42 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="phone"
                                 value={form.phone}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.phone ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.phone
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.phone && <span className="text-xs text-[var(--warning-color)]">{errors.phone}</span>}
+                            {errors.phone && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.phone}
+                                </span>
+                            )}
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
-                            Password {isEditMode && <span className="text-gray-400 font-normal">(Leave blank to keep current)</span>}
+                            Password{" "}
+                            {isEditMode && (
+                                <span className="text-gray-400 font-normal">
+                                    (Leave blank to keep current)
+                                </span>
+                            )}
                             <input
                                 name="password"
                                 type="password"
                                 value={form.password}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.password ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.password
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.password && <span className="text-xs text-[var(--warning-color)]">{errors.password}</span>}
+                            {errors.password && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.password}
+                                </span>
+                            )}
                         </label>
                     </div>
 
@@ -245,14 +350,24 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="type"
                                 value={form.type}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.type ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.type
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             >
                                 <option value="">select…</option>
                                 {allowedTypes.map((t) => (
-                                    <option key={t} value={t}>{t}</option>
+                                    <option key={t} value={t}>
+                                        {t}
+                                    </option>
                                 ))}
                             </select>
-                            {errors.type && <span className="text-xs text-[var(--warning-color)]">{errors.type}</span>}
+                            {errors.type && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.type}
+                                </span>
+                            )}
                         </label>
                         <label className="text-xs font-medium text-gray-600">
                             University
@@ -260,9 +375,17 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="university"
                                 value={form.university}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.university ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.university
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.university && <span className="text-xs text-[var(--warning-color)]">{errors.university}</span>}
+                            {errors.university && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.university}
+                                </span>
+                            )}
                         </label>
                     </div>
 
@@ -274,14 +397,22 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 name="gender"
                                 value={form.gender}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.gender ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.gender
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             >
                                 <option value="">Select…</option>
                                 <option value="female">Female</option>
                                 <option value="male">Male</option>
                                 <option value="other">Other</option>
                             </select>
-                            {errors.gender && <span className="text-xs text-[var(--warning-color)]">{errors.gender}</span>}
+                            {errors.gender && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.gender}
+                                </span>
+                            )}
                         </label>
 
                         <label className="text-xs font-medium text-gray-600">
@@ -291,16 +422,24 @@ export function UserModal({ open, onClose, onSave, currentType, initialData, tak
                                 type="date"
                                 value={form.dob}
                                 onChange={handleChange}
-                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${errors.dob ? 'border-[var(--warning-color)]' : 'border-gray-400'}`}
+                                className={`mt-1 w-full border rounded-md px-3 py-2 text-sm focus:border-[#4F6FFF] ${
+                                    errors.dob
+                                        ? "border-[var(--warning-color)]"
+                                        : "border-gray-400"
+                                }`}
                             />
-                            {errors.dob && <span className="text-xs text-[var(--warning-color)]">{errors.dob}</span>}
+                            {errors.dob && (
+                                <span className="text-xs text-[var(--warning-color)]">
+                                    {errors.dob}
+                                </span>
+                            )}
                         </label>
                     </div>
 
                     <div className="flex justify-end gap-3 pt-2">
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={handleClose}
                             className="px-4 py-2 border border-[var(--warning-color)] text-[var(--warning-color)] rounded-[6px] cursor-pointer"
                         >
                             Cancel

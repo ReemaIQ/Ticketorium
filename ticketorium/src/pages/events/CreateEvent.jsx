@@ -1,116 +1,232 @@
-import React, { useState, useMemo, useRef } from "react";
+// src/pages/events/CreateEvent.jsx
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { getApiBaseUrl } from "../../api/client";
 
-function CreateEventPage({ user, users, onCreate }) {
+function CreateEvent({ loggedInUser }) {
     const navigate = useNavigate();
 
-    const organizerName = useMemo(() => {
-        const u = users?.[user];
-        if (!u) return "Organizer";
-        return `${u["first-name"]} ${u["last-name"]}`;
-    }, [user, users]);
+    // ----- backend organizer (User) -----
+    const [backendUser, setBackendUser] = useState(null);
 
+    // ----- form state -----
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [date, setDate] = useState(""); // YYYY-MM-DD
-    const [time, setTime] = useState(""); // HH:MM
+
+    const [date, setDate] = useState(""); // start date YYYY-MM-DD
+    const [time, setTime] = useState(""); // start time HH:MM
+
+    const [endDate, setEndDate] = useState(""); // optional
+    const [endTime, setEndTime] = useState(""); // optional
+
     const [building, setBuilding] = useState("");
     const [room, setRoom] = useState("");
 
     const [hasSeatingPlan, setHasSeatingPlan] = useState(false);
     const [seats, setSeats] = useState("");
+
+    const [price, setPrice] = useState("");
+    const [capacityReserved, setCapacityReserved] = useState("");
+    const [capacityWaitlist, setCapacityWaitlist] = useState("");
+
     const [type, setType] = useState("Indoor");
 
-    const [createTickets, setCreateTickets] = useState(true);
-    const [autoAssign, setAutoAssign] = useState(true);
-
-    const [imgValue, setImgValue] = useState("graduation.png");
+    const [imgFile, setImgFile] = useState(null);
     const [previewSrc, setPreviewSrc] = useState(
         "/src/assets/images/event/graduation.png"
     );
 
     const fileInputRef = useRef(null);
 
-    const [error, setError] = useState(""); // improved inline banner
+    const [error, setError] = useState(""); // top banner error
+    const [fieldErrors, setFieldErrors] = useState({}); // per-field errors
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
+    /* -------------------------------------------------
+       Load backend user (organizer) by handle
+    -------------------------------------------------- */
+    useEffect(() => {
+        if (!loggedInUser) return;
+
+        const fetchUser = async () => {
+            try {
+                const res = await fetch(
+                    `${getApiBaseUrl()}/api/users/by-handle/${loggedInUser}`
+                );
+                if (!res.ok) {
+                    throw new Error("Failed to load organizer");
+                }
+                const data = await res.json();
+                setBackendUser(data);
+            } catch (err) {
+                console.error("Failed to load organizer", err);
+                setError(
+                    "Could not load organizer data. Please refresh and try again."
+                );
+            }
+        };
+
+        fetchUser();
+    }, [loggedInUser]);
+
+    /* -------------------------------------------------
+       Build ISO-like datetime "YYYY-MM-DDTHH:MM:00"
+       (backend does new Date(startAt) on this)
+    -------------------------------------------------- */
+    const buildDateTimeString = (d, t) => {
+        if (!d || !t) return null;
+        return `${d}T${t}:00`;
+    };
+
+    /* -------------------------------------------------
+       Image change + preview
+    -------------------------------------------------- */
     const handleImageChange = (e) => {
         const file = e.target.files && e.target.files[0];
         if (!file) return;
-
+        setImgFile(file);
         const url = URL.createObjectURL(file);
-        setImgValue(url);
         setPreviewSrc(url);
     };
 
+    /* -------------------------------------------------
+       Validation helper
+    -------------------------------------------------- */
+    const validateForm = () => {
+        const newFieldErrors = {};
 
-    //fix: robust date
-    const buildDateFromInputs = (dateStr, timeStr) => {
-        if (!dateStr || !timeStr) return null;
-
-        const [y, m, d] = dateStr.split("-").map(Number);
-        const [h, min] = timeStr.split(":").map(Number);
-
-        // Check all are valid numbers
-        if (
-            !y || !m || !d ||
-            Number.isNaN(h) || Number.isNaN(min)
-        ) {
-            return null;
+        if (!title.trim()) {
+            newFieldErrors.title = "Event name is required.";
+        }
+        if (!date) {
+            newFieldErrors.date = "Please select a date.";
+        }
+        if (!time) {
+            newFieldErrors.time = "Please select a time.";
         }
 
-        const dt = new Date(y, m - 1, d, h, min);
-        if (Number.isNaN(dt.getTime())) return null;
+        if (price && Number(price) < 0) {
+            newFieldErrors.price = "Price cannot be negative.";
+        }
+        if (seats && Number(seats) < 0) {
+            newFieldErrors.seats = "Number of seats cannot be negative.";
+        }
+        if (capacityReserved && Number(capacityReserved) < 0) {
+            newFieldErrors.capacityReserved =
+                "Reserved capacity cannot be negative.";
+        }
+        if (capacityWaitlist && Number(capacityWaitlist) < 0) {
+            newFieldErrors.capacityWaitlist =
+                "Waitlist capacity cannot be negative.";
+        }
 
-        return dt;
+        setFieldErrors(newFieldErrors);
+        return Object.keys(newFieldErrors).length === 0;
     };
 
-    //r: better pop-up message
-    const handleSubmit = (e) => {
+    /* -------------------------------------------------
+       Submit new event to backend
+    -------------------------------------------------- */
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!title || !date || !time) {
-            setError("Please fill in at least the event name, date, and time.");
-            return;
-        }
-
-        const dateObj = buildDateFromInputs(date, time);
-        if (!dateObj) {
-            setError("The selected date or time is invalid. Please choose a valid date & time.");
-            return;
-        }
-
-        const formattedDateLabel = dateObj.toLocaleString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-        });
-
-        const locationLabel = [building, room].filter(Boolean).join(" ");
-
-        const seatsNumber =
-            hasSeatingPlan && seats ? Number(seats) : null;
-
-        const newId = onCreate({
-            title,
-            description,
-            dateLabel: formattedDateLabel,
-            organizer: organizerName,
-            price: 0,
-            hasSeatingPlan,
-            location: locationLabel,
-            seats: seatsNumber,
-            type,
-            createTickets,
-            autoAssign,
-            img: imgValue || "graduation.png",
-        });
-
         setError("");
-        navigate(`/event/${newId}`);
+        if (isSubmitting) return;
+
+        if (!backendUser) {
+            setError("Unable to load organizer data.");
+            return;
+        }
+
+        const isValid = validateForm();
+        if (!isValid) {
+            setError("Please fix the highlighted fields.");
+            return;
+        }
+
+        const startAt = buildDateTimeString(date, time);
+        if (!startAt) {
+            setError("Invalid start date/time.");
+            return;
+        }
+
+        const endAt =
+            endDate && endTime ? buildDateTimeString(endDate, endTime) : "";
+
+        const formData = new FormData();
+        formData.append("title", title.trim());
+        formData.append("description", description || "");
+
+        formData.append("startAt", startAt);
+        if (endAt) formData.append("endAt", endAt);
+
+        // numeric defaults
+        formData.append("price", price || 0);
+
+        // Seating – capacityTotal == seats if seating plan; else 0
+        formData.append("hasSeatingPlan", hasSeatingPlan);
+        formData.append("capacityTotal", hasSeatingPlan ? seats || 0 : 0);
+
+        formData.append("capacityReserved", capacityReserved || 0);
+        formData.append("capacityWaitlist", capacityWaitlist || 0);
+
+        // Combine building + room into a single location string
+        const location = [building, room].filter(Boolean).join(" ");
+        if (location) {
+            formData.append("location", location);
+        }
+
+        // optional extras; backend can use `type` if schema supports it
+        formData.append("type", type || "Indoor");
+
+        // organizer & university from backend user
+        formData.append("organizer", backendUser._id);
+        if (backendUser.university && backendUser.university._id) {
+            formData.append("university", backendUser.university._id);
+        }
+
+        if (imgFile) {
+            formData.append("img", imgFile);
+        }
+
+        try {
+            setIsSubmitting(true);
+
+            const res = await fetch(`${getApiBaseUrl()}/api/events`, {
+                method: "POST",
+                body: formData,
+            });
+
+            const createdEvent = await res.json();
+
+            if (!res.ok) {
+                setError(createdEvent.error || "Failed to create event.");
+                return;
+            }
+
+            // Navigate to single-event page using Mongo _id
+            // (Event page will call GET /api/events/:id)
+            const targetId = createdEvent._id;
+            if (!targetId) {
+                // Fallback: stay on page and show error if somehow no id is returned
+                setError(
+                    "Event was created, but no ID was returned from the server."
+                );
+                return;
+            }
+
+            navigate(`/event/${createdEvent._id}`);
+            
+        } catch (err) {
+            console.error(err);
+            setError("Error connecting to backend.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
+    /* -------------------------------------------------
+       UI
+    -------------------------------------------------- */
     return (
         <div className="bg-white min-h-screen">
             <main className="mx-auto max-w-4xl px-6 py-10">
@@ -127,6 +243,12 @@ function CreateEventPage({ user, users, onCreate }) {
                     </div>
                 )}
 
+                {!backendUser && (
+                    <p className="mb-4 text-xs text-slate-400">
+                        Loading organizer info…
+                    </p>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Event name */}
                     <div>
@@ -134,14 +256,29 @@ function CreateEventPage({ user, users, onCreate }) {
                             Event Name
                         </label>
                         <input
-                            className="w-full border-b border-slate-300 py-2 outline-none text-[#1A1A1A] placeholder:text-slate-400"
+                            className={`w-full border-b border-slate-300 py-2 outline-none text-[#1A1A1A] placeholder:text-slate-400 ${
+                                fieldErrors.title
+                                    ? "border-[var(--warning-color)]"
+                                    : ""
+                            }`}
                             value={title}
                             onChange={(e) => {
                                 setTitle(e.target.value);
                                 if (error) setError("");
+                                if (fieldErrors.title) {
+                                    setFieldErrors((prev) => ({
+                                        ...prev,
+                                        title: undefined,
+                                    }));
+                                }
                             }}
                             placeholder="Ex: 2025 Group Hiking"
                         />
+                        {fieldErrors.title && (
+                            <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                {fieldErrors.title}
+                            </p>
+                        )}
                     </div>
 
                     {/* Description */}
@@ -166,34 +303,95 @@ function CreateEventPage({ user, users, onCreate }) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="text-xs text-slate-500 mb-1 block">
-                                    Date
+                                    Start Date
                                 </label>
                                 <input
                                     type="date"
-                                    className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A]"
+                                    className={`w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] ${
+                                        fieldErrors.date
+                                            ? "border-[var(--warning-color)]"
+                                            : ""
+                                    }`}
                                     value={date}
                                     onChange={(e) => {
                                         setDate(e.target.value);
                                         if (error) setError("");
+                                        if (fieldErrors.date) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                date: undefined,
+                                            }));
+                                        }
                                     }}
                                 />
+                                {fieldErrors.date && (
+                                    <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                        {fieldErrors.date}
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label className="text-xs text-slate-500 mb-1 block">
-                                    Time
+                                    Start Time
                                 </label>
                                 <input
                                     type="time"
-                                    className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A]"
+                                    className={`w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] ${
+                                        fieldErrors.time
+                                            ? "border-[var(--warning-color)]"
+                                            : ""
+                                    }`}
                                     value={time}
                                     onChange={(e) => {
                                         setTime(e.target.value);
                                         if (error) setError("");
+                                        if (fieldErrors.time) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                time: undefined,
+                                            }));
+                                        }
                                     }}
+                                />
+                                {fieldErrors.time && (
+                                    <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                        {fieldErrors.time}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* End date/time optional */}
+                        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="text-xs text-slate-500 mb-1 block">
+                                    End Date (optional)
+                                </label>
+                                <input
+                                    type="date"
+                                    className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A]"
+                                    value={endDate}
+                                    onChange={(e) =>
+                                        setEndDate(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs text-slate-500 mb-1 block">
+                                    End Time (optional)
+                                </label>
+                                <input
+                                    type="time"
+                                    className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A]"
+                                    value={endTime}
+                                    onChange={(e) =>
+                                        setEndTime(e.target.value)
+                                    }
                                 />
                             </div>
                         </div>
                     </div>
+
                     {/* Building + Room */}
                     <div>
                         <p className="block text-xs font-[Gilroy-Medium] text-slate-500 mb-2 uppercase tracking-wide">
@@ -207,7 +405,9 @@ function CreateEventPage({ user, users, onCreate }) {
                                 <input
                                     className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] placeholder:text-slate-400"
                                     value={building}
-                                    onChange={(e) => setBuilding(e.target.value)}
+                                    onChange={(e) =>
+                                        setBuilding(e.target.value)
+                                    }
                                     placeholder="Ex: KFUPM B24"
                                 />
                             </div>
@@ -240,9 +440,18 @@ function CreateEventPage({ user, users, onCreate }) {
                                         type="checkbox"
                                         className="w-4 h-4 accent-[var(--secondary-color)]"
                                         checked={hasSeatingPlan}
-                                        onChange={(e) =>
-                                            setHasSeatingPlan(e.target.checked)
-                                        }
+                                        onChange={(e) => {
+                                            setHasSeatingPlan(e.target.checked);
+                                            if (!e.target.checked) {
+                                                setSeats("");
+                                                if (fieldErrors.seats) {
+                                                    setFieldErrors((prev) => ({
+                                                        ...prev,
+                                                        seats: undefined,
+                                                    }));
+                                                }
+                                            }
+                                        }}
                                     />
                                     <span className="text-sm text-slate-700">
                                         Has seating map?
@@ -252,21 +461,38 @@ function CreateEventPage({ user, users, onCreate }) {
 
                             <div>
                                 <label className="text-xs text-slate-500 mb-1 block">
-                                    Number of Seats
+                                    Number of Seats (capacityTotal)
                                 </label>
                                 <input
                                     type="number"
                                     min="0"
-                                    className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] disabled:text-slate-400 disabled:border-slate-200 placeholder:text-slate-400"
+                                    className={`w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] disabled:text-slate-400 disabled:border-slate-200 placeholder:text-slate-400 ${
+                                        fieldErrors.seats
+                                            ? "border-[var(--warning-color)]"
+                                            : ""
+                                    }`}
                                     value={seats}
-                                    onChange={(e) => setSeats(e.target.value)}
+                                    onChange={(e) => {
+                                        setSeats(e.target.value);
+                                        if (fieldErrors.seats) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                seats: undefined,
+                                            }));
+                                        }
+                                    }}
                                     disabled={!hasSeatingPlan}
                                     placeholder={
                                         hasSeatingPlan
-                                            ? "Ex: 50"
+                                            ? "Ex: 50 (default is 0 if empty)"
                                             : "Enable seating first"
                                     }
                                 />
+                                {fieldErrors.seats && (
+                                    <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                        {fieldErrors.seats}
+                                    </p>
+                                )}
                             </div>
 
                             <div>
@@ -276,7 +502,9 @@ function CreateEventPage({ user, users, onCreate }) {
                                 <select
                                     className="w-full border-b border-slate-300 py-2 outline-none bg-transparent text-sm text-[#1A1A1A]"
                                     value={type}
-                                    onChange={(e) => setType(e.target.value)}
+                                    onChange={(e) =>
+                                        setType(e.target.value)
+                                    }
                                 >
                                     <option>Indoor</option>
                                     <option>Outdoor</option>
@@ -284,6 +512,110 @@ function CreateEventPage({ user, users, onCreate }) {
                                 </select>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Pricing & Capacity */}
+                    <div>
+                        <p className="block text-xs font-[Gilroy-Medium] text-slate-500 mb-2 uppercase tracking-wide">
+                            Pricing &amp; Capacity
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label className="text-xs text-slate-500 mb-1 block">
+                                    Ticket Price (SAR)
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    className={`w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] placeholder:text-slate-400 ${
+                                        fieldErrors.price
+                                            ? "border-[var(--warning-color)]"
+                                            : ""
+                                    }`}
+                                    value={price}
+                                    onChange={(e) => {
+                                        setPrice(e.target.value);
+                                        if (fieldErrors.price) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                price: undefined,
+                                            }));
+                                        }
+                                    }}
+                                    placeholder="Default is 0"
+                                />
+                                {fieldErrors.price && (
+                                    <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                        {fieldErrors.price}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="text-xs text-slate-500 mb-1 block">
+                                    Reserved Capacity
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    className={`w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] placeholder:text-slate-400 ${
+                                        fieldErrors.capacityReserved
+                                            ? "border-[var(--warning-color)]"
+                                            : ""
+                                    }`}
+                                    value={capacityReserved}
+                                    onChange={(e) => {
+                                        setCapacityReserved(e.target.value);
+                                        if (fieldErrors.capacityReserved) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                capacityReserved: undefined,
+                                            }));
+                                        }
+                                    }}
+                                    placeholder="Default is 0"
+                                />
+                                {fieldErrors.capacityReserved && (
+                                    <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                        {fieldErrors.capacityReserved}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="text-xs text-slate-500 mb-1 block">
+                                    Waitlist Capacity
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    className={`w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A] placeholder:text-slate-400 ${
+                                        fieldErrors.capacityWaitlist
+                                            ? "border-[var(--warning-color)]"
+                                            : ""
+                                    }`}
+                                    value={capacityWaitlist}
+                                    onChange={(e) => {
+                                        setCapacityWaitlist(e.target.value);
+                                        if (fieldErrors.capacityWaitlist) {
+                                            setFieldErrors((prev) => ({
+                                                ...prev,
+                                                capacityWaitlist: undefined,
+                                            }));
+                                        }
+                                    }}
+                                    placeholder="Default is 0"
+                                />
+                                {fieldErrors.capacityWaitlist && (
+                                    <p className="mt-1 text-[11px] text-[var(--warning-color)]">
+                                        {fieldErrors.capacityWaitlist}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <p className="mt-2 text-[11px] text-slate-400">
+                            If you leave any number empty, it will be saved as 0.
+                        </p>
                     </div>
 
                     {/* Image upload + preview */}
@@ -324,51 +656,21 @@ function CreateEventPage({ user, users, onCreate }) {
                                     onChange={handleImageChange}
                                 />
                                 <p className="text-[11px] text-slate-400 mt-2">
-                                    If you don&apos;t upload an image, the
-                                    default graduation image will be used.
+                                    If you don&apos;t upload an image, the default
+                                    graduation image will be used.
                                 </p>
                             </div>
                         </div>
-                    </div>
-
-                    {/* Toggles */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
-                        <label className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                className="w-4 h-4 accent-[var(--secondary-color)]"
-                                checked={createTickets}
-                                onChange={(e) =>
-                                    setCreateTickets(e.target.checked)
-                                }
-                            />
-                            <span className="text-sm text-slate-700">
-                                Create tickets for this event
-                            </span>
-                        </label>
-
-                        <label className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                className="w-4 h-4 accent-[var(--secondary-color)]"
-                                checked={autoAssign}
-                                onChange={(e) =>
-                                    setAutoAssign(e.target.checked)
-                                }
-                            />
-                            <span className="text-sm text-slate-700">
-                                Auto assign seats on registration
-                            </span>
-                        </label>
                     </div>
 
                     {/* Submit */}
                     <div className="flex justify-end mt-6">
                         <button
                             type="submit"
-                            className="flex items-center gap-2 px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--secondary-color)]  cursor-pointer"
+                            disabled={!backendUser || isSubmitting}
+                            className="flex items-center gap-2 px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--secondary-color)] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                            Create Event
+                            {isSubmitting ? "Creating..." : "Create Event"}
                             <span className="text-lg">→</span>
                         </button>
                     </div>
@@ -378,4 +680,4 @@ function CreateEventPage({ user, users, onCreate }) {
     );
 }
 
-export default CreateEventPage;
+export default CreateEvent;

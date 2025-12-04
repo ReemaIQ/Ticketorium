@@ -6,7 +6,7 @@ export const usersSeed = [
         lastName: "Alarfaj",
         email: "visitor@example.com",
         phone: "01023456780",
-        password: "Visitor!1111",
+        password: "$argon2id$v=19$m=65536,t=3,p=4$SjsZOLJ3zI6lcFx7CrdvVA$eSNkT61lOZyzPzssctiZC1l64y25Y0V1tRExG6oC/aI",
         role: "visitor",
         universityCode: "Harvard",
         gender: "female",

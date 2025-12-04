@@ -8,11 +8,11 @@ export const eventActionsConfig = {
             { label: "Send Invite", icon: ArrowRight, variant: "secondary" },
             { label: "Resign", color: "text-red-500", variant: "border" },
         ],
-        undefined: [
+        normal: [ //EVENT
             { label: "Join", icon: ArrowRight, variant: "primary" },
             { label: "Send Invite", variant: "border" },
         ],
-        waitlist: [
+        waitlist: [ //EVENT
             { label: "Join Waitlist", icon: ArrowRight, variant: "primary" },
         ],
         waitlisted: [
