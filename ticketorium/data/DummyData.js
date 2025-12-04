@@ -465,114 +465,114 @@ export const initialDummyDisputes = {
     },
 };
 
-// export const initialDummyEvents = {
-//     1: {
-//         university: "Harvard",
-//         img: "group-hiking.png",
-//         title: "2025 Group Hiking",
-//         date: "11/21/2025-9:30AM",
-//         organizer: "harvard-organizer",
-//         price: 0,
-//     },
-//     2: {
-//         university: "Harvard",
-//         img: "group-hiking.png",
-//         title: "2025 Group Hiking",
-//         date: "11/21/2025-9:30AM",
-//         organizer: "harvard-organizer",
-//         price: 10.0,
-//     },
-//     3: {
-//         university: "Harvard",
-//         img: "spelling-bee.png",
-//         title: "2025 Spelling Bee",
-//         date: "11/16/2025-9:30AM",
-//         organizer: "harvard-organizer",
-//         price: 0,
-//     },
-//     4: {
-//         university: "KFUPM",
-//         img: "game-dev.png",
-//         title: "2025 Coding Competition",
-//         date: "11/21/2025-9:30AM",
-//         organizer: "kfupm-organizer",
-//         price: 19.99,
-//     },
-//     5: {
-//         university: "KFUPM",
-//         img: "game-dev.png",
-//         title: "2025 Coding Competition",
-//         date: "11/21/2026-9:30AM",
-//         organizer: "kfupm-organizer",
-//         state: "waitlist",
-//         price: 19.99,
-//     },
-//     6: {
-//         university: "KFUPM",
-//         img: "game-dev.png",
-//         title: "2025 Coding Competition",
-//         date: "12/21/2025-9:30AM",
-//         organizer: "kfupm-organizer",
-//         hasSeatingPlan: true,
-//         price: 19.99,
-//     },
-//     7: {
-//         university: "Harvard",
-//         img: "graduation.png",
-//         title: "2025 Graduation Ceremony",
-//         date: "11/21/2025-9:30AM",
-//         organizer: "harvard-organizer",
-//         price: 0,
-//     },
-//     8: {
-//         university: "Harvard",
-//         img: "spelling-bee.png",
-//         title: "2025 Spelling Bee",
-//         hasSeatingPlan: true,
-//         date: "12/16/2025-9:30AM",
-//         organizer: "harvard-organizer",
-//         price: 0,
-//     },
-//     9: {
-//         university: "KFUPM",
-//         img: "game-dev.png",
-//         title: "2025 Coding Competition",
-//         date: "12/21/2025-9:30AM",
-//         organizer: "kfupm-organizer",
-//         hasSeatingPlan: true,
-//         price: 19.99,
-//     },
-// };
+export const initialDummyEvents = {
+    1: {
+        university: "Harvard",
+        img: "group-hiking.png",
+        title: "2025 Group Hiking",
+        date: "11/21/2025-9:30AM",
+        organizer: "harvard-organizer",
+        price: 0,
+    },
+    2: {
+        university: "Harvard",
+        img: "group-hiking.png",
+        title: "2025 Group Hiking",
+        date: "11/21/2025-9:30AM",
+        organizer: "harvard-organizer",
+        price: 10.0,
+    },
+    3: {
+        university: "Harvard",
+        img: "spelling-bee.png",
+        title: "2025 Spelling Bee",
+        date: "11/16/2025-9:30AM",
+        organizer: "harvard-organizer",
+        price: 0,
+    },
+    4: {
+        university: "KFUPM",
+        img: "game-dev.png",
+        title: "2025 Coding Competition",
+        date: "11/21/2025-9:30AM",
+        organizer: "kfupm-organizer",
+        price: 19.99,
+    },
+    5: {
+        university: "KFUPM",
+        img: "game-dev.png",
+        title: "2025 Coding Competition",
+        date: "11/21/2026-9:30AM",
+        organizer: "kfupm-organizer",
+        state: "waitlist",
+        price: 19.99,
+    },
+    6: {
+        university: "KFUPM",
+        img: "game-dev.png",
+        title: "2025 Coding Competition",
+        date: "12/21/2025-9:30AM",
+        organizer: "kfupm-organizer",
+        hasSeatingPlan: true,
+        price: 19.99,
+    },
+    7: {
+        university: "Harvard",
+        img: "graduation.png",
+        title: "2025 Graduation Ceremony",
+        date: "11/21/2025-9:30AM",
+        organizer: "harvard-organizer",
+        price: 0,
+    },
+    8: {
+        university: "Harvard",
+        img: "spelling-bee.png",
+        title: "2025 Spelling Bee",
+        hasSeatingPlan: true,
+        date: "12/16/2025-9:30AM",
+        organizer: "harvard-organizer",
+        price: 0,
+    },
+    9: {
+        university: "KFUPM",
+        img: "game-dev.png",
+        title: "2025 Coding Competition",
+        date: "12/21/2025-9:30AM",
+        organizer: "kfupm-organizer",
+        hasSeatingPlan: true,
+        price: 19.99,
+    },
+};
 
-// export const initialDummyEventsJoined = {
-//     1: {
-//         eventId: ,1
-//         user: "visitor",
-//         state: "joined",
-//     },
-//     2: {
-//         eventId: 4,
-//         user: "student",
-//         state: "joined",
-//     },
-//     3: {
-//         eventId: 3,
-//         user: "visitor",
-//         state: "joined",
-//     },
-//     4: {
-//         eventId: 4,
-//         user: "student",
-//         state: "invited",
-//         invitee: "visitor",
-//     },
-//     5: {
-//         eventId: 6,
-//         user: "visitor",
-//         state: "joined",
-//         invitee: "visitor",
-//     },
-// };
+export const initialDummyEventsJoined = {
+    1: {
+        eventId: 1,
+        user: "visitor",
+        state: "joined",
+    },
+    2: {
+        eventId: 4,
+        user: "student",
+        state: "joined",
+    },
+    3: {
+        eventId: 3,
+        user: "visitor",
+        state: "joined",
+    },
+    4: {
+        eventId: 4,
+        user: "student",
+        state: "invited",
+        invitee: "visitor",
+    },
+    5: {
+        eventId: 6,
+        user: "visitor",
+        state: "joined",
+        invitee: "visitor",
+    },
+};
 
 export const initialDummyBids = {
     1: {
