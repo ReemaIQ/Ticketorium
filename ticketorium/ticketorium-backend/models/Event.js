@@ -42,8 +42,8 @@ const eventSchema = new Schema(
 
         state: {
             type: String,
-            enum: ["normal", "waitlist", "cancelled"],
-            default: "normal",
+            enum: ["undefined", "waitlist", "cancelled"],
+            default: "undefined",
         },
 
         type: {

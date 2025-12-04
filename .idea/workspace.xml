@@ -6,9 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="all events now shows no errors but still no events">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/api/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Event.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Event.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/events.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/seedAll.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/seedAll.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +78,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -587,7 +596,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx</url>
-          <line>339</line>
+          <line>61</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -612,8 +621,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx</url>
-          <line>230</line>
-          <properties lambdaOrdinal="-1" />
+          <line>64</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>

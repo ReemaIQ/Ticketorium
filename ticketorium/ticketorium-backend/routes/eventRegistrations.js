@@ -16,14 +16,20 @@ router.get("/", async (req, res) => {
             return res.status(400).json({ error: "Missing ?user=<userId>" });
         }
 
-        const regs = await EventRegistration.find({ user: user._id})
+        // user is a string ObjectId from the query
+        if (!mongoose.isValidObjectId(user)) {
+            return res.status(400).json({ error: "Invalid user id" });
+        }
+
+        const regs = await EventRegistration.find({ user })
             .populate({
                 path: "event",
                 populate: [
                     { path: "university", select: "code name logo" },
-                    { path: "organizer", select: "handle firstName lastName role" }
-                ]
+                    { path: "organizer", select: "handle firstName lastName role" },
+                ],
             })
+            .populate("invitedBy", "handle firstName lastName") // useful for "invited by"
             .sort({ joinedAt: -1 });
 
         res.json(regs);
@@ -44,11 +50,11 @@ router.get("/all", async (_req, res) => {
                 path: "event",
                 populate: [
                     { path: "university", select: "code name logo" },
-                    { path: "organizer", select: "handle firstName lastName role" }
-                ]
+                    { path: "organizer", select: "handle firstName lastName role" },
+                ],
             })
-            .populate("user", "handle firstName lastName email") // include user info
-            .sort({ joinedAt: -1 }); // newest first
+            .populate("user", "handle firstName lastName email")
+            .sort({ joinedAt: -1 });
 
         res.json(regs);
     } catch (err) {

@@ -1,3 +1,5 @@
+// ticketorium/src/components/event/getUserCategory.js
+
 /**
  * Normalize user role → event-action category
  *

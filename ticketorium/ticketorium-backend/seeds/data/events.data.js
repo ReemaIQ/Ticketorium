@@ -8,7 +8,7 @@ export const eventsSeed = [
         startAt: "2025-11-21T09:30:00.000Z",
         organizerHandle: "harvard-organizer",
         price: 0,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: false,
     },
     {
@@ -19,7 +19,7 @@ export const eventsSeed = [
         startAt: "2025-11-21T09:30:00.000Z",
         organizerHandle: "harvard-organizer",
         price: 10.0,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: false,
     },
     {
@@ -30,7 +30,7 @@ export const eventsSeed = [
         startAt: "2025-11-16T09:30:00.000Z",
         organizerHandle: "harvard-organizer",
         price: 0,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: false,
     },
     {
@@ -41,7 +41,7 @@ export const eventsSeed = [
         startAt: "2025-11-21T09:30:00.000Z",
         organizerHandle: "kfupm-organizer",
         price: 19.99,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: false,
     },
     {
@@ -63,7 +63,7 @@ export const eventsSeed = [
         startAt: "2025-12-21T09:30:00.000Z",
         organizerHandle: "kfupm-organizer",
         price: 19.99,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: true,
     },
     {
@@ -74,7 +74,7 @@ export const eventsSeed = [
         startAt: "2025-11-21T09:30:00.000Z",
         organizerHandle: "harvard-organizer",
         price: 0,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: false,
     },
     {
@@ -85,7 +85,7 @@ export const eventsSeed = [
         startAt: "2025-12-16T09:30:00.000Z",
         organizerHandle: "harvard-organizer",
         price: 0,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: true,
     },
     {
@@ -96,7 +96,7 @@ export const eventsSeed = [
         startAt: "2025-12-21T09:30:00.000Z",
         organizerHandle: "kfupm-organizer",
         price: 19.99,
-        state: "normal",
+        state: "undefined",
         hasSeatingPlan: true,
     },
 ];

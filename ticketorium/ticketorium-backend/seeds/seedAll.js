@@ -1,4 +1,4 @@
-//ticketorium/ticketorium-backend/seeds/seedAll.js
+// ticketorium/ticketorium-backend/seeds/seedAll.js
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -37,7 +37,7 @@ import { notificationsSeed } from "./data/notificationInstances.data.js";
 // ---------- helpers ----------
 function generateTicketCode(eventObjectId, userHandle) {
     // UPDATED: Use last 4 digits of the ObjectId instead of numeric ID
-    const eventSuffix = eventObjectId.toString().slice(-4).toUpperCase(); 
+    const eventSuffix = eventObjectId.toString().slice(-4).toUpperCase();
     const cleanUser = (userHandle || "USER").toUpperCase().slice(0, 6);
     const randomPart = crypto.randomBytes(2).toString("hex").toUpperCase();
     return `TKT-E${eventSuffix}-${cleanUser}-${randomPart}`;
@@ -153,7 +153,7 @@ async function runSeed() {
         let regCount = 0;
 
         for (const r of registrationsSeed) {
-            const eventDoc = eventByKey[r.eventKey]; 
+            const eventDoc = eventByKey[r.eventKey];
             const userDoc = userByHandle[r.userHandle];
             const invitedByDoc = r.invitedByHandle
                 ? userByHandle[r.invitedByHandle]
@@ -191,7 +191,7 @@ async function runSeed() {
         for (const t of ticketsSeed) {
             const eventDoc = eventByKey[t.eventKey];
             const userDoc = userByHandle[t.userHandle];
-            
+
             const qrToken = generateQrToken();
             const ticketCode = generateTicketCode(eventDoc._id, userDoc.handle);
 
@@ -211,16 +211,18 @@ async function runSeed() {
         }
         console.log("Seeded Tickets:", ticketDocs.length);
 
-        // 7) Listings
+        // 7) Listings (FIXED: Derive event from ticket)
         const listingByKey = {};
         for (const L of listingsSeed) {
             const ticketDoc = ticketByKey[L.ticketKey];
             const sellerDoc = userByHandle[L.sellerHandle];
-            const eventDoc = eventByKey[L.eventKey];
+
+            // FIX: Get the event ID from the ticket document
+            const eventId = ticketDoc.event;
 
             const listing = await Listing.create({
                 ticket: ticketDoc._id,
-                event: eventDoc._id,
+                event: eventId, // Correctly linked
                 seller: sellerDoc._id,
                 title: L.title,
                 startingPrice: L.startingPrice,
@@ -277,11 +279,15 @@ async function runSeed() {
         }
         console.log("Seeded Bids & updated topBids");
 
-        // 9) Disputes
+        // 9) Disputes (FIXED: Link event and ticket using keys)
         for (const d of disputesSeed) {
             const participants = d.participantsHandles.map(
                 (h) => userByHandle[h]._id
             );
+
+            // FIX: Use keys to get event and ticket IDs
+            const eventDoc = eventByKey[d.eventKey];
+            const ticketDoc = ticketByKey[d.ticketKey];
 
             const messages = d.messages.map((m) => ({
                 from: userByHandle[m.fromHandle]._id,
@@ -299,8 +305,8 @@ async function runSeed() {
                 createdBy: participants[0],
                 status: d.status,
                 participants,
-                event: null, 
-                ticket: ticketDocs[0]?._id ?? null,
+                event: eventDoc ? eventDoc._id : null, // Correctly linked
+                ticket: ticketDoc ? ticketDoc._id : null, // Correctly linked
                 messages,
                 lastActivityAt: new Date(d.lastActivityAt),
             });
