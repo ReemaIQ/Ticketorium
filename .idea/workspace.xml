@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="trying to deploy via Vercel">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="remove vercel.json">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -172,15 +172,7 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-      <workItem from="1765038943868" duration="5115000" />
-    </task>
-    <task id="LOCAL-00026" summary="polishing event responsiveness">
-      <option name="closed" value="true" />
-      <created>1763482083746</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1763482083746</updated>
+      <workItem from="1765038943868" duration="6082000" />
     </task>
     <task id="LOCAL-00027" summary="fixed routes after reorganizing">
       <option name="closed" value="true" />
@@ -566,7 +558,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765042595785</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="remove vercel.json">
+      <option name="closed" value="true" />
+      <created>1765044115121</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1765044115121</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,7 +596,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="integrating changes from shayma's code into main" />
     <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
@@ -621,7 +620,8 @@
     <MESSAGE value="Merge branch 'backend-auth' of https://github.com/ReemaIQ/Ticketorium" />
     <MESSAGE value="changed file structure" />
     <MESSAGE value="trying to deploy via Vercel" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying to deploy via Vercel" />
+    <MESSAGE value="remove vercel.json" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove vercel.json" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
