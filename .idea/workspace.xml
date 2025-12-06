@@ -4,8 +4,94 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="edited dummy data">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Ticketorium - R backend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/api/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/api/client.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/api/eventRegistrations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/api/events.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/src/api/users.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/database.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Bid.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Dispute.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Event.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/EventRegistration.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/EventStats.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Listing.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Notification.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/NotificationTemplate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Ticket.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/University.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/User.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/analytics.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/disputes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/events.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/notifications.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/universities.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/bids.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/disputes.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/eventStats.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/listings.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notificationInstances.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notifications.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/registrations.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/universities.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/users.data.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/seedAll.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium/utils/FilterContent.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/data/DummyData.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/data/DummyData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/MiniBidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/bidding/MiniBidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dropdown-popup/DropdownPopup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/dropdown-popup/DropdownPopup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/DeleteEventModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/DeleteEventModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/InviteModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/InviteModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/Modal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/Modal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/TicketModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/TicketModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/UserModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/UserModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/VerifyTicketModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/modals/VerifyTicketModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/theme/ThemeProvider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/components/theme/ThemeProvider.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/ManageUsers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/ManageUsers.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/events/CreateEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/events/CreateEvent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/events/EditEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/events/EditEvent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/utils/UserHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/utils/UserHelpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/vite.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +110,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="lena" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -52,24 +138,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/sweet/WebstormProjects/Ticketorium&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "Merging main",
+    "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -111,6 +197,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="Ticketorium - R backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -148,87 +253,11 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
-      <workItem from="1764177020028" duration="22000" />
-    </task>
-    <task id="LOCAL-00010" summary="created event component">
-      <option name="closed" value="true" />
-      <created>1762007089574</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007089574</updated>
-    </task>
-    <task id="LOCAL-00011" summary="created bidding component">
-      <option name="closed" value="true" />
-      <created>1762007096169</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007096169</updated>
-    </task>
-    <task id="LOCAL-00012" summary="emptied app file">
-      <option name="closed" value="true" />
-      <created>1762007107177</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007107177</updated>
-    </task>
-    <task id="LOCAL-00013" summary="created all events page">
-      <option name="closed" value="true" />
-      <created>1762007116024</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007116024</updated>
-    </task>
-    <task id="LOCAL-00014" summary="created my events page">
-      <option name="closed" value="true" />
-      <created>1762007121604</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007121604</updated>
-    </task>
-    <task id="LOCAL-00015" summary="updating fonts">
-      <option name="closed" value="true" />
-      <created>1762015942650</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1762015942650</updated>
-    </task>
-    <task id="LOCAL-00016" summary="moved images to organize directories">
-      <option name="closed" value="true" />
-      <created>1762015998353</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1762015998353</updated>
-    </task>
-    <task id="LOCAL-00017" summary="fixed mistake in passing user type to events list">
-      <option name="closed" value="true" />
-      <created>1762820233342</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1762820233342</updated>
-    </task>
-    <task id="LOCAL-00018" summary="working on event responsiveness">
-      <option name="closed" value="true" />
-      <created>1762820260411</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1762820260411</updated>
-    </task>
-    <task id="LOCAL-00019" summary="biddings and their page">
-      <option name="closed" value="true" />
-      <created>1763239146051</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1763239146051</updated>
+      <workItem from="1764609260013" duration="16177000" />
+      <workItem from="1764685354509" duration="10485000" />
+      <workItem from="1764780458324" duration="36000" />
+      <workItem from="1764783728721" duration="491000" />
+      <workItem from="1764788016200" duration="8519000" />
     </task>
     <task id="LOCAL-00020" summary="added dummy bids and other things">
       <option name="closed" value="true" />
@@ -534,15 +563,95 @@
       <option name="project" value="LOCAL" />
       <updated>1763847626681</updated>
     </task>
-    <task id="LOCAL-00058" summary="edited dummy data">
+    <task id="LOCAL-00058" summary="editing data">
       <option name="closed" value="true" />
-      <created>1763848641563</created>
+      <created>1764541777402</created>
       <option name="number" value="00058" />
       <option name="presentableId" value="LOCAL-00058" />
       <option name="project" value="LOCAL" />
-      <updated>1763848641563</updated>
+      <updated>1764541777402</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="biddings page connected to backend">
+      <option name="closed" value="true" />
+      <created>1764626463630</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1764626463630</updated>
+    </task>
+    <task id="LOCAL-00060" summary="fixing new listing modal and end bid button">
+      <option name="closed" value="true" />
+      <created>1764630012868</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1764630012868</updated>
+    </task>
+    <task id="LOCAL-00061" summary="end bid button and expired bids implemented">
+      <option name="closed" value="true" />
+      <created>1764631600613</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1764631600613</updated>
+    </task>
+    <task id="LOCAL-00062" summary="added disputes from backend">
+      <option name="closed" value="true" />
+      <created>1764710276397</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1764710276397</updated>
+    </task>
+    <task id="LOCAL-00063" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764710751342</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1764710751342</updated>
+    </task>
+    <task id="LOCAL-00064" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764788093325</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1764788093326</updated>
+    </task>
+    <task id="LOCAL-00065" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764788110350</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1764788110350</updated>
+    </task>
+    <task id="LOCAL-00066" summary="merged Leena and Shayma work into my semi-working code">
+      <option name="closed" value="true" />
+      <created>1764851935355</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1764851935355</updated>
+    </task>
+    <task id="LOCAL-00067" summary="all events now shows no errors but still no events">
+      <option name="closed" value="true" />
+      <created>1764864531433</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1764864531433</updated>
+    </task>
+    <task id="LOCAL-00068" summary="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!">
+      <option name="closed" value="true" />
+      <created>1764880727248</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1764880727248</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -572,14 +681,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="notification modal skeleton" />
-    <MESSAGE value="updated system-admin links" />
-    <MESSAGE value="changed filter to sort" />
-    <MESSAGE value="made manage users page" />
-    <MESSAGE value="made section title font smaller" />
-    <MESSAGE value="worked on disputes page" />
-    <MESSAGE value="quick attempt at adding notification modal" />
-    <MESSAGE value="refining disputes" />
     <MESSAGE value="finished disputes" />
     <MESSAGE value="system policies page" />
     <MESSAGE value="removed node modules folder" />
@@ -596,21 +697,49 @@
     <MESSAGE value="final edits: fixed sorting by date" />
     <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
-    <MESSAGE value="edited dummy data" />
-    <option name="LAST_COMMIT_MESSAGE" value="edited dummy data" />
+    <MESSAGE value="editing data" />
+    <MESSAGE value="biddings page connected to backend" />
+    <MESSAGE value="fixing new listing modal and end bid button" />
+    <MESSAGE value="end bid button and expired bids implemented" />
+    <MESSAGE value="added disputes from backend" />
+    <MESSAGE value="updated dispute assigment logic" />
+    <MESSAGE value="merged Leena and Shayma work into my semi-working code" />
+    <MESSAGE value="all events now shows no errors but still no events" />
+    <MESSAGE value="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx</url>
-          <line>129</line>
+          <line>61</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx</url>
           <line>8</line>
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
+          <line>343</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
+          <line>140</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/App.jsx</url>
+          <line>876</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx</url>
+          <line>64</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

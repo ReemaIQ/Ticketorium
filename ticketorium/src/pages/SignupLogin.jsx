@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 library.add(fas, far, fab)
 
@@ -79,7 +79,21 @@ function SignupLogin(props) {
         setErrors({});
     }, [props.option])
 
-    const handleSubmit = (e, option) => {
+    useEffect(() => {
+        // empty input fields
+        setEmailOrUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPhoneNumber("");
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setGender("");
+        setDateOfBirth("");
+    }, [])
+
+    const handleSubmit = async (e, option) => {
     e.preventDefault()
     let errorsFound = {} // This is then passed into setErrors()
 
@@ -93,19 +107,23 @@ function SignupLogin(props) {
         else if (!validator.isEmail(email)) {
             errorsFound["email"] = "Please enter a valid email"
         }
-        else if (props.checkIfEmailExists(email)) {
-            errorsFound["email"] = "An account with this email already exists"
+        // if and only if email exists and is in a valid format, check if it already exists
+        if (errorsFound["email"] === undefined) {
+            const response = await fetch("http://localhost:4000/api/users/email-exists/" + encodeURIComponent(email))
+            const data = await response.json();
+            console.log("Email exists response:", data["exists"]);
+            if (data["exists"])
+                errorsFound["email"] = "An account with this email already exists"
         }
-        // phone number field
         if (!phoneNumber) {
             errorsFound["phone-number"] = "Please enter your phone number"
         }
         else if (!validator.isMobilePhone(phoneNumber)) {
             errorsFound["phone-number"] = "Please enter a valid phone number"
         }
-        else if (props.checkIfPhoneExists(phoneNumber)) {
-            errorsFound["phone-number"] = "An account with this phone number already exists"
-        }
+        // else if (props.checkIfPhoneExists(phoneNumber)) {
+        //     errorsFound["phone-number"] = "An account with this phone number already exists"
+        // }
         // password field
         if (!password) {
             errorsFound["password"] = "Please enter your password"
@@ -136,36 +154,60 @@ function SignupLogin(props) {
     }
         
     else if (option == "log-in") {
+        // in the next episode, I will console.log the user's data if he exists, no? then say he dont exist brother
+        // fetch("http://localhost:4000/api/auth/login", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify({}),
+        // })
         const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
         // email or username field
         if (!emailOrUsername) {
             // console.log("bruh", emailOrUsername)
             errorsFound["email-or-username"] = "Please enter your email or username"
         }
-        // first check format
-        else if (isUsername && !props.checkIfUsernameExists(emailOrUsername)) {
-            errorsFound["email-or-username"] = "There is no user with this username"
-        }
+
         else if (!isUsername && !validator.isEmail(emailOrUsername)) {
             errorsFound["email-or-username"] = "Please enter a valid email address"
-        }
-        else if (!isUsername &&!props.checkIfEmailExists(emailOrUsername)) {
-            errorsFound["email-or-username"] = "There is no user with this email"
         }
 
         // password field
         if (!password) {
             errorsFound["password"] = "Please enter your password"
         }
-        // check if password is strong enough
-        else if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})) {
-            errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
-        }
-        else if (isUsername && !props.checkUsernamePassword(emailOrUsername, password)) {
-            errorsFound["password"] = "Incorrect password for this username"
-        }
-        else if (!isUsername && !props.checkEmailPassword(emailOrUsername, password)) {
-            errorsFound["password"] = "Incorrect password for this email"
+
+        // talk to Beck, return token if user found, otherwise tell me err, only if no previous errors
+        if (Object.keys(errorsFound).length === 0) {
+            let jsonPayload = {
+                "password": password
+            }
+            if (isUsername)
+                jsonPayload["username"] = emailOrUsername;
+            else
+                jsonPayload["email"] = emailOrUsername;
+
+            console.log("Login payload:", jsonPayload);
+
+            const response = await fetch("http://localhost:4000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(jsonPayload),
+            })
+            // get token from response
+            const token = await response.json();
+
+            if (response.status !== 200) {
+                errorsFound["email-or-username"] = "Incorrect username/email or password"
+                errorsFound["password"] = "Incorrect username/email or password"
+            } else {
+                // store token in localstorage
+                localStorage.setItem("token", token["token"]);
+                props.setToken(token["token"]);
+            }
         }
 
 
@@ -175,14 +217,7 @@ function SignupLogin(props) {
             return
         }
 
-        // no errors, log in user, direct to home
-        if (isUsername)
-            props.setLoggedInUser(() =>emailOrUsername);
-        else
-            props.setLoggedInUser(() => props.getUsernameFromEmail(emailOrUsername));
         navigate("/home");
-        localStorage.setItem("loggedInUser", emailOrUsername);
-        
     }
     
     else if (option == "sign-up-part-2") {
@@ -197,8 +232,14 @@ function SignupLogin(props) {
         else if (username.length < 3 || username.length > 12) {
             errorsFound["username"] = "Username must be between 3 and 12 characters long"
         }
-        else if (props.checkIfUsernameExists(username)) {
-            errorsFound["username"] = "This username is already taken"
+
+        // if and only if username is valid, check if it already exists
+        if (errorsFound["username"] === undefined) {
+            const response = await fetch("http://localhost:4000/api/users/username-exists/" + encodeURIComponent(username))
+            const data = await response.json();
+            console.log("Username exists response:", data["exists"]);
+            if (data["exists"])
+                errorsFound["username"] = "This username is already taken"
         }
 
         // first name field
@@ -231,21 +272,38 @@ function SignupLogin(props) {
         }
 
         // no errors, create account, direct to home
-        props.addNewUser({
-            "first-name": firstName,
-            "last-name": lastName,
+
+        const payload = {
+            "firstName": firstName,
+            "lastName": lastName,
             "email": props.part1Data["email"],
-            "phone-number": props.part1Data["phone-number"],
+            "phoneNumber": props.part1Data["phone-number"],
             "password": props.part1Data["password"],
             "username": username,
             "type": "visitor",
-            "gender": gender,
-            "date-of-birth": dateOfBirth,
-            "university": "kfupm" // come back here
+            "gender": gender.toLowerCase(),
+            "dateOfBirth": dateOfBirth,
+            "university": undefined
+        }
+
+        const response = await fetch("http://localhost:4000/api/users/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
         })
-        props.setLoggedInUser(() => username);
-        localStorage.setItem("loggedInUser", username);
-        navigate("/home");
+        
+        const token = await response.json();
+
+        if (response.status !== 200) {
+            alert("Error creating account, please try again");
+        }
+        else {
+            localStorage.setItem("token", token["token"]);
+            props.setToken(token["token"]);
+            navigate("/home");
+        }
     }
 
 

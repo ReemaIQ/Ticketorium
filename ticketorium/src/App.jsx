@@ -1,5 +1,6 @@
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+//
+import { Route, Routes, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState, useRef, use} from "react";
 
 import ScrollToTop from "./components/scroll-to-top/scroll_to_top.jsx";
 import Nav from "./components/nav/nav.jsx";
@@ -29,51 +30,42 @@ import ManageUniversities from "./pages/ManageUniversities.jsx";
 import UniversitySelection from "./pages/UniversitySelection.jsx";
 import SystemPolicies from "./pages/SystemPolicies.jsx";
 
-import ThemeProvider from "./components/theme/ThemeProvider.jsx";
-
-import {
-    initialDummyUsers,
-    initialDummyUniversities,
-    initialDummyNotifications,
-    initialDummyDisputes,
-    initialDummyEvents,
-    initialDummyEventsJoined,
-    initialDummyBids,
-} from "../data/DummyData.js";
-
-import {
-    checkIfEmailExists as checkIfEmailExistsHelper,
-    checkIfPhoneExists as checkIfPhoneExistsHelper,
-    checkIfUsernameExists as checkIfUsernameExistsHelper,
-    checkUsernamePassword as checkUsernamePasswordHelper,
-    checkEmailPassword as checkEmailPasswordHelper,
-    getUsernameFromEmail as getUsernameFromEmailHelper,
-    addNewUser as addNewUserHelper,
-    assignUni as assignUniHelper,
-} from "../utils/UserHelpers.js";
+// import ThemeProvider from "./components/theme/ThemeProvider.jsx";
 
 import { searchContentHelper } from "../utils/SearchHelpers.js";
 import { filterContentHelper } from "../utils/FilterHelpers.js";
+import { assignUniHelper } from "../utils/UserHelpers.js"
 
 // ---------- ROUTE GUARDS ----------
 
-function RequireAuth({ loggedInUser, children }) {
-    if (!loggedInUser) return <Navigate to="/log-in" replace />;
+function RequireAuth({ token, children }) {
+    if (!token) return <Navigate to="/log-in" replace />;
     return children;
 }
 
-function RequireNoAuth({ loggedInUser, children }) {
-    if (loggedInUser) return <Navigate to="/home" replace />;
+function RequireNoAuth({ token, children }) {
+    if (token) return <Navigate to="/home" replace />;
     return children;
 }
 
-function RequireRole({ loggedInUser, dummyUsersRef, allowedRoles, children }) {
-    if (!loggedInUser) return <Navigate to="/log-in" replace />;
+function RequireRole({username, role, allowedRoles, children }) {
+    if (!username) return <Navigate to="/log-in" replace />;
+    console.log("funny role", role)
+    console.log("funny username", username)
 
-    const userType = dummyUsersRef.current?.[loggedInUser]?.type;
-    if (!allowedRoles.includes(userType)) return <Navigate to="/home" replace />;
+    if (!allowedRoles.includes(role)) return <Navigate to="/home" replace />;
 
     return children;
+}
+
+function RouteLogger() {
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("ROUTE CHANGED →", location.pathname);
+  }, [location]);
+
+  return null; // it doesn't render anything
 }
 
 // ---------- APP ----------
@@ -81,19 +73,17 @@ function RequireRole({ loggedInUser, dummyUsersRef, allowedRoles, children }) {
 function App() {
     const navigate = useNavigate();
     // ---------------- STATE ----------------
-    const [loggedInUser, setLoggedInUser] = useState(null); // username only
     const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
     const [part1Data, setPart1Data] = useState({});
-    const [selectedUni, setSelectedUni] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [url, setUrl] = useState(true);
 
-    const dummyUsers = useRef({});
-    const dummyUniversities = useRef({});
-    const dummyEvents = useRef({});
+    const universities = useRef({});
+    const events = useRef({});
     const dummyBids = useRef({});
     const dummyNotifications = useRef({});
     const dummyDisputes = useRef({});
-    const dummyEventsJoined = useRef({});
+    const eventsJoined = useRef({});
 
     const [successfulPayment, setSuccessfulPayment] = useState(false);
     const [processingPayment, setProcessingPayment] = useState(false);
@@ -102,158 +92,224 @@ function App() {
     const [waitlistSuccess, setWaitlistSuccess] = useState(false);
     const [organizerViewing, setOrganizerViewing] = useState(null);
 
+
+    // SHAYMA: BACKEND - DO NOT REMOVE IN MERGING - START
+    // info about user
+    const [token, setToken] = useState(null)
+    const [username, setUsername] = useState(null)
+    const [gender, setGender] = useState(null)
+    const [role, setRole] = useState(null)
+    const [university, setUniversity] = useState(null)
+    const [dateOfBirth, setDateOfBirth] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [phoneNumber, setPhoneNumber] = useState(null)
+    const [firstName, setFirstName] = useState(null)
+    const [lastName, setLastName] = useState(null)
+    const [userId, setUserId] = useState(null)
+    const [userObj, setUserObj] = useState(null)
+
+
+    const refreshNeededData = async () => {
+            console.log("Flute 1")
+            await refreshUserData();
+            console.log("Flute role", role)
+            console.log("Flute uni", university)
+            if (university) { // if the user has a uni assigned to him, then fetch the data of that uni
+                await refreshEventsData();   
+            }             
+            else if (role === "visitor" || role === "system-admin") {
+                navigate("/university-selection")
+            }
+    }
+
+    const refreshUserData = async () => {
+        const response = await fetch("http://localhost:4000/api/users/all-data", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+        })
+        const userData = await response.json();
+        if (userData.university) {
+            const uniResponse = await fetch("http://localhost:4000/api/universities/" + encodeURIComponent(userData.university), {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+            })
+            const uniData = await uniResponse.json();
+            setUniversity(uniData);
+        }
+        console.log("Main fetch", userData);
+        console.log("just checking", userData._id)
+        setUsername(userData.handle);
+        setGender(userData.gender);
+        setRole(userData.role);
+        setDateOfBirth(userData.dateOfBirth);
+        setEmail(userData.email);
+        setPhoneNumber(userData.phone);
+        setFirstName(userData.firstName);
+        setLastName(userData.lastName);
+        setUserId(userData._id)
+        setUserObj(userData)
+        console.log("flute X")
+        if (userData.role === "visitor" || userData.role === "system-admin") {
+                await refreshUnisData();
+                console.log("Flute unis", universities.current)
+        }
+    }
+
+    const refreshEventsData = async () => {
+        const uniEventsResponse = await fetch("http://localhost:4000/api/events/uni-all/" + encodeURIComponent(university["_id"]), {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+        })
+        const uniEventsData = await uniEventsResponse.json();
+        // const eventsJoinedResponse = await fetch("http://localhost:4000/api/events/joined/" + encodeURIComponent(userId) + "/" + encodeURIComponent(university._id), {
+        //             headers: {
+        //                 Authorization: `Bearer ${token}`
+        //             }
+        // })
+        // const eventsJoinedData = await eventsJoinedResponse.json();
+        events.current = uniEventsData;
+        // eventsJoined.current = eventsJoinedData;
+        eventsJoined.current = []
+        console.log("Uni events fetch", uniEventsData);
+        // console.log("User joined events", eventsJoinedData)
+
+
+    }
+
+    const refreshUnisData = async () => {
+        const uniEventsResponse = await fetch("http://localhost:4000/api/universities/all", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+        const unisData = await uniEventsResponse.json();
+        universities.current = unisData;
+        console.log("Unis fetch", universities.current);
+
+    }
+    // SHAYMA: BACKEND - DO NOT REMOVE IN MERGING - END
+    
+
     useEffect(() => {
-    if (organizerViewing) // so to avoid navigation when val is changed to null
-      navigate("/about-organizer");
-  }, [organizerViewing]);
+        if (organizerViewing) // so to avoid navigation when val is changed to null
+            navigate("/about-organizer");
+    }, [organizerViewing]);
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
+
+    // SHAYMA: CONFLICT-RESOLVING-TIP: This entire useEffect, replace it with what I have here (ALL OF IT)
     useEffect(() => {
-        // loggedInUser
-        const storedUser = localStorage.getItem("loggedInUser");
-        storedUser ? setLoggedInUser(storedUser) : setLoggedInUser(null);
 
-        // dummyUsers
-        const emptyDummyUsers =
-            localStorage.getItem("dummyUsers") === "null" ||
-            !localStorage.getItem("dummyUsers");
-        if (!emptyDummyUsers) {
-            dummyUsers.current = JSON.parse(localStorage.getItem("dummyUsers"));
-        } else {
-            localStorage.setItem("dummyUsers", JSON.stringify(initialDummyUsers));
-            dummyUsers.current = initialDummyUsers;
+        const effectCall = async () => {
+            console.log("App mounted")
+            // if there is a token:
+            const fetchedToken = localStorage.getItem("token");
+            if (fetchedToken && fetchedToken !== token) {
+                setToken(fetchedToken); // first time only, on first mount
+            } else {
+                console.log("No user logged in")
+                setIsLoading(false)
+                // setUsername(null);
+                // setGender(null);
+                // setRole(null);
+                // setUniversity(null);
+                // setDateOfBirth(null);
+                // setEmail(null);
+                // setPhoneNumber(null);
+                // setFirstName(null);
+                // setLastName(null);
+                // navigate("/home"); // main home page of non-logged in users
+            }
         }
 
-        // dummyUniversities
-        const emptyDummyUniversities =
-            localStorage.getItem("dummyUniversities") === "null" ||
-            !localStorage.getItem("dummyUniversities");
-        if (!emptyDummyUniversities) {
-            dummyUniversities.current = JSON.parse(
-                localStorage.getItem("dummyUniversities")
-            );
-        } else {
-            localStorage.setItem(
-                "dummyUniversities",
-                JSON.stringify(initialDummyUniversities)
-            );
-            dummyUniversities.current = initialDummyUniversities;
-        }
-
-        // dummyEvents
-        const emptyDummyEvents =
-            localStorage.getItem("dummyEvents") === "null" ||
-            !localStorage.getItem("dummyEvents");
-        if (!emptyDummyEvents) {
-            dummyEvents.current = JSON.parse(localStorage.getItem("dummyEvents"));
-        } else {
-            localStorage.setItem("dummyEvents", JSON.stringify(initialDummyEvents));
-            dummyEvents.current = initialDummyEvents;
-        }
-
-        // dummyBids
-        const emptyDummyBids =
-            localStorage.getItem("dummyBids") === "null" ||
-            !localStorage.getItem("dummyBids");
-        if (!emptyDummyBids) {
-            dummyBids.current = JSON.parse(localStorage.getItem("dummyBids"));
-        } else {
-            localStorage.setItem("dummyBids", JSON.stringify(initialDummyBids));
-            dummyBids.current = initialDummyBids;
-        }
-
-        // dummyNotifications
-        const emptyDummyNotifications =
-            localStorage.getItem("dummyNotifications") === "null" ||
-            !localStorage.getItem("dummyNotifications");
-        if (!emptyDummyNotifications) {
-            dummyNotifications.current = JSON.parse(
-                localStorage.getItem("dummyNotifications")
-            );
-        } else {
-            localStorage.setItem(
-                "dummyNotifications",
-                JSON.stringify(initialDummyNotifications)
-            );
-            dummyNotifications.current = initialDummyNotifications;
-        }
-
-        // dummyEventsJoined
-        const emptyDummyEventsJoined =
-            localStorage.getItem("dummyEventsJoined") === "null" ||
-            !localStorage.getItem("dummyEventsJoined");
-        if (!emptyDummyEventsJoined) {
-            dummyEventsJoined.current = JSON.parse(
-                localStorage.getItem("dummyEventsJoined")
-            );
-        } else {
-            localStorage.setItem(
-                "dummyEventsJoined",
-                JSON.stringify(initialDummyEventsJoined)
-            );
-            dummyEventsJoined.current = initialDummyEventsJoined;
-        }
-
-        // dummyDisputes
-        const emptyDummyDisputes =
-            localStorage.getItem("dummyDisputes") === "null" ||
-            !localStorage.getItem("dummyDisputes");
-        if (!emptyDummyDisputes) {
-            dummyDisputes.current = JSON.parse(
-                localStorage.getItem("dummyDisputes")
-            );
-        } else {
-            localStorage.setItem(
-                "dummyDisputes",
-                JSON.stringify(initialDummyDisputes)
-            );
-            dummyDisputes.current = initialDummyDisputes;
-        }
-
-        setSelectedUni(null);
-        setIsLoading(false);
+        effectCall()
     }, []);
 
+    useEffect(() => {
+        const effectCall = async () => {
+            console.log("Jordan", token)
+            if (token) {
+                setIsLoading(true)
+                await refreshNeededData()
+                setIsLoading(false);
+            }
+            // only when token is removed or cleared
+            else {
+                setUsername(null);
+                setGender(null);
+                setRole(null);
+                setUniversity(null);
+                setDateOfBirth(null);
+                setEmail(null);
+                setPhoneNumber(null);
+                setFirstName(null);
+                setLastName(null);
+                setUserId(null);
+                setUserObj(null);
+                const rootStyle = document.querySelector(':root').style;
+                    // console.log(rootStyle)
+                    rootStyle.setProperty('--secondary-color', "#1F4C76");
+                    rootStyle.setProperty('--primary-color', "#1a1a1a");
+                    rootStyle.setProperty('--accent-color', "#FFDF4F");
+                    rootStyle.setProperty('--secondary-accent-color', "#0800FF");
+                    rootStyle.setProperty('--footer-color', "#11223B");
+                    rootStyle.setProperty('--warning-color', "#F54141");
+                    rootStyle.setProperty('--success-color', "#46CA48");
+            }
+        }
+        
+        effectCall()
+    }, [token])
+
+    useEffect(() => {
+        const effectCall = async () => {
+            console.log("Peter", token)
+            if (token) {
+                if (university) {
+                    const rootStyle = document.querySelector(':root').style;
+                    // console.log(rootStyle)
+                    rootStyle.setProperty('--secondary-color', university["themeColors"]["secondaryColor"]);
+                    rootStyle.setProperty('--primary-color', university["themeColors"]["primaryColor"]);
+                    rootStyle.setProperty('--accent-color', university["themeColors"]["accentColor"]);
+                    rootStyle.setProperty('--secondary-accent-color', university["themeColors"]["secondaryAccentColor"]);
+                    rootStyle.setProperty('--footer-color', university["themeColors"]["footerColor"]);
+                    rootStyle.setProperty('--warning-color', university["themeColors"]["warningColor"]);
+                    rootStyle.setProperty('--success-color', university["themeColors"]["successColor"]);
+                    rootStyle.setProperty('--filter-buttons', university["themeColors"]["filterButtons"]);
+                    rootStyle.setProperty('--dispute-chat', university["themeColors"]["disputeChat"]);
+                }
+                console.log("tomato", university)
+                await refreshEventsData()
+            }
+        }
+        
+        effectCall()
+    }, [university])
+
+
+
     // a safe current user reference (prevents crashes)
-    const currentUser = loggedInUser
-        ? dummyUsers.current?.[loggedInUser] || null
-        : null;
+    const currentUser = username
 
     // ---------------- SELECTED UNI EFFECT ----------------
-    useEffect(() => {
-        const user = loggedInUser ? dummyUsers.current?.[loggedInUser] : null;
+    // useEffect(() => {
+    //     const user = token ? username : null;
 
-        if (user && user.type !== "visitor" && user.type !== "system-admin") {
-            setSelectedUni(true);
-        } else if (!user) {
-            setSelectedUni(null);
-        }
-    }, [loggedInUser]);
+    //     if (user && user.type !== "visitor" && user.type !== "system-admin") {
+    //         setSelectedUni(true);
+    //     } else if (!user) {
+    //         setSelectedUni(null);
+    //     }
+    // }, [token]);
 
     // ---------------- HELPERS (WRAPPERS) ----------------
 
-    const checkIfEmailExists = (email) =>
-        checkIfEmailExistsHelper(dummyUsers, email);
-
-    const checkIfPhoneExists = (phone) =>
-        checkIfPhoneExistsHelper(dummyUsers, phone);
-
-    const checkIfUsernameExists = (username) =>
-        checkIfUsernameExistsHelper(dummyUsers, username);
-
-    const checkUsernamePassword = (username, password) =>
-        checkUsernamePasswordHelper(dummyUsers, username, password);
-
-    const checkEmailPassword = (email, password) =>
-        checkEmailPasswordHelper(dummyUsers, email, password);
-
-    const getUsernameFromEmail = (email) =>
-        getUsernameFromEmailHelper(dummyUsers, email);
-
-    const addNewUser = (data) => addNewUserHelper(dummyUsers, data);
 
     const assignUni = (university) =>
-        assignUniHelper(dummyUsers, loggedInUser, university);
+        assignUniHelper(token, setUniversity, university);
 
     // generic filter/search wrapper used by children
     const filterContent = (
@@ -267,7 +323,7 @@ function App() {
         if (typeOfFilter === "search") {
             return searchContentHelper(searchFor, content, setter, searchValue, {
                 mode: searchFor === "event" ? "title" : undefined,
-                loggedInUser,
+                username,
             });
         }
 
@@ -277,7 +333,7 @@ function App() {
                 content,
                 setter,
                 filterDetails,
-                loggedInUser
+                username
             );
         }
 
@@ -294,24 +350,20 @@ function App() {
         <>
             <ScrollToTop />
 
-            <ThemeProvider
-                loggedInUser={loggedInUser}
-                dummyUsersRef={dummyUsers}
-                dummyUniversitiesRef={dummyUniversities}
-            >
+            
+                <RouteLogger />
                 <div className="flex-col">
                     <Nav
-                        type={currentUser?.type ?? "empty"}
-                        user={loggedInUser}
-                        setLoggedInUser={setLoggedInUser}
+                        type={role? role: "empty"}
+                        setToken={setToken} // for the logout
                         notifications={dummyNotifications.current}
-                        users={dummyUsers.current}
+                        user={userObj}
+                        firstName={firstName}
+                        hasUniversity={university? true: false}
                     />
 
                     {isLoading && (
-                        <h1 className="m-15 text-5xl self-center absolute h-[100vh]">
-                            Loading...
-                        </h1>
+                        <></>
                     )}
 
                     {!isLoading && (
@@ -320,9 +372,9 @@ function App() {
                             <Route
                                 path="/home"
                                 element={
-                                    !loggedInUser ? (
+                                    !token ? (
                                         <DummyUserHome />
-                                    ) : selectedUni ? (
+                                    ) : university ? (
                                         <UserHome
                                             setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
@@ -331,13 +383,15 @@ function App() {
                                             waitlistSuccess={waitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            uni={currentUser?.university ?? null}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
-                                            universities={dummyUniversities.current}
+                                            uni={university}
+                                            user={username}
+                                            firstName={firstName}
+                                            role={role}
+                                            users={[]}
+                                            universities={universities.current}
                                             notifications={dummyNotifications.current}
-                                            events={dummyEvents.current}
-                                            eventsJoined={dummyEventsJoined.current}
+                                            events={events.current}
+                                            eventsJoined={eventsJoined.current}
                                         />
                                     ) : (
                                         <Navigate to="/university-selection" />
@@ -349,15 +403,10 @@ function App() {
                             <Route
                                 path="/log-in"
                                 element={
-                                    <RequireNoAuth loggedInUser={loggedInUser}>
+                                    <RequireNoAuth token={token}>
                                         <SignupLogin
                                             option={"log-in"}
-                                            checkIfEmailExists={checkIfEmailExists}
-                                            checkIfUsernameExists={checkIfUsernameExists}
-                                            checkUsernamePassword={checkUsernamePassword}
-                                            checkEmailPassword={checkEmailPassword}
-                                            setLoggedInUser={setLoggedInUser}
-                                            getUsernameFromEmail={getUsernameFromEmail}
+                                            setToken={setToken}
                                         />
                                     </RequireNoAuth>
                                 }
@@ -366,14 +415,10 @@ function App() {
                             <Route
                                 path="/sign-up"
                                 element={
-                                    <RequireNoAuth loggedInUser={loggedInUser}>
+                                    <RequireNoAuth token={token}>
                                         <SignupLogin
                                             option={"sign-up"}
-                                            checkIfEmailExists={checkIfEmailExists}
-                                            checkIfUsernameExists={checkIfUsernameExists}
-                                            checkUsernamePassword={checkUsernamePassword}
-                                            checkEmailPassword={checkEmailPassword}
-                                            checkIfPhoneExists={checkIfPhoneExists}
+                                            setToken={setToken}
                                             setFinishedPart1SignUp={setFinishedPart1SignUp}
                                             setPart1Data={setPart1Data}
                                         />
@@ -384,13 +429,11 @@ function App() {
                             <Route
                                 path="/sign-up-2"
                                 element={
-                                    <RequireNoAuth loggedInUser={loggedInUser}>
+                                    <RequireNoAuth token={token}>
                                         {finishedPart1SignUp ? (
                                             <SignupLogin
                                                 option={"sign-up-part-2"}
-                                                setLoggedInUser={setLoggedInUser}
-                                                checkIfUsernameExists={checkIfUsernameExists}
-                                                addNewUser={addNewUser}
+                                                setToken={setToken}
                                                 part1Data={part1Data}
                                             />
                                         ) : (
@@ -404,7 +447,7 @@ function App() {
                             <Route
                                 path="/my-events"
                                 element={
-                                    <RequireAuth loggedInUser={loggedInUser}>
+                                    <RequireAuth token={token}>
                                         <MyTickets
                                             setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
@@ -413,10 +456,10 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
-                                            eventsJoined={dummyEventsJoined.current}
+                                            user={userObj}
+                                            users={[]}
+                                            events={events.current}
+                                            eventsJoined={eventsJoined.current}
                                             uni={currentUser?.university ?? null}
                                         />
                                     </RequireAuth>
@@ -426,7 +469,7 @@ function App() {
                             <Route
                                 path="/events"
                                 element={
-                                    <RequireAuth loggedInUser={loggedInUser}>
+                                    <RequireAuth token={token}>
                                         <AllEvents
                                             setOrganizerViewing={setOrganizerViewing}
                                             setWaitlistModalOpen={setWaitlistModalOpen}
@@ -435,11 +478,11 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
-                                            uni={currentUser?.university ?? null}
-                                            eventsJoined={dummyEventsJoined.current}
+                                            user={userObj}
+                                            events={events.current}
+                                            uni={university}
+                                            eventsJoined={eventsJoined.current}
+                                            role={role}
                                         />
                                     </RequireAuth>
                                 }
@@ -449,10 +492,10 @@ function App() {
                                 path="/event/:eventId"
                                 element={
                                     <EventPage
-                                        user={loggedInUser}
-                                        users={dummyUsers.current}
-                                        events={dummyEvents.current}
-                                        eventsJoined={dummyEventsJoined.current} // pass joined records
+                                        user={userObj}
+                                        users={[]}
+                                        events={events.current}
+                                        eventsJoined={eventsJoined.current} // pass joined records
                                     />
                                 }
                             />
@@ -462,7 +505,7 @@ function App() {
                                 path="/bidding"
                                 element={
                                     <Bidding
-                                        user={loggedInUser}
+                                        user={userObj}
                                         biddings={dummyBids.current}
                                     />
                                 }
@@ -473,8 +516,8 @@ function App() {
                                 path="/analytics"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={userObj}
+                                        role={role}
                                         allowedRoles={["organizer"]}
                                     >
                                         <Analytics />
@@ -486,8 +529,8 @@ function App() {
                                 path="/create-event"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={userObj}
+                                        role={role}
                                         allowedRoles={["organizer"]}
                                     >
                                         <CreateEvent />
@@ -499,14 +542,14 @@ function App() {
                                 path="/event/:eventId/edit"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={userObj}
+                                        role={role}
                                         allowedRoles={["organizer", "admin", "system-admin"]}
                                     >
                                         <EditEvent
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
+                                            user={userObj}
+                                            users={[]}
+                                            events={events.current}
                                         />
                                     </RequireRole>
                                 }
@@ -516,7 +559,7 @@ function App() {
                             <Route
                                 path="/registration"
                                 element={
-                                    <RequireAuth loggedInUser={loggedInUser}>
+                                    <RequireAuth token={token}>
                                         <Registration />
                                     </RequireAuth>
                                 }
@@ -525,7 +568,7 @@ function App() {
                             <Route
                                 path="/checkout"
                                 element={
-                                    <RequireAuth loggedInUser={loggedInUser}>
+                                    <RequireAuth token={token}>
                                         {!isPurchasing ? (
                                             <Navigate to="/home" replace />
                                         ) : (
@@ -554,13 +597,13 @@ function App() {
                                 path="/manage-users"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={username}
+                                        role={role}
                                         allowedRoles={["admin", "system-admin"]}
                                     >
                                         <ManageUsers
-                                            users={dummyUsers.current}
-                                            user={loggedInUser}
+                                            users={[]}
+                                            user={username}
                                         />
                                     </RequireRole>
                                 }
@@ -570,12 +613,12 @@ function App() {
                                 path="/manage-universities"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={username}
+                                        role={role}
                                         allowedRoles={["system-admin"]}
                                     >
                                         <ManageUniversities
-                                            initialUniversities={dummyUniversities.current}
+                                            initialUniversities={universities.current}
                                         />
                                     </RequireRole>
                                 }
@@ -585,8 +628,8 @@ function App() {
                                 path="/system-policies"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={userObj}
+                                        role={role}
                                         allowedRoles={["admin", "system-admin"]}
                                     >
                                         <SystemPolicies />
@@ -598,11 +641,11 @@ function App() {
                             <Route
                                 path="/disputes"
                                 element={
-                                    <RequireAuth loggedInUser={loggedInUser}>
+                                    <RequireAuth token={token}>
                                         <Disputes
                                             disputes={dummyDisputes.current}
-                                            user={loggedInUser}
-                                            users={dummyUsers.current}
+                                            user={userObj}
+                                            users={[]}
                                         />
                                     </RequireAuth>
                                 }
@@ -613,15 +656,14 @@ function App() {
                                 path="/university-selection"
                                 element={
                                     <RequireRole
-                                        loggedInUser={loggedInUser}
-                                        dummyUsersRef={dummyUsers}
+                                        username={username}
+                                        role={role}
                                         allowedRoles={["visitor", "system-admin"]}
                                     >
                                         <UniversitySelection
-                                            filterContent={filterContent}
-                                            universities={dummyUniversities.current}
-                                            assignUni={assignUni}
-                                            setSelectedUni={setSelectedUni}
+                                            filterContent={filterContent} // this is the filter function, btw
+                                            universities={universities.current}
+                                            assignUni={assignUni} // also function
                                         />
                                     </RequireRole>
                                 }
@@ -631,12 +673,12 @@ function App() {
                             <Route
                                 path="/about-organizer"
                                 element={
-                                    <RequireAuth loggedInUser={loggedInUser}>
+                                    <RequireAuth token={token}>
                                         {organizerViewing ? <AboutOrganizer
                                             setOrganizerViewing={setOrganizerViewing}
                                             organizer={organizerViewing}
-                                            users={dummyUsers.current}
-                                            events={dummyEvents.current}
+                                            users={[]}
+                                            events={events.current}
                                             userType={currentUser?.type ?? "empty"}
                                         /> : <Navigate to="/home" />}
                                     </RequireAuth>
@@ -648,7 +690,7 @@ function App() {
                             <Route
                                 path="*"
                                 element={
-                                    loggedInUser ? (
+                                    token ? (
                                         <h1 className="m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]">
                                             404 - Page Not Found :)
                                         </h1>
@@ -660,9 +702,9 @@ function App() {
                         </Routes>
                     )}
 
-                    <Footer type={currentUser?.type ?? "empty"} />
+                    {!isLoading && <Footer type={currentUser?.type ?? "empty"} />}
                 </div>
-            </ThemeProvider>
+            
         </>
     );
 }

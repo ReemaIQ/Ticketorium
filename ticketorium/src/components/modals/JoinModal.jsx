@@ -1,7 +1,7 @@
 // JOIN modal
 // - picks seat (if hasSeatingPlan)
 // - calls createTicket() backend
-// - redirects to /registration success page
+// - redirects to /registration or /checkout
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,33 +10,45 @@ import SeatingPlan from "../event/SeatingPlan.jsx";
 import { createTicket } from "../../api/tickets.js";
 
 function JoinModal({
-                       isOpen,
-                       onClose,
-                       eventId,
-                       title,
-                       price,
-                       hasSeatingPlan,
-                       userId,
-                       setTicket,
-                       setViewState,
-                       occupiedSeats = ["1B", "2C", "3D", "4E"], // demo dummy seats
-                   }) {
+    isOpen,
+    onClose,
+    eventId,
+    title,
+    price,
+    hasSeatingPlan,
+    userId,
+    setTicket,
+    setViewState,
+    occupiedSeats = [], // no more hardcoded dummy seats
+}) {
     const [selectedSeat, setSelectedSeat] = useState(null);
     const [accessibilityNotes, setAccessibilityNotes] = useState("");
     const [loading, setLoading] = useState(false);
-    const [isPurchasing, setIsPurchasing] = useState(true);
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
+    const numericPrice =
+        typeof price === "number" ? price : 0;
+    const isPaid = numericPrice > 0;
+    const safeTitle = title || "this event";
+
     async function handleJoin() {
-        if (hasSeatingPlan && !selectedSeat) {
-            alert("Please choose a seat before joining.");
+        // reset error on new attempt
+        setError("");
+
+        if (!eventId) {
+            setError("Missing event information. Please try again.");
             return;
         }
 
-
         if (!userId) {
-            alert("You must be logged in to join events.");
+            setError("You must be logged in to join events.");
+            return;
+        }
+
+        if (hasSeatingPlan && !selectedSeat) {
+            setError("Please choose a seat before joining.");
             return;
         }
 
@@ -47,29 +59,43 @@ function JoinModal({
                 eventId,
                 userId,
                 seat: hasSeatingPlan ? selectedSeat : null,
-                price,
+                price: numericPrice,
             });
 
-            // store in parent state for Ticket modal
-            setTicket({
-                ...createdTicket,
-                accessibilityNotes,
-            });
-
-            setViewState("joined");
-            onClose();
-
-            if (price !== 0) {
-                setIsPurchasing(true)
-                navigate("/checkout")
+            // store in parent state for Ticket modal (if provided)
+            if (typeof setTicket === "function") {
+                setTicket({
+                    ...createdTicket,
+                    accessibilityNotes,
+                });
             }
-            else{
-                // go to registration status page
+
+            if (typeof setViewState === "function") {
+                setViewState("joined");
+            }
+
+            onClose?.();
+
+            const ticketId =
+                createdTicket._id ?? createdTicket.id ?? createdTicket.ticketId;
+
+            if (isPaid) {
+                // redirect to checkout for paid events
+                navigate("/checkout", {
+                    state: {
+                        eventId,
+                        ticketId,
+                        fromEventId: eventId,
+                        price: createdTicket.price ?? numericPrice,
+                    },
+                });
+            } else {
+                // go to registration status page for free events
                 navigate("/registration", {
                     state: {
                         isSuccess: true,
                         eventId,
-                        ticketId: createdTicket.id,
+                        ticketId,
                         ticketCode: createdTicket.ticketCode,
                         seat: createdTicket.seat,
                         price: createdTicket.price,
@@ -77,18 +103,9 @@ function JoinModal({
                     },
                 });
             }
-
         } catch (err) {
             console.error("Error creating ticket:", err);
-
-            // demo failure path → checkout
-            navigate("/checkout", {
-                state: {
-                    isSuccess: false,
-                    eventId,
-                    fromEventId: eventId,
-                },
-            });
+            setError("Failed to join this event. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -98,15 +115,15 @@ function JoinModal({
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className="text-center">
                 <h3 className="text-xl font-semibold">
-                    Join <span className="font-bold">{title}</span>?
+                    Join <span className="font-bold">{safeTitle}</span>?
                 </h3>
 
                 <p className="mt-2 text-slate-500">
-                    {price > 0 ? (
+                    {isPaid ? (
                         <>
                             You will pay{" "}
                             <span className="text-[var(--primary-color)] font-medium">
-                                ${price.toFixed(2)}
+                                ${numericPrice.toFixed(2)}
                             </span>
                         </>
                     ) : (
@@ -132,24 +149,33 @@ function JoinModal({
                     onChange={(e) => setAccessibilityNotes(e.target.value)}
                 />
 
+                {error && (
+                    <p className="mt-3 text-xs text-red-500 text-left">
+                        {error}
+                    </p>
+                )}
+
                 <div className="mt-6 flex justify-end gap-3">
                     <button
+                        type="button"
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium bg-white text-[var(--secondary-color)] border border-[var(--secondary-color)] rounded-[6px] cursor-pointer"
+                        disabled={loading}
+                        className="px-4 py-2 text-sm font-medium bg-white text-[var(--secondary-color)] border border-[var(--secondary-color)] rounded-[6px] cursor-pointer disabled:opacity-60"
                     >
                         Cancel
                     </button>
 
                     <button
+                        type="button"
                         onClick={handleJoin}
                         disabled={loading}
                         className="px-4 py-2 text-sm font-medium bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] cursor-pointer disabled:opacity-60"
                     >
                         {loading
                             ? "Processing..."
-                            : price > 0
-                                ? "Pay & Join"
-                                : "Join"}
+                            : isPaid
+                            ? "Pay & Join"
+                            : "Join"}
                     </button>
                 </div>
             </div>

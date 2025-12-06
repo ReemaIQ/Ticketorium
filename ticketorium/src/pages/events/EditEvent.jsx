@@ -1,50 +1,102 @@
-import React, { useMemo, useState } from "react";
+// src/pages/events/EditEvent.jsx
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { fetchEventById, updateEvent } from "../../api/events.js";
 
-function EditEventPage({ user, users, events, onUpdate }) {
+function EditEventPage({ user }) {
     const navigate = useNavigate();
-    const { eventId } = useParams();
+    const { id: eventId } = useParams();
 
-    console.log(user, users); // r: to silence unused warnings in dev
+    const [event, setEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState("");
 
-    const event = events?.[eventId];
-
-    const [title, setTitle] = useState(event?.title || "");
+    // Form fields
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState(
-        event?.description ||
         "Join us in a wondrous hiking journey with Harvard female students only."
     );
-    const [building, setBuilding] = useState(
-        event?.location?.split(" ")[0] || ""
-    );
-    const [room, setRoom] = useState(
-        event?.location?.split(" ").slice(1).join(" ") || ""
-    );
+    const [building, setBuilding] = useState("");
+    const [room, setRoom] = useState("");
+    const [hasSeatingPlan, setHasSeatingPlan] = useState(false);
+    const [seats, setSeats] = useState("");
+    const [type, setType] = useState("Outdoor");
+    const [imgValue, setImgValue] = useState("graduation.png");
 
-    const [hasSeatingPlan, setHasSeatingPlan] = useState(
-        Boolean(event?.hasSeatingPlan)
-    );
-    const [seats, setSeats] = useState(event?.seats || "");
-    const [type, setType] = useState(event?.type || "Outdoor");
+    // -----------------------------
+    // Load event from backend
+    // -----------------------------
+    useEffect(() => {
+        if (!eventId) return;
 
-    const [date, setDate] = useState(""); // optional override
-    const [time, setTime] = useState("");
+        async function loadEvent() {
+            try {
+                setLoading(true);
+                setError("");
 
-    const [imgValue, setImgValue] = useState(event?.img || "graduation.png");
+                // assumes eventId is Mongo _id (what we use in EventList)
+                const ev = await fetchEventById(eventId);
 
-    const [error, setError] = useState(""); // r: inline error banner
+                if (!ev) {
+                    setError("Event not found.");
+                    setEvent(null);
+                    return;
+                }
 
-    const dateLabel = useMemo(() => event?.date || "", [event]);
+                setEvent(ev);
 
-    if (!event) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <p className="text-slate-600">Event not found.</p>
-            </div>
-        );
-    }
+                // Title / description
+                setTitle(ev.title || "");
+                setDescription(
+                    ev.description ||
+                        "Join us in a wondrous hiking journey with Harvard female students only."
+                );
 
-    // r: safe builder to avoid invalid time values
+                // Location: treat as "Building Room" single string if present
+                const locationStr = ev.location || "";
+                const [b, ...rest] = locationStr.split(" ");
+                setBuilding(b || "");
+                setRoom(rest.join(" "));
+
+                // Seating / capacity
+                setHasSeatingPlan(Boolean(ev.hasSeatingPlan));
+                setSeats(
+                    ev.capacityTotal != null ? String(ev.capacityTotal) : ""
+                );
+
+                // Event type (if your schema has it)
+                setType(ev.type || "Outdoor");
+
+                // Image: backend returns img as URL or /uploads path
+                setImgValue(ev.img || "graduation.png");
+            } catch (err) {
+                console.error("Failed to load event:", err);
+                setError("Failed to load event. Please try again.");
+                setEvent(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        loadEvent();
+    }, [eventId]);
+
+    // Human-readable date label from backend startAt
+    const dateLabel = useMemo(() => {
+        if (!event?.startAt) return "";
+        const d = new Date(event.startAt);
+        if (Number.isNaN(d.getTime())) return "";
+        return d.toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+        });
+    }, [event?.startAt]);
+
+    // Helper to build Date from YYYY-MM-DD + HH:MM (24h)
     const buildDateFromInputs = (dateStr, timeStr) => {
         if (!dateStr || !timeStr) return null;
 
@@ -61,15 +113,54 @@ function EditEventPage({ user, users, events, onUpdate }) {
         return dt;
     };
 
-    // r: apply edits instantly via onUpdate, but persistence depends on App.js
-    const handleSubmit = (e) => {
+    // Local date/time overrides (optional)
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p className="text-slate-600">Loading event...</p>
+            </div>
+        );
+    }
+
+    if (!event) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p className="text-slate-600">
+                    {error || "Event not found."}
+                </p>
+            </div>
+        );
+    }
+
+    // -----------------------------
+    // Submit → call backend update
+    // -----------------------------
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
 
         const newLocation = [building, room].filter(Boolean).join(" ");
 
-        let newDateLabel = dateLabel;
+        const updatePayload = {
+            title,
+            description,
+            location: newLocation || event.location || "",
+            hasSeatingPlan,
+            type,
+            img: imgValue || event.img || "graduation.png",
+        };
 
-        // only recompute if both date AND time are provided
+        // seats → map to backend capacityTotal
+        const seatsNumber =
+            hasSeatingPlan && seats ? Number(seats) : null;
+        if (seatsNumber != null && !Number.isNaN(seatsNumber)) {
+            updatePayload.capacityTotal = seatsNumber;
+        }
+
+        // Optional date/time override: if both filled, recompute startAt
         if (date && time) {
             const dt = buildDateFromInputs(date, time);
             if (!dt) {
@@ -78,30 +169,21 @@ function EditEventPage({ user, users, events, onUpdate }) {
                 );
                 return;
             }
-            newDateLabel = dt.toLocaleString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-            });
+            updatePayload.startAt = dt.toISOString();
         }
 
-        const seatsNumber = hasSeatingPlan && seats ? Number(seats) : null;
-
-        onUpdate(eventId, {
-            title,
-            description,
-            location: newLocation,
-            date: newDateLabel,
-            seats: seatsNumber,
-            hasSeatingPlan,
-            type,
-            img: imgValue || event.img || "graduation.png",
-        });
-
-        setError("");
-        navigate(`/event/${eventId}`, { replace: true }); // r: go back to event page after applying edits
+        try {
+            setSaving(true);
+            await updateEvent(event._id, updatePayload);
+            navigate(`/event/${event._id}`, {
+                replace: true,
+            });
+        } catch (err) {
+            console.error("Failed to update event:", err);
+            setError("Failed to save changes. Please try again.");
+        } finally {
+            setSaving(false);
+        }
     };
 
     return (
@@ -114,7 +196,7 @@ function EditEventPage({ user, users, events, onUpdate }) {
                     {eventId} – {event.title}
                 </p>
 
-                {/* r: inline warning banner */}
+                {/* inline warning banner */}
                 {error && (
                     <div className="mb-6 rounded-md border border-[var(--warning-color)]/40 bg-[var(--warning-color)]/10 px-4 py-3 text-[13px] text-[var(--warning-color)] font-[Gilroy-Medium]">
                         {error}
@@ -203,9 +285,7 @@ function EditEventPage({ user, users, events, onUpdate }) {
                                 <input
                                     className="w-full border-b border-slate-300 py-2 outline-none text-sm text-[#1A1A1A]"
                                     value={building}
-                                    onChange={(e) =>
-                                        setBuilding(e.target.value)
-                                    }
+                                    onChange={(e) => setBuilding(e.target.value)}
                                 />
                             </div>
                             <div>
@@ -283,14 +363,16 @@ function EditEventPage({ user, users, events, onUpdate }) {
                             type="button"
                             className="px-6 py-3 border border-[var(--warning-color)] text-[var(--warning-color)] rounded-[6px] bg-white cursor-pointer"
                             onClick={() => navigate(-1)}
+                            disabled={saving}
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--secondary-color)] cursor-pointer"
+                            disabled={saving}
+                            className="px-8 py-3 bg-[var(--accent-color)] rounded-[6px] font-[Gilroy-Medium] text-[var(--secondary-color)] cursor-pointer disabled:opacity-60"
                         >
-                            Apply Edits →
+                            {saving ? "Saving..." : "Apply Edits →"}
                         </button>
                     </div>
                 </form>

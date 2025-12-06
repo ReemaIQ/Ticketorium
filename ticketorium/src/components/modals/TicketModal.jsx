@@ -3,34 +3,53 @@ import Modal from "./Modal.jsx";
 import QRCode from "react-qr-code";
 
 function TicketModal({ isOpen, onClose, ticket, title }) {
+    const safeTitle = title || "this event";
+
+    const hasTicket = !!ticket;
+    const ticketCode = ticket?.ticketCode || ticket?.code || "";
+    const seatLabel = ticket?.seat || "General Admission";
+
+    const numericPrice =
+        typeof ticket?.price === "number" ? ticket.price : 0;
+    const isPaid = numericPrice > 0;
+
+    const accessibilityNotes = ticket?.accessibilityNotes;
+
+    // Prefer qrData → qrToken → ticketCode; ensure it's a string
+    const qrValue =
+        String(
+            ticket?.qrData ||
+                ticket?.qrToken ||
+                ticketCode ||
+                "",
+        );
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className="text-center">
                 <h3 className="text-xl font-semibold mb-2">Your Ticket</h3>
 
-                {!ticket ? (
+                {!hasTicket ? (
                     <p className="text-sm text-slate-500">
                         No ticket found. Please join the event first.
                     </p>
                 ) : (
                     <>
                         {/* Ticket code */}
-                        <p className="text-sm text-slate-600 mb-4">
-                            Ticket Code:{" "}
-                            <span className="font-mono font-semibold">
-                                {ticket.ticketCode}
-                            </span>
-                        </p>
+                        {ticketCode && (
+                            <p className="text-sm text-slate-600 mb-4">
+                                Ticket Code:{" "}
+                                <span className="font-mono font-semibold">
+                                    {ticketCode}
+                                </span>
+                            </p>
+                        )}
 
                         {/* QR Code */}
                         <div className="flex justify-center mb-4">
                             <div className="bg-white p-3 rounded-lg border inline-block">
                                 <QRCode
-                                    value={
-                                        ticket.qrData ||
-                                        ticket.qrToken ||
-                                        ticket.ticketCode
-                                    }
+                                    value={qrValue}
                                     size={160}
                                 />
                             </div>
@@ -40,33 +59,36 @@ function TicketModal({ isOpen, onClose, ticket, title }) {
                         <div className="text-sm text-slate-600 space-y-1 mb-4">
                             <div>
                                 Event:{" "}
-                                <span className="font-semibold">{title}</span>
+                                <span className="font-semibold">
+                                    {safeTitle}
+                                </span>
                             </div>
                             <div>
                                 Seat:{" "}
                                 <span className="font-semibold">
-                                    {ticket.seat || "General Admission"}
+                                    {seatLabel}
                                 </span>
                             </div>
                             <div>
                                 Price:{" "}
                                 <span className="font-semibold">
-                                    {ticket.price > 0
-                                        ? `SAR ${ticket.price.toFixed(2)}`
+                                    {isPaid
+                                        ? `SAR ${numericPrice.toFixed(2)}`
                                         : "Free"}
                                 </span>
                             </div>
-                            {ticket.accessibilityNotes && (
+                            {accessibilityNotes && (
                                 <div className="mt-2 text-xs text-slate-500">
                                     Accessibility notes:{" "}
                                     <span className="italic">
-                                        {ticket.accessibilityNotes}
+                                        {accessibilityNotes}
                                     </span>
                                 </div>
                             )}
                         </div>
 
                         <button
+                            type="button"
                             onClick={onClose}
                             className="px-4 py-2 text-sm font-[Gilroy-Medium] border border-[var(--secondary-color)] bg-white text-[var(--secondary-color)] rounded-[6px] cursor-pointer"
                         >
