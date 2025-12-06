@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "ticketorium-backend/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "ticketorium-backend/index.js"
+    }
+  ],
+  "buildCommand": "npm install --prefix ticketorium-backend && npm install --prefix ticketorium-frontend && npm run build --prefix ticketorium-frontend"
+}

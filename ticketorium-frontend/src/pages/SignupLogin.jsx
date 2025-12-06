@@ -109,7 +109,7 @@ function SignupLogin(props) {
         }
         // if and only if email exists and is in a valid format, check if it already exists
         if (errorsFound["email"] === undefined) {
-            const response = await fetch("http://localhost:4000/api/users/email-exists/" + encodeURIComponent(email))
+            const response = await fetch("/api/users/email-exists/" + encodeURIComponent(email))
             const data = await response.json();
             console.log("Email exists response:", data["exists"]);
             if (data["exists"])
@@ -155,7 +155,7 @@ function SignupLogin(props) {
         
     else if (option == "log-in") {
         // in the next episode, I will console.log the user's data if he exists, no? then say he dont exist brother
-        // fetch("http://localhost:4000/api/auth/login", {
+        // fetch("/api/auth/login", {
         //     method: "POST",
         //     headers: {
         //         "Content-Type": "application/json",
@@ -190,7 +190,7 @@ function SignupLogin(props) {
 
             console.log("Login payload:", jsonPayload);
 
-            const response = await fetch("http://localhost:4000/api/auth/login", {
+            const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -235,7 +235,7 @@ function SignupLogin(props) {
 
         // if and only if username is valid, check if it already exists
         if (errorsFound["username"] === undefined) {
-            const response = await fetch("http://localhost:4000/api/users/username-exists/" + encodeURIComponent(username))
+            const response = await fetch("/api/users/username-exists/" + encodeURIComponent(username))
             const data = await response.json();
             console.log("Username exists response:", data["exists"]);
             if (data["exists"])
@@ -286,7 +286,7 @@ function SignupLogin(props) {
             "university": undefined
         }
 
-        const response = await fetch("http://localhost:4000/api/users/add", {
+        const response = await fetch("/api/users/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

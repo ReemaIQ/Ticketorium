@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "postinstall": "cd ../ticketorium-frontend && npm install && npm run build",
     "start": "node index.js",
     "dev": "node index.js"
   },

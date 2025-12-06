@@ -122,14 +122,14 @@ function App() {
     }
 
     const refreshUserData = async () => {
-        const response = await fetch("http://localhost:4000/api/users/all-data", {
+        const response = await fetch("/api/users/all-data", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
         })
         const userData = await response.json();
         if (userData.university) {
-            const uniResponse = await fetch("http://localhost:4000/api/universities/" + encodeURIComponent(userData.university), {
+            const uniResponse = await fetch("/api/universities/" + encodeURIComponent(userData.university), {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
@@ -157,7 +157,7 @@ function App() {
     }
 
     const refreshEventsData = async () => {
-        const uniEventsResponse = await fetch("http://localhost:4000/api/events/uni-all/" + encodeURIComponent(university["_id"]), {
+        const uniEventsResponse = await fetch("/api/events/uni-all/" + encodeURIComponent(university["_id"]), {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -179,7 +179,7 @@ function App() {
     }
 
     const refreshUnisData = async () => {
-        const uniEventsResponse = await fetch("http://localhost:4000/api/universities/all", {
+        const uniEventsResponse = await fetch("/api/universities/all", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
