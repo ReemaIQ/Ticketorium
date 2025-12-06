@@ -230,23 +230,48 @@ router.get("/verify", async (req, res) => {
 router.get("/unlisted", async (req, res) => {
     try {
         const userHandle = req.query.userHandle;
-        if (!userHandle) return res.status(400).json({ error: "userHandle required" });
+        if (!userHandle) {
+            return res.status(400).json({ error: "userHandle required" });
+        }
 
-        // CORRECTION: Find User by handle to get their Mongo _id
+        // Find User by handle to get their Mongo _id
         const user = await User.findOne({ handle: userHandle });
-        if (!user) return res.status(404).json({ error: "User not found" });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
 
-        const userId = user._id; // Use the Mongo ObjectId for lookups
+        const userId = user._id;
 
-        // Find tickets owned by user (using ObjectId)
-        const tickets = await Ticket.find({ user: userId, status: "active" }).lean();
+        // 1) Find tickets owned by user (using ObjectId) and populate event info
+        const tickets = await Ticket.find({
+            user: userId,
+            status: "active",
+        })
+            .populate("event", "title startAt") // <-- pull in title + date
+            .lean();
 
-        // Find tickets already listed (using ObjectId for seller)
-        const listedTickets = await Listing.find({ seller: userId, status: "active" }).select("ticket").lean();
-        const listedTicketIds = new Set(listedTickets.map(l => l.ticket.toString()));
+        // 2) Graduation-only: keep only tickets whose event title contains "graduation"
+        const graduationTickets = tickets.filter((t) => {
+            const title = t.event?.title || "";
+            return /graduation/i.test(title); // case-insensitive match
+        });
 
-        // Filter out tickets already listed
-        const unlistedTickets = tickets.filter(t => !listedTicketIds.has(t._id.toString()));
+        // 3) Find tickets already listed (using ObjectId for seller)
+        const listedTickets = await Listing.find({
+            seller: userId,
+            status: "active",
+        })
+            .select("ticket")
+            .lean();
+
+        const listedTicketIds = new Set(
+            listedTickets.map((l) => l.ticket.toString())
+        );
+
+        // 4) Filter out tickets already listed, only graduation tickets
+        const unlistedTickets = graduationTickets.filter(
+            (t) => !listedTicketIds.has(t._id.toString())
+        );
 
         res.json(unlistedTickets);
     } catch (err) {
@@ -254,6 +279,7 @@ router.get("/unlisted", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch unlisted tickets" });
     }
 });
+
 
 
 export default router;

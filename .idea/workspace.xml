@@ -4,333 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Merge branch 'backend-auth' of https://github.com/ReemaIQ/Ticketorium into lena-backend">
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/database.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Bid.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Counter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Dispute.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Event.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/EventRegistration.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/EventStats.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Listing.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Notification.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/NotificationTemplate.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Ticket.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/University.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/User.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/analytics.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/auth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/disputes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/eventRegistrations.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/events.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/listings.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/notifications.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/universities.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/routes/users.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/bids.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/disputes.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/eventStats.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/listings.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notificationInstances.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/registrations.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/tickets.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/universities.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/users.data.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/seedAll.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/server.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/utils/getNextSequence.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Ticketorium - R backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Ticketorium.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="updated file structure">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/data/DummyData.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/data/DummyData.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/Logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/Logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Black.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Black.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-BlackItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-BlackItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Bold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-BoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-BoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-ExtraBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-ExtraBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-ExtraBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-ExtraBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-ExtraLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-ExtraLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-ExtraLightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-ExtraLightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Italic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Italic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-LightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-LightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Medium.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Medium.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-MediumItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-MediumItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-SemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-SemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-SemiBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-SemiBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-Thin.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-Thin.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans-ThinItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans-ThinItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Black.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Black.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-BlackItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-BlackItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Bold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-BoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-BoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-ExtraBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-ExtraBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-ExtraBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-ExtraBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-ExtraLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-ExtraLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-ExtraLightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-ExtraLightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Italic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Italic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-LightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-LightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Medium.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Medium.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-MediumItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-MediumItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-SemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-SemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-SemiBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-SemiBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-Thin.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-Thin.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_18pt-ThinItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_18pt-ThinItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Black.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Black.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-BlackItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-BlackItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Bold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-BoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-BoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-ExtraBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-ExtraBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-ExtraBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-ExtraBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-ExtraLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-ExtraLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-ExtraLightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-ExtraLightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Italic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Italic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-LightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-LightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Medium.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Medium.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-MediumItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-MediumItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-SemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-SemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-SemiBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-SemiBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-Thin.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-Thin.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_24pt-ThinItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_24pt-ThinItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Black.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Black.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-BlackItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-BlackItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Bold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-BoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-BoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-ExtraBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-ExtraBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-ExtraBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-ExtraBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-ExtraLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-ExtraLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-ExtraLightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-ExtraLightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Italic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Italic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-LightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-LightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Medium.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Medium.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-MediumItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-MediumItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-SemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-SemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-SemiBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-SemiBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-Thin.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-Thin.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/dm_sans/DMSans_36pt-ThinItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/dm_sans/DMSans_36pt-ThinItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Black.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Black.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-BlackItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-BlackItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Bold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-BoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-BoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-ExtraBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-ExtraBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-ExtraBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-ExtraBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-ExtraLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-ExtraLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-ExtraLightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-ExtraLightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Italic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Italic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-LightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-LightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Medium.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Medium.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-MediumItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-MediumItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-SemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-SemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-SemiBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-SemiBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-Thin.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-Thin.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/epilogue/Epilogue-ThinItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/epilogue/Epilogue-ThinItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210000.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210000.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210001.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210001.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210003.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210003.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210004.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210004.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210006.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210006.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210018.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210018.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210019.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210019.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210020.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210020.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210279.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210279.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/210280.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/210280.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Black.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Black.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-BlackItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-BlackItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Bold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Bold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-BoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-BoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-ExtraBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-ExtraBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-ExtraBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-ExtraBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Heavy.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Heavy.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-HeavyItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-HeavyItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Light.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Light.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-LightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-LightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Medium.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Medium.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-MediumItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-MediumItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Regular.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Regular.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-RegularItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-RegularItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-SemiBold.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-SemiBold.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-SemiBoldItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-SemiBoldItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-Thin.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-Thin.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-ThinItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-ThinItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-UltraLight.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-UltraLight.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Gilroy-UltraLightItalic.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Gilroy-UltraLightItalic.ttf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/Help - Guide Document.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/Help - Guide Document.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/License.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/License.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/More Free Fonts on fontshmonts.com.url" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/More Free Fonts on fontshmonts.com.url" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/fonts/gilroy/cover.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/fonts/gilroy/cover.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/public/vite.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/client.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/eventRegistrations.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/eventRegistrations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/data/dummy_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/data/dummy_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/bidding/bids.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/bidding/bids.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/bidding/listing.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/bidding/listing.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/close_modal.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/close_modal.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/event/game-dev.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/event/game-dev.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/event/graduation.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/event/graduation.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/event/group-hiking.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/event/group-hiking.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/event/spelling-bee.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/event/spelling-bee.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/hero_img.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/hero_img.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/unis/cambridge.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/unis/cambridge.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/unis/harvard.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/unis/harvard.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/unis/kfupm.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/unis/kfupm.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/unis/manchester.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/unis/manchester.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/unis/oxford.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/unis/oxford.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/home-main/unis/saud.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/home-main/unis/saud.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/nav/Logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/nav/Logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/amex.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/amex.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/card_types.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/card_types.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/cvv.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/cvv.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/mc.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/mc.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/powered_by_stripe.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/powered_by_stripe.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/successful_payment.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/successful_payment.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/temp.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/temp.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/unsuccessful_payment.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/unsuccessful_payment.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/unsuccessful_payment.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/unsuccessful_payment.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/payment/visa.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/payment/visa.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/registration/Correct.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/registration/Correct.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/registration/Wrong.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/registration/Wrong.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/signup/man.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/signup/man.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/signup/right_arrow.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/signup/right_arrow.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/images/signup/right_arrow.svg" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/images/signup/right_arrow.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/assets/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/assets/img.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/WaitlistSuccess.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/WaitlistSuccess.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/analytics/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/analytics/Analytics.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding-list/BiddingList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding-list/BiddingList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/bidding/MiniBidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/MiniBidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute-list/DisputeList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/dispute-list/DisputeList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeChat.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/dispute/DisputeChat.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dispute/DisputeItem.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/dispute/DisputeItem.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/dropdown-popup/DropdownPopup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/dropdown-popup/DropdownPopup.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/EventActions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/SeatingPlan.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/SeatingPlan.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/eventActionsConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/eventActionsConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/event/getUserCategory.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/getUserCategory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/footer/Footer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/AddListingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/DeclineInviteModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/DeclineInviteModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/DeleteEventModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/DeleteEventModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/InviteModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/InviteModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/JoinModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/JoinModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/MakeBidModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/MakeBidModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/Modal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/Modal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/NotificationModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/NotificationModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/ResignModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/ResignModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/TicketModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/TicketModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/UniversityModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/UniversityModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/UserModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/UserModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/modals/VerifyTicketModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/VerifyTicketModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/Nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/nav/Nav.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/nav/nav.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/notification-list/NotificationList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/notification-list/NotificationList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/notifications/Notification.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/notifications/Notification.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/payment/PaymentInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/payment/PaymentInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/scroll-to-top/scroll_to_top.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/scroll-to-top/scroll_to_top.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/search-button/SearchBtn.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/search-button/SearchBtn.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/signup_login/signup_input/SignupInput.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_inputs_list/SignupInputsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/signup_login/signup_inputs_list/SignupInputsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/theme/ThemeProvider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/theme/ThemeProvider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/university-card/UniversityCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/university-card/UniversityCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/components/user-card/UserCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/user-card/UserCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AboutOrganizer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/AboutOrganizer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/AllEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Analytics.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/DummyUserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/DummyUserHome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/ManageUniversities.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/ManageUniversities.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/ManageUsers.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/ManageUsers.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/MyEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/Registration.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Registration.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/SystemPolicies.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SystemPolicies.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UniversitySelection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/UniversitySelection.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/UserHome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/events/CreateEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/CreateEvent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/events/EditEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/home/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/home/Admin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/payment/Checkout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/payment/Checkout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/payment/PaymentResult.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/payment/PaymentResult.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/database.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Bid.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Counter.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Dispute.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Event.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/EventRegistration.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/EventStats.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Listing.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Notification.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/NotificationTemplate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/Ticket.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/University.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/models/User.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/analytics.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/auth.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/disputes.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/eventRegistrations.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/events.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/notifications.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/tickets.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/universities.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/users.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/bids.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/disputes.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/eventStats.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/listings.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notificationInstances.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/notifications.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/registrations.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/tickets.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/universities.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/data/users.data.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/seeds/seedAll.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/server.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/utils/getNextSequence.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/utils/FilterContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/utils/FilterContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/utils/FilterHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/utils/FilterHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/utils/SearchHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/utils/SearchHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/utils/UserHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/utils/UserHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/home/Admin.jsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -512,14 +191,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00020" summary="added dummy bids and other things">
-      <option name="closed" value="true" />
-      <created>1763239163147</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1763239163147</updated>
     </task>
     <task id="LOCAL-00021" summary="added bid and new listing modals">
       <option name="closed" value="true" />
@@ -905,7 +576,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764880727248</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="updated file structure">
+      <option name="closed" value="true" />
+      <created>1765047828184</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1765047828184</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -935,7 +614,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed node modules folder" />
     <MESSAGE value="integrating changes from shayma's code into main" />
     <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
@@ -960,7 +638,8 @@
     <MESSAGE value="FIXED SOME INCONSISTENCIES + ALL EVENTS PAGE!!!" />
     <MESSAGE value="." />
     <MESSAGE value="Merge branch 'backend-auth' of https://github.com/ReemaIQ/Ticketorium into lena-backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'backend-auth' of https://github.com/ReemaIQ/Ticketorium into lena-backend" />
+    <MESSAGE value="updated file structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated file structure" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

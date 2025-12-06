@@ -4,20 +4,6 @@ import BiddingList from "../components/bidding-list/BiddingList.jsx";
 import AddListingModal from "../components/modals/AddListingModal.jsx";
 import { Plus } from "lucide-react";
 
-function ticketsToBiddings(tickets) {
-    const map = {};
-    tickets.forEach(t => {
-        map[t._id] = {
-            id: t._id,
-            title: t.event?.title || "Graduation Event",
-            description: `Seat: ${t.seat}`,
-            img: "/src/assets/images/event/graduation.png",
-            date: t.event?.startAt ? new Date(t.event.startAt).toLocaleDateString() : "",
-            raw: t,
-        };
-    });
-    return map;
-}
 function listingToBidding(l, currentUserId = null) {
     // normalize seller id
     const ownerId =
@@ -75,17 +61,26 @@ export default function Bidding({ user }) {
 
     const loadUnlistedTickets = useCallback(async () => {
         try {
-            const res = await fetch(`/api/tickets/unlisted?userId=${user.handle}`);
+            console.log("[debug] loadUnlistedTickets user:", user);
+
+            //match backend: /api/tickets/unlisted?userHandle=...
+            const res = await fetch(
+                `/api/tickets/unlisted?userHandle=${encodeURIComponent(user.handle)}`
+            );
+
             if (!res.ok) throw new Error("Failed to fetch unlisted tickets");
+
             const tickets = await res.json();
             const norm = (tickets || []).map(t => ({ ...t, _id: String(t._id) }));
             setUnlistedTickets(norm);
-            console.log("Unlisted: ", tickets);
+
+            console.log("Unlisted tickets:", norm);
         } catch (err) {
             console.error("loadUnlistedTickets error:", err);
             setUnlistedTickets([]);
         }
     }, [user]);
+
 
     useEffect(() => {
         loadUnlistedTickets();
@@ -138,7 +133,7 @@ export default function Bidding({ user }) {
                         <AddListingModal
                             open={open}
                             onClose={() => setOpen(false)}
-                            biddings={ticketsToBiddings(unlistedTickets)}
+                            biddings={unlistedTickets}
                             onCreate={handleCreate}
                         />
                     </div>
