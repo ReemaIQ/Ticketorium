@@ -33,7 +33,7 @@ import { searchContentHelper } from "../utils/SearchHelpers.js";
 import { filterContentHelper } from "../utils/FilterHelpers.js";
 import { assignUniHelper } from "../utils/UserHelpers.js";
 
-import { API_BASE } from "../api/config";
+import { API_BASE } from "./api/config";
 
 // ---------- ROUTE GUARDS ----------
 
