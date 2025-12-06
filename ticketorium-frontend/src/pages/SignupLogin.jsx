@@ -1,50 +1,46 @@
 import validator from "validator";
 import SignupInputsList from "../components/signup_login/signup_inputs_list/SignupInputsList.jsx";
 import rightArrow from "../assets/images/signup/right_arrow.svg";
-import { NavLink, useNavigate } from 'react-router-dom';
-//1
+import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { API_BASE } from "../api/config";
+
 // Font Awesome Setup
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
 
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { use, useEffect, useState } from 'react'
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
 
-library.add(fas, far, fab)
-
+library.add(fas, far, fab);
 
 // Options based on props
 const options = {
     "log-in": {
-        "title": "Log in",
-        "buttonText": "Log in",
-        "linkText": "New visitor?",
-        "anchorText": "Sign up",
-        "linkPath": "/sign-up",
+        title: "Log in",
+        buttonText: "Log in",
+        linkText: "New visitor?",
+        anchorText: "Sign up",
+        linkPath: "/sign-up",
     },
     "sign-up": {
-        "title": "Sign Up",
-        "buttonText": "Sign up",
-        "linkText": "Already a user?",
-        "anchorText": "Log in",
-        "linkPath": "/log-in",
+        title: "Sign Up",
+        buttonText: "Sign up",
+        linkText: "Already a user?",
+        anchorText: "Log in",
+        linkPath: "/log-in",
     },
     "sign-up-part-2": {
-        "title": "Tell us more :)",
-        "buttonText": "Create Account",
-        "linkText": null,
-        "linkPath": null,
+        title: "Tell us more :)",
+        buttonText: "Create Account",
+        linkText: null,
+        linkPath: null,
     },
 };
-        
 
 // Component
-
-
 function SignupLogin(props) {
-
     const navigate = useNavigate();
 
     const [option, setOption] = useState(props.option); // "log-in", "sign-up", "signup-part-2"
@@ -63,21 +59,21 @@ function SignupLogin(props) {
     // inputs and updater functions to pass to SignupInputsList component
     const inputsAndSetters = {
         "email-or-username": [emailOrUsername, setEmailOrUsername],
-        "email": [email, setEmail],
-        "password": [password, setPassword],
+        email: [email, setEmail],
+        password: [password, setPassword],
         "confirm-password": [confirmPassword, setConfirmPassword],
         "phone-number": [phoneNumber, setPhoneNumber],
         "first-name": [firstName, setFirstName],
         "last-name": [lastName, setLastName],
-        "username": [username, setUsername],
-        "gender": [gender, setGender],
+        username: [username, setUsername],
+        gender: [gender, setGender],
         "date-of-birth": [dateOfBirth, setDateOfBirth],
-    }
+    };
 
     useEffect(() => {
         setOption(props.option);
         setErrors({});
-    }, [props.option])
+    }, [props.option]);
 
     useEffect(() => {
         // empty input fields
@@ -91,264 +87,302 @@ function SignupLogin(props) {
         setUsername("");
         setGender("");
         setDateOfBirth("");
-    }, [])
+    }, []);
 
     const handleSubmit = async (e, option) => {
-    e.preventDefault()
-    let errorsFound = {} // This is then passed into setErrors()
+        e.preventDefault();
+        let errorsFound = {}; // This is then passed into setErrors()
 
-    // depending on option, redirect to different pages
-    if (option == "sign-up") {
-        //  console.log(email);
-        // email field
-        if (!email) {
-            errorsFound["email"] = "Please enter your email"
-        }
-        else if (!validator.isEmail(email)) {
-            errorsFound["email"] = "Please enter a valid email"
-        }
-        // if and only if email exists and is in a valid format, check if it already exists
-        if (errorsFound["email"] === undefined) {
-            const response = await fetch("/api/users/email-exists/" + encodeURIComponent(email))
-            const data = await response.json();
-            console.log("Email exists response:", data["exists"]);
-            if (data["exists"])
-                errorsFound["email"] = "An account with this email already exists"
-        }
-        if (!phoneNumber) {
-            errorsFound["phone-number"] = "Please enter your phone number"
-        }
-        else if (!validator.isMobilePhone(phoneNumber)) {
-            errorsFound["phone-number"] = "Please enter a valid phone number"
-        }
-        // else if (props.checkIfPhoneExists(phoneNumber)) {
-        //     errorsFound["phone-number"] = "An account with this phone number already exists"
-        // }
-        // password field
-        if (!password) {
-            errorsFound["password"] = "Please enter your password"
-        }
-        else if (!validator.isStrongPassword(password, {minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1})) {
-            errorsFound["password"] = "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters."
-        }
-        // confirm password field
-        if (!confirmPassword) {
-            errorsFound["confirm-password"] = "Please confirm your password"
-        }
-        else if (password !== confirmPassword) {
-            errorsFound["confirm-password"] = "Passwords do not match"
-        }
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-        props.setPart1Data({
-            "email": email,
-            "phone-number": phoneNumber,
-            "password": password,
-        });
-        props.setFinishedPart1SignUp(true);
-        navigate("/sign-up-2");
-    }
-        
-    else if (option == "log-in") {
-        // in the next episode, I will console.log the user's data if he exists, no? then say he dont exist brother
-        // fetch("/api/auth/login", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({}),
-        // })
-        const isUsername = !(/[^a-zA-Z0-9._-]/.test(emailOrUsername))  // This checks if the input is an username or email
-        // email or username field
-        if (!emailOrUsername) {
-            // console.log("bruh", emailOrUsername)
-            errorsFound["email-or-username"] = "Please enter your email or username"
-        }
-
-        else if (!isUsername && !validator.isEmail(emailOrUsername)) {
-            errorsFound["email-or-username"] = "Please enter a valid email address"
-        }
-
-        // password field
-        if (!password) {
-            errorsFound["password"] = "Please enter your password"
-        }
-
-        // talk to Beck, return token if user found, otherwise tell me err, only if no previous errors
-        if (Object.keys(errorsFound).length === 0) {
-            let jsonPayload = {
-                "password": password
+        // depending on option, redirect to different pages
+        if (option === "sign-up") {
+            // email field
+            if (!email) {
+                errorsFound["email"] = "Please enter your email";
+            } else if (!validator.isEmail(email)) {
+                errorsFound["email"] = "Please enter a valid email";
             }
-            if (isUsername)
-                jsonPayload["username"] = emailOrUsername;
-            else
-                jsonPayload["email"] = emailOrUsername;
 
-            console.log("Login payload:", jsonPayload);
+            // if and only if email exists and is in a valid format, check if it already exists
+            if (errorsFound["email"] === undefined) {
+                const response = await fetch(
+                    `${API_BASE}/api/users/email-exists/${encodeURIComponent(email)}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const data = await response.json();
+                console.log("Email exists response:", data["exists"]);
+                if (data["exists"])
+                    errorsFound["email"] =
+                        "An account with this email already exists";
+            }
 
-            const response = await fetch("/api/auth/login", {
+            if (!phoneNumber) {
+                errorsFound["phone-number"] =
+                    "Please enter your phone number";
+            } else if (!validator.isMobilePhone(phoneNumber)) {
+                errorsFound["phone-number"] =
+                    "Please enter a valid phone number";
+            }
+
+            // password field
+            if (!password) {
+                errorsFound["password"] = "Please enter your password";
+            } else if (
+                !validator.isStrongPassword(password, {
+                    minLength: 8,
+                    minLowercase: 1,
+                    minUppercase: 1,
+                    minNumbers: 1,
+                    minSymbols: 1,
+                })
+            ) {
+                errorsFound["password"] =
+                    "Password is too weak. It should be at least 8 characters long and include a mix of letters, numbers, and special characters.";
+            }
+
+            // confirm password field
+            if (!confirmPassword) {
+                errorsFound["confirm-password"] =
+                    "Please confirm your password";
+            } else if (password !== confirmPassword) {
+                errorsFound["confirm-password"] = "Passwords do not match";
+            }
+
+            if (Object.keys(errorsFound).length > 0) {
+                setErrors(errorsFound);
+                return;
+            }
+
+            props.setPart1Data({
+                email: email,
+                "phone-number": phoneNumber,
+                password: password,
+            });
+            props.setFinishedPart1SignUp(true);
+            navigate("/sign-up-2");
+        } else if (option === "log-in") {
+            const isUsername = !/[^a-zA-Z0-9._-]/.test(emailOrUsername); // username vs email
+
+            // email or username field
+            if (!emailOrUsername) {
+                errorsFound["email-or-username"] =
+                    "Please enter your email or username";
+            } else if (!isUsername && !validator.isEmail(emailOrUsername)) {
+                errorsFound["email-or-username"] =
+                    "Please enter a valid email address";
+            }
+
+            // password field
+            if (!password) {
+                errorsFound["password"] = "Please enter your password";
+            }
+
+            // talk to backend only if no previous errors
+            if (Object.keys(errorsFound).length === 0) {
+                let jsonPayload = {
+                    password: password,
+                };
+                if (isUsername) jsonPayload["username"] = emailOrUsername;
+                else jsonPayload["email"] = emailOrUsername;
+
+                console.log("Login payload:", jsonPayload);
+
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(jsonPayload),
+                });
+
+                const token = await response.json().catch(() => ({}));
+
+                if (response.status !== 200) {
+                    errorsFound["email-or-username"] =
+                        "Incorrect username/email or password";
+                    errorsFound["password"] =
+                        "Incorrect username/email or password";
+                } else {
+                    // store token in localstorage (if you're still using tokens client-side)
+                    if (token["token"]) {
+                        localStorage.setItem("token", token["token"]);
+                        props.setToken(token["token"]);
+                    }
+                }
+            }
+
+            if (Object.keys(errorsFound).length > 0) {
+                setErrors(errorsFound);
+                return;
+            }
+
+            navigate("/home");
+        } else if (option === "sign-up-part-2") {
+            // username field
+            if (!username) {
+                errorsFound["username"] = "Please enter your username";
+            } else if (/[^a-zA-Z0-9._-]/g.test(username)) {
+                errorsFound["username"] =
+                    "Username can only contain letters, numbers, dots, underscores, and hyphens";
+            } else if (username.length < 3 || username.length > 12) {
+                errorsFound["username"] =
+                    "Username must be between 3 and 12 characters long";
+            }
+
+            // if and only if username is valid, check if it already exists
+            if (errorsFound["username"] === undefined) {
+                const response = await fetch(
+                    `${API_BASE}/api/users/username-exists/${encodeURIComponent(
+                        username
+                    )}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+                const data = await response.json();
+                console.log("Username exists response:", data["exists"]);
+                if (data["exists"])
+                    errorsFound["username"] = "This username is already taken";
+            }
+
+            // first name field
+            if (!firstName) {
+                errorsFound["first-name"] =
+                    "Please enter your first name";
+            } else if (validator.isAlpha(firstName) === false) {
+                errorsFound["first-name"] =
+                    "First name can only contain letters";
+            }
+
+            // last name field
+            if (!lastName) {
+                errorsFound["last-name"] =
+                    "Please enter your last name";
+            } else if (validator.isAlpha(lastName) === false) {
+                errorsFound["last-name"] =
+                    "Last name can only contain letters";
+            }
+
+            // gender field
+            if (!gender) {
+                errorsFound["gender"] = "Please select your gender";
+            }
+
+            // date of birth field
+            if (!dateOfBirth) {
+                errorsFound["date-of-birth"] =
+                    "Please enter your date of birth";
+            }
+
+            if (Object.keys(errorsFound).length > 0) {
+                setErrors(errorsFound);
+                return;
+            }
+
+            // no errors, create account, direct to home
+            const payload = {
+                firstName: firstName,
+                lastName: lastName,
+                email: props.part1Data["email"],
+                phoneNumber: props.part1Data["phone-number"],
+                password: props.part1Data["password"],
+                username: username,
+                type: "visitor",
+                gender: gender.toLowerCase(),
+                dateOfBirth: dateOfBirth,
+                university: undefined,
+            };
+
+            const response = await fetch(`${API_BASE}/api/users/add`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(jsonPayload),
-            })
-            // get token from response
-            const token = await response.json();
+                body: JSON.stringify(payload),
+            });
+
+            const token = await response.json().catch(() => ({}));
 
             if (response.status !== 200) {
-                errorsFound["email-or-username"] = "Incorrect username/email or password"
-                errorsFound["password"] = "Incorrect username/email or password"
+                alert("Error creating account, please try again");
             } else {
-                // store token in localstorage
-                localStorage.setItem("token", token["token"]);
-                props.setToken(token["token"]);
+                if (token["token"]) {
+                    localStorage.setItem("token", token["token"]);
+                    props.setToken(token["token"]);
+                }
+                navigate("/home");
             }
         }
 
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-
-        navigate("/home");
-    }
-    
-    else if (option == "sign-up-part-2") {
-        // console.log(email)
-        // username field
-        if (!username) {
-            errorsFound["username"] = "Please enter your username"
-        }
-        else if (/[^a-zA-Z0-9._-]/g.test(username)) {
-            errorsFound["username"] = "Username can only contain letters, numbers, dots, underscores, and hyphens"
-        }
-        else if (username.length < 3 || username.length > 12) {
-            errorsFound["username"] = "Username must be between 3 and 12 characters long"
-        }
-
-        // if and only if username is valid, check if it already exists
-        if (errorsFound["username"] === undefined) {
-            const response = await fetch("/api/users/username-exists/" + encodeURIComponent(username))
-            const data = await response.json();
-            console.log("Username exists response:", data["exists"]);
-            if (data["exists"])
-                errorsFound["username"] = "This username is already taken"
-        }
-
-        // first name field
-        if (!firstName) {
-            errorsFound["first-name"] = "Please enter your first name"
-        }
-        else if (validator.isAlpha(firstName) == false) {
-            errorsFound["first-name"] = "First name can only contain letters"
-        }
-        // last name field
-        if (!lastName) {
-            errorsFound["last-name"] = "Please enter your last name"
-        }
-        else if (validator.isAlpha(lastName) == false) {
-            errorsFound["last-name"] = "Last name can only contain letters"
-        }
-        // gender field
-        if (!gender) {
-            errorsFound["gender"] = "Please select your gender"
-        }
-        // date of birth field
-        if (!dateOfBirth) {
-            errorsFound["date-of-birth"] = "Please enter your date of birth"
-        } 
-
-        if (Object.keys(errorsFound).length > 0) {
-            // console.log("Errors found:", errorsFound)
-            setErrors(errorsFound)
-            return
-        }
-
-        // no errors, create account, direct to home
-
-        const payload = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "email": props.part1Data["email"],
-            "phoneNumber": props.part1Data["phone-number"],
-            "password": props.part1Data["password"],
-            "username": username,
-            "type": "visitor",
-            "gender": gender.toLowerCase(),
-            "dateOfBirth": dateOfBirth,
-            "university": undefined
-        }
-
-        const response = await fetch("/api/users/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-        })
-        
-        const token = await response.json();
-
-        if (response.status !== 200) {
-            alert("Error creating account, please try again");
-        }
-        else {
-            localStorage.setItem("token", token["token"]);
-            props.setToken(token["token"]);
-            navigate("/home");
-        }
-    }
-
-
-    // empty input fields
-    setEmailOrUsername("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setPhoneNumber("");
-    setFirstName("");
-    setLastName("");
-    setUsername("");
-    setGender("");
-    setDateOfBirth("");
-}
+        // empty input fields
+        setEmailOrUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPhoneNumber("");
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setGender("");
+        setDateOfBirth("");
+    };
 
     return (
-    <form onSubmit={(e) => handleSubmit(e, props.option)} className='flex justify-center xl:justify-start items-center mb-[20vh]'>
-        <div className="width-full h-full flex flex-col gap-10 m-16">
+        <form
+            onSubmit={(e) => handleSubmit(e, props.option)}
+            className="flex justify-center xl:justify-start items-center mb-[20vh]"
+        >
+            <div className="width-full h-full flex flex-col gap-10 m-16">
+                {/* Header: Log in or Sign Up */}
+                <h1 className="text-[50px] sm:text-[60px] font-[Epilogue-Black]">
+                    {options[option]["title"]}
+                </h1>
 
-            {/* Header: Log in or Sign Up */}
-            <h1 className="text-[50px] sm:text-[60px] font-[Epilogue-Black]">{options[option]["title"]}</h1>
+                {/* List of all inputs, depends if page is login, signup part 1 or 2 */}
+                <SignupInputsList
+                    option={option}
+                    errors={errors}
+                    inputsAndSetters={inputsAndSetters}
+                />
 
-            {/* List of all inputs, depends if page is login, signup part 1 or 2 */}
-            <SignupInputsList option={option} errors={errors} inputsAndSetters={inputsAndSetters} />
+                {/* Link to sign up or log in */}
+                {options[option]["linkText"] && (
+                    <div className="text-[20px] font-[gilroy-medium] flex gap-2">
+                        <span className="text-[var(--primary-color)]">
+                            {options[option]["linkText"]}
+                        </span>
+                        <NavLink
+                            to={options[option]["linkPath"]}
+                            end
+                            className="text-[var(--secondary-accent-color)] cursor-pointer"
+                        >
+                            {options[option]["anchorText"]}
+                        </NavLink>
+                    </div>
+                )}
 
-            {/* Link to sign up or log in */}
-            {options[option]["linkText"] && (
-                <div className="text-[20px] font-[gilroy-medium] flex gap-2">
-                    <span className="text-[var(--primary-color)]">{options[option]["linkText"]}</span> 
-                    <NavLink to={options[option]["linkPath"]} end className="text-[var(--secondary-accent-color)] cursor-pointer">{options[option]["anchorText"]}</NavLink>
-                </div>
-            )}
-
-            {/* Login or Sign up button */}
-            <button type="submit" className="bg-[var(--accent-color)] text-[var(--primary-color)] text-[32px] font-[DM-Sans-ExtraLight] font-extralight py-2 px-6 rounded h-[74px] w-[399px] flex items-center justify-between gap-4 cursor-pointer">
-                <span>{options[option]["buttonText"]}</span>
-                <img src={rightArrow} alt='arrow' />
-            </button>
-
-            {/* Decoration - Tilted Div */}
-            {/* <div className="absolute bg-[#1F4C76] rotate-[13.21deg] h-[1200px] w-[576.1037586593156px] top-[-30px] right-[-300px] object-contain"></div> */}
-        </div>
-    </form>
-    )
+                {/* Login or Sign up button */}
+                <button
+                    type="submit"
+                    className="bg-[var(--accent-color)] text-[var(--primary-color)] text-[32px] font-[DM-Sans-ExtraLight] font-extralight py-2 px-6 rounded h-[74px] w-[399px] flex items-center justify-between gap-4 cursor-pointer"
+                >
+                    <span>{options[option]["buttonText"]}</span>
+                    <img src={rightArrow} alt="arrow" />
+                </button>
+            </div>
+        </form>
+    );
 }
 
 export default SignupLogin;

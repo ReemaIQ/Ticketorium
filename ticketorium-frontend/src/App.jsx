@@ -1,6 +1,5 @@
-//
 import { Route, Routes, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState, useRef, use} from "react";
+import { useEffect, useState, useRef } from "react";
 
 import ScrollToTop from "./components/scroll-to-top/scroll_to_top.jsx";
 import Nav from "./components/nav/nav.jsx";
@@ -30,10 +29,11 @@ import ManageUniversities from "./pages/ManageUniversities.jsx";
 import UniversitySelection from "./pages/UniversitySelection.jsx";
 import SystemPolicies from "./pages/SystemPolicies.jsx";
 
-// import ThemeProvider from "./components/theme/ThemeProvider.jsx";
 import { searchContentHelper } from "../utils/SearchHelpers.js";
 import { filterContentHelper } from "../utils/FilterHelpers.js";
-import { assignUniHelper } from "../utils/UserHelpers.js"
+import { assignUniHelper } from "../utils/UserHelpers.js";
+
+import { API_BASE } from "../api/config";
 
 // ---------- ROUTE GUARDS ----------
 
@@ -47,10 +47,11 @@ function RequireNoAuth({ token, children }) {
     return children;
 }
 
-function RequireRole({username, role, allowedRoles, children }) {
+function RequireRole({ username, role, allowedRoles, children }) {
     if (!username) return <Navigate to="/log-in" replace />;
-    console.log("funny role", role)
-    console.log("funny username", username)
+
+    console.log("RequireRole → role:", role);
+    console.log("RequireRole → username:", username);
 
     if (!allowedRoles.includes(role)) return <Navigate to="/home" replace />;
 
@@ -58,24 +59,24 @@ function RequireRole({username, role, allowedRoles, children }) {
 }
 
 function RouteLogger() {
-  const location = useLocation();
+    const location = useLocation();
 
-  useEffect(() => {
-    console.log("ROUTE CHANGED →", location.pathname);
-  }, [location]);
+    useEffect(() => {
+        console.log("ROUTE CHANGED →", location.pathname);
+    }, [location]);
 
-  return null; // it doesn't render anything
+    return null;
 }
 
 // ---------- APP ----------
 
 function App() {
     const navigate = useNavigate();
+
     // ---------------- STATE ----------------
     const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
     const [part1Data, setPart1Data] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [url, setUrl] = useState(true);
 
     const universities = useRef({});
     const events = useRef({});
@@ -91,152 +92,211 @@ function App() {
     const [waitlistSuccess, setWaitlistSuccess] = useState(false);
     const [organizerViewing, setOrganizerViewing] = useState(null);
 
-
     // SHAYMA: BACKEND - DO NOT REMOVE IN MERGING - START
     // info about user
-    const [token, setToken] = useState(null)
-    const [username, setUsername] = useState(null)
-    const [gender, setGender] = useState(null)
-    const [role, setRole] = useState(null)
-    const [university, setUniversity] = useState(null)
-    const [dateOfBirth, setDateOfBirth] = useState(null)
-    const [email, setEmail] = useState(null)
-    const [phoneNumber, setPhoneNumber] = useState(null)
-    const [firstName, setFirstName] = useState(null)
-    const [lastName, setLastName] = useState(null)
-    const [userId, setUserId] = useState(null)
-    const [userObj, setUserObj] = useState(null)
-
-
-    const refreshNeededData = async () => {
-            console.log("Flute 1")
-            await refreshUserData();
-            console.log("Flute role", role)
-            console.log("Flute uni", university)
-            if (university) { // if the user has a uni assigned to him, then fetch the data of that uni
-                await refreshEventsData();   
-            }             
-            else if (role === "visitor" || role === "system-admin") {
-                navigate("/university-selection")
-            }
-    }
+    const [token, setToken] = useState(null);
+    const [username, setUsername] = useState(null);
+    const [gender, setGender] = useState(null);
+    const [role, setRole] = useState(null);
+    const [university, setUniversity] = useState(null);
+    const [dateOfBirth, setDateOfBirth] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [phoneNumber, setPhoneNumber] = useState(null);
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [userObj, setUserObj] = useState(null);
 
     const refreshUserData = async () => {
-        const response = await fetch("/api/users/all-data", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-        })
-        const userData = await response.json();
-        if (userData.university) {
-            const uniResponse = await fetch("/api/universities/" + encodeURIComponent(userData.university), {
+        try {
+            console.log("→ Fetching user data...");
+
+            const response = await fetch(`${API_BASE}/api/users/all-data`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                console.error("Failed to fetch user data:", response.status);
+                return;
+            }
+
+            const userData = await response.json();
+            console.log("✓ User data:", userData);
+
+            // Fetch university details if assigned
+            if (userData.university) {
+                const uniResponse = await fetch(
+                    `${API_BASE}/api/universities/${encodeURIComponent(userData.university)}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
                         headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-            })
-            const uniData = await uniResponse.json();
-            setUniversity(uniData);
-        }
-        console.log("Main fetch", userData);
-        console.log("just checking", userData._id)
-        setUsername(userData.handle);
-        setGender(userData.gender);
-        setRole(userData.role);
-        setDateOfBirth(userData.dateOfBirth);
-        setEmail(userData.email);
-        setPhoneNumber(userData.phone);
-        setFirstName(userData.firstName);
-        setLastName(userData.lastName);
-        setUserId(userData._id)
-        setUserObj(userData)
-        console.log("flute X")
-        if (userData.role === "visitor" || userData.role === "system-admin") {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                if (!uniResponse.ok) {
+                    console.error("Failed to fetch university details:", uniResponse.status);
+                } else {
+                    const uniData = await uniResponse.json();
+                    console.log("✓ University details:", uniData);
+                    setUniversity(uniData);
+                }
+            }
+
+            // Assign user fields
+            setUsername(userData.handle);
+            setGender(userData.gender);
+            setRole(userData.role);
+            setDateOfBirth(userData.dateOfBirth);
+            setEmail(userData.email);
+            setPhoneNumber(userData.phone);
+            setFirstName(userData.firstName);
+            setLastName(userData.lastName);
+            setUserId(userData._id);
+            setUserObj(userData);
+
+            // Visitors/system-admins must fetch full uni list
+            if (userData.role === "visitor" || userData.role === "system-admin") {
                 await refreshUnisData();
-                console.log("Flute unis", universities.current)
+            }
+
+            console.log("✓ Finished refreshUserData()");
+        } catch (err) {
+            console.error("refreshUserData() error:", err);
         }
-    }
+    };
 
     const refreshEventsData = async () => {
-        const uniEventsResponse = await fetch("/api/events/uni-all/" + encodeURIComponent(university["_id"]), {
+        if (!university?._id) {
+            console.warn("Cannot fetch events – university not set yet");
+            return;
+        }
+
+        try {
+            console.log(`→ Fetching events for university ${university._id}`);
+
+            const eventsResponse = await fetch(
+                `${API_BASE}/api/events/uni-all/${encodeURIComponent(university._id)}`,
+                {
+                    method: "GET",
+                    credentials: "include",
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-        })
-        const uniEventsData = await uniEventsResponse.json();
-        // const eventsJoinedResponse = await fetch("http://localhost:4000/api/events/joined/" + encodeURIComponent(userId) + "/" + encodeURIComponent(university._id), {
-        //             headers: {
-        //                 Authorization: `Bearer ${token}`
-        //             }
-        // })
-        // const eventsJoinedData = await eventsJoinedResponse.json();
-        events.current = uniEventsData;
-        // eventsJoined.current = eventsJoinedData;
-        eventsJoined.current = []
-        console.log("Uni events fetch", uniEventsData);
-        // console.log("User joined events", eventsJoinedData)
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
+            if (!eventsResponse.ok) {
+                console.error("Failed to fetch university events:", eventsResponse.status);
+                return;
+            }
 
-    }
+            const eventsData = await eventsResponse.json();
+            console.log("University events:", eventsData);
+
+            events.current = eventsData;
+            eventsJoined.current = []; // placeholder for future feature
+        } catch (err) {
+            console.error("refreshEventsData() error:", err);
+        }
+    };
 
     const refreshUnisData = async () => {
-        const uniEventsResponse = await fetch("/api/universities/all", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-        const unisData = await uniEventsResponse.json();
-        universities.current = unisData;
-        console.log("Unis fetch", universities.current);
+        try {
+            console.log("Fetching all universities...");
 
-    }
+            const unisResponse = await fetch(`${API_BASE}/api/universities/all`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!unisResponse.ok) {
+                console.error("Failed to fetch universities:", unisResponse.status);
+                return;
+            }
+
+            const unisData = await unisResponse.json();
+            console.log("✓ Universities fetched:", unisData);
+
+            universities.current = unisData;
+        } catch (err) {
+            console.error("refreshUnisData() error:", err);
+        }
+    };
+
+    const refreshNeededData = async () => {
+        try {
+            console.log("Starting refreshNeededData()");
+
+            await refreshUserData();
+
+            console.log("Finished user refresh. Role:", role, "University:", university);
+
+            if (university) {
+                await refreshEventsData();
+            } else if (role === "visitor" || role === "system-admin") {
+                console.log("→ Redirecting visitor/system-admin to university selection");
+                navigate("/university-selection");
+            }
+
+            console.log("Completed refreshNeededData()");
+        } catch (err) {
+            console.error("refreshNeededData() error:", err);
+        }
+    };
+
     // SHAYMA: BACKEND - DO NOT REMOVE IN MERGING - END
-    
 
     useEffect(() => {
-        if (organizerViewing) // so to avoid navigation when val is changed to null
+        if (organizerViewing) {
+            // so to avoid navigation when val is changed to null
             navigate("/about-organizer");
-    }, [organizerViewing]);
+        }
+    }, [organizerViewing, navigate]);
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
 
-    // SHAYMA: CONFLICT-RESOLVING-TIP: This entire useEffect, replace it with what I have here (ALL OF IT)
     useEffect(() => {
-
         const effectCall = async () => {
-            console.log("App mounted")
+            console.log("App mounted");
+
             // if there is a token:
             const fetchedToken = localStorage.getItem("token");
             if (fetchedToken && fetchedToken !== token) {
                 setToken(fetchedToken); // first time only, on first mount
             } else {
-                console.log("No user logged in")
-                setIsLoading(false)
-                // setUsername(null);
-                // setGender(null);
-                // setRole(null);
-                // setUniversity(null);
-                // setDateOfBirth(null);
-                // setEmail(null);
-                // setPhoneNumber(null);
-                // setFirstName(null);
-                // setLastName(null);
-                // navigate("/home"); // main home page of non-logged in users
+                console.log("No user logged in");
+                setIsLoading(false);
             }
-        }
+        };
 
-        effectCall()
+        effectCall();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         const effectCall = async () => {
-            console.log("Jordan", token)
+            console.log("Jordan (token change):", token);
+
             if (token) {
-                setIsLoading(true)
-                await refreshNeededData()
+                setIsLoading(true);
+                await refreshNeededData();
                 setIsLoading(false);
-            }
-            // only when token is removed or cleared
-            else {
+            } else {
+                // only when token is removed or cleared
                 setUsername(null);
                 setGender(null);
                 setRole(null);
@@ -248,67 +308,78 @@ function App() {
                 setLastName(null);
                 setUserId(null);
                 setUserObj(null);
-                const rootStyle = document.querySelector(':root').style;
-                    // console.log(rootStyle)
-                    rootStyle.setProperty('--secondary-color', "#1F4C76");
-                    rootStyle.setProperty('--primary-color', "#1a1a1a");
-                    rootStyle.setProperty('--accent-color', "#FFDF4F");
-                    rootStyle.setProperty('--secondary-accent-color', "#0800FF");
-                    rootStyle.setProperty('--footer-color', "#11223B");
-                    rootStyle.setProperty('--warning-color', "#F54141");
-                    rootStyle.setProperty('--success-color', "#46CA48");
+
+                const rootStyle = document.querySelector(":root").style;
+                rootStyle.setProperty("--secondary-color", "#1F4C76");
+                rootStyle.setProperty("--primary-color", "#1a1a1a");
+                rootStyle.setProperty("--accent-color", "#FFDF4F");
+                rootStyle.setProperty("--secondary-accent-color", "#0800FF");
+                rootStyle.setProperty("--footer-color", "#11223B");
+                rootStyle.setProperty("--warning-color", "#F54141");
+                rootStyle.setProperty("--success-color", "#46CA48");
             }
-        }
-        
-        effectCall()
-    }, [token])
+        };
+
+        effectCall();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [token]);
 
     useEffect(() => {
         const effectCall = async () => {
-            console.log("Peter", token)
+            console.log("Peter (university change):", university);
+
             if (token) {
                 if (university) {
-                    const rootStyle = document.querySelector(':root').style;
-                    // console.log(rootStyle)
-                    rootStyle.setProperty('--secondary-color', university["themeColors"]["secondaryColor"]);
-                    rootStyle.setProperty('--primary-color', university["themeColors"]["primaryColor"]);
-                    rootStyle.setProperty('--accent-color', university["themeColors"]["accentColor"]);
-                    rootStyle.setProperty('--secondary-accent-color', university["themeColors"]["secondaryAccentColor"]);
-                    rootStyle.setProperty('--footer-color', university["themeColors"]["footerColor"]);
-                    rootStyle.setProperty('--warning-color', university["themeColors"]["warningColor"]);
-                    rootStyle.setProperty('--success-color', university["themeColors"]["successColor"]);
-                    rootStyle.setProperty('--filter-buttons', university["themeColors"]["filterButtons"]);
-                    rootStyle.setProperty('--dispute-chat', university["themeColors"]["disputeChat"]);
+                    const rootStyle = document.querySelector(":root").style;
+                    rootStyle.setProperty(
+                        "--secondary-color",
+                        university["themeColors"]["secondaryColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--primary-color",
+                        university["themeColors"]["primaryColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--accent-color",
+                        university["themeColors"]["accentColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--secondary-accent-color",
+                        university["themeColors"]["secondaryAccentColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--footer-color",
+                        university["themeColors"]["footerColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--warning-color",
+                        university["themeColors"]["warningColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--success-color",
+                        university["themeColors"]["successColor"]
+                    );
+                    rootStyle.setProperty(
+                        "--filter-buttons",
+                        university["themeColors"]["filterButtons"]
+                    );
+                    rootStyle.setProperty(
+                        "--dispute-chat",
+                        university["themeColors"]["disputeChat"]
+                    );
                 }
-                console.log("tomato", university)
-                await refreshEventsData()
+
+                await refreshEventsData();
             }
-        }
-        
-        effectCall()
-    }, [university])
+        };
 
-
-
-    // a safe current user reference (prevents crashes)
-    const currentUser = username
-
-    // ---------------- SELECTED UNI EFFECT ----------------
-    // useEffect(() => {
-    //     const user = token ? username : null;
-
-    //     if (user && user.type !== "visitor" && user.type !== "system-admin") {
-    //         setSelectedUni(true);
-    //     } else if (!user) {
-    //         setSelectedUni(null);
-    //     }
-    // }, [token]);
+        effectCall();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [university]);
 
     // ---------------- HELPERS (WRAPPERS) ----------------
 
-
-    const assignUni = (university) =>
-        assignUniHelper(token, setUniversity, university);
+    const assignUni = (uni) => assignUniHelper(token, setUniversity, uni);
 
     // generic filter/search wrapper used by children
     const filterContent = (
@@ -336,11 +407,7 @@ function App() {
             );
         }
 
-        console.warn(
-            "[App.filterContent] Unknown typeOfFilter:",
-            typeOfFilter,
-            searchFor
-        );
+        console.warn("[App.filterContent] Unknown typeOfFilter:", typeOfFilter, searchFor);
     };
 
     // ---------------- ROUTES ----------------
@@ -348,362 +415,338 @@ function App() {
     return (
         <>
             <ScrollToTop />
+            <RouteLogger />
 
-            
-                <RouteLogger />
-                <div className="flex-col">
-                    <Nav
-                        type={role? role: "empty"}
-                        setToken={setToken} // for the logout
-                        notifications={dummyNotifications.current}
-                        user={userObj}
-                        firstName={firstName}
-                        hasUniversity={university? true: false}
-                    />
+            <div className="flex-col">
+                <Nav
+                    type={role ? role : "empty"}
+                    setToken={setToken} // for the logout
+                    notifications={dummyNotifications.current}
+                    user={userObj}
+                    firstName={firstName}
+                    hasUniversity={!!university}
+                />
 
-                    {isLoading && (
-                        <></>
-                    )}
+                {isLoading && <></>}
 
-                    {!isLoading && (
-                        <Routes>
-                            {/* HOME */}
-                            <Route
-                                path="/home"
-                                element={
-                                    !token ? (
-                                        <DummyUserHome />
-                                    ) : university ? (
-                                        <UserHome
-                                            setOrganizerViewing={setOrganizerViewing}
-                                            setWaitlistModalOpen={setWaitlistModalOpen}
-                                            waitlistModalOpen={waitlistModalOpen}
-                                            setWaitlistSuccess={setWaitlistSuccess}
-                                            waitlistSuccess={waitlistSuccess}
-                                            setIsPurchasing={setIsPurchasing}
-                                            filterContent={filterContent}
-                                            uni={university}
-                                            user={username}
-                                            firstName={firstName}
-                                            role={role}
-                                            users={[]}
-                                            universities={universities.current}
-                                            notifications={dummyNotifications.current}
-                                            events={events.current}
-                                            eventsJoined={eventsJoined.current}
+                {!isLoading && (
+                    <Routes>
+                        {/* HOME */}
+                        <Route
+                            path="/home"
+                            element={
+                                !token ? (
+                                    <DummyUserHome />
+                                ) : university ? (
+                                    <UserHome
+                                        setOrganizerViewing={setOrganizerViewing}
+                                        setWaitlistModalOpen={setWaitlistModalOpen}
+                                        waitlistModalOpen={waitlistModalOpen}
+                                        setWaitlistSuccess={setWaitlistSuccess}
+                                        waitlistSuccess={waitlistSuccess}
+                                        setIsPurchasing={setIsPurchasing}
+                                        filterContent={filterContent}
+                                        uni={university}
+                                        user={username}
+                                        firstName={firstName}
+                                        role={role}
+                                        users={[]}
+                                        universities={universities.current}
+                                        notifications={dummyNotifications.current}
+                                        events={events.current}
+                                        eventsJoined={eventsJoined.current}
+                                    />
+                                ) : (
+                                    <Navigate to="/university-selection" />
+                                )
+                            }
+                        />
+
+                        {/* LOGIN / SIGNUP */}
+                        <Route
+                            path="/log-in"
+                            element={
+                                <RequireNoAuth token={token}>
+                                    <SignupLogin option={"log-in"} setToken={setToken} />
+                                </RequireNoAuth>
+                            }
+                        />
+
+                        <Route
+                            path="/sign-up"
+                            element={
+                                <RequireNoAuth token={token}>
+                                    <SignupLogin
+                                        option={"sign-up"}
+                                        setToken={setToken}
+                                        setFinishedPart1SignUp={setFinishedPart1SignUp}
+                                        setPart1Data={setPart1Data}
+                                    />
+                                </RequireNoAuth>
+                            }
+                        />
+
+                        <Route
+                            path="/sign-up-2"
+                            element={
+                                <RequireNoAuth token={token}>
+                                    {finishedPart1SignUp ? (
+                                        <SignupLogin
+                                            option={"sign-up-part-2"}
+                                            setToken={setToken}
+                                            part1Data={part1Data}
                                         />
                                     ) : (
-                                        <Navigate to="/university-selection" />
-                                    )
-                                }
-                            />
+                                        <Navigate to="/sign-up" replace />
+                                    )}
+                                </RequireNoAuth>
+                            }
+                        />
 
-                            {/* LOGIN / SIGNUP */}
-                            <Route
-                                path="/log-in"
-                                element={
-                                    <RequireNoAuth token={token}>
-                                        <SignupLogin
-                                            option={"log-in"}
-                                            setToken={setToken}
-                                        />
-                                    </RequireNoAuth>
-                                }
-                            />
-
-                            <Route
-                                path="/sign-up"
-                                element={
-                                    <RequireNoAuth token={token}>
-                                        <SignupLogin
-                                            option={"sign-up"}
-                                            setToken={setToken}
-                                            setFinishedPart1SignUp={setFinishedPart1SignUp}
-                                            setPart1Data={setPart1Data}
-                                        />
-                                    </RequireNoAuth>
-                                }
-                            />
-
-                            <Route
-                                path="/sign-up-2"
-                                element={
-                                    <RequireNoAuth token={token}>
-                                        {finishedPart1SignUp ? (
-                                            <SignupLogin
-                                                option={"sign-up-part-2"}
-                                                setToken={setToken}
-                                                part1Data={part1Data}
-                                            />
-                                        ) : (
-                                            <Navigate to="/sign-up" replace />
-                                        )}
-                                    </RequireNoAuth>
-                                }
-                            />
-
-                            {/* EVENTS LISTS */}
-                            <Route
-                                path="/my-events"
-                                element={
-                                    <RequireAuth token={token}>
-                                        <MyTickets
-                                            setOrganizerViewing={setOrganizerViewing}
-                                            setWaitlistModalOpen={setWaitlistModalOpen}
-                                            waitlistModalOpen={waitlistModalOpen}
-                                            waitlistSuccess={waitlistSuccess}
-                                            setWaitlistSuccess={setWaitlistSuccess}
-                                            setIsPurchasing={setIsPurchasing}
-                                            filterContent={filterContent}
-                                            user={userObj}
-                                            users={[]}
-                                            events={events.current}
-                                            eventsJoined={eventsJoined.current}
-                                            uni={currentUser?.university ?? null}
-                                        />
-                                    </RequireAuth>
-                                }
-                            />
-
-                            <Route
-                                path="/events"
-                                element={
-                                    <RequireAuth token={token}>
-                                        <AllEvents
-                                            setOrganizerViewing={setOrganizerViewing}
-                                            setWaitlistModalOpen={setWaitlistModalOpen}
-                                            waitlistModalOpen={waitlistModalOpen}
-                                            waitlistSuccess={waitlistSuccess}
-                                            setWaitlistSuccess={setWaitlistSuccess}
-                                            setIsPurchasing={setIsPurchasing}
-                                            filterContent={filterContent}
-                                            user={userObj}
-                                            events={events.current}
-                                            uni={university}
-                                            eventsJoined={eventsJoined.current}
-                                            role={role}
-                                        />
-                                    </RequireAuth>
-                                }
-                            />
-
-                            <Route
-                                path="/event/:eventId"
-                                element={
-                                    <EventPage
+                        {/* EVENTS LISTS */}
+                        <Route
+                            path="/my-events"
+                            element={
+                                <RequireAuth token={token}>
+                                    <MyTickets
+                                        setOrganizerViewing={setOrganizerViewing}
+                                        setWaitlistModalOpen={setWaitlistModalOpen}
+                                        waitlistModalOpen={waitlistModalOpen}
+                                        waitlistSuccess={waitlistSuccess}
+                                        setWaitlistSuccess={setWaitlistSuccess}
+                                        setIsPurchasing={setIsPurchasing}
+                                        filterContent={filterContent}
                                         user={userObj}
                                         users={[]}
                                         events={events.current}
-                                        eventsJoined={eventsJoined.current} // pass joined records
+                                        eventsJoined={eventsJoined.current}
+                                        // use actual university object
+                                        uni={university ?? null}
                                     />
-                                }
-                            />
+                                </RequireAuth>
+                            }
+                        />
 
-                            {/* BIDDING */}
-                            <Route
-                                path="/bidding"
-                                element={
-                                    <Bidding
+                        <Route
+                            path="/events"
+                            element={
+                                <RequireAuth token={token}>
+                                    <AllEvents
+                                        setOrganizerViewing={setOrganizerViewing}
+                                        setWaitlistModalOpen={setWaitlistModalOpen}
+                                        waitlistModalOpen={waitlistModalOpen}
+                                        waitlistSuccess={waitlistSuccess}
+                                        setWaitlistSuccess={setWaitlistSuccess}
+                                        setIsPurchasing={setIsPurchasing}
+                                        filterContent={filterContent}
                                         user={userObj}
-                                        biddings={dummyBids.current}
+                                        events={events.current}
+                                        uni={university}
+                                        eventsJoined={eventsJoined.current}
+                                        role={role}
                                     />
-                                }
-                            />
+                                </RequireAuth>
+                            }
+                        />
 
-                            {/* ORGANIZER PAGES */}
-                            <Route
-                                path="/analytics"
-                                element={
-                                    <RequireRole
-                                        username={userObj}
-                                        role={role}
-                                        allowedRoles={["organizer"]}
-                                    >
-                                        <Analytics />
-                                    </RequireRole>
-                                }
-                            />
+                        <Route
+                            path="/event/:eventId"
+                            element={
+                                <EventPage
+                                    user={userObj}
+                                    users={[]}
+                                    events={events.current}
+                                    eventsJoined={eventsJoined.current} // pass joined records
+                                />
+                            }
+                        />
 
-                            <Route
-                                path="/create-event"
-                                element={
-                                    <RequireRole
-                                        username={userObj}
-                                        role={role}
-                                        allowedRoles={["organizer"]}
-                                    >
-                                        <CreateEvent />
-                                    </RequireRole>
-                                }
-                            />
+                        {/* BIDDING */}
+                        <Route
+                            path="/bidding"
+                            element={<Bidding user={userObj} biddings={dummyBids.current} />}
+                        />
 
-                            <Route
-                                path="/event/:eventId/edit"
-                                element={
-                                    <RequireRole
-                                        username={userObj}
-                                        role={role}
-                                        allowedRoles={["organizer", "admin", "system-admin"]}
-                                    >
-                                        <EditEvent
-                                            user={userObj}
-                                            users={[]}
-                                            events={events.current}
-                                        />
-                                    </RequireRole>
-                                }
-                            />
+                        {/* ORGANIZER PAGES */}
+                        <Route
+                            path="/analytics"
+                            element={
+                                <RequireRole username={userObj} role={role} allowedRoles={["organizer"]}>
+                                    <Analytics />
+                                </RequireRole>
+                            }
+                        />
 
-                            {/* REGISTRATION & PAYMENT */}
-                            <Route
-                                path="/registration"
-                                element={
-                                    <RequireAuth token={token}>
-                                        <Registration />
-                                    </RequireAuth>
-                                }
-                            />
+                        <Route
+                            path="/create-event"
+                            element={
+                                <RequireRole username={userObj} role={role} allowedRoles={["organizer"]}>
+                                    <CreateEvent />
+                                </RequireRole>
+                            }
+                        />
 
-                            <Route
-                                path="/checkout"
-                                element={
-                                    <RequireAuth token={token}>
-                                        {!isPurchasing ? (
-                                            <Navigate to="/home" replace />
-                                        ) : (
-                                            <Checkout
-                                                setSuccess={setSuccessfulPayment}
-                                                setProcessing={setProcessingPayment}
-                                            />
-                                        )}
-                                    </RequireAuth>
-                                }
-                            />
+                        <Route
+                            path="/event/:eventId/edit"
+                            element={
+                                <RequireRole
+                                    username={userObj}
+                                    role={role}
+                                    allowedRoles={["organizer", "admin", "system-admin"]}
+                                >
+                                    <EditEvent user={userObj} users={[]} events={events.current} />
+                                </RequireRole>
+                            }
+                        />
 
-                            <Route
-                                path="/payment-outcome"
-                                element={
-                                    processingPayment ? (
-                                        <PaymentResult success={successfulPayment} />
-                                    ) : (
+                        {/* REGISTRATION & PAYMENT */}
+                        <Route
+                            path="/registration"
+                            element={
+                                <RequireAuth token={token}>
+                                    <Registration />
+                                </RequireAuth>
+                            }
+                        />
+
+                        <Route
+                            path="/checkout"
+                            element={
+                                <RequireAuth token={token}>
+                                    {!isPurchasing ? (
                                         <Navigate to="/home" replace />
-                                    )
-                                }
-                            />
-
-                            {/* ADMIN / SYSTEM-ADMIN */}
-                            <Route
-                                path="/manage-users"
-                                element={
-                                    <RequireRole
-                                        username={username}
-                                        role={role}
-                                        allowedRoles={["admin", "system-admin"]}
-                                    >
-                                        <ManageUsers
-                                            users={[]}
-                                            user={username}
+                                    ) : (
+                                        <Checkout
+                                            setSuccess={setSuccessfulPayment}
+                                            setProcessing={setProcessingPayment}
                                         />
-                                    </RequireRole>
-                                }
-                            />
+                                    )}
+                                </RequireAuth>
+                            }
+                        />
 
-                            <Route
-                                path="/manage-universities"
-                                element={
-                                    <RequireRole
-                                        username={username}
-                                        role={role}
-                                        allowedRoles={["system-admin"]}
-                                    >
-                                        <ManageUniversities
-                                            initialUniversities={universities.current}
-                                        />
-                                    </RequireRole>
-                                }
-                            />
+                        <Route
+                            path="/payment-outcome"
+                            element={
+                                processingPayment ? (
+                                    <PaymentResult success={successfulPayment} />
+                                ) : (
+                                    <Navigate to="/home" replace />
+                                )
+                            }
+                        />
 
-                            <Route
-                                path="/system-policies"
-                                element={
-                                    <RequireRole
-                                        username={userObj}
-                                        role={role}
-                                        allowedRoles={["admin", "system-admin"]}
-                                    >
-                                        <SystemPolicies />
-                                    </RequireRole>
-                                }
-                            />
+                        {/* ADMIN / SYSTEM-ADMIN */}
+                        <Route
+                            path="/manage-users"
+                            element={
+                                <RequireRole
+                                    username={username}
+                                    role={role}
+                                    allowedRoles={["admin", "system-admin"]}
+                                >
+                                    <ManageUsers users={[]} user={username} />
+                                </RequireRole>
+                            }
+                        />
 
-                            {/* DISPUTES */}
-                            <Route
-                                path="/disputes"
-                                element={
-                                    <RequireAuth token={token}>
-                                        <Disputes
-                                            disputes={dummyDisputes.current}
-                                            user={userObj}
-                                            users={[]}
-                                        />
-                                    </RequireAuth>
-                                }
-                            />
+                        <Route
+                            path="/manage-universities"
+                            element={
+                                <RequireRole
+                                    username={username}
+                                    role={role}
+                                    allowedRoles={["system-admin"]}
+                                >
+                                    <ManageUniversities initialUniversities={universities.current} />
+                                </RequireRole>
+                            }
+                        />
 
-                            {/* UNIVERSITY SELECTION */}
-                            <Route
-                                path="/university-selection"
-                                element={
-                                    <RequireRole
-                                        username={username}
-                                        role={role}
-                                        allowedRoles={["visitor", "system-admin"]}
-                                    >
-                                        <UniversitySelection
-                                            filterContent={filterContent} // this is the filter function, btw
-                                            universities={universities.current}
-                                            assignUni={assignUni} // also function
-                                        />
-                                    </RequireRole>
-                                }
-                            />
+                        <Route
+                            path="/system-policies"
+                            element={
+                                <RequireRole
+                                    username={userObj}
+                                    role={role}
+                                    allowedRoles={["admin", "system-admin"]}
+                                >
+                                    <SystemPolicies />
+                                </RequireRole>
+                            }
+                        />
 
-                            {/* ABOUT ORGANIZER */}
-                            <Route
-                                path="/about-organizer"
-                                element={
-                                    <RequireAuth token={token}>
-                                        {organizerViewing ? <AboutOrganizer
+                        {/* DISPUTES */}
+                        <Route
+                            path="/disputes"
+                            element={
+                                <RequireAuth token={token}>
+                                    <Disputes
+                                        disputes={dummyDisputes.current}
+                                        user={userObj}
+                                        users={[]}
+                                    />
+                                </RequireAuth>
+                            }
+                        />
+
+                        {/* UNIVERSITY SELECTION */}
+                        <Route
+                            path="/university-selection"
+                            element={
+                                <RequireRole
+                                    username={username}
+                                    role={role}
+                                    allowedRoles={["visitor", "system-admin"]}
+                                >
+                                    <UniversitySelection
+                                        filterContent={filterContent}
+                                        universities={universities.current}
+                                        assignUni={assignUni}
+                                    />
+                                </RequireRole>
+                            }
+                        />
+
+                        {/* ABOUT ORGANIZER */}
+                        <Route
+                            path="/about-organizer"
+                            element={
+                                <RequireAuth token={token}>
+                                    {organizerViewing ? (
+                                        <AboutOrganizer
                                             setOrganizerViewing={setOrganizerViewing}
                                             organizer={organizerViewing}
                                             users={[]}
                                             events={events.current}
-                                            userType={currentUser?.type ?? "empty"}
-                                        /> : <Navigate to="/home" />}
-                                    </RequireAuth>
-                                }
-                            />
-
-                            {/* ROOT / 404 */}
-                            <Route path="/" element={<Navigate to="/home" replace />} />
-                            <Route
-                                path="*"
-                                element={
-                                    token ? (
-                                        <h1 className="m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]">
-                                            404 - Page Not Found :)
-                                        </h1>
+                                            userType={role ?? "empty"}
+                                        />
                                     ) : (
-                                        <Navigate to="/log-in" replace />
-                                    )
-                                }
-                            />
-                        </Routes>
-                    )}
+                                        <Navigate to="/home" />
+                                    )}
+                                </RequireAuth>
+                            }
+                        />
 
-                    {!isLoading && <Footer type={currentUser?.type ?? "empty"} />}
-                </div>
-            
+                        {/* ROOT / 404 */}
+                        <Route path="/" element={<Navigate to="/home" replace />} />
+                        <Route
+                            path="*"
+                            element={
+                                token ? (
+                                    <h1 className="m-10 text-5xl font-bold text-[var(--secondary-color)] h-[100vh]">
+                                        404 - Page Not Found :)
+                                    </h1>
+                                ) : (
+                                    <Navigate to="/log-in" replace />
+                                )
+                            }
+                        />
+                    </Routes>
+                )}
+
+                {!isLoading && <Footer type={role ?? "empty"} />}
+            </div>
         </>
     );
 }

@@ -1,7 +1,5 @@
-// /Users/reema/Desktop/Ticketorium/ticketorium-frontend/src/api/client.js
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || "https://ticketorium.vercel.app/";
-
-export function getApiBaseUrl() {
-    return API_BASE_URL;
-}
+// export const API_BASE =
+//     import.meta.env.VITE_API_URL || "https://ticketorium.vercel.app";
+//
+// // Optional: log once during build to confirm
+// console.log("[API_BASE]", API_BASE);

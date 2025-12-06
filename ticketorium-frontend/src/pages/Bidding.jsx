@@ -1,54 +1,84 @@
-// Bidding.jsx (top-level page)
+// src/pages/Bidding.jsx (top-level page)
 import React, { useEffect, useState, useCallback } from "react";
 import BiddingList from "../components/bidding-list/BiddingList.jsx";
 import AddListingModal from "../components/modals/AddListingModal.jsx";
 import { Plus } from "lucide-react";
+import { API_BASE } from "../api/config";
 
 function ticketsToBiddings(tickets) {
     const map = {};
-    tickets.forEach(t => {
+    tickets.forEach((t) => {
         map[t._id] = {
             id: t._id,
             title: t.event?.title || "Graduation Event",
             description: `Seat: ${t.seat}`,
             img: "/src/assets/images/event/graduation.png",
-            date: t.event?.startAt ? new Date(t.event.startAt).toLocaleDateString() : "",
+            date: t.event?.startAt
+                ? new Date(t.event.startAt).toLocaleDateString()
+                : "",
             raw: t,
         };
     });
     return map;
 }
+
 function listingToBidding(l, currentUserId = null) {
     // normalize seller id
     const ownerId =
-        l.seller && (typeof l.seller === "string" ? l.seller : (l.seller._id || l.seller.id || null));
+        l.seller &&
+        (typeof l.seller === "string"
+            ? l.seller
+            : l.seller._id || l.seller.id || null);
 
     // normalize topBids bidders to id strings (if populated)
-    const topBids = (l.topBids || []).map(tb => ({
-        bidder: tb.bidder && (typeof tb.bidder === "string" ? tb.bidder : (tb.bidder._id || tb.bidder.id || null)),
+    const topBids = (l.topBids || []).map((tb) => ({
+        bidder:
+            tb.bidder &&
+            (typeof tb.bidder === "string"
+                ? tb.bidder
+                : tb.bidder._id || tb.bidder.id || null),
         amount: tb.amount,
         placedAt: tb.placedAt,
     }));
 
     // whether current user has placed a bid (if we know currentUserId)
-    const hasUserBid = currentUserId ? topBids.some(tb => tb.bidder === currentUserId) : false;
+    const normalizedUserId = currentUserId
+        ? String(
+            typeof currentUserId === "object"
+                ? currentUserId._id || currentUserId.id || currentUserId.handle
+                : currentUserId
+        )
+        : null;
+
+    const hasUserBid = normalizedUserId
+        ? topBids.some((tb) => String(tb.bidder) === normalizedUserId)
+        : false;
 
     return {
         id: l._id || l.id,
         title: l.title,
         description: l.ticket?.event?.title || "",
         img: l.ticket?.imageUrl || "/src/assets/images/event/graduation.png",
-        date: l.expiresAt ? new Date(l.expiresAt).toLocaleDateString() : (l.ticket?.event?.startAt ? new Date(l.ticket.event.startAt).toLocaleDateString() : ""),
+        date: l.expiresAt
+            ? new Date(l.expiresAt).toLocaleDateString()
+            : l.ticket?.event?.startAt
+                ? new Date(l.ticket.event.startAt).toLocaleDateString()
+                : "",
         topBid: l.currentPrice ?? l.startingPrice ?? 0,
-        ownerId,         // <-- seller id as string
-        hasUserBid,      // <-- whether the current user has a bid here
-        topBids,         // normalized top bids (bidder ids)
+        ownerId, // seller id as string
+        hasUserBid, // whether the current user has a bid here
+        topBids, // normalized top bids (bidder ids)
         raw: l,
     };
 }
+
 function transformListingsToBiddings(listings, currentUserId) {
     const map = {};
-    listings.forEach(l => map[l._id || l.id] = listingToBidding(l, currentUserId));
+    listings.forEach((l) => {
+        const key = l._id || l.id;
+        if (!key) return;
+        map[key] = listingToBidding(l, currentUserId);
+    });
     return map;
 }
 
@@ -58,34 +88,56 @@ export default function Bidding({ user }) {
     const [unlistedTickets, setUnlistedTickets] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    console.log("[debug] loadUnlistedTickets userId:", user);
+    const userId = user && (user._id || user.id || user.handle || null);
+
     const loadListings = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await fetch("/api/listings");
+            const res = await fetch(`${API_BASE}/api/listings`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             if (!res.ok) throw new Error("Failed to fetch listings");
             const listings = await res.json();
-            setBiddings(transformListingsToBiddings(listings, user));
+            setBiddings(transformListingsToBiddings(listings, userId));
         } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [userId]);
 
     const loadUnlistedTickets = useCallback(async () => {
         try {
-            const res = await fetch(`/api/tickets/unlisted?userId=${user.handle}`);
+            const handle = user?.handle || userId || "";
+            const res = await fetch(
+                `${API_BASE}/api/tickets/unlisted?userId=${encodeURIComponent(
+                    handle
+                )}`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
             if (!res.ok) throw new Error("Failed to fetch unlisted tickets");
             const tickets = await res.json();
-            const norm = (tickets || []).map(t => ({ ...t, _id: String(t._id) }));
+            const norm = (tickets || []).map((t) => ({
+                ...t,
+                _id: String(t._id),
+            }));
             setUnlistedTickets(norm);
             console.log("Unlisted: ", tickets);
         } catch (err) {
             console.error("loadUnlistedTickets error:", err);
             setUnlistedTickets([]);
         }
-    }, [user]);
+    }, [user, userId]);
 
     useEffect(() => {
         loadUnlistedTickets();
@@ -97,26 +149,34 @@ export default function Bidding({ user }) {
 
     const handleCreate = async ({ ticketId, deadline, startingBid }) => {
         try {
-            const res = await fetch("/api/listings", {
+            const sellerId =
+                user && (user._id || user.id || user.handle || null);
+
+            const res = await fetch(`${API_BASE}/api/listings`, {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ticketId,
-                    sellerId: user,
+                    sellerId,
                     startingPrice: startingBid,
                     deadline,
                 }),
             });
             const createdListing = await res.json();
-            if (!res.ok) throw new Error(createdListing.error || "Create failed");
+            if (!res.ok)
+                throw new Error(createdListing.error || "Create failed");
 
-            setBiddings(prev => ({
+            setBiddings((prev) => ({
                 ...prev,
-                [createdListing._id]: listingToBidding(createdListing),
+                [createdListing._id]:
+                    listingToBidding(createdListing, sellerId),
             }));
 
             // Remove ticket from unlisted tickets
-            setUnlistedTickets(prev => prev.filter(t => t._id !== ticketId));
+            setUnlistedTickets((prev) =>
+                prev.filter((t) => t._id !== ticketId)
+            );
             setOpen(false);
         } catch (err) {
             console.error(err);
@@ -124,14 +184,24 @@ export default function Bidding({ user }) {
         }
     };
 
-
     return (
         <>
-            <div id="page-content" className="flex flex-col items-center gap-10">
-                <div id="my-listings-section" className="flex flex-col max-w-5xl align-middle w-full">
+            <div
+                id="page-content"
+                className="flex flex-col items-center gap-10"
+            >
+                <div
+                    id="my-listings-section"
+                    className="flex flex-col max-w-5xl align-middle w-full"
+                >
                     <div className="flex items-center justify-between w-full mt-9 mb-3 px-3">
-                        <h1 className="font-[Gilroy-Black] text-[60px]">My Listings</h1>
-                        <button onClick={() => setOpen(true)} className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] font-[Gilroy-Medium]">
+                        <h1 className="font-[Gilroy-Black] text-[60px]">
+                            My Listings
+                        </h1>
+                        <button
+                            onClick={() => setOpen(true)}
+                            className="flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] font-[Gilroy-Medium]"
+                        >
                             <Plus size={18} /> New Listing
                         </button>
 
@@ -143,12 +213,23 @@ export default function Bidding({ user }) {
                         />
                     </div>
 
-                    <BiddingList user={user} biddings={biddings} type="listing" listingToBidding={listingToBidding} setBiddings={setBiddings} />
+                    <BiddingList
+                        user={user}
+                        biddings={biddings}
+                        type="listing"
+                        listingToBidding={listingToBidding}
+                        setBiddings={setBiddings}
+                    />
                 </div>
 
-                <div id="current-bids-section" className="flex flex-col max-w-5xl align-middle w-full">
+                <div
+                    id="current-bids-section"
+                    className="flex flex-col max-w-5xl align-middle w-full"
+                >
                     <div className="flex items-center justify-between w-full mt-9 mb-3 px-3">
-                        <h1 className="font-[Gilroy-Black] text-[60px]">Current Bids</h1>
+                        <h1 className="font-[Gilroy-Black] text-[60px]">
+                            Current Bids
+                        </h1>
                     </div>
 
                     <BiddingList
@@ -156,13 +237,15 @@ export default function Bidding({ user }) {
                         biddings={biddings}
                         type="bids"
                         onListingUpdated={(listing) => {
-                            setBiddings(prev => ({ ...prev, [(listing._id || listing.id)]: listingToBidding(listing) }));
+                            setBiddings((prev) => ({
+                                ...prev,
+                                [listing._id || listing.id]:
+                                    listingToBidding(listing, userId),
+                            }));
                         }}
                         listingToBidding={listingToBidding}
                         setBiddings={setBiddings}
                     />
-
-
                 </div>
             </div>
         </>

@@ -1,7 +1,7 @@
 // src/pages/events/CreateEvent.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getApiBaseUrl } from "../../api/client";
+import { API_BASE } from "../../api/config";
 
 function CreateEvent({ loggedInUser }) {
     const navigate = useNavigate();
@@ -51,7 +51,14 @@ function CreateEvent({ loggedInUser }) {
         const fetchUser = async () => {
             try {
                 const res = await fetch(
-                    `${getApiBaseUrl()}/api/users/by-handle/${loggedInUser}`
+                    `${API_BASE}/api/users/by-handle/${encodeURIComponent(loggedInUser)}`,
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
                 );
                 if (!res.ok) {
                     throw new Error("Failed to load organizer");
@@ -191,31 +198,28 @@ function CreateEvent({ loggedInUser }) {
         try {
             setIsSubmitting(true);
 
-            const res = await fetch(`${getApiBaseUrl()}/api/events`, {
+            const res = await fetch(`${API_BASE}/api/events`, {
                 method: "POST",
-                body: formData,
+                credentials: "include",
+                body: formData, // no manual Content-Type; browser sets multipart boundary
             });
 
-            const createdEvent = await res.json();
+            const createdEvent = await res.json().catch(() => ({}));
 
             if (!res.ok) {
                 setError(createdEvent.error || "Failed to create event.");
                 return;
             }
 
-            // Navigate to single-event page using Mongo _id
-            // (Event page will call GET /api/events/:id)
             const targetId = createdEvent._id;
             if (!targetId) {
-                // Fallback: stay on page and show error if somehow no id is returned
                 setError(
                     "Event was created, but no ID was returned from the server."
                 );
                 return;
             }
 
-            navigate(`/event/${createdEvent._id}`);
-            
+            navigate(`/event/${targetId}`);
         } catch (err) {
             console.error(err);
             setError("Error connecting to backend.");

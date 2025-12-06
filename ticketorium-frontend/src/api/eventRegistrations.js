@@ -1,5 +1,4 @@
-// src/api/eventRegistrations.js
-import { getApiBaseUrl } from "./client";
+import { API_BASE } from "./config.js";
 
 /**
  * Fetch all event registrations for a specific user.
@@ -9,11 +8,18 @@ export async function fetchUserRegistrations(userId) {
         throw new Error("Missing userId for fetchUserRegistrations");
     }
 
-    const url = `${getApiBaseUrl()}/api/event-registrations?user=${encodeURIComponent(
+    const url = `${API_BASE}/api/event-registrations?user=${encodeURIComponent(
         userId
     )}`;
 
-    const res = await fetch(url);
+    const res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
     if (!res.ok) {
         throw new Error("Failed to load event registrations");
     }

@@ -1,8 +1,10 @@
-import React, {useEffect, useMemo, useState} from "react";
+// src/pages/Disputes.jsx
+import React, { useEffect, useMemo, useState } from "react";
 import { Plus } from "lucide-react";
 
 import DisputeList from "../components/dispute-list/DisputeList.jsx";
 import DisputeChat from "../components/dispute/DisputeChat.jsx";
+import { API_BASE } from "../api/config";
 
 /* ---------------- New Dispute Form ---------------- */
 
@@ -34,13 +36,13 @@ function NewDisputeForm({ onSubmit, onCancel }) {
                 </div>
 
                 <div className="mb-6">
-          <textarea
-              rows={8}
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Describe your issue"
-              className="w-full border border-[#E0E0E0] rounded-[10px] px-4 py-3 text-[14px] font-[Gilroy-Medium] outline-none placeholder:text-[#B5B5B5] h-[200px]"
-          />
+                    <textarea
+                        rows={8}
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        placeholder="Describe your issue"
+                        className="w-full border border-[#E0E0E0] rounded-[10px] px-4 py-3 text-[14px] font-[Gilroy-Medium] outline-none placeholder:text-[#B5B5B5] h-[200px]"
+                    />
                 </div>
 
                 <div className="flex justify-end gap-3">
@@ -75,8 +77,16 @@ export default function Disputes(props) {
     useEffect(() => {
         async function load() {
             try {
-                const q = currentUserId ? `?userId=${encodeURIComponent(currentUserId)}` : "";
-                const res = await fetch(`/api/disputes${q}`);
+                const q = currentUserId
+                    ? `?userId=${encodeURIComponent(currentUserId)}`
+                    : "";
+                const res = await fetch(`${API_BASE}/api/disputes${q}`, {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
                 if (!res.ok) throw new Error("Failed to fetch disputes");
                 const data = await res.json(); // array of disputes (populated)
                 // convert to object keyed by _id so rest of your UI works
@@ -84,7 +94,10 @@ export default function Disputes(props) {
                 data.forEach((d) => {
                     obj[d._id] = { id: d._id, ...d };
                 });
-                console.log("Parent passes user prop to DisputeChat:", props.user);
+                console.log(
+                    "Parent passes user prop to DisputeChat:",
+                    props.user
+                );
                 setDisputesObj(obj);
             } catch (err) {
                 console.error("Load disputes error", err);
@@ -96,10 +109,19 @@ export default function Disputes(props) {
     // fetch a single dispute (fresh messages / participants) when selecting
     async function handleSelectDispute(id) {
         try {
-            const res = await fetch(`/api/disputes/${id}`);
+            const res = await fetch(`${API_BASE}/api/disputes/${id}`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             if (!res.ok) throw new Error("Failed to load dispute");
             const d = await res.json(); // populated dispute
-            setDisputesObj((prev) => ({ ...prev, [d._id]: { id: d._id, ...d } }));
+            setDisputesObj((prev) => ({
+                ...prev,
+                [d._id]: { id: d._id, ...d },
+            }));
             setSelectedId(d._id);
             setMode("chat");
         } catch (err) {
@@ -107,7 +129,7 @@ export default function Disputes(props) {
         }
     }
 
-// create dispute -> POST /api/disputes
+    // create dispute -> POST /api/disputes
     async function handleCreateDispute({ title, body }) {
         try {
             const payload = {
@@ -117,8 +139,9 @@ export default function Disputes(props) {
                 participantIds: [], // optionally pass other participant ids
                 type: "other",
             };
-            const res = await fetch("/api/disputes", {
+            const res = await fetch(`${API_BASE}/api/disputes`, {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
@@ -127,7 +150,10 @@ export default function Disputes(props) {
                 throw new Error(err.error || "Failed to create dispute");
             }
             const d = await res.json(); // created dispute (has _id)
-            setDisputesObj((prev) => ({ ...prev, [d._id]: { id: d._id, ...d } }));
+            setDisputesObj((prev) => ({
+                ...prev,
+                [d._id]: { id: d._id, ...d },
+            }));
             setSelectedId(d._id);
             setMode("chat");
         } catch (err) {
@@ -137,7 +163,14 @@ export default function Disputes(props) {
     }
 
     // handleSendMessage now POSTS to backend and updates local state with response
-    async function handleSendMessage(disputeId, text, fromId, type = "text", url = null, caption = null) {
+    async function handleSendMessage(
+        disputeId,
+        text,
+        fromId,
+        type = "text",
+        url = null,
+        caption = null
+    ) {
         try {
             const payload = { fromId, type };
             if (type === "text") payload.text = text;
@@ -145,14 +178,21 @@ export default function Disputes(props) {
                 payload.url = url;
                 if (caption) payload.caption = caption;
             }
-            const res = await fetch(`/api/disputes/${disputeId}/messages`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+            const res = await fetch(
+                `${API_BASE}/api/disputes/${disputeId}/messages`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                }
+            );
             if (!res.ok) throw new Error("Failed to send message");
             const updated = await res.json(); // full dispute returned
-            setDisputesObj((prev) => ({ ...prev, [updated._id]: { id: updated._id, ...updated } }));
+            setDisputesObj((prev) => ({
+                ...prev,
+                [updated._id]: { id: updated._id, ...updated },
+            }));
         } catch (err) {
             console.error("Send message error", err);
             alert("Message failed to send");
@@ -161,7 +201,10 @@ export default function Disputes(props) {
 
     // convert object-of-objects to array for list component
     const disputesArray = useMemo(() => {
-        return Object.values(disputesObj).sort((a, b) => new Date(b.lastActivityAt) - new Date(a.lastActivityAt));
+        return Object.values(disputesObj).sort(
+            (a, b) =>
+                new Date(b.lastActivityAt) - new Date(a.lastActivityAt)
+        );
     }, [disputesObj]);
 
     const selectedDispute = disputesObj[selectedId] || null;
@@ -173,30 +216,32 @@ export default function Disputes(props) {
                     My Disputes
                 </h1>
 
-                {(props.user.type !== "admin" && props.user.type !== "system-admin") && (
-                    <div className="flex w-full justify-end">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setMode("new");
-                                setSelectedId(null);
-                            }}
-                            className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
-                        >
-                            <Plus className="w-4 h-4" />
-                            New Dispute
-                        </button>
-                    </div>
-                )}
+                {props.user.type !== "admin" &&
+                    props.user.type !== "system-admin" && (
+                        <div className="flex w-full justify-end">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setMode("new");
+                                    setSelectedId(null);
+                                }}
+                                className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
+                            >
+                                <Plus className="w-4 h-4" />
+                                New Dispute
+                            </button>
+                        </div>
+                    )}
             </header>
 
             <section
                 className="
-                        flex flex-col md:flex-row
-                        px-4 md:px-8 pb-6 gap-4 md:gap-6
-                        h-[800px] md:h-[700px] overflow-y-hidden
-                    "
-            >                {/* Left: Dispute list */}
+                    flex flex-col md:flex-row
+                    px-4 md:px-8 pb-6 gap-4 md:gap-6
+                    h-[800px] md:h-[700px] overflow-y-hidden
+                "
+            >
+                {/* Left: Dispute list */}
                 <DisputeList
                     disputes={disputesArray}
                     selectedId={selectedId}
@@ -205,7 +250,6 @@ export default function Disputes(props) {
 
                 {/* Right: main area (empty / new / chat) */}
                 <div className="flex-1 flex flex-col md:h-[600px] h-[850px] mt-3 md:mt-0">
-
                     {mode === "empty" && (
                         <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
                             Select a chat to start messaging.
@@ -217,13 +261,14 @@ export default function Disputes(props) {
                             username={props.user}
                             onSubmit={handleCreateDispute}
                             onCancel={() =>
-                                selectedDispute ? setMode("chat") : setMode("empty")
+                                selectedDispute
+                                    ? setMode("chat")
+                                    : setMode("empty")
                             }
                         />
                     )}
 
                     {mode === "chat" && selectedDispute && (
-
                         <DisputeChat
                             dispute={selectedDispute}
                             onSendMessage={handleSendMessage}

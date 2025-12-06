@@ -1,5 +1,4 @@
-// src/api/events.js
-import { getApiBaseUrl } from "./client";
+import { API_BASE } from "./config.js";
 
 /**
  * Fetch all events. The client passes a user object (no auth middleware required).
@@ -12,9 +11,12 @@ export async function fetchEvents(params = {}, user) {
     if (params.state) search.set("state", params.state);
 
     const qs = search.toString();
-    const url = `${getApiBaseUrl()}/api/events${qs ? `?${qs}` : ""}`;
+    const url = `${API_BASE}/api/events${qs ? `?${qs}` : ""}`;
 
-    const headers = {};
+    const headers = {
+        "Content-Type": "application/json",
+    };
+
     if (user) {
         try {
             headers["x-user"] = JSON.stringify(user);
@@ -23,7 +25,12 @@ export async function fetchEvents(params = {}, user) {
         }
     }
 
-    const res = await fetch(url, { headers });
+    const res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers,
+    });
+
     if (!res.ok) {
         throw new Error("Failed to load events");
     }
@@ -36,8 +43,14 @@ export async function fetchEvents(params = {}, user) {
 export async function fetchEventById(id) {
     if (!id) throw new Error("Missing event id");
 
-    const url = `${getApiBaseUrl()}/api/events/${id}`;
-    const res = await fetch(url); // no credentials
+    const url = `${API_BASE}/api/events/${id}`;
+    const res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
 
     if (res.status === 404) return null;
     if (!res.ok) {
@@ -53,10 +66,13 @@ export async function fetchEventById(id) {
 export async function updateEvent(id, updates) {
     if (!id) throw new Error("Missing event id");
 
-    const url = `${getApiBaseUrl()}/api/events/${id}`;
+    const url = `${API_BASE}/api/events/${id}`;
     const res = await fetch(url, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(updates),
     });
 
@@ -74,8 +90,14 @@ export async function updateEvent(id, updates) {
 export async function deleteEvent(id) {
     if (!id) throw new Error("Missing event id");
 
-    const url = `${getApiBaseUrl()}/api/events/${id}`;
-    const res = await fetch(url, { method: "DELETE" });
+    const url = `${API_BASE}/api/events/${id}`;
+    const res = await fetch(url, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
 
     if (!res.ok) {
         const msg = await res.text().catch(() => "Failed to delete event");

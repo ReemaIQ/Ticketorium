@@ -1,13 +1,14 @@
-import { getApiBaseUrl } from "./client";
+import { API_BASE } from "./config";
 
 /**
  * Login user
  * POST /api/auth/login
  */
 export async function login(email, password) {
-    const url = `${getApiBaseUrl()}/api/auth/login`;
+    const url = `${API_BASE}/api/auth/login`;
     const res = await fetch(url, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
     });
@@ -17,7 +18,7 @@ export async function login(email, password) {
         throw new Error(errorData.error || "Login failed");
     }
 
-    // Returns { token, user: {...} }
+    // Returns { token, user: {...} } (and sets cookies if backend does)
     return res.json();
 }
 
@@ -26,9 +27,10 @@ export async function login(email, password) {
  * POST /api/auth/register
  */
 export async function register(userData) {
-    const url = `${getApiBaseUrl()}/api/auth/register`;
+    const url = `${API_BASE}/api/auth/register`;
     const res = await fetch(url, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
     });
@@ -38,21 +40,23 @@ export async function register(userData) {
         throw new Error(errorData.error || "Registration failed");
     }
 
-    // Returns { token, user: {...} }
+    // Returns { token, user: {...} } (and sets cookies if backend does)
     return res.json();
 }
 
 /**
- * Get current user profile (This fixes the 'fetchMe' error)
+ * Get current user profile
  * GET /api/auth/me
  */
 export async function fetchMe(token) {
-    const url = `${getApiBaseUrl()}/api/auth/me`;
+    const url = `${API_BASE}/api/auth/me`;
     const res = await fetch(url, {
         method: "GET",
+        credentials: "include",
         headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
+            // keep Authorization if you're still using token in parallel with cookies
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
     });
 

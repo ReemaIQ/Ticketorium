@@ -5,7 +5,8 @@ import { fetchEventById, updateEvent } from "../../api/events.js";
 
 function EditEventPage({ user }) {
     const navigate = useNavigate();
-    const { id: eventId } = useParams();
+    // FIX: match route param name: /event/:eventId/edit
+    const { eventId } = useParams();
 
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -24,11 +25,18 @@ function EditEventPage({ user }) {
     const [type, setType] = useState("Outdoor");
     const [imgValue, setImgValue] = useState("graduation.png");
 
+    // Local date/time overrides (optional)
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+
     // -----------------------------
     // Load event from backend
     // -----------------------------
     useEffect(() => {
-        if (!eventId) return;
+        if (!eventId) {
+            console.warn("EditEvent: missing eventId from route params");
+            return;
+        }
 
         async function loadEvent() {
             try {
@@ -50,7 +58,7 @@ function EditEventPage({ user }) {
                 setTitle(ev.title || "");
                 setDescription(
                     ev.description ||
-                        "Join us in a wondrous hiking journey with Harvard female students only."
+                    "Join us in a wondrous hiking journey with Harvard female students only."
                 );
 
                 // Location: treat as "Building Room" single string if present
@@ -112,10 +120,6 @@ function EditEventPage({ user }) {
 
         return dt;
     };
-
-    // Local date/time overrides (optional)
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
 
     if (loading) {
         return (

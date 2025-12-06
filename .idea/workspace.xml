@@ -4,8 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="remove vercel.json">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="trying render for deployment?">
+      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/eventRegistrations.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/eventRegistrations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/CreateEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/CreateEvent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,15 +186,7 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-      <workItem from="1765038943868" duration="6082000" />
-    </task>
-    <task id="LOCAL-00027" summary="fixed routes after reorganizing">
-      <option name="closed" value="true" />
-      <created>1763484034433</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1763484034433</updated>
+      <workItem from="1765038943868" duration="9330000" />
     </task>
     <task id="LOCAL-00028" summary="notification modal skeleton">
       <option name="closed" value="true" />
@@ -566,7 +572,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765044115121</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="trying render for deployment?">
+      <option name="closed" value="true" />
+      <created>1765045239019</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1765045239019</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,7 +610,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
     <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
@@ -621,7 +634,8 @@
     <MESSAGE value="changed file structure" />
     <MESSAGE value="trying to deploy via Vercel" />
     <MESSAGE value="remove vercel.json" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove vercel.json" />
+    <MESSAGE value="trying render for deployment?" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying render for deployment?" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
