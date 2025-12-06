@@ -2,7 +2,7 @@ import validator from "validator";
 import SignupInputsList from "../components/signup_login/signup_inputs_list/SignupInputsList.jsx";
 import rightArrow from "../assets/images/signup/right_arrow.svg";
 import { NavLink, useNavigate } from 'react-router-dom';
-
+//1
 // Font Awesome Setup
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -10,7 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 library.add(fas, far, fab)
 
@@ -78,6 +78,20 @@ function SignupLogin(props) {
         setOption(props.option);
         setErrors({});
     }, [props.option])
+
+    useEffect(() => {
+        // empty input fields
+        setEmailOrUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setPhoneNumber("");
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setGender("");
+        setDateOfBirth("");
+    }, [])
 
     const handleSubmit = async (e, option) => {
     e.preventDefault()
@@ -192,6 +206,7 @@ function SignupLogin(props) {
             } else {
                 // store token in localstorage
                 localStorage.setItem("token", token["token"]);
+                props.setToken(token["token"]);
             }
         }
 
@@ -286,6 +301,7 @@ function SignupLogin(props) {
         }
         else {
             localStorage.setItem("token", token["token"]);
+            props.setToken(token["token"]);
             navigate("/home");
         }
     }

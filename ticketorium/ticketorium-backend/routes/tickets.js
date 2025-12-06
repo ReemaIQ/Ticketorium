@@ -1,3 +1,5 @@
+// ticketorium/ticketorium-backend/routes/tickets.js
+
 import express from "express";
 import crypto from "crypto";
 
@@ -8,11 +10,12 @@ import { User } from "../models/User.js";
 
 const router = express.Router();
 
-function generateTicketCode(eventId, userHandle) {
-    const cleanEvent = String(eventId).padStart(3, "0");
+// UPDATED: Use ObjectId (last 4 chars) for the ticket code
+function generateTicketCode(eventObjectId, userHandle) {
+    const eventSuffix = String(eventObjectId).slice(-4).toUpperCase();
     const cleanUser = (userHandle || "USER").toUpperCase().slice(0, 6);
     const randomPart = crypto.randomBytes(2).toString("hex").toUpperCase();
-    return `TKT-E${cleanEvent}-${cleanUser}-${randomPart}`;
+    return `TKT-E${eventSuffix}-${cleanUser}-${randomPart}`;
 }
 
 function generateQrToken() {
@@ -21,19 +24,21 @@ function generateQrToken() {
 
 /**
  * POST /api/tickets
- * Body: { eventId (numeric), userId, seat?, price? }
+ * Body: { eventId (Mongo ID), userId, seat?, price? }
  */
 router.post("/", async (req, res) => {
     try {
+        // 'eventId' here receives the Mongo ObjectId string from the frontend
         const { eventId, userId, seat = null, price = 0 } = req.body || {};
 
         if (!eventId || !userId) {
             return res.status(400).json({
-                error: "eventId (numeric) and userId are required",
+                error: "eventId and userId are required",
             });
         }
 
-        const event = await Event.findOne({ eventId: Number(eventId) });
+        // Find by _id now
+        const event = await Event.findById(eventId);
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
         }
@@ -44,12 +49,14 @@ router.post("/", async (req, res) => {
         }
 
         const qrToken = generateQrToken();
-        const ticketCode = generateTicketCode(event.eventId, user.handle);
+
+        // Pass the actual event._id to the generator
+        const ticketCode = generateTicketCode(event._id, user.handle);
 
         const ticket = await Ticket.create({
             event: event._id,
             user: user._id,
-            eventId: event.eventId,
+            // Removed numeric eventId
             ticketCode,
             qrToken,
             qrData: `TICKET:${qrToken}`,
@@ -68,7 +75,7 @@ router.post("/", async (req, res) => {
 /**
  * GET /api/tickets
  * Optional query:
- *   - userId
+ * - userId
  */
 router.get("/", async (req, res) => {
     try {
@@ -77,7 +84,8 @@ router.get("/", async (req, res) => {
         if (userId) filter.user = userId;
 
         const tickets = await Ticket.find(filter)
-            .populate("event", "eventId title startAt")
+            // Removed 'eventId' from select
+            .populate("event", "title startAt")
             .populate("user", "handle firstName lastName role");
 
         res.json(tickets);
@@ -89,7 +97,6 @@ router.get("/", async (req, res) => {
 
 /**
  * POST /api/tickets/cancel
- * Body: { ticketId, userId }
  */
 router.post("/cancel", async (req, res) => {
     try {
@@ -119,10 +126,6 @@ router.post("/cancel", async (req, res) => {
 
 /**
  * GET /api/tickets/verify
- * Query:
- *   - code: ticketCode OR
- *   - token: qrToken / qrData
- *   - eventId: optional numeric
  */
 router.get("/verify", async (req, res) => {
     try {
@@ -162,14 +165,15 @@ router.get("/verify", async (req, res) => {
             });
         }
 
-        if (eventId && String(ticket.eventId) !== String(eventId)) {
+        // Compare using Mongo _id (ticket.event is ObjectId)
+        if (eventId && String(ticket.event) !== String(eventId)) {
             return res.json({
                 valid: false,
                 reason: "wrong-event",
                 message: "Ticket belongs to a different event",
                 ticket: {
                     id: ticket._id,
-                    eventId: ticket.eventId,
+                    eventId: ticket.event, // return the ObjectId
                     ticketCode: ticket.ticketCode,
                     status: ticket.status,
                 },
@@ -186,7 +190,7 @@ router.get("/verify", async (req, res) => {
                         : "Ticket is not active",
                 ticket: {
                     id: ticket._id,
-                    eventId: ticket.eventId,
+                    eventId: ticket.event,
                     ticketCode: ticket.ticketCode,
                     status: ticket.status,
                 },
@@ -202,7 +206,7 @@ router.get("/verify", async (req, res) => {
             message: "Ticket is valid and has been marked as used.",
             ticket: {
                 id: ticket._id,
-                eventId: ticket.eventId,
+                eventId: ticket.event,
                 userId: ticket.user,
                 ticketCode: ticket.ticketCode,
                 seat: ticket.seat,
@@ -228,11 +232,17 @@ router.get("/unlisted", async (req, res) => {
         const userHandle = req.query.userHandle;
         if (!userHandle) return res.status(400).json({ error: "userHandle required" });
 
-        // Find tickets owned by user
-        const tickets = await Ticket.find({ user: userHandle, status: "active" }).lean();
+        // CORRECTION: Find User by handle to get their Mongo _id
+        const user = await User.findOne({ handle: userHandle });
+        if (!user) return res.status(404).json({ error: "User not found" });
 
-        // Find tickets already listed
-        const listedTickets = await Listing.find({ seller: userHandle, status: "active" }).select("ticket").lean();
+        const userId = user._id; // Use the Mongo ObjectId for lookups
+
+        // Find tickets owned by user (using ObjectId)
+        const tickets = await Ticket.find({ user: userId, status: "active" }).lean();
+
+        // Find tickets already listed (using ObjectId for seller)
+        const listedTickets = await Listing.find({ seller: userId, status: "active" }).select("ticket").lean();
         const listedTicketIds = new Set(listedTickets.map(l => l.ticket.toString()));
 
         // Filter out tickets already listed
@@ -244,7 +254,6 @@ router.get("/unlisted", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch unlisted tickets" });
     }
 });
-
 
 
 export default router;

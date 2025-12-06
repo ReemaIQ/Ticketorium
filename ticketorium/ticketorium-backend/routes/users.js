@@ -1,7 +1,10 @@
+// ticketorium/ticketorium-backend/routes/users.js
+
 import express from "express";
 import { User } from "../models/User.js";
 import {loginUser} from "./auth.js";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -90,5 +93,30 @@ router.post("/add", async (req, res) => {
     }
 })
 
+router.get("/all-data", async (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).json({ error: "Authorization header missing" });
+    }
+
+    console.log("Beck: AuthHeader:", authHeader)
+    const token = authHeader.split(" ")[1];
+    try {
+        console.log("Beck: token from localstorage:", token)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Beck: decoded payload:", decoded)
+        const userId = decoded.user._id;
+
+        const user = await User.findById(userId).select("-passwordHash");
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        return res.json(user);
+    } catch (error) {
+        console.log("Error fetching user data:", error);
+        return res.status(401).json({ error: "Invalid token" });
+    }
+});
 
 export default router;

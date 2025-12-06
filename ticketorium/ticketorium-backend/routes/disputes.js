@@ -1,3 +1,5 @@
+// ticketorium/ticketorium-backend/routes/disputes.js
+
 import express from "express";
 import { Dispute } from "../models/Dispute.js";
 import { User } from "../models/User.js";
@@ -9,8 +11,8 @@ const router = express.Router();
 /**
  * GET /api/disputes
  * Optional query:
- *   - userId (participant)
- *   - status
+ * - userId (participant)
+ * - status
  */
 router.get("/", async (req, res) => {
     try {
@@ -22,7 +24,7 @@ router.get("/", async (req, res) => {
         const disputes = await Dispute.find(filter)
             .populate("createdBy", "handle firstName lastName role")
             .populate("participants", "handle firstName lastName role")
-            .populate("event", "eventId title")
+            .populate("event", "title startAt")
             .populate("ticket", "ticketCode seat")
             .populate("messages.from", "handle firstName lastName role")
             .sort({ lastActivityAt: -1 });
@@ -42,7 +44,7 @@ router.get("/:id", async (req, res) => {
         const dispute = await Dispute.findById(req.params.id)
             .populate("createdBy", "handle firstName lastName role")
             .populate("participants", "handle firstName lastName role")
-            .populate("event", "eventId title")
+            .populate("event", "title startAt")
             .populate("ticket", "ticketCode seat")
             .populate("messages.from", "handle firstName lastName role");
 
@@ -69,8 +71,8 @@ router.post("/", async (req, res) => {
             type = "other",
             createdById,
             participantIds = [],
-            eventId,
-            ticketId
+            eventId, // Expecting Mongo ObjectId
+            ticketId, // Expecting Mongo ObjectId
         } = req.body || {};
 
         if (!title || !createdById) {
@@ -126,11 +128,10 @@ router.post("/", async (req, res) => {
             new Set([createdById, ...participantIds, ...autoAssign])
         );
 
-        // Optional event/ticket linking
+        // Optional event/ticket linking - CONSISTENT: Use findById only
         let event = null;
         if (eventId) {
-            event = (await Event.findById(eventId)) ||
-                (await Event.findOne({ eventId: Number(eventId) }));
+            event = await Event.findById(eventId);
         }
 
         let ticket = null;

@@ -1,3 +1,5 @@
+// ticketorium/src/components/event/EventActions.jsx
+
 import React, { useEffect, useState } from "react";
 import { eventActionsConfig } from "./eventActionsConfig";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -33,18 +35,20 @@ const variants = {
 
 export default function EventActions({
                                          event,
-                                         user,          // userId
+                                         user, // userId
                                          type,
                                          category,
-                                         state,         // joined / invited / waitlist / undefined
-                                         eventId,
+                                         state, // This is the event's action state (joined/invited/undefined/waitlist)
                                          onAction,
                                          onStateChange,
                                      }) {
     const navigate = useNavigate();
     const routerLocation = useLocation();
 
+    // Use event prop to derive details
     const passedEvent = event || {};
+    // eventId is now consistently derived from the full event object
+    const eventId = passedEvent.id || passedEvent._id;
 
     const [ticket, setTicket] = useState(null);
     const [openModal, setOpenModal] = useState("none");
@@ -64,14 +68,9 @@ export default function EventActions({
         }
     }, [routerLocation.state]);
 
+
     /**
      * Load ticket on mount / when eventId or user changes.
-     *
-     * - If a ticket exists in backend (for this user+event), use it.
-     * - If NO ticket exists but `state === "joined"` (dummy data says already joined),
-     *   then auto-create a ticket ONCE.
-     * - If user joined via JoinModal, that already called createTicket + setTicket,
-     *   so this effect will only "see" existing ticket and not create a new one.
      */
     useEffect(() => {
         if (!user || !eventId) return;
@@ -88,7 +87,7 @@ export default function EventActions({
                 }
 
                 // 2) No ticket found in backend.
-                // If dummy data says this user is already joined, auto-generate a ticket.
+                // If the derived state says user is joined, auto-generate a ticket.
                 if (state === "joined") {
                     const created = await createTicket({
                         eventId,
@@ -109,7 +108,7 @@ export default function EventActions({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [eventId, user, state, passedEvent?.price]);
 
-    // Effective state = what parent passed down
+    // Effective state = what parent passed down (e.g., "joined", "waitlist", undefined)
     const effectiveState = state;
 
     const actions =
@@ -210,6 +209,7 @@ export default function EventActions({
 
                             // CARD / LIST FALLBACK:
                             if (
+                                // Checks if `event` is NOT fully populated (e.g., called from a partial list item)
                                 !event &&
                                 eventId &&
                                 (label === "View" ||

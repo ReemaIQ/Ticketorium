@@ -1,3 +1,5 @@
+// Ticketorium/ticketorium/src/components/modals/VerifyTicketModal.jsx
+
 import React, { useState } from "react";
 import Modal from "./Modal.jsx";
 import { verifyTicket } from "../../api/tickets.js";
@@ -9,12 +11,22 @@ function VerifyForm({ eventId, onClose }) {
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
     const [lastScanned, setLastScanned] = useState("");
+    const [inlineError, setInlineError] = useState("");
 
     // ---------------------------
     // Core verifier
     // ---------------------------
     async function runVerify(payload) {
+        if (!eventId) {
+            setResult({
+                valid: false,
+                message: "Missing event information. Please reload the page.",
+            });
+            return;
+        }
+
         setLoading(true);
+        setInlineError("");
         try {
             const response = await verifyTicket(payload);
             setResult(response);
@@ -33,11 +45,13 @@ function VerifyForm({ eventId, onClose }) {
     // Verify by manual code
     // ---------------------------
     async function handleVerifyByCode() {
-        if (!code.trim()) {
-            alert("Please enter a ticket code.");
+        const trimmed = code.trim();
+        if (!trimmed) {
+            setInlineError("Please enter a ticket code.");
+            setResult(null);
             return;
         }
-        await runVerify({ code: code.trim(), eventId });
+        await runVerify({ code: trimmed, eventId });
     }
 
     // ---------------------------
@@ -52,6 +66,27 @@ function VerifyForm({ eventId, onClose }) {
 
         await runVerify({ token, eventId });
     }
+
+    const safeOnClose = () => {
+        if (typeof onClose === "function") {
+            onClose();
+        }
+    };
+
+    // Helpers for result
+    const hasResult = !!result;
+    const isValid = !!result?.valid;
+    const resultMessage =
+        result?.message ||
+        (isValid
+            ? "Ticket is valid."
+            : "Ticket could not be verified.");
+
+    const ticketInfo = result?.ticket || {};
+    const ticketCode = ticketInfo.ticketCode || ticketInfo.code || "";
+    const ticketEventId = ticketInfo.eventId ?? ticketInfo.event_id ?? "";
+    const ticketStatus = ticketInfo.status || ticketInfo.state || "";
+    const ticketSeat = ticketInfo.seat || "";
 
     return (
         <div>
@@ -93,13 +128,23 @@ function VerifyForm({ eventId, onClose }) {
 
                     <input
                         value={code}
-                        onChange={(e) => setCode(e.target.value)}
+                        onChange={(e) => {
+                            setCode(e.target.value);
+                            if (inlineError) setInlineError("");
+                        }}
                         className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2"
                         placeholder="Ex: TKT-KFUP-1234-ABCDEF"
                     />
 
+                    {inlineError && (
+                        <p className="mt-2 text-xs text-[var(--warning-color)]">
+                            {inlineError}
+                        </p>
+                    )}
+
                     <div className="flex justify-center mt-6 gap-3">
                         <button
+                            type="button"
                             onClick={handleVerifyByCode}
                             disabled={loading}
                             className="px-4 py-2 rounded-[6px] bg-[var(--accent-color)] cursor-pointer disabled:opacity-60 text-[var(--secondary-color)]"
@@ -108,7 +153,8 @@ function VerifyForm({ eventId, onClose }) {
                         </button>
 
                         <button
-                            onClick={onClose}
+                            type="button"
+                            onClick={safeOnClose}
                             className="px-4 py-2 border border-[var(--secondary-color)] rounded-[6px] bg-white cursor-pointer text-[var(--secondary-color)]"
                         >
                             Close
@@ -123,22 +169,29 @@ function VerifyForm({ eventId, onClose }) {
             {mode === "scan" && (
                 <div className="mt-2 text-sm text-slate-600 space-y-3">
                     <p className="text-xs text-slate-500">
-                        Point the camera at the ticket&apos;s QR code. Ticket
-                        will be automatically verified.
+                        Point the camera at the ticket&apos;s QR code. The
+                        ticket will be automatically verified.
                     </p>
 
                     <div className="w-full max-w-xs mx-auto overflow-hidden rounded-lg border border-slate-200">
                         <Scanner
                             constraints={{ facingMode: "environment" }}
                             onScan={(detectedCodes) => {
-                                if (!detectedCodes || detectedCodes.length === 0)
+                                if (
+                                    !detectedCodes ||
+                                    detectedCodes.length === 0
+                                )
                                     return;
 
-                                const token = detectedCodes[0].rawValue;
+                                const token = detectedCodes[0]?.rawValue;
+                                if (!token) return;
+
                                 console.log("Scanned QR:", token);
                                 handleVerifyByToken(token);
                             }}
-                            onError={(error) => console.log("Scanner error:", error)}
+                            onError={(error) =>
+                                console.log("Scanner error:", error)
+                            }
                             styles={{
                                 container: { width: "100%" },
                                 video: { width: "100%" },
@@ -148,7 +201,8 @@ function VerifyForm({ eventId, onClose }) {
 
                     <div className="flex justify-center mt-4">
                         <button
-                            onClick={onClose}
+                            type="button"
+                            onClick={safeOnClose}
                             className="px-4 py-2 border rounded-md bg-white hover:bg-slate-50"
                         >
                             Close
@@ -160,31 +214,40 @@ function VerifyForm({ eventId, onClose }) {
             {/* ----------------------------------------- */}
             {/* RESULT PANEL */}
             {/* ----------------------------------------- */}
-            {result && (
+            {hasResult && (
                 <div
                     className={`mt-6 rounded-md border px-4 py-3 text-sm ${
-                        result.valid
+                        isValid
                             ? "bg-emerald-50 border-[var(--success-color)] text-[var(--success-color)]"
                             : "bg-rose-50 border-[var(--warning-color)] text-[var(--warning-color)]"
                     }`}
                 >
                     <div className="font-semibold mb-1">
-                        {result.valid ? "Ticket Verified" : "Ticket Invalid"}
+                        {isValid ? "Ticket Verified" : "Ticket Invalid"}
                     </div>
 
-                    <div>{result.message}</div>
+                    <div>{resultMessage}</div>
 
-                    {result.ticket && (
+                    {(ticketCode ||
+                        ticketEventId ||
+                        ticketStatus ||
+                        ticketSeat) && (
                         <div className="mt-2 text-xs text-slate-700 space-y-1">
-                            <div>
-                                Ticket Code:{" "}
-                                <span className="font-mono font-semibold">
-                                    {result.ticket.ticketCode}
-                                </span>
-                            </div>
-                            <div>Event ID: {result.ticket.eventId}</div>
-                            <div>Status: {result.ticket.status}</div>
-                            {result.ticket.seat && <div>Seat: {result.ticket.seat}</div>}
+                            {ticketCode && (
+                                <div>
+                                    Ticket Code:{" "}
+                                    <span className="font-mono font-semibold">
+                                        {ticketCode}
+                                    </span>
+                                </div>
+                            )}
+                            {ticketEventId && (
+                                <div>Event ID: {ticketEventId}</div>
+                            )}
+                            {ticketStatus && (
+                                <div>Status: {ticketStatus}</div>
+                            )}
+                            {ticketSeat && <div>Seat: {ticketSeat}</div>}
                         </div>
                     )}
                 </div>
