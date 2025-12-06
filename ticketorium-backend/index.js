@@ -31,14 +31,38 @@ import auth from "./routes/auth.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// ---------- Middlewares ----------
+/* -------- CORS CONFIG (EDITED) -------- */
+
+const allowedOrigins = [
+    "http://localhost:5173",                      // Vite dev
+    "http://localhost:4173",                      // (if you ever use preview)
+    "ticketorium-frontend-reemaiq-reemas-projects-8e695f30.vercel.app",           // replace with your real Vercel domain
+];
+
+// If you prefer to keep it simple for now, you can comment out the function
+// and just use: origin: allowedOrigins
+
 app.use(
     cors({
-        origin: true, // reflect request origin (local or Vercel)
+        origin: function (origin, callback) {
+            // Allow non-browser tools / curl / Postman (no origin header)
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            console.log("CORS blocked for origin:", origin);
+            return callback(new Error("Not allowed by CORS"));
+        },
         credentials: true,
     })
 );
+
+// Preflight
 app.options("*", cors());
+
+/* -------------------------------------- */
 
 app.use(express.json());
 

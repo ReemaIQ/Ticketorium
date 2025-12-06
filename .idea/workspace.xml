@@ -4,22 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="trying render for deployment?">
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/config.js" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="updated all fetch/axios calls to use the Render backend">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/client.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/eventRegistrations.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/eventRegistrations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/CreateEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/CreateEvent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,12 +36,12 @@
     &quot;assignee&quot;: &quot;LenaAshqar&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ReemaIQ/Ticketorium.git",
-    "accountId": "7ed07325-3c85-47e4-9274-950836a0d4f8"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
+    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -186,23 +173,8 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-      <workItem from="1765038943868" duration="9330000" />
-    </task>
-    <task id="LOCAL-00028" summary="notification modal skeleton">
-      <option name="closed" value="true" />
-      <created>1763484048606</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1763484048606</updated>
-    </task>
-    <task id="LOCAL-00029" summary="made manage users page">
-      <option name="closed" value="true" />
-      <created>1763508823792</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508823792</updated>
+      <workItem from="1765038943868" duration="10827000" />
+      <workItem from="1765050092019" duration="620000" />
     </task>
     <task id="LOCAL-00030" summary="updated system-admin links">
       <option name="closed" value="true" />
@@ -580,7 +552,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765045239019</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="updated all fetch/axios calls to use the Render backend">
+      <option name="closed" value="true" />
+      <created>1765048326910</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1765048326911</updated>
+    </task>
+    <task id="LOCAL-00078" summary="updated all fetch/axios calls to use the Render backend">
+      <option name="closed" value="true" />
+      <created>1765048614589</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1765048614589</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -610,7 +598,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
     <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
     <MESSAGE value="Modularize the Code + README.md" />
@@ -635,7 +622,8 @@
     <MESSAGE value="trying to deploy via Vercel" />
     <MESSAGE value="remove vercel.json" />
     <MESSAGE value="trying render for deployment?" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying render for deployment?" />
+    <MESSAGE value="updated all fetch/axios calls to use the Render backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated all fetch/axios calls to use the Render backend" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
