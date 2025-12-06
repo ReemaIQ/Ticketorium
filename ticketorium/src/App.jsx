@@ -193,7 +193,7 @@ function App() {
     useEffect(() => {
     if (organizerViewing) // so to avoid navigation when val is changed to null
       navigate("/about-organizer");
-  }, [organizerViewing]);
+    }, [organizerViewing]);
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
 

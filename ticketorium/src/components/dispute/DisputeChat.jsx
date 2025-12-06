@@ -1,82 +1,77 @@
 import { useState, useRef } from "react";
 import { Paperclip, Send } from "lucide-react";
 
-function MessageBubble({ message, username }) {
-    const isUser = message.from === username;
+/** helper to return a stable string id from a user object or id */
+function getId(x) {
+    if (!x && x !== 0) return null;
+    // if it's an object with _id or id
+    if (typeof x === "object") {
+        if (x._id !== undefined) return String(x._id);
+        if (x.id !== undefined) return String(x.id);
+        // fallback - toString
+        try { return String(x); } catch { return null; }
+    }
+    return String(x);
+}
+
+function MessageBubble({ message, user }) {
+    const fromId = getId(message.from);
+    const userId = getId(user);
+    const isUser = userId && fromId && userId === fromId;
+
 
     if (message.type === "image") {
+
         return (
             <div className="flex">
                 {!isUser && <div className="w-5 h-5 rounded-full bg-[var(--dispute-chat)] mr-2" />}
                 <div className={`flex mb-3 ${isUser ? "justify-end" : "justify-start"}`}>
-                    <div
-                        className={`rounded-2xl p-2 bg-[var(--dispute-chat)] ${
-                            isUser ? "rounded-tr-none" : "rounded-tl-none"
-                        }`}
-                    >
-                        <div className="w-[260px] h-[160px] bg-[var(--primary-color)] rounded-xl" />
-                        {message.caption && (
-                            <p className="mt-2 text-[13px] text-[#1A1A1A] font-[Gilroy-Medium]">
-                                {message.caption}
-                            </p>
+                    <div className={`rounded-2xl p-2 bg-[var(--dispute-chat)] ${isUser ? "rounded-tr-none" : "rounded-tl-none"}`}>
+                        {message.url ? (
+                            <img src={message.url} alt={message.caption || "image"} className="w-[260px] h-[160px] object-cover rounded-xl" />
+                        ) : (
+                            <div className="w-[260px] h-[160px] bg-[var(--primary-color)] rounded-xl" />
                         )}
+                        {message.caption && <p className="mt-2 text-[13px] text-[#1A1A1A] font-[Gilroy-Medium]">{message.caption}</p>}
                     </div>
                 </div>
             </div>
-
         );
     }
 
     return (
         <div className={`flex items-end mb-3 ${isUser ? "justify-end" : "justify-start"}`}>
             {!isUser && <div className="w-5 h-5 rounded-full bg-[var(--dispute-chat)] mr-2" />}
-            <div
-                className={`px-3 py-2 rounded-2xl text-[13px] font-[Gilroy-Medium] ${
-                    isUser
-                        ? "bg-[var(--secondary-color)] text-white rounded-br-none"
-                        : "bg-[var(--dispute-chat)] text-[#1A1A1A] rounded-bl-none"
-                }`}
-            >
+            <div className={`px-3 py-2 rounded-2xl text-[13px] font-[Gilroy-Medium] ${isUser ? "bg-[var(--secondary-color)] text-white rounded-br-none" : "bg-[var(--dispute-chat)] text-[#1A1A1A] rounded-bl-none"}`}>
                 {message.text}
             </div>
         </div>
     );
 }
 
-function DisputeChat({ dispute, onSendMessage, username }) {
+function DisputeChat({ dispute, onSendMessage, user }) {
     const [input, setInput] = useState("");
     const messages = Array.isArray(dispute.messages) ? dispute.messages : [];
     const fileInputRef = useRef(null);
 
     const handleSend = () => {
         if (!input.trim()) return;
-        onSendMessage(dispute.id, input.trim(), username);
+        onSendMessage(dispute.id || dispute._id, input.trim(), user, "text");
         setInput("");
     };
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith("image/")) {
-
-            // For demo purposes, we read the file locally to display it immediately.
             const reader = new FileReader();
-            reader.onload = (e) => {
-                // You should collect the caption from the user if needed,
-                // but for this demo, we'll send it immediately.
-                const imageUrl = e.target.result;
-
-                onSendMessage(
-                    dispute.id,
-                    "Image attached.", // Placeholder text, or prompt for caption
-                    username,
-                    "image",
-                    imageUrl // Pass the image URL (base64 data URL)
-                );
+            reader.onload = async (e) => {
+                const dataUrl = e.target.result; // base64 data URL
+                // Send image as message to backend. Backend's message schema has url and type.
+                // If preferred, implement a separate file upload route and use the returned URL.
+                onSendMessage(dispute.id || dispute._id, "Image attached", user, "image", dataUrl, "");
             };
             reader.readAsDataURL(file);
         }
-
-        // Reset the file input so the same file can be selected again
         event.target.value = null;
     };
 
@@ -91,7 +86,7 @@ function DisputeChat({ dispute, onSendMessage, username }) {
                 )}
 
                 {messages.map((msg) => (
-                    <MessageBubble key={msg.id} message={msg} username={username} />
+                    <MessageBubble key={msg.id} message={msg} user={user} />
                 ))}
             </div>
 

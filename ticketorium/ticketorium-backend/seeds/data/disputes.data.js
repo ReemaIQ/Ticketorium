@@ -6,7 +6,7 @@ export const disputesSeed = [
         createdAt: "2025-11-21T09:15:00Z",
         lastActivityAt: "2025-11-21T09:20:00Z",
         status: "open",
-        participantsHandles: ["visitor", "admin"],
+        participantsHandles: ["visitor", "system-admin"],
         messages: [
             {
                 fromHandle: "visitor",
@@ -15,7 +15,7 @@ export const disputesSeed = [
                 createdAt: "2025-11-21T09:15:00Z",
             },
             {
-                fromHandle: "admin",
+                fromHandle: "system-admin",
                 type: "text",
                 text: "I’ll fix it right away!",
                 createdAt: "2025-11-21T09:17:00Z",

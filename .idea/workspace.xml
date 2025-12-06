@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="favicon added">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="updated dispute assigment logic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/data/DummyData.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/data/DummyData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/SignupLogin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/auth.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +31,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="lena" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -39,7 +45,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
+    &quot;accountId&quot;: &quot;68f66e2f-0677-471f-b9ae-311e0eedb4d5&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -59,7 +65,7 @@
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;lena-backend&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/sweet/WebstormProjects/Ticketorium&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -67,7 +73,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -92,7 +98,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-WS-252.23892.411" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
       </set>
     </attachedChunks>
   </component>
@@ -125,70 +131,11 @@
       <workItem from="1763731001864" duration="5321000" />
       <workItem from="1763791730220" duration="4709000" />
       <workItem from="1763809438468" duration="18705000" />
-    </task>
-    <task id="LOCAL-00009" summary="uploaded imaged for dummy events">
-      <option name="closed" value="true" />
-      <created>1762007070038</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007070038</updated>
-    </task>
-    <task id="LOCAL-00010" summary="created event component">
-      <option name="closed" value="true" />
-      <created>1762007089574</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007089574</updated>
-    </task>
-    <task id="LOCAL-00011" summary="created bidding component">
-      <option name="closed" value="true" />
-      <created>1762007096169</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007096169</updated>
-    </task>
-    <task id="LOCAL-00012" summary="emptied app file">
-      <option name="closed" value="true" />
-      <created>1762007107177</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007107177</updated>
-    </task>
-    <task id="LOCAL-00013" summary="created all events page">
-      <option name="closed" value="true" />
-      <created>1762007116024</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007116024</updated>
-    </task>
-    <task id="LOCAL-00014" summary="created my events page">
-      <option name="closed" value="true" />
-      <created>1762007121604</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1762007121604</updated>
-    </task>
-    <task id="LOCAL-00015" summary="updating fonts">
-      <option name="closed" value="true" />
-      <created>1762015942650</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1762015942650</updated>
-    </task>
-    <task id="LOCAL-00016" summary="moved images to organize directories">
-      <option name="closed" value="true" />
-      <created>1762015998353</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1762015998353</updated>
+      <workItem from="1764609260013" duration="16177000" />
+      <workItem from="1764685354509" duration="10485000" />
+      <workItem from="1764780458324" duration="36000" />
+      <workItem from="1764783728721" duration="491000" />
+      <workItem from="1764788016200" duration="8519000" />
     </task>
     <task id="LOCAL-00017" summary="fixed mistake in passing user type to events list">
       <option name="closed" value="true" />
@@ -518,7 +465,71 @@
       <option name="project" value="LOCAL" />
       <updated>1763847626681</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="editing data">
+      <option name="closed" value="true" />
+      <created>1764541777402</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1764541777402</updated>
+    </task>
+    <task id="LOCAL-00059" summary="biddings page connected to backend">
+      <option name="closed" value="true" />
+      <created>1764626463630</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1764626463630</updated>
+    </task>
+    <task id="LOCAL-00060" summary="fixing new listing modal and end bid button">
+      <option name="closed" value="true" />
+      <created>1764630012868</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1764630012868</updated>
+    </task>
+    <task id="LOCAL-00061" summary="end bid button and expired bids implemented">
+      <option name="closed" value="true" />
+      <created>1764631600613</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1764631600613</updated>
+    </task>
+    <task id="LOCAL-00062" summary="added disputes from backend">
+      <option name="closed" value="true" />
+      <created>1764710276397</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1764710276397</updated>
+    </task>
+    <task id="LOCAL-00063" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764710751342</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1764710751342</updated>
+    </task>
+    <task id="LOCAL-00064" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764788093325</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1764788093326</updated>
+    </task>
+    <task id="LOCAL-00065" summary="updated dispute assigment logic">
+      <option name="closed" value="true" />
+      <created>1764788110350</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1764788110350</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -548,12 +559,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed routes after reorganizing" />
-    <MESSAGE value="notification modal skeleton" />
-    <MESSAGE value="updated system-admin links" />
-    <MESSAGE value="changed filter to sort" />
-    <MESSAGE value="made manage users page" />
-    <MESSAGE value="made section title font smaller" />
     <MESSAGE value="worked on disputes page" />
     <MESSAGE value="quick attempt at adding notification modal" />
     <MESSAGE value="refining disputes" />
@@ -573,7 +578,13 @@
     <MESSAGE value="final edits: fixed sorting by date" />
     <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
-    <option name="LAST_COMMIT_MESSAGE" value="favicon added" />
+    <MESSAGE value="editing data" />
+    <MESSAGE value="biddings page connected to backend" />
+    <MESSAGE value="fixing new listing modal and end bid button" />
+    <MESSAGE value="end bid button and expired bids implemented" />
+    <MESSAGE value="added disputes from backend" />
+    <MESSAGE value="updated dispute assigment logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated dispute assigment logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -587,6 +598,27 @@
           <url>file://$PROJECT_DIR$/ticketorium/src/components/signup_login/signup_input/SignupInput.jsx</url>
           <line>8</line>
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
+          <line>343</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/ticketorium-backend/routes/listings.js</url>
+          <line>140</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/data/DummyData.js</url>
+          <line>467</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/ticketorium/src/App.jsx</url>
+          <line>103</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
