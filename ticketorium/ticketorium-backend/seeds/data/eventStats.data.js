@@ -1,14 +1,11 @@
-// ticketorium-backend/seeds/data/eventStats.data.js
-
-// Analytics per event (one row = one EventStats doc)
 export const eventStatsSeed = [
     {
-        eventKey: "ev4", // 2025 Coding Competition
+        eventKey: 4, // Coding Competition
         totals: {
-            totalEvents: 1,          // for that organizer, this event
+            totalEvents: 1,
             upcomingEvents: 1,
             totalAttendees: 120,
-            averageConversion: 0.37, // 37%
+            averageConversion: 0.37,
         },
         attendance: {
             joined: 90,
@@ -28,7 +25,7 @@ export const eventStatsSeed = [
         },
     },
     {
-        eventKey: "ev1", // Harvard hiking
+        eventKey: 1, // Harvard Hiking
         totals: {
             totalEvents: 1,
             upcomingEvents: 1,

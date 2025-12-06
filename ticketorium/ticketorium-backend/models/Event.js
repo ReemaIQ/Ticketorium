@@ -1,16 +1,10 @@
 // ticketorium-backend/models/Event.js
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
-import { getNextSequence } from "../utils/getNextSequence.js";
 
 const eventSchema = new Schema(
     {
-        // External numeric ID (pretty)
-        eventId: {
-            type: Number,
-            unique: true,
-            sparse: true,
-        },
+        // Removed custom numeric eventId. relying on default _id
 
         university: {
             type: Schema.Types.ObjectId,
@@ -24,27 +18,57 @@ const eventSchema = new Schema(
             required: true,
         },
 
-        title: { type: String, required: true },
-        description: { type: String },
+        title: { type: String, required: true, trim: true },
+        description: { type: String, default: "" },
 
         img: { type: String },
 
+        location: {
+            type: String,
+            default: "",
+            trim: true,
+        },
+
+        // Timing
         startAt: { type: Date, required: true },
         endAt:   { type: Date },
 
-        price: { type: Number, default: 0 },
+        // Pricing
+        price: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
 
         state: {
             type: String,
-            enum: ["normal", "waitlist", "cancelled"],
-            default: "normal",
+            enum: ["undefined", "waitlist", "cancelled"],
+            default: "undefined",
+        },
+
+        type: {
+            type: String,
+            enum: ["Indoor", "Outdoor", "Hybrid"],
+            default: "Indoor",
         },
 
         hasSeatingPlan: { type: Boolean, default: false },
 
-        capacityTotal:    { type: Number, default: 0 },
-        capacityReserved: { type: Number, default: 0 },
-        capacityWaitlist: { type: Number, default: 0 },
+        capacityTotal: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        capacityReserved: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        capacityWaitlist: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
 
         visibility: {
             type: String,
@@ -57,20 +81,5 @@ const eventSchema = new Schema(
 
 // Useful compound indexes
 eventSchema.index({ university: 1, startAt: 1 });
-
-// Removed the duplicate eventId index (already handled by field definition)
-// eventSchema.index({ eventId: 1 }, { unique: true, sparse: true });
-
-// Auto-increment eventId on creation
-eventSchema.pre("save", async function (next) {
-    if (this.eventId != null) return next(); // skip if already set
-
-    try {
-        this.eventId = await getNextSequence("eventId");
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
 
 export const Event = model("Event", eventSchema);

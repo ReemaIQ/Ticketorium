@@ -1,3 +1,4 @@
+// ticketorium-backend/routes/notifications.js
 import express from "express";
 import { NotificationTemplate } from "../models/NotificationTemplate.js";
 import { Notification } from "../models/Notification.js";

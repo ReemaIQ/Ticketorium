@@ -1,3 +1,5 @@
+// ticketorium/src/components/event/Event.jsx
+
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
@@ -5,23 +7,27 @@ import EventActions from "./EventActions";
 import { getUserCategory } from "./getUserCategory.js";
 
 export default function Event({
-                                  event,
-                                  id,
+                                  event, // NEW: Accepts the full event object (with merged actionState)
                                   user,
                                   type,
-                                  state,
-                                  img,
-                                  title,
-                                  date,
-                                  organizer,
-                                  price,
-                                  inviter,
-                                  expired,
                                   setOrganizerViewing
+                                  // Removed: id, state, img, title, date, organizer, price, inviter, expired
                               }) {
+    // --- EXTRACT DATA FROM SINGLE PROP ---
+    const id = event.id; // from EventList mapping
+    const title = event.title;
+    const img = event.img;
+    const date = event.date; // Should eventually use startAt
+    const organizer = event.organizer;
+    const price = event.price;
+    const inviter = event.inviter;
+    const state = event.actionState; // This is the merged state for EventActions
+    const expired = event.isEnded; // Assumed calculated in EventList
+
     const category = getUserCategory(type);
-    const [expanded, setExpanded] = useState(false); // mobile expand/collapse
+    const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
+
 
     const getRelativeTime = (dateString) => {
         if (!dateString) return "";

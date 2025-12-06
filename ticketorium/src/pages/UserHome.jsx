@@ -82,17 +82,19 @@ const contentOptions = {
 
 function UserHome(props) {
     const navigate = useNavigate()
-    // upcoming events
-    const [filteredUpcomingEvents, setFilteredUpcomingEvents] = useState([]);
-    const upcomingEventsOriginalState = useRef({});
+    const userType = props.users[props.user]["type"];
 
-    // invites received
-    const [filteredInvitesReceived, setFilteredInvitesReceived] = useState([]);
-    const invitesReceivedOriginalState = useRef({});
+    // ---------- EVENTS (from props, filtered by university) ----------
+    const eventsForUni = React.useMemo(() => {
+        const all = props.events || {};
+        const uniCode = props.uni;
 
-    // // invites sent
-    // const [filteredInvitesSent, setFilteredInvitesSent] = useState([]);
-    // const invitesSentOriginalState = useRef({});
+        const arr = Array.isArray(all) ? all : Object.values(all);
+
+        if (!uniCode) return arr;
+
+        return arr.filter((ev) => ev.university === uniCode);
+    }, [props.events, props.uni]);
 
     // university section modal variables
     const [universities, setUniversities] = useState(props.universities);

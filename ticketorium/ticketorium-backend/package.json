@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "stripe": "^20.0.0",
-    "mongodb": "^7.0.0"
+    "mongodb": "^7.0.0",
+    "multer": "^2.0.2"
   }
 }

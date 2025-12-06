@@ -35,6 +35,9 @@ app.options("*", cors()); // <= this makes OPTIONS (preflight) succeed
 
 app.use(express.json());
 
+// Serve uploaded images
+app.use("/uploads", express.static("uploads"));
+
 // Health check (before DB is fine)
 app.get("/", (_req, res) => {
     res.send("Ticketorium backend is running");
