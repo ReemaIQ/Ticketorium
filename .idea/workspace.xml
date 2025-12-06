@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="updated file structure">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Fixed AddListingModal not showing tickets">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/home/Admin.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,14 +188,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00021" summary="added bid and new listing modals">
-      <option name="closed" value="true" />
-      <created>1763244677093</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1763244677093</updated>
     </task>
     <task id="LOCAL-00022" summary="improved nav responsiveness">
       <option name="closed" value="true" />
@@ -584,7 +573,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765047828184</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="Fixed AddListingModal not showing tickets">
+      <option name="closed" value="true" />
+      <created>1765051033499</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1765051033499</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -614,7 +611,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="integrating changes from shayma's code into main" />
     <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
@@ -639,7 +635,8 @@
     <MESSAGE value="." />
     <MESSAGE value="Merge branch 'backend-auth' of https://github.com/ReemaIQ/Ticketorium into lena-backend" />
     <MESSAGE value="updated file structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated file structure" />
+    <MESSAGE value="Fixed AddListingModal not showing tickets" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed AddListingModal not showing tickets" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
