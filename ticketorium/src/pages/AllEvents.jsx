@@ -18,7 +18,7 @@ import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 import { fetchEvents } from "../api/events.js";
 import { fetchUserRegistrations } from "../api/eventRegistrations.js";
 
-    const userType = props.role
+/* -------------------- helpers to derive states & names -------------------- */
 
 function getEventsTitle(type, user) {
     const t = type?.toLowerCase();
@@ -31,16 +31,16 @@ function getEventsTitle(type, user) {
         );
     }
 
-        if (t === "visitor") {
-            return (
-                <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
-                    Events at{" "}
-                    <span className="text-[var(--primary-color)] font-[Gilroy-Medium]">
-                        {props.uni["code"]}
-                    </span>
+    if (t === "visitor") {
+        return (
+            <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
+                Events at{" "}
+                <span className="text-[var(--primary-color)] font-[Gilroy-Medium]">
+                    {"this university"}
                 </span>
-            );
-        }
+            </span>
+        );
+    }
 
     if (t === "student") {
         return (

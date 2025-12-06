@@ -1,5 +1,6 @@
+//
 import { Route, Routes, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState, useRef} from "react";
+import { useEffect, useState, useRef, use} from "react";
 
 import ScrollToTop from "./components/scroll-to-top/scroll_to_top.jsx";
 import Nav from "./components/nav/nav.jsx";
@@ -105,6 +106,7 @@ function App() {
     const [firstName, setFirstName] = useState(null)
     const [lastName, setLastName] = useState(null)
     const [userId, setUserId] = useState(null)
+    const [userObj, setUserObj] = useState(null)
 
 
     const refreshNeededData = async () => {
@@ -147,6 +149,7 @@ function App() {
         setFirstName(userData.firstName);
         setLastName(userData.lastName);
         setUserId(userData._id)
+        setUserObj(userData)
         console.log("flute X")
         if (userData.role === "visitor" || userData.role === "system-admin") {
                 await refreshUnisData();
@@ -245,6 +248,7 @@ function App() {
                 setFirstName(null);
                 setLastName(null);
                 setUserId(null);
+                setUserObj(null);
                 const rootStyle = document.querySelector(':root').style;
                     // console.log(rootStyle)
                     rootStyle.setProperty('--secondary-color', "#1F4C76");
@@ -352,8 +356,8 @@ function App() {
                     <Nav
                         type={role? role: "empty"}
                         setToken={setToken} // for the logout
-                        notifications={[]}
-                        user={username}
+                        notifications={dummyNotifications.current}
+                        user={userObj}
                         firstName={firstName}
                         hasUniversity={university? true: false}
                     />
@@ -452,7 +456,7 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={username}
+                                            user={userObj}
                                             users={[]}
                                             events={events.current}
                                             eventsJoined={eventsJoined.current}
@@ -474,7 +478,7 @@ function App() {
                                             setWaitlistSuccess={setWaitlistSuccess}
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
-                                            user={username}
+                                            user={userObj}
                                             events={events.current}
                                             uni={university}
                                             eventsJoined={eventsJoined.current}
@@ -488,7 +492,7 @@ function App() {
                                 path="/event/:eventId"
                                 element={
                                     <EventPage
-                                        user={username}
+                                        user={userObj}
                                         users={[]}
                                         events={events.current}
                                         eventsJoined={eventsJoined.current} // pass joined records
@@ -501,7 +505,7 @@ function App() {
                                 path="/bidding"
                                 element={
                                     <Bidding
-                                        user={username}
+                                        user={userObj}
                                         biddings={dummyBids.current}
                                     />
                                 }
@@ -512,7 +516,7 @@ function App() {
                                 path="/analytics"
                                 element={
                                     <RequireRole
-                                        username={username}
+                                        username={userObj}
                                         role={role}
                                         allowedRoles={["organizer"]}
                                     >
@@ -525,7 +529,7 @@ function App() {
                                 path="/create-event"
                                 element={
                                     <RequireRole
-                                        username={username}
+                                        username={userObj}
                                         role={role}
                                         allowedRoles={["organizer"]}
                                     >
@@ -538,12 +542,12 @@ function App() {
                                 path="/event/:eventId/edit"
                                 element={
                                     <RequireRole
-                                        username={username}
+                                        username={userObj}
                                         role={role}
                                         allowedRoles={["organizer", "admin", "system-admin"]}
                                     >
                                         <EditEvent
-                                            user={username}
+                                            user={userObj}
                                             users={[]}
                                             events={events.current}
                                         />
@@ -624,7 +628,7 @@ function App() {
                                 path="/system-policies"
                                 element={
                                     <RequireRole
-                                        username={username}
+                                        username={userObj}
                                         role={role}
                                         allowedRoles={["admin", "system-admin"]}
                                     >
@@ -640,7 +644,7 @@ function App() {
                                     <RequireAuth token={token}>
                                         <Disputes
                                             disputes={dummyDisputes.current}
-                                            user={username}
+                                            user={userObj}
                                             users={[]}
                                         />
                                     </RequireAuth>
