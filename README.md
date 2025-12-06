@@ -88,11 +88,11 @@ cd Ticketorium
 npm install
 
 # Install backend dependencies
-cd ticketorium-backend
+cd ticketorium-frontend-backend
 npm install
 
 # Install frontend dependencies
-cd ../ticketorium
+cd ../ticketorium-frontend
 npm install
 ```
 ### 3. Run the Development Server
@@ -100,7 +100,7 @@ npm install
 ```bash
 
 # From the root directory:
-cd ticketorium-backend
+cd ticketorium-frontend-backend
 node server.js
 
 # The backend will typically run on http://localhost:3001
@@ -110,7 +110,7 @@ node server.js
 ```bash
 
 # From the root directory:
-cd ticketorium
+cd ticketorium-frontend
 
 npm run dev
 # The frontend will typically run on http://localhost:5173
