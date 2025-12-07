@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="updated all fetch/axios calls to use the Render backend">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="deployed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,15 +173,8 @@
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
       <workItem from="1765038943868" duration="10827000" />
-      <workItem from="1765050092019" duration="620000" />
-    </task>
-    <task id="LOCAL-00030" summary="updated system-admin links">
-      <option name="closed" value="true" />
-      <created>1763508892736</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508892736</updated>
+      <workItem from="1765050092019" duration="868000" />
+      <workItem from="1765126667149" duration="587000" />
     </task>
     <task id="LOCAL-00031" summary="changed filter to sort">
       <option name="closed" value="true" />
@@ -568,7 +560,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765048614589</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="deployed">
+      <option name="closed" value="true" />
+      <created>1765050725663</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1765050725663</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -598,7 +598,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
     <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
     <MESSAGE value="Modularize the Code + README.md" />
     <MESSAGE value="Pass Price to Checkout.jsx" />
@@ -623,7 +622,8 @@
     <MESSAGE value="remove vercel.json" />
     <MESSAGE value="trying render for deployment?" />
     <MESSAGE value="updated all fetch/axios calls to use the Render backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated all fetch/axios calls to use the Render backend" />
+    <MESSAGE value="deployed" />
+    <option name="LAST_COMMIT_MESSAGE" value="deployed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
