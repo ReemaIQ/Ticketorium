@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Fixed AddListingModal not showing tickets">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" afterDir="false" />
-    </list>
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Fixed AddListingModal not showing tickets" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,7 +56,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "lena-backend",
+    "git-widget-placeholder": "Reema-final",
     "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
