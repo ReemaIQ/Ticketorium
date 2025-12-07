@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Fixed AddListingModal not showing tickets" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="Before Deployment">
+      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/InvitesReceivedComponents.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/MyEventsComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/nav/nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/AllEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/MyEvents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/UserHome.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,8 +24,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="JSX File" />
         <option value="JavaScript File" />
+        <option value="JSX File" />
       </list>
     </option>
   </component>
@@ -52,6 +62,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Node.js.UserHome.jsx.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -64,7 +75,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2025.2.2\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -185,14 +196,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00022" summary="improved nav responsiveness">
-      <option name="closed" value="true" />
-      <created>1763414377741</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1763414377741</updated>
     </task>
     <task id="LOCAL-00023" summary="improved nav responsiveness">
       <option name="closed" value="true" />
@@ -578,7 +581,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765051033499</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="Before Deployment">
+      <option name="closed" value="true" />
+      <created>1765130986958</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1765130986958</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -608,7 +619,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="integrating changes into main" />
     <MESSAGE value="fixed disputes not showing" />
     <MESSAGE value="connected create new event page and button in my events page, fixed button placing" />
     <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
@@ -633,7 +643,8 @@
     <MESSAGE value="Merge branch 'backend-auth' of https://github.com/ReemaIQ/Ticketorium into lena-backend" />
     <MESSAGE value="updated file structure" />
     <MESSAGE value="Fixed AddListingModal not showing tickets" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed AddListingModal not showing tickets" />
+    <MESSAGE value="Before Deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Before Deployment" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -657,11 +668,6 @@
           <url>file://$PROJECT_DIR$/ticketorium-backend/routes/listings.js</url>
           <line>140</line>
           <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/ticketorium-frontend/src/App.jsx</url>
-          <line>876</line>
-          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx</url>

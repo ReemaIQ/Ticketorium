@@ -1,4 +1,4 @@
-//
+// ticketorium-frontend/src/App.jsx
 import { Route, Routes, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef, use} from "react";
 
@@ -115,8 +115,8 @@ function App() {
             console.log("Flute role", role)
             console.log("Flute uni", university)
             if (university) { // if the user has a uni assigned to him, then fetch the data of that uni
-                await refreshEventsData();   
-            }             
+                await refreshEventsData();
+            }
             else if (role === "visitor" || role === "system-admin") {
                 const selectedUni = localStorage.getItem("university");
                 if (selectedUni && selectedUni !== university) {
@@ -196,7 +196,7 @@ function App() {
 
     }
     // SHAYMA: BACKEND - DO NOT REMOVE IN MERGING - END
-    
+
 
     useEffect(() => {
         if (organizerViewing) // so to avoid navigation when val is changed to null
@@ -266,7 +266,7 @@ function App() {
                     rootStyle.setProperty('--success-color', "#46CA48");
             }
         }
-        
+
         effectCall()
     }, [token])
 
@@ -291,7 +291,7 @@ function App() {
                 await refreshEventsData()
             }
         }
-        
+
         effectCall()
     }, [university])
 
@@ -355,9 +355,17 @@ function App() {
         <>
             <ScrollToTop />
 
-            
+
                 <RouteLogger />
                 <div className="flex-col">
+                    {/*<Nav*/}
+                    {/*    type={role? role: "empty"}*/}
+                    {/*    setToken={setToken} // for the logout*/}
+                    {/*    notifications={dummyNotifications.current}*/}
+                    {/*    user={userObj}*/}
+                    {/*    firstName={firstName}*/}
+                    {/*    hasUniversity={university? true: false}*/}
+                    {/*/>*/}
                     <Nav
                         type={role? role: "empty"}
                         setToken={setToken} // for the logout
@@ -389,7 +397,7 @@ function App() {
                                             setIsPurchasing={setIsPurchasing}
                                             filterContent={filterContent}
                                             uni={university}
-                                            user={username}
+                                            user={userObj}
                                             firstName={firstName}
                                             role={role}
                                             users={[]}
@@ -710,7 +718,7 @@ function App() {
 
                     {!isLoading && <Footer type={currentUser?.type ?? "empty"} />}
                 </div>
-            
+
         </>
     );
 }

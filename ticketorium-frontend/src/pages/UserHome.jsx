@@ -1,16 +1,25 @@
-// src/pages/UserHome.jsx
+// ticketorium-frontend/src/pages/UserHome.jsx
+import React, { useMemo, useState } from "react";
+
 import EventList from "../components/event-list/EventList.jsx";
 import NotificationList from "../components/notification-list/NotificationList.jsx";
 import Analytics from "../components/analytics/Analytics.jsx";
-import SearchBtn from "../components/search-button/SearchBtn.jsx";
 import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
 import UniversityCard from "../components/university-card/UniversityCard.jsx";
 import UniversityModal from "../components/modals/UniversityModal.jsx";
 
-import { NavLink } from "react-router-dom";
-import React, { useMemo, useState } from "react";
+// NEW: hooks + component for dynamic fetching
+import {
+    useMergedEventsForUserUpcomingOnly,
+} from "../components/events-fetching/AllEventsComponent.jsx";
 
-// Font Awesome Setup
+import {
+    useMyEventsForUserUpcomingOnly,
+} from "../components/events-fetching/MyEventsComponent.jsx";
+
+import InvitesReceivedComponents from "../components/events-fetching/InvitesReceivedComponents.jsx";
+
+// Font Awesome Setup (still used in other parts if needed later)
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -18,11 +27,17 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 library.add(fas, far, fab);
 
+// ---------------------- content options per role ---------------------- //
+
 const contentOptions = {
     student: {
-        "user-events": {
-            header: "Your Upcoming Events",
+        "upcoming-events": {
+            header: "Upcoming Events",
             "jump-to": "Upcoming Events",
+        },
+        "my-upcoming-events": {
+            header: "My Upcoming Events",
+            "jump-to": "My Upcoming Events",
         },
         "invites-received": {
             header: "Invites Received",
@@ -30,9 +45,13 @@ const contentOptions = {
         },
     },
     visitor: {
-        "user-events": {
-            header: "Your Upcoming Events",
+        "upcoming-events": {
+            header: "Upcoming Events",
             "jump-to": "Upcoming Events",
+        },
+        "my-upcoming-events": {
+            header: "My Upcoming Events",
+            "jump-to": "My Upcoming Events",
         },
         "invites-received": {
             header: "Invites Received",
@@ -76,21 +95,32 @@ const contentOptions = {
 };
 
 function UserHome(props) {
-    const userType = props.role
+    // Prefer full backend user if provided
+    const user = props.user || {};
+    const userType = user.role || props.role;
 
-    // ---------- EVENTS (from props, filtered by university) ----------
-    const eventsForUni = React.useMemo(() => {
-        const all = props.events || {};
-        const uniCode = props.uni;
+    const uni = props.uni;
 
-        const arr = Array.isArray(all) ? all : Object.values(all);
+    // ---------- UPCOMING EVENTS (all events for this uni, upcoming only) ----------
+    const {
+        eventsMap: upcomingEventsMap,
+        visibleIds: upcomingVisibleIds,
+        loading: upcomingLoading,
+        error: upcomingError,
+        handleSearch: handleUpcomingSearch, // currently unused, but available if you add search
+    } = useMergedEventsForUserUpcomingOnly({ user, uni });
 
-        if (!uniCode) return arr;
+    // ---------- MY UPCOMING EVENTS (per user) ----------
+    const {
+        userType: myEventsUserType, // not used, but returned by hook
+        allMyEvents: myUpcomingAll,
+        filteredEvents: myUpcomingFiltered,
+        loading: myUpcomingLoading,
+        error: myUpcomingError,
+        handleSearch: handleMyUpcomingSearch, // also available
+    } = useMyEventsForUserUpcomingOnly({ user, uni });
 
-        return arr.filter((ev) => ev.university === uniCode);
-    }, [props.events, props.uni]);
-
-    // ---------- UNIVERSITIES & NOTIFICATIONS ----------
+    // ---------- UNIVERSITIES & NOTIFICATIONS (for admin/system-admin) ----------
     const [universities, setUniversities] = useState(props.universities);
     const [universityEditingId, setUniversityEditingId] = useState(null);
     const [isUniversityModalOpen, setIsUniversityModalOpen] = useState(false);
@@ -133,6 +163,8 @@ function UserHome(props) {
         setIsUniversityModalOpen(false);
     };
 
+    const roleContent = contentOptions[userType] || {};
+
     return (
         <>
             {/* HERO */}
@@ -166,9 +198,7 @@ function UserHome(props) {
                 <img
                     src={
                         "/src/assets/images/home-main/unis/" +
-                        props.uni[
-                            "logo"
-                        ]
+                        props.uni["logo"]
                     }
                     className="max-md:w-[40%] md:max-lg:w-[30%] lg:max-xl:w-[25%] xl:h-150 2xl:h-180 order-1 xl:order-2 self-center object-contain xl:max-w-2xl"
                 />
@@ -180,7 +210,7 @@ function UserHome(props) {
                     JUMP TO
                 </div>
                 <div className="flex max-xl:justify-between max-xl:grid max-xl:grid-cols-2 gap-25 xl:gap-15 w-full">
-                    {Object.keys(contentOptions[userType]).map((key) => (
+                    {Object.keys(roleContent).map((key) => (
                         <span
                             key={key}
                             className="font-[Gilroy-Medium] text-[20px] text-[var(--primary-color)] self-center text-center cursor-pointer"
@@ -193,7 +223,7 @@ function UserHome(props) {
                                 });
                             }}
                         >
-                            {contentOptions[userType][key]["jump-to"]}
+                            {roleContent[key]["jump-to"]}
                         </span>
                     ))}
                 </div>
@@ -201,7 +231,7 @@ function UserHome(props) {
 
             {/* Sections */}
             <div className="flex flex-col items-center pb-15 xl:py-10 px-10 xl:px-15 gap-5 w-full">
-                {Object.keys(contentOptions[userType]).map((key) => (
+                {Object.keys(roleContent).map((key) => (
                     <React.Fragment key={key}>
                         <div
                             id="section-header"
@@ -213,7 +243,7 @@ function UserHome(props) {
                                     id={key}
                                     className="font-[Epilogue-Black] text-[50px] xl:text-[50px] text-[var(--secondary-color)]"
                                 >
-                                    {contentOptions[userType][key]["header"]}
+                                    {roleContent[key]["header"]}
                                 </h2>
                             </div>
                         </div>
@@ -242,36 +272,60 @@ function UserHome(props) {
                                     <Analytics />
                                 </div>
                             ) : key === "upcoming-events" ? (
-                                <EventList
-                                    events={eventsForUni}
-                                    userType={userType}
-                                    listType="all-events"
-                                    setOrganizerViewing={
-                                        props.setOrganizerViewing
-                                    }
-                                    eventsJoined={props.eventsJoined}
-                                />
-                            ) : key === "user-events" ? (
-                                <EventList
-                                    events={eventsForUni}
-                                    userType={userType}
-                                    listType="my-events"
-                                    setOrganizerViewing={
-                                        props.setOrganizerViewing
-                                    }
-                                    eventsJoined={props.eventsJoined}
-                                />
+                                // Upcoming Events (for this uni, upcoming only)
+                                <>
+                                    {upcomingLoading && (
+                                        <p className="px-3 text-sm text-gray-500">
+                                            Loading events…
+                                        </p>
+                                    )}
+                                    {upcomingError && !upcomingLoading && (
+                                        <p className="px-3 text-sm text-red-600">
+                                            {upcomingError}
+                                        </p>
+                                    )}
+                                    {!upcomingLoading && !upcomingError && (
+                                        <EventList
+                                            events={upcomingEventsMap}
+                                            filterIds={upcomingVisibleIds}
+                                            userType={userType}
+                                            listType="all-events"
+                                            user={user}
+                                            setOrganizerViewing={
+                                                props.setOrganizerViewing
+                                            }
+                                        />
+                                    )}
+                                </>
+                            ) : key === "my-upcoming-events" ? (
+                                // My Upcoming Events (joined/invited/waitlisted for this user)
+                                <>
+                                    {myUpcomingLoading && (
+                                        <p className="px-3 text-sm text-gray-500">
+                                            Loading your events…
+                                        </p>
+                                    )}
+                                    {myUpcomingError && !myUpcomingLoading && (
+                                        <p className="px-3 text-sm text-red-600">
+                                            {myUpcomingError}
+                                        </p>
+                                    )}
+                                    {!myUpcomingLoading &&
+                                        !myUpcomingError && (
+                                            <EventList
+                                                events={myUpcomingFiltered}
+                                                userType={userType}
+                                                listType="my-events"
+                                                user={user}
+                                                setOrganizerViewing={
+                                                    props.setOrganizerViewing
+                                                }
+                                            />
+                                        )}
+                                </>
                             ) : key === "invites-received" ? (
-                                // For now still no backend invites,
-                                // so pass an empty list → "No events found" message.
-                                <EventList
-                                    events={[]}
-                                    userType={userType}
-                                    listType="invites-received"
-                                    setOrganizerViewing={
-                                        props.setOrganizerViewing
-                                    }
-                                />
+                                // Invites Received (uses dedicated component that itself uses EventList)
+                                <InvitesReceivedComponents user={user} />
                             ) : key === "universities" ? (
                                 <>
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -293,12 +347,12 @@ function UserHome(props) {
 
                                         {Object.keys(universities).length ===
                                             0 && (
-                                            <div className="col-span-full text-center py-20 text-gray-500">
-                                                No universities found. Click
-                                                &quot;Add new university&quot;
-                                                to get started.
-                                            </div>
-                                        )}
+                                                <div className="col-span-full text-center py-20 text-gray-500">
+                                                    No universities found. Click
+                                                    &quot;Add new university&quot;
+                                                    to get started.
+                                                </div>
+                                            )}
 
                                         <UniversityModal
                                             isOpen={isUniversityModalOpen}
@@ -309,34 +363,34 @@ function UserHome(props) {
                                             initialData={
                                                 universityEditingId
                                                     ? universities[
-                                                          universityEditingId
-                                                      ]
+                                                        universityEditingId
+                                                        ]
                                                     : null
                                             }
                                             editId={universityEditingId}
                                             defaultTheme={
                                                 universityEditingId
                                                     ? universities[
-                                                          universityEditingId
-                                                      ]["theme-colors"]
+                                                        universityEditingId
+                                                        ]["theme-colors"]
                                                     : {
-                                                          "primary-color":
-                                                              "#1A1A1A",
-                                                          "secondary-color":
-                                                              "#1F4C76",
-                                                          "accent-color":
-                                                              "#FFDF4F",
-                                                          "secondary-accent-color":
-                                                              "#0800FF",
-                                                          "filter-buttons":
-                                                              "#8200DB",
-                                                          "warning-color":
-                                                              "#F54141",
-                                                          "success-color":
-                                                              "#46CA48",
-                                                          "footer-color":
-                                                              "#11223B",
-                                                      }
+                                                        "primary-color":
+                                                            "#1A1A1A",
+                                                        "secondary-color":
+                                                            "#1F4C76",
+                                                        "accent-color":
+                                                            "#FFDF4F",
+                                                        "secondary-accent-color":
+                                                            "#0800FF",
+                                                        "filter-buttons":
+                                                            "#8200DB",
+                                                        "warning-color":
+                                                            "#F54141",
+                                                        "success-color":
+                                                            "#46CA48",
+                                                        "footer-color":
+                                                            "#11223B",
+                                                    }
                                             }
                                         />
                                     </div>
