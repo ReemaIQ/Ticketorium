@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 
 import { fetchUserRegistrations } from "../../api/eventRegistrations.js";
 import { fetchEventById } from "../../api/events.js";
-
-// use EventList
 import EventList from "../event-list/EventList.jsx";
 
 /* ---------------- small helpers ---------------- */
+
+function resolveUserType(backendRole, userTypeProp) {
+    if (backendRole) return String(backendRole).toLowerCase();
+    if (userTypeProp) return String(userTypeProp).toLowerCase();
+    return null;
+}
 
 function getInviterLabelFromReg(reg) {
     if (!reg || !reg.invitedBy) return undefined;
@@ -38,13 +42,81 @@ function sortByStartAt(eventsArray) {
     });
 }
 
+/* ---- helpers to match MyEventsComponent normalization ---- */
+
+function getActionStateFromRegistrationStatus(status) {
+    if (!status) return undefined;
+    const s = String(status).toLowerCase();
+
+    if (["joined", "attending", "registered"].includes(s)) return "joined";
+    if (["waitlist", "waitlisted"].includes(s)) return "waitlisted";
+    if (["invited", "invitation"].includes(s)) return "invited";
+
+    return undefined;
+}
+
+function getActionStateFromEvent(ev) {
+    const s = String(ev?.state || "").toLowerCase();
+    if (["waitlist", "waitlisted"].includes(s)) return "waitlist";
+    return undefined;
+}
+
+// SAME SHAPE as normalizeEventForUI in MyEventsComponent.jsx
+function normalizeEventForUI(ev, { reg } = {}) {
+    const id = (ev._id || ev.id || "").toString();
+    if (!id) return null;
+
+    const regState = reg
+        ? getActionStateFromRegistrationStatus(reg.status)
+        : undefined;
+    const eventState = !reg ? getActionStateFromEvent(ev) : undefined;
+
+    const actionState =
+        regState !== undefined
+            ? regState
+            : eventState !== undefined
+                ? eventState
+                : undefined;
+
+    const inviter = reg ? getInviterLabelFromReg(reg) : undefined;
+
+    let uniValue = "";
+    if (typeof ev.university === "string") {
+        uniValue = ev.university;
+    } else if (ev.university && typeof ev.university === "object") {
+        uniValue =
+            ev.university.code ||
+            ev.university.name ||
+            ev.university._id ||
+            "";
+    }
+
+    let organizerDisplay = ev.organizer;
+    if (ev.organizer && typeof ev.organizer === "object") {
+        const full = [ev.organizer.firstName, ev.organizer.lastName]
+            .filter(Boolean)
+            .join(" ");
+        organizerDisplay = full || ev.organizer.handle || ev.organizer._id;
+    }
+
+    return {
+        ...ev,
+        id,
+        university: uniValue,
+        date: ev.startAt || ev.endAt || ev.date || null,
+        organizer: organizerDisplay,
+        actionState,
+        inviter,
+    };
+}
+
 /* ---------------- main hook: invitations received ---------------- */
 
 export function useInvitesReceivedForUser({ user }) {
     const backendUser = user || {};
     const userId = backendUser._id || null;
 
-    const [invites, setInvites] = useState([]); // [{ event, registration, inviterLabel }]
+    const [invites, setInvites] = useState([]); // [{ event, registration }]
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -65,7 +137,7 @@ export function useInvitesReceivedForUser({ user }) {
                 setLoading(true);
                 setError("");
 
-                // 1) Fetch all registrations
+                // 1) Fetch all registrations for this user
                 let registrations = await fetchUserRegistrations(userId);
 
                 // 2) Filter to invited only
@@ -79,7 +151,6 @@ export function useInvitesReceivedForUser({ user }) {
                     invitedRegs.map(async (reg) => {
                         let ev = reg.event;
 
-                        // if event is not fully populated, fetch it
                         if (!ev || typeof ev !== "object") {
                             const eventId =
                                 (typeof reg.event === "string" && reg.event) ||
@@ -92,7 +163,7 @@ export function useInvitesReceivedForUser({ user }) {
                             } catch (e) {
                                 console.error(
                                     "[useInvitesReceivedForUser] Failed to fetch event:",
-                                    e
+                                    e,
                                 );
                                 return null;
                             }
@@ -100,14 +171,11 @@ export function useInvitesReceivedForUser({ user }) {
 
                         if (!ev) return null;
 
-                        const inviterLabel = getInviterLabelFromReg(reg);
-
                         return {
                             event: ev,
                             registration: reg,
-                            inviterLabel,
                         };
-                    })
+                    }),
                 );
 
                 const clean = hydrated.filter(Boolean);
@@ -115,18 +183,17 @@ export function useInvitesReceivedForUser({ user }) {
                 // 4) Sort by event.startAt
                 const sortedEvents = sortByStartAt(clean.map((x) => x.event));
 
-                // 5) rebuild sorted structure
+                // 5) Rebuild with their registrations
                 const sortedWithRegs = sortedEvents.map((ev) => {
                     const match = clean.find(
                         (item) =>
                             String(item.event._id || item.event.id) ===
-                            String(ev._id || ev.id)
+                            String(ev._id || ev.id),
                     );
                     return (
                         match || {
                             event: ev,
                             registration: null,
-                            inviterLabel: undefined,
                         }
                     );
                 });
@@ -137,7 +204,9 @@ export function useInvitesReceivedForUser({ user }) {
             } catch (err) {
                 console.error("[useInvitesReceivedForUser] load error:", err);
                 if (!cancelled) {
-                    setError(err.message || "Failed to load your invitations.");
+                    setError(
+                        err.message || "Failed to load your invitations.",
+                    );
                     setInvites([]);
                 }
             } finally {
@@ -161,10 +230,14 @@ export function useInvitesReceivedForUser({ user }) {
     };
 }
 
-/* ---------------- UI component using EventList ---------------- */
+/* ---------------- UI wrapper used in UserHome ---------------- */
 
 export default function InvitesReceivedComponents({ user }) {
     const { invites, loading, error } = useInvitesReceivedForUser({ user });
+    const backendUser = user || {};
+    const backendRole = backendUser.role || null;
+
+    const userType = resolveUserType(backendRole, null);
 
     if (loading) {
         return (
@@ -184,61 +257,22 @@ export default function InvitesReceivedComponents({ user }) {
         );
     }
 
-    // 🔁 Adapt result to EventList props
-    const eventsMap = {};
-    const filterIds = [];
-
-    invites.forEach(({ event, registration, inviterLabel }) => {
-        if (!event) return;
-        const id = String(event._id || event.id || "");
-        if (!id) return;
-
-        // FIX: normalize `event.organizer` into a STRING, This is what was causing the White Screen Crash
-
-        let organizerDisplay = event.organizer;
-
-        if (event.organizer && typeof event.organizer === "object") {
-            const fullName = [event.organizer.firstName, event.organizer.lastName]
-                .filter(Boolean)
-                .join(" ")
-                .trim();
-
-            organizerDisplay =
-                fullName ||
-                event.organizer.handle ||
-                event.organizer._id ||
-                "Unknown Organizer";
-        }
-
-        const merged = {
-            ...event,
-            id,
-            date: event.startAt || event.date || event.endAt || null,
-            actionState: "invited",
-            inviter: inviterLabel,
-            organizer: organizerDisplay, // SAFE STRING
-            registration,
-        };
-
-        eventsMap[id] = merged;
-        filterIds.push(id);
-    });
+    // Normalize exactly like MyEvents → same event object shape
+    const eventsArray = invites
+        .map(({ event, registration }) => {
+            if (!event) return null;
+            return normalizeEventForUI(event, {
+                reg: registration,
+            });
+        })
+        .filter(Boolean);
 
     return (
-        <div className="flex flex-col w-full max-w-5xl align-middle px-10 xl:px-15 pb-10">
-            <div className="flex items-center justify-between mt-9 mb-3 px-3">
-                <h2 className="font-[Gilroy-Black] text-3xl text-[#1A1A1A]">
-                    Invitations
-                </h2>
-            </div>
-
-            <EventList
-                events={eventsMap}
-                filterIds={filterIds}
-                userType={user?.role || null}
-                listType="invites-received"
-                user={user}
-            />
-        </div>
+        <EventList
+            events={eventsArray}       // same type as myUpcomingFiltered
+            userType={userType}
+            listType="my-events"       // use same layout rules as My Events
+            user={user}
+        />
     );
 }
