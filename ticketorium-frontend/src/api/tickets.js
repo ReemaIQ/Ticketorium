@@ -1,17 +1,36 @@
-// src/api/tickets.js
-import { getApiBaseUrl } from "./client";
+// Ticketorium/ticketorium-frontend/src/api/tickets.js
 
-const BASE_URL = `${getApiBaseUrl()}/api/tickets`;
+const BASE_URL = "http://localhost:4000/api/tickets";
+
+/**
+ * Normalize user object or id to a string id.
+ */
+function normalizeUserId(user) {
+    if (!user) return "";
+    if (typeof user === "string") return String(user);
+    if (user._id) return String(user._id);
+    if (user.id) return String(user.id);
+    if (user.handle) return String(user.handle);
+    return String(user);
+}
 
 /**
  * Create a ticket for (eventId, userId).
  * Used by JoinModal when a user joins an event.
  */
 export async function createTicket({ eventId, userId, seat = null, price = 0 }) {
+    const safeUserId = normalizeUserId(userId);
+    const safeEventId = String(eventId);
+
     const res = await fetch(BASE_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventId, userId, seat, price }),
+        body: JSON.stringify({
+            eventId: safeEventId,
+            userId: safeUserId,
+            seat,
+            price,
+        }),
     });
 
     if (!res.ok) {
@@ -24,47 +43,53 @@ export async function createTicket({ eventId, userId, seat = null, price = 0 }) 
 
 /**
  * Fetch the latest NON-CANCELLED ticket for this user+event.
- *
- * NOTE: This assumes the backend has been updated to support:
- * GET /api/tickets?event={eventId}&user={userId}&status=active
- * (Highly Recommended for performance)
+ * Works with the in-memory tickets router.
  */
 export async function fetchTicketForEvent({ eventId, user }) {
-    if (!eventId || !user) throw new Error("Missing eventId or user ID for ticket lookup");
+    const safeEventId = String(eventId);
+    const safeUserId = normalizeUserId(user);
 
-    // Construct query parameters for server-side filtering (Recommended approach)
-    const search = new URLSearchParams();
-    search.set("event", eventId);
-    search.set("user", user);
-    search.set("status", "active"); // Fetching only active/non-cancelled tickets
+    const url = new URL(BASE_URL);
+    url.searchParams.set("eventId", safeEventId);
+    url.searchParams.set("userId", safeUserId);
+    url.searchParams.set("status", "active");
 
-    const url = `${BASE_URL}?${search.toString()}`;
-
-    const res = await fetch(url, { method: "GET" });
+    const res = await fetch(url.toString(), { method: "GET" });
 
     if (!res.ok) {
         const text = await res.text();
         throw new Error(`Failed to fetch tickets: ${res.status} ${text}`);
     }
 
-    const matchingTickets = await res.json();
+    const tickets = await res.json();
 
-    if (matchingTickets.length === 0) return null;
+    if (!Array.isArray(tickets) || tickets.length === 0) {
+        return null;
+    }
 
-    // The backend should ideally sort this, but we will sort client-side just in case
-    // pick the latest by id (ObjectId sorting is chronological)
-    return matchingTickets.reduce((a, b) => (String(a._id) > String(b._id) ? a : b));
+    // pick the latest by numeric id or createdAt
+    return tickets.reduce((a, b) => {
+        const aKey = a.id ?? 0;
+        const bKey = b.id ?? 0;
+        if (aKey && bKey && aKey !== bKey) {
+            return aKey > bKey ? a : b;
+        }
+        const aTime = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const bTime = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return aTime >= bTime ? a : b;
+    });
 }
 
 /**
  * Cancel a ticket (used when user RESIGNS).
  */
 export async function cancelTicket(ticketId, userId) {
-    // Assuming backend keeps the custom /cancel route for now
+    const safeUserId = normalizeUserId(userId);
+
     const res = await fetch(`${BASE_URL}/cancel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ticketId, userId }),
+        body: JSON.stringify({ ticketId, userId: safeUserId }),
     });
 
     if (!res.ok) {
@@ -77,18 +102,18 @@ export async function cancelTicket(ticketId, userId) {
 
 /**
  * It talks to backend route:
- * GET /api/tickets/verify?code=...&token=...&eventId=...
+ *   GET /api/tickets/verify?code=...&token=...&eventId=...
  *
  * pass either:
- * { code, eventId }   OR
- * { token, eventId }
+ *   { code, eventId }   OR
+ *   { token, eventId }
  */
 export async function verifyTicket({ code, token, eventId }) {
     const url = new URL(`${BASE_URL}/verify`);
 
     if (code) url.searchParams.set("code", code);
     if (token) url.searchParams.set("token", token);
-    if (eventId) url.searchParams.set("eventId", eventId);
+    if (eventId) url.searchParams.set("eventId", String(eventId));
 
     const res = await fetch(url.toString(), { method: "GET" });
 
