@@ -319,7 +319,7 @@ export function useMergedEventsForUser({ user, uni }) {
         return () => {
             cancelled = true;
         };
-    }, [userId, userUniId, userUniCode, uni, safeUser]);
+    }, [userId, userUniId, userUniCode]);
 
     // Simple search over title / description / organizer
     const handleSearch = (searchValue) => {

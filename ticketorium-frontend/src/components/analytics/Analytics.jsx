@@ -1,3 +1,4 @@
+// ticketorium-frontend/src/components/analytics/Analytics.jsx
 import React from "react";
 import {
     Users,

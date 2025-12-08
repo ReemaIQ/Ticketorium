@@ -357,7 +357,7 @@ export function useMyEventsForUser({
         return () => {
             cancelled = true;
         };
-    }, [userId, userType, studentUniId, studentUniCode, visitorUniKey, uni]);
+    }, [userId, userType, studentUniId, studentUniCode, visitorUniKey]);
 
     /* -----------------------------------------
        SEARCH
