@@ -62,7 +62,7 @@ export const eventsSeed = [
         title: "2025 Coding Competition (Dec, Seating)",
         startAt: "2025-12-21T09:30:00.000Z",
         organizerHandle: "kfupm-organizer",
-        price: 19.99,
+        price: 0,
         state: "undefined",
         hasSeatingPlan: true,
     },

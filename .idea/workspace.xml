@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="ANALYTICS UNDERPROCESS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/analytics/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/analytics/Analytics.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/EventAnalyticsPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/EventAnalyticsPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,14 +189,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00025" summary="polishing event responsiveness">
-      <option name="closed" value="true" />
-      <created>1763481930574</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1763481930574</updated>
     </task>
     <task id="LOCAL-00026" summary="polishing event responsiveness">
       <option name="closed" value="true" />
@@ -583,7 +574,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765163477088</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="ANALYTICS UNDERPROCESS">
+      <option name="closed" value="true" />
+      <created>1765164338037</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1765164338037</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
