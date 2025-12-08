@@ -5,7 +5,9 @@ import { fetchEventById, updateEvent } from "../../api/events.js";
 
 function EditEventPage({ user }) {
     const navigate = useNavigate();
-    const { id: eventId } = useParams();
+
+    // FIX: param name must match route: /event/:eventId/edit
+    const { eventId } = useParams();
 
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -24,11 +26,19 @@ function EditEventPage({ user }) {
     const [type, setType] = useState("Outdoor");
     const [imgValue, setImgValue] = useState("graduation.png");
 
+    // Local date/time overrides (optional)
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+
     // -----------------------------
     // Load event from backend
     // -----------------------------
     useEffect(() => {
-        if (!eventId) return;
+        if (!eventId) {
+            setError("Missing event id in the URL.");
+            setLoading(false);
+            return;
+        }
 
         async function loadEvent() {
             try {
@@ -50,7 +60,7 @@ function EditEventPage({ user }) {
                 setTitle(ev.title || "");
                 setDescription(
                     ev.description ||
-                        "Join us in a wondrous hiking journey with Harvard female students only."
+                    "Join us in a wondrous hiking journey with Harvard female students only."
                 );
 
                 // Location: treat as "Building Room" single string if present
@@ -113,10 +123,6 @@ function EditEventPage({ user }) {
         return dt;
     };
 
-    // Local date/time overrides (optional)
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
-
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -174,8 +180,8 @@ function EditEventPage({ user }) {
 
         try {
             setSaving(true);
-            await updateEvent(event._id, updatePayload);
-            navigate(`/event/${event._id}`, {
+            await updateEvent(event._id || eventId, updatePayload);
+            navigate(`/event/${event._id || eventId}`, {
                 replace: true,
             });
         } catch (err) {

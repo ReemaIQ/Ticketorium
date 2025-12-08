@@ -8,110 +8,128 @@ import { getUserCategory } from "../components/event/getUserCategory.js";
 
 export default function EventPage(props) {
     const navigate = useNavigate();
-    const { eventId } = useParams(); // from URL
+    const { eventId } = useParams();
     const location = useLocation();
 
-    // If we navigated from Event card, this will be the full event
+    // If we came from EventList → we have the full merged event (with actionState)
     const eventFromState = location.state?.event || null;
 
-    // user type: student / visitor / organizer / admin / system-admin
+    /* -----------------------------------------------------------
+       FIXED USER TYPE LOGIC (same as AllEvents.jsx)
+       ----------------------------------------------------------- */
     const type = useMemo(() => {
-        const t =
-            props?.users && props?.user
-                ? props.users[props.user]?.type
-                : "visitor";
-        return (t || "visitor").toLowerCase();
-    }, [props?.users, props?.user]);
+        // NEW SYSTEM: props.user is a real user object
+        if (props?.user && typeof props.user === "object") {
+            const t = props.user.role || props.user.type;
+            if (t) return String(t).toLowerCase();
+        }
 
-    // map type to EventActions category (attendee / organizer / admin)
+        // OLD SYSTEM: props.users is a map
+        if (props?.users && typeof props.user === "string") {
+            const legacy =
+                props.users[props.user]?.type || props.users[props.user]?.role;
+            if (legacy) return String(legacy).toLowerCase();
+        }
+
+        // default fallback
+        return "visitor";
+    }, [props?.user, props?.users]);
+
     const category = getUserCategory(type);
 
-    // -------------------- joinedRecord (same logic, string-safe) --------------------
+    /* -----------------------------------------------------------
+       JOIN RECORD (same as before)
+       ----------------------------------------------------------- */
     const joinedRecord = useMemo(() => {
         if (!props.eventsJoined || !props.user || !eventId) return null;
 
         const records = Object.values(props.eventsJoined);
-
         const sameEvent = (j) => String(j.eventId) === String(eventId);
 
-        // 1. Incoming invites
+        // Incoming invite
         const incomingInvite = records.find(
             (j) =>
                 sameEvent(j) &&
                 j.invitee === props.user &&
-                j.state === "invited",
+                j.state === "invited"
         );
         if (incomingInvite) return incomingInvite;
 
-        // 2. My joined / waitlist (but not invites I sent)
+        // Joined / waitlisted by me
         const myJoin = records.find(
             (j) =>
                 sameEvent(j) &&
                 j.user === props.user &&
-                j.state !== "invited",
+                j.state !== "invited"
         );
         if (myJoin) return myJoin;
 
         return null;
     }, [props.eventsJoined, props.user, eventId]);
 
-    // -------------------- find event from props when state is absent --------------------
+    /* -----------------------------------------------------------
+       FIND EVENT IF NO STATE PASSED
+       ----------------------------------------------------------- */
     const findEventFromProps = () => {
         const src = props?.events;
         if (!src || !eventId) return null;
 
-        const idMatches = (ev) =>
+        const matches = (ev) =>
             String(ev?._id || ev?.id || ev?.eventId) === String(eventId);
 
-        if (Array.isArray(src)) {
-            return src.find(idMatches) || null;
-        }
+        if (Array.isArray(src)) return src.find(matches) || null;
 
         if (typeof src === "object") {
-            // direct map lookup
             if (src[eventId]) return src[eventId];
-
             const values = Object.values(src);
-            const byId = values.find(idMatches);
-            if (byId) return byId;
+            return values.find(matches) || null;
         }
 
         return null;
     };
 
-    // final event object used in this page
     const raw = eventFromState || findEventFromProps() || null;
 
-    // Initial viewState (joined / invited / undefined)
+    /* -----------------------------------------------------------
+       FIXED BUTTON LOGIC (mirror AllEvents actionState)
+       ----------------------------------------------------------- */
     const [viewState, setViewState] = useState(() => {
+        if (raw?.actionState != null) return raw.actionState;
         if (joinedRecord?.state) return joinedRecord.state;
         if (raw?.state) return raw.state;
-        return undefined;
+        return undefined; // normal
     });
 
-    console.log("EventPage eventId:", eventId);
-    console.log("EventPage raw event:", raw);
-    console.log("joinRecord:", joinedRecord);
-    console.log("viewState:", viewState);
-
-    // Sync viewState if joinedRecord or raw changes
     useEffect(() => {
-        setViewState(joinedRecord?.state || raw?.state || undefined);
-    }, [joinedRecord, raw, eventId]);
+        if (raw?.actionState != null) {
+            setViewState(raw.actionState);
+            return;
+        }
+        if (joinedRecord?.state) {
+            setViewState(joinedRecord.state);
+            return;
+        }
+        if (raw?.state) {
+            setViewState(raw.state);
+            return;
+        }
+        setViewState(undefined);
+    }, [raw, joinedRecord, eventId]);
 
-    // -------------------- basic event display fields --------------------
+    /* -----------------------------------------------------------
+       BASIC DISPLAY FIELDS
+       ----------------------------------------------------------- */
     const [title] = useState(raw?.title || "Event");
     const [locationName] = useState(raw?.location || "Campus");
     const [description] = useState(
-        raw?.description ||
-        "Join us for an amazing event. (Demo description)",
+        raw?.description || "Join us for an amazing event. (Demo description)"
     );
     const [cover] = useState(
-        `/src/assets/images/event/${raw?.img || "graduation.png"}`,
+        `/src/assets/images/event/${raw?.img || "graduation.png"}`
     );
     const [organizerName] = useState(raw?.organizer || "Organizer");
 
-    // TODO: later replace with real event times from DB
+    // TODO replace with real times from DB
     const [start] = useState("2025-11-21T06:30:00Z");
     const [end] = useState("2025-11-21T12:30:00Z");
     const [capacity] = useState(50);
@@ -132,7 +150,7 @@ export default function EventPage(props) {
     return (
         <div className="bg-white text-[#1A1A1A] min-h-screen">
             <main className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8 py-8">
-                {/* Back */}
+                {/* Back button */}
                 <button
                     onClick={() => navigate(-1)}
                     className="text-[var(--primary-color)] hover:underline font-[Gilroy-Medium] text-[16px]"
@@ -151,17 +169,18 @@ export default function EventPage(props) {
                         </p>
                     </div>
 
+                    {/* The correct buttons NOW appear because type + category are correct */}
                     <EventActions
                         user={props.user}
                         type={type}
                         category={category}
-                        state={viewState} // current state: joined / invited / ...
-                        event={raw}       // pass the real event object
+                        state={viewState}
+                        event={raw}
                         onStateChange={setViewState}
                     />
                 </div>
 
-                {/* Cover image */}
+                {/* Image */}
                 <figure className="mt-6 overflow-hidden rounded-xl shadow-sm">
                     <img
                         className="h-auto w-full object-cover"
@@ -187,9 +206,7 @@ export default function EventPage(props) {
                         </span>
                         <div className="flex gap-8 text-slate-500">
                             <span>{attendees} Seats taken</span>
-                            <span>
-                                {Math.max(0, capacity - attendees)} Seats left
-                            </span>
+                            <span>{Math.max(0, capacity - attendees)} Seats left</span>
                         </div>
                         <a
                             href={locationUrl}
