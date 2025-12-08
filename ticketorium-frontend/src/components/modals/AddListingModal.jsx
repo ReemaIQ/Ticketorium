@@ -71,39 +71,39 @@ export default function AddListingModal({
                     {/* Ticket List */}
                     <div className="flex flex-col items-center gap-5 p-3 pb-10">
                         <div className="h-72 overflow-y-auto pr-1 space-y-3 w-full">
-                           {items.map((ticket) => {
+                            {items.map((ticket) => {
                                 const id = String(ticket._id || ticket.id);
 
                                 // Build the MiniBidding props from the ticket
-                                    const bidding = {
-                                        id,
+                                const bidding = {
+                                    id,
                                     title: ticket.event?.title || "Graduation Event",
                                     description: ticket.seat
-                                    ? `Seat: ${ticket.seat}`
-                                       : ticket.description || "Seat info not available",
-                                   img:
-                                    ticket.imageUrl ||
-                                   "/src/assets/images/event/graduation.png",
-                                   date: ticket.event?.startAt
-                                    ? new Date(ticket.event.startAt).toLocaleDateString()
+                                        ? `Seat: ${ticket.seat}`
+                                        : ticket.description || "Seat info not available",
+                                    img:
+                                        ticket.imageUrl ||
+                                        "/src/assets/images/event/graduation.png",
+                                    date: ticket.event?.startAt
+                                        ? new Date(ticket.event.startAt).toLocaleDateString()
                                         : "",
-                               };
+                                };
 
                                 return (
                                     <div
                                         key={id}
-                                    onClick={() => setSelectedId(id)}
-                                    className={`cursor-pointer rounded-xl transition border-2 ${
+                                        onClick={() => setSelectedId(id)}
+                                        className={`cursor-pointer rounded-xl transition border-2 ${
                                             selectedId === id
                                                 ? "border-[var(--primary-color)]"
-                                                    : "border-transparent"
-                                            }`}
-                                >
-                                    <MiniBidding bidding={bidding} />
-                                </div>
-                            );
-                          })}
-                       </div>
+                                                : "border-transparent"
+                                        }`}
+                                    >
+                                        <MiniBidding bidding={bidding} />
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* Bottom form */}

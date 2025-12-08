@@ -68,7 +68,7 @@ export const eventsSeed = [
     },
     {
         key: 7,
-        universityCode: "Harvard",
+        universityCode: "KFUPM",
         img: "graduation.png",
         title: "2025 Graduation Ceremony",
         startAt: "2025-11-21T09:30:00.000Z",

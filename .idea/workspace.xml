@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="bug in event page (buttons) + edit event + new listing??">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="last fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/InvitesReceivedComponents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/InvitesReceivedComponents.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,14 +193,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00030" summary="updated system-admin links">
-      <option name="closed" value="true" />
-      <created>1763508892736</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508892736</updated>
     </task>
     <task id="LOCAL-00031" summary="changed filter to sort">
       <option name="closed" value="true" />
@@ -582,7 +578,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765179877654</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="invites fix layout">
+      <option name="closed" value="true" />
+      <created>1765180537049</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1765180537049</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -612,8 +616,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="trying to fix the filter and search algorithms" />
-    <MESSAGE value="final edits" />
     <MESSAGE value="final edits: fixed sorting by date" />
     <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
@@ -637,7 +639,9 @@
     <MESSAGE value="Link the event list cards to the event detailed page" />
     <MESSAGE value="Fixed tickets for 100000 time!" />
     <MESSAGE value="bug in event page (buttons) + edit event + new listing??" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug in event page (buttons) + edit event + new listing??" />
+    <MESSAGE value="invites fix layout" />
+    <MESSAGE value="last fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="last fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

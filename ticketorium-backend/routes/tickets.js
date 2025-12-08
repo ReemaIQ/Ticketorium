@@ -3,6 +3,10 @@
 import express from "express";
 import crypto from "crypto";
 
+import { Listing } from "../models/Listing.js"
+import { Ticket } from "../models/Ticket.js";
+import { User } from "../models/User.js";
+
 const router = express.Router();
 
 /**
@@ -265,5 +269,61 @@ router.get("/verify", (req, res) => {
         },
     });
 });
+
+// GET /api/tickets/unlisted
+// Query param: userHandle
+router.get("/unlisted", async (req, res) => {
+    try {
+        const userHandle = req.query.userHandle;
+        if (!userHandle) {
+            return res.status(400).json({ error: "userHandle required" });
+        }
+
+        // Find User by handle to get their Mongo _id
+        const user = await User.findOne({ handle: userHandle });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const userId = user._id;
+
+        // 1) Find tickets owned by user (using ObjectId) and populate event info
+        const tickets = await Ticket.find({
+            user: userId,
+            status: "active",
+        })
+            .populate("event", "title startAt") // <-- pull in title + date
+            .lean();
+
+        // 2) Graduation-only: keep only tickets whose event title contains "graduation"
+        const graduationTickets = tickets.filter((t) => {
+            const title = t.event?.title || "";
+            return /graduation/i.test(title); // case-insensitive match
+        });
+
+        // 3) Find tickets already listed (using ObjectId for seller)
+        const listedTickets = await Listing.find({
+            seller: userId,
+            status: "active",
+        })
+            .select("ticket")
+            .lean();
+
+        const listedTicketIds = new Set(
+            listedTickets.map((l) => l.ticket.toString())
+        );
+
+        // 4) Filter out tickets already listed, only graduation tickets
+        const unlistedTickets = graduationTickets.filter(
+            (t) => !listedTicketIds.has(t._id.toString())
+        );
+
+        res.json(unlistedTickets);
+    } catch (err) {
+        console.error("GET /api/tickets/unlisted error:", err);
+        res.status(500).json({ error: "Failed to fetch unlisted tickets" });
+    }
+});
+
 
 export default router;
