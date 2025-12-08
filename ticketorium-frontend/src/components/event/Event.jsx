@@ -11,18 +11,20 @@ export default function Event({
                                   user,
                                   type,
                                   setOrganizerViewing,
-                                  // NEW: base path for the detailed page; default stays "/event"
+                                  // base path for the detailed page; default stays "/event"
                                   detailBasePath = "/event",
                               }) {
-    const id = event.id;
-    const title = event.title;
-    const img = event.img;
-    const date = event.date;
-    const organizer = event.organizer;
-    const price = event.price;
-    const inviter = event.inviter;
-    const state = event.actionState;
-    const expired = event.isEnded;
+    // Robust id: supports backend (_id), dummy (id), or eventId
+    const id = event?.id || event?._id || event?.eventId;
+
+    const title = event?.title;
+    const img = event?.img;
+    const date = event?.date;
+    const organizer = event?.organizer;
+    const price = event?.price;
+    const inviter = event?.inviter;
+    const state = event?.actionState;
+    const expired = event?.isEnded;
 
     const category = getUserCategory(type);
     const [expanded, setExpanded] = useState(false);
@@ -55,8 +57,8 @@ export default function Event({
 
     const daysLeftText = getRelativeTime(date);
 
-    // Build href using the base path
-    const detailHref = `${detailBasePath}/${id}`;
+    // Build href using the base path + id
+    const detailHref = id ? `${detailBasePath}/${id}` : "#";
 
     return (
         <div className="relative">
@@ -73,7 +75,11 @@ export default function Event({
                 <div className="md:w-1/3">
                     <NavLink
                         to={detailHref}
+                        state={{ event }}                 // pass full event
                         aria-label={`Open details for ${title}`}
+                        onClick={(e) => {
+                            if (!id) e.preventDefault();
+                        }}
                     >
                         <img
                             src={`/src/assets/images/event/${img}`}
@@ -105,7 +111,14 @@ export default function Event({
                         {/* Title row + mobile expand toggle */}
                         <div className="flex items-start justify-between gap-2">
                             {/* Title (click to details) */}
-                            <NavLink to={detailHref} className="block flex-1">
+                            <NavLink
+                                to={detailHref}
+                                state={{ event }}         // pass full event
+                                className="block flex-1"
+                                onClick={(e) => {
+                                    if (!id) e.preventDefault();
+                                }}
+                            >
                                 <h2 className="font-[Gilroy-Black] text-[#1A1A1A] text-[28px] leading-tight my-1 hover:underline">
                                     {title}
                                 </h2>
@@ -151,7 +164,6 @@ export default function Event({
                             type={type}
                             category={category}
                             state={state}
-                            eventId={id}
                             event={event}
                         />
 
@@ -175,7 +187,9 @@ export default function Event({
                                 <span
                                     className="cursor-pointer"
                                     onClick={() => {
-                                        setOrganizerViewing(organizer);
+                                        if (setOrganizerViewing) {
+                                            setOrganizerViewing(organizer);
+                                        }
                                     }}
                                 >
                                     {organizer}

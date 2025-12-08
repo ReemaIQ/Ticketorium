@@ -134,7 +134,7 @@ export default function EventList({
                         user={user}
                         type={userType}
                         setOrganizerViewing={setOrganizerViewing}
-                        detailBasePath={detailBasePath} // 🔹 forward to Event
+                        detailBasePath={detailBasePath} // forward to Event
                     />
                 );
             })}

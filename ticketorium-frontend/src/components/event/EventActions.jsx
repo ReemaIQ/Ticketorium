@@ -166,7 +166,9 @@ export default function EventActions({
 
             // safety fallback
             case "View":
-                if (eventId) navigate(`/event/${eventId}`);
+                if (eventId) {
+                    navigate(`/event/${eventId}`, { state: { event: passedEvent } });
+                }
                 break;
 
             default:
@@ -209,7 +211,6 @@ export default function EventActions({
 
                             // CARD / LIST FALLBACK:
                             if (
-                                // Checks if `event` is NOT fully populated (e.g., called from a partial list item)
                                 !event &&
                                 eventId &&
                                 (label === "View" ||
@@ -217,9 +218,10 @@ export default function EventActions({
                                     label === "Pay & Join" ||
                                     label === "Verify Tickets")
                             ) {
-                                navigate(`/event/${eventId}`);
+                                navigate(`/event/${eventId}`, { state: { event: passedEvent } });
                                 return;
                             }
+
 
                             // Default internal handling
                             handleAction(label);

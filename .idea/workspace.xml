@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="ANALYTICS UNDERPROCESS">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="free event">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/Event.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/EventActions.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Event.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,14 +194,6 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-    </task>
-    <task id="LOCAL-00026" summary="polishing event responsiveness">
-      <option name="closed" value="true" />
-      <created>1763482083746</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1763482083746</updated>
     </task>
     <task id="LOCAL-00027" summary="fixed routes after reorganizing">
       <option name="closed" value="true" />
@@ -582,7 +579,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765164338037</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="free event">
+      <option name="closed" value="true" />
+      <created>1765164932484</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1765164932484</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -612,7 +617,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Separated the modals into their own components + reconnected the Seating Component + fixed some errors" />
     <MESSAGE value="Modularize the Code + README.md" />
     <MESSAGE value="Pass Price to Checkout.jsx" />
     <MESSAGE value="integrating lena's work" />
@@ -637,7 +641,8 @@
     <MESSAGE value="Before Deployment" />
     <MESSAGE value="USER HOME PAGE FIXED! : UPCOMING EVENTS + MY UPCOMING EVENTS + INVITATIONS RECEIVED" />
     <MESSAGE value="ANALYTICS UNDERPROCESS" />
-    <option name="LAST_COMMIT_MESSAGE" value="ANALYTICS UNDERPROCESS" />
+    <MESSAGE value="free event" />
+    <option name="LAST_COMMIT_MESSAGE" value="free event" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

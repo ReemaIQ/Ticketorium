@@ -1,12 +1,18 @@
+// ticketorium-frontend/src/pages/Event.jsx
+
 import React, { useMemo, useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import EventActions from "../components/event/EventActions.jsx";
 import { getUserCategory } from "../components/event/getUserCategory.js";
 
 export default function EventPage(props) {
     const navigate = useNavigate();
-    const { eventId } = useParams(); // string like "4"
+    const { eventId } = useParams(); // from URL
+    const location = useLocation();
+
+    // If we navigated from Event card, this will be the full event
+    const eventFromState = location.state?.event || null;
 
     // user type: student / visitor / organizer / admin / system-admin
     const type = useMemo(() => {
@@ -20,68 +26,92 @@ export default function EventPage(props) {
     // map type to EventActions category (attendee / organizer / admin)
     const category = getUserCategory(type);
 
-    // joined record for THIS user and THIS event (if any)
+    // -------------------- joinedRecord (same logic, string-safe) --------------------
     const joinedRecord = useMemo(() => {
         if (!props.eventsJoined || !props.user || !eventId) return null;
 
-        const numericEventId = Number(eventId);
         const records = Object.values(props.eventsJoined);
 
-        // 1. Check for Incoming Invites (Highest Priority for display)
-        // (I am the invitee, and the state is 'invited')
-        const incomingInvite = records.find(j =>
-            Number(j.eventId) === numericEventId &&
-            j.invitee === props.user &&
-            j.state === "invited"
+        const sameEvent = (j) => String(j.eventId) === String(eventId);
+
+        // 1. Incoming invites
+        const incomingInvite = records.find(
+            (j) =>
+                sameEvent(j) &&
+                j.invitee === props.user &&
+                j.state === "invited",
         );
         if (incomingInvite) return incomingInvite;
 
-        // 2. Check for Active Interactions (Joined, Waitlisted, etc.)
-        // (I am the owner 'user', BUT exclude state 'invited' because that means I sent an invite)
-        const myJoin = records.find(j =>
-            Number(j.eventId) === numericEventId &&
-            j.user === props.user &&
-            j.state !== "invited"
+        // 2. My joined / waitlist (but not invites I sent)
+        const myJoin = records.find(
+            (j) =>
+                sameEvent(j) &&
+                j.user === props.user &&
+                j.state !== "invited",
         );
         if (myJoin) return myJoin;
 
         return null;
     }, [props.eventsJoined, props.user, eventId]);
 
-    // event info from dummyEvents
-    const raw = props?.events?.[eventId] || null;
+    // -------------------- find event from props when state is absent --------------------
+    const findEventFromProps = () => {
+        const src = props?.events;
+        if (!src || !eventId) return null;
 
-    // Initial state:
-    //  - if user has a VALID join record (calculated above) → use its state
-    //  - else, fall back to any static state on the event object (raw.state)
-    //  - else, return undefined
+        const idMatches = (ev) =>
+            String(ev?._id || ev?.id || ev?.eventId) === String(eventId);
+
+        if (Array.isArray(src)) {
+            return src.find(idMatches) || null;
+        }
+
+        if (typeof src === "object") {
+            // direct map lookup
+            if (src[eventId]) return src[eventId];
+
+            const values = Object.values(src);
+            const byId = values.find(idMatches);
+            if (byId) return byId;
+        }
+
+        return null;
+    };
+
+    // final event object used in this page
+    const raw = eventFromState || findEventFromProps() || null;
+
+    // Initial viewState (joined / invited / undefined)
     const [viewState, setViewState] = useState(() => {
         if (joinedRecord?.state) return joinedRecord.state;
         if (raw?.state) return raw.state;
         return undefined;
     });
 
+    console.log("EventPage eventId:", eventId);
+    console.log("EventPage raw event:", raw);
     console.log("joinRecord:", joinedRecord);
     console.log("viewState:", viewState);
 
-    // If the event or joinRecord changes (e.g. user switches), sync state again
+    // Sync viewState if joinedRecord or raw changes
     useEffect(() => {
         setViewState(joinedRecord?.state || raw?.state || undefined);
     }, [joinedRecord, raw, eventId]);
 
-    // basic event display fields
+    // -------------------- basic event display fields --------------------
     const [title] = useState(raw?.title || "Event");
-    const [location] = useState(raw?.location || "Campus");
+    const [locationName] = useState(raw?.location || "Campus");
     const [description] = useState(
         raw?.description ||
-        "Join us for an amazing event. (Demo description)"
+        "Join us for an amazing event. (Demo description)",
     );
     const [cover] = useState(
-        `/src/assets/images/event/${raw?.img || "graduation.png"}`
+        `/src/assets/images/event/${raw?.img || "graduation.png"}`,
     );
     const [organizerName] = useState(raw?.organizer || "Organizer");
 
-    // TODO: later replace these static times with real event times from DB
+    // TODO: later replace with real event times from DB
     const [start] = useState("2025-11-21T06:30:00Z");
     const [end] = useState("2025-11-21T12:30:00Z");
     const [capacity] = useState(50);
@@ -125,10 +155,9 @@ export default function EventPage(props) {
                         user={props.user}
                         type={type}
                         category={category}
-                        state={viewState}             // current state: joined / invited / null / ...
-                        eventId={eventId}
-                        event={raw}                   // the actual event object
-                        onStateChange={setViewState}  // let EventActions update our state
+                        state={viewState} // current state: joined / invited / ...
+                        event={raw}       // pass the real event object
+                        onStateChange={setViewState}
                     />
                 </div>
 
@@ -166,7 +195,7 @@ export default function EventPage(props) {
                             href={locationUrl}
                             className="text-[var(--primary-color)] font-medium hover:underline"
                         >
-                            Location: {location}
+                            Location: {locationName}
                         </a>
                     </div>
                 </div>
