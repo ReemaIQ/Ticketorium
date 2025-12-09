@@ -173,7 +173,7 @@ export default function Disputes(props) {
                     My Disputes
                 </h1>
 
-                {(props.user.type !== "admin" && props.user.type !== "system-admin") && (
+                {(props.user.role !== "admin" && props.user.role !== "system-admin") && (
                     <div className="flex w-full justify-end">
                         <button
                             type="button"
