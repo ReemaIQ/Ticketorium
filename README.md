@@ -2,7 +2,7 @@
 ## _Your Seat to Every Milestone_
 
 Ticketorium is a **full-stack academic event ticketing platform** designed to streamline the end-to-end ticketing process for universities and their communities.  
-It supports complex academic event workflows—from **graduations** to **competitions**, **seminars**, and **campus experiences**—while ensuring fairness, security, and accessibility.
+It supports complex academic event workflows- from **graduations** to **competitions**, **seminars**, and **campus experiences**- while ensuring fairness, security, and accessibility.
 
 Built for a multi-role ecosystem (System Admins, University Admins, Organizers, Students, Visitors), Ticketorium delivers a comprehensive digital experience for **event creation**, **registration**, **seating**, **payments**, **QR ticket validation**, **resale/bidding**, **disputes**, and **analytics**.
 
