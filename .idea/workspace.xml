@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="last fixes">
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/README.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,12 +35,12 @@
     &quot;assignee&quot;: &quot;LenaAshqar&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ReemaIQ/Ticketorium.git",
-    "accountId": "7ed07325-3c85-47e4-9274-950836a0d4f8"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
+    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -189,15 +188,8 @@
       <workItem from="1764780458324" duration="36000" />
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
-      <workItem from="1765305279922" duration="832000" />
-    </task>
-    <task id="LOCAL-00032" summary="made manage users page">
-      <option name="closed" value="true" />
-      <created>1763508923426</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508923426</updated>
+      <workItem from="1765305279922" duration="1461000" />
+      <workItem from="1765311342387" duration="661000" />
     </task>
     <task id="LOCAL-00033" summary="made section title font smaller">
       <option name="closed" value="true" />
@@ -583,7 +575,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765182746798</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="README.md">
+      <option name="closed" value="true" />
+      <created>1765306124239</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1765306124239</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -613,7 +613,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="final edits: fixed sorting by date" />
     <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
     <MESSAGE value="editing data" />
@@ -638,7 +637,8 @@
     <MESSAGE value="bug in event page (buttons) + edit event + new listing??" />
     <MESSAGE value="invites fix layout" />
     <MESSAGE value="last fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="last fixes" />
+    <MESSAGE value="README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="README.md" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
