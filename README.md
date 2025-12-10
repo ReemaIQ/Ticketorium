@@ -15,6 +15,12 @@ Connect people to the moments that matter with ease, trust, and confidence.
 
 ---
 
+### Note:
+
+The main branch is configured for deployment and will not work when trying to run locally. To run this project locally please clone the demo branch.
+
+---
+
 ## 🧪 Usage & Feature Guide
 
 Below are example flows for each type of user in the demo setup.
