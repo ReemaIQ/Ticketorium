@@ -8,6 +8,11 @@ Built for a multi-role ecosystem (System Admins, University Admins, Organizers, 
 
 ---
 
+## Note: 
+### The main branch is configured for deployment. To run this project locally clone the demo branch. 
+
+---
+
 # 🌟 **Overview**
 
 Ticketorium mirrors real academic structures. Each role has a tailored experience:
