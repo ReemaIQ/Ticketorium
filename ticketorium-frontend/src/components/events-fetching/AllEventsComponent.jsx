@@ -1,72 +1,12 @@
-<<<<<<<< HEAD:ticketorium-frontend/src/pages/AllEvents.jsx
-// src/pages/AllEvents.jsx
-import React, { useState, useEffect } from "react";
-import EventList from "../components/event-list/EventList.jsx";
-========
 // ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx
 import { useState, useEffect } from "react";
->>>>>>>> d222754f5aa8038e3dfc259e2e09a795704f2547:ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx
 
 import { fetchEvents } from "../../api/events.js";
 import { fetchUserRegistrations } from "../../api/eventRegistrations.js";
 
-<<<<<<<< HEAD:ticketorium-frontend/src/pages/AllEvents.jsx
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import { far } from "@fortawesome/free-regular-svg-icons";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-
-library.add(fas, far, fab);
-
-import SearchBtn from "../components/search-button/SearchBtn.jsx";
-import WaitlistSuccess from "../components/WaitlistSuccess.jsx";
-
-import { fetchEvents } from "../api/events.js";
-import { fetchUserRegistrations } from "../api/eventRegistrations.js";
 
 /* -------------------- helpers to derive states & names -------------------- */
 
-function getEventsTitle(type, user) {
-    const t = type?.toLowerCase();
-
-    if (t === "admin") {
-        return (
-            <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
-                Manage Events
-            </span>
-        );
-    }
-
-    if (t === "visitor") {
-        return (
-            <span className="font-[Epilogue-Black] text-[60px] xl:text-[60px] text-[#1A1A1A]">
-                Events at{" "}
-                <span className="text-[var(--primary-color)] font-[Gilroy-Medium]">
-                    {"this university"}
-                </span>
-            </span>
-        );
-    }
-
-    if (t === "student") {
-        return (
-            <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
-                Events
-            </span>
-        );
-    }
-
-    return (
-        <span className="font-[Gilroy-Black] text-[60px] text-[#1A1A1A]">
-            Events
-        </span>
-    );
-}
-
-========
-
-/* -------------------- helpers to derive states & names -------------------- */
-
->>>>>>>> d222754f5aa8038e3dfc259e2e09a795704f2547:ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx
 // Map registration.status → EventActions state
 function getActionStateFromRegistration(reg) {
     if (!reg) return undefined;
@@ -408,73 +348,6 @@ export function useMergedEventsForUser({ user, uni }) {
         setVisibleIds(ids);
     };
 
-<<<<<<<< HEAD:ticketorium-frontend/src/pages/AllEvents.jsx
-    return (
-        <>
-            <div
-                id="page-content"
-                className="flex flex-col items-center gap-30 min-h-screen"
-            >
-                <div
-                    id="events-section"
-                    className="flex flex-col w-full max-w-5xl align-middle px-10 xl:px-15 pb-10"
-                >
-                    <div
-                        id="section-header"
-                        className="flex flex-col items-start justify-between max-w-5xl mt-9 mb-3 px-3 gap-4"
-                    >
-                        <div className="flex items-center gap-3">
-                            <h1>{getEventsTitle(userType, user)}</h1>
-                        </div>
-
-                        <div className="flex gap-4 self-start w-full justify-center">
-                            <button className="p-2 bg-[var(--filter-buttons)] rounded-full w-12 h-12 cursor-pointer hover:ring-4 ring-[rgba(0,0,0,0.1)] shrink-0">
-                                <FontAwesomeIcon
-                                    icon={"fa-solid fa-filter"}
-                                    className="text-white"
-                                />
-                            </button>
-                            <SearchBtn
-                                expandable={true}
-                                filterFunc={handleSearch}
-                            />
-                        </div>
-                    </div>
-
-                    {loading && (
-                        <p className="px-3 text-sm text-gray-500">
-                            Loading events…
-                        </p>
-                    )}
-
-                    {error && !loading && (
-                        <p className="px-3 text-sm text-red-600">
-                            {error}
-                        </p>
-                    )}
-
-                    {!loading && !error && (
-                        <EventList
-                            events={eventsMap}            // full merged events with actionState
-                            filterIds={visibleIds}       // which ones to show (after search)
-                            userType={userType}
-                            listType="all-events"
-                            user={user}                  // pass user through to Event
-                            setOrganizerViewing={props.setOrganizerViewing}
-                        />
-                    )}
-                </div>
-            </div>
-
-            {props.waitlistModalOpen && (
-                <WaitlistSuccess
-                    setWaitlistModalOpen={props.setWaitlistModalOpen}
-                    waitlistSuccess={props.waitlistSuccess}
-                />
-            )}
-        </>
-    );
-========
     return {
         eventsMap,
         visibleIds,
@@ -545,6 +418,4 @@ export function useMergedEventsForUserUpcomingOnly({ user, uni }) {
         error,
         handleSearch,
     };
->>>>>>>> d222754f5aa8038e3dfc259e2e09a795704f2547:ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx
 }
-

@@ -99,7 +99,7 @@ function ManageUniversities({ user }) {
         if (!window.confirm('Are you sure you want to delete this university?')) return;
 
         try {
-            const res = await fetch(`/api/universities/${id}`, {
+            const res = await fetch(`${API_BASE}/api/universities/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ function ManageUniversities({ user }) {
                 throw new Error('Failed to delete university');
             }
 
-            // ✅ Update React state so UI reflects removal immediately
+            // Update React state so UI reflects removal immediately
             setUniversities(prev => {
                 const copy = { ...prev };
                 delete copy[id];

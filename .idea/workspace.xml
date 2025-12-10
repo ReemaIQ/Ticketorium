@@ -4,51 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="README.md">
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/models/Counter.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-backend/utils/getNextSequence.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/analytics.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/analytics/EventAnalyticsDashboard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/InvitesReceivedComponents.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/MyEventsComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/EventAnalyticsPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/events.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/universities.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/universities.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/routes/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/events.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/notifications.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-backend/seeds/data/users.data.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/seeds/data/users.data.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/events.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/tickets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/api/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/analytics/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/analytics/Analytics.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/bidding/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/EventActions.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/event/EventActions.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/AddListingModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/UniversityModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/UniversityModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/nav/nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/nav/nav.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/AllEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Analytics.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Bidding.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Disputes.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Event.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/Event.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/ManageUniversities.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/ManageUniversities.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/MyEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/MyEvents.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/SignupLogin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/UserHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/UserHome.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/pages/events/EditEvent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/pages/home/Admin.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/utils/FilterContent.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/utils/FilterContent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/utils/UserHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/utils/UserHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium/src/pages/AllEvents.jsx" afterDir="false" />
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="mereging from demo">
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/events-fetching/AllEventsComponent.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +59,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Merging main",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -175,14 +132,6 @@
       <workItem from="1764788016200" duration="8519000" />
       <workItem from="1765305279922" duration="1461000" />
       <workItem from="1765311342387" duration="661000" />
-    </task>
-    <task id="LOCAL-00033" summary="made section title font smaller">
-      <option name="closed" value="true" />
-      <created>1763508960772</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508960772</updated>
     </task>
     <task id="LOCAL-00034" summary="worked on disputes page">
       <option name="closed" value="true" />
@@ -568,7 +517,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765306124239</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="mereging from demo">
+      <option name="closed" value="true" />
+      <created>1765410120808</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1765410120808</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -598,7 +555,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
     <MESSAGE value="editing data" />
     <MESSAGE value="biddings page connected to backend" />
@@ -623,7 +579,8 @@
     <MESSAGE value="invites fix layout" />
     <MESSAGE value="last fixes" />
     <MESSAGE value="README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="README.md" />
+    <MESSAGE value="mereging from demo" />
+    <option name="LAST_COMMIT_MESSAGE" value="mereging from demo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
