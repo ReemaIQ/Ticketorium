@@ -5,10 +5,10 @@ import MiniBidding from "../bidding/MiniBidding.jsx";
 export default function AddListingModal({
                                             open,
                                             onClose,
-                                            biddings = {}, // [{id, title, desc, img, countdownText, dateText, analytics}]
+                                            biddings = {}, // [array of tickets]
                                             onCreate,      // ({ticketId, deadline, startingBid}) => void
                                         }) {
-    const items = Object.entries(biddings); // [ [id, bidding], ... ]
+    const items = Array.isArray(biddings) ? biddings : [];
     const [selectedId, setSelectedId] = useState(null);
     const [deadline, setDeadline] = useState("");
     const [startingBid, setStartingBid] = useState("");
@@ -71,19 +71,38 @@ export default function AddListingModal({
                     {/* Ticket List */}
                     <div className="flex flex-col items-center gap-5 p-3 pb-10">
                         <div className="h-72 overflow-y-auto pr-1 space-y-3 w-full">
-                            {items.map(([id, bidding]) => (
-                                <div
-                                    key={id}
-                                    onClick={() => setSelectedId(id)}
-                                    className={`cursor-pointer rounded-xl transition border-2 ${
-                                        selectedId === id
-                                            ? "border-[var(--primary-color)]"
-                                            : "border-transparent"
-                                    }`}
-                                >
-                                    <MiniBidding bidding={bidding} />
-                                </div>
-                            ))}
+                            {items.map((ticket) => {
+                                const id = String(ticket._id || ticket.id);
+
+                                // Build the MiniBidding props from the ticket
+                                const bidding = {
+                                    id,
+                                    title: ticket.event?.title || "Graduation Event",
+                                    description: ticket.seat
+                                        ? `Seat: ${ticket.seat}`
+                                        : ticket.description || "Seat info not available",
+                                    img:
+                                        ticket.imageUrl ||
+                                        "/src/assets/images/event/graduation.png",
+                                    date: ticket.event?.startAt
+                                        ? new Date(ticket.event.startAt).toLocaleDateString()
+                                        : "",
+                                };
+
+                                return (
+                                    <div
+                                        key={id}
+                                        onClick={() => setSelectedId(id)}
+                                        className={`cursor-pointer rounded-xl transition border-2 ${
+                                            selectedId === id
+                                                ? "border-[var(--primary-color)]"
+                                                : "border-transparent"
+                                        }`}
+                                    >
+                                        <MiniBidding bidding={bidding} />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 

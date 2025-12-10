@@ -186,13 +186,5 @@ export const notificationTemplatesSeed = [
             "Your event {{eventName}} has ended. Review attendance or feedback.",
         roles: ["organizer"],
         channels: { badge: false, inApp: true, email: false },
-    },
-    {
-        key: "organizer_role_granted",
-        category: "account",
-        titleTemplate: "Organizer role granted",
-        bodyTemplate: "You have been granted organizer privileges.",
-        roles: ["organizer"],
-        channels: { badge: true, inApp: true, email: false },
-    },
+    }
 ];

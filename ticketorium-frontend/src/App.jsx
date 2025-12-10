@@ -22,12 +22,15 @@ import AboutOrganizer from "./pages/AboutOrganizer.jsx";
 import CreateEvent from "./pages/events/CreateEvent.jsx";
 import EditEvent from "./pages/events/EditEvent.jsx";
 import Analytics from "./pages/Analytics.jsx";
+import EventAnalyticsPage from "./pages/EventAnalyticsPage.jsx";
 
 import Disputes from "./pages/Disputes.jsx";
 import ManageUsers from "./pages/ManageUsers.jsx";
 import ManageUniversities from "./pages/ManageUniversities.jsx";
 import UniversitySelection from "./pages/UniversitySelection.jsx";
 import SystemPolicies from "./pages/SystemPolicies.jsx";
+
+// import ThemeProvider from "./components/theme/ThemeProvider.jsx";
 
 import { searchContentHelper } from "../utils/SearchHelpers.js";
 import { filterContentHelper } from "../utils/FilterHelpers.js";
@@ -77,6 +80,7 @@ function App() {
     const [finishedPart1SignUp, setFinishedPart1SignUp] = useState(false);
     const [part1Data, setPart1Data] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [url, setUrl] = useState(true); // still here in case you use it later
 
     const universities = useRef({});
     const events = useRef({});
@@ -106,6 +110,24 @@ function App() {
     const [lastName, setLastName] = useState(null);
     const [userId, setUserId] = useState(null);
     const [userObj, setUserObj] = useState(null);
+
+    const refreshNeededData = async () => {
+        console.log("Flute 1");
+        await refreshUserData();
+        console.log("Flute role", role);
+        console.log("Flute uni", university);
+        if (university) {
+            // if the user has a uni assigned to him, then fetch the data of that uni
+            await refreshEventsData();
+        } else if (role === "visitor" || role === "system-admin") {
+            const selectedUni = localStorage.getItem("university");
+            if (selectedUni && selectedUni !== university) {
+                setUniversity(localStorage.getItem("university"));
+                console.log("CARROTS");
+            }
+            navigate("/university-selection");
+        }
+    };
 
     const refreshUserData = async () => {
         try {
@@ -236,28 +258,6 @@ function App() {
             console.error("refreshUnisData() error:", err);
         }
     };
-
-    const refreshNeededData = async () => {
-        try {
-            console.log("Starting refreshNeededData()");
-
-            await refreshUserData();
-
-            console.log("Finished user refresh. Role:", role, "University:", university);
-
-            if (university) {
-                await refreshEventsData();
-            } else if (role === "visitor" || role === "system-admin") {
-                console.log("→ Redirecting visitor/system-admin to university selection");
-                navigate("/university-selection");
-            }
-
-            console.log("Completed refreshNeededData()");
-        } catch (err) {
-            console.error("refreshNeededData() error:", err);
-        }
-    };
-
     // SHAYMA: BACKEND - DO NOT REMOVE IN MERGING - END
 
     useEffect(() => {
@@ -269,6 +269,7 @@ function App() {
 
     // ---------------- LOCAL STORAGE HYDRATION ----------------
 
+    // SHAYMA: CONFLICT-RESOLVING-TIP: This entire useEffect, replace it with what I have here (ALL OF IT)
     useEffect(() => {
         const effectCall = async () => {
             console.log("App mounted");
@@ -280,6 +281,16 @@ function App() {
             } else {
                 console.log("No user logged in");
                 setIsLoading(false);
+                // setUsername(null);
+                // setGender(null);
+                // setRole(null);
+                // setUniversity(null);
+                // setDateOfBirth(null);
+                // setEmail(null);
+                // setPhoneNumber(null);
+                // setFirstName(null);
+                // setLastName(null);
+                // navigate("/home"); // main home page of non-logged in users
             }
         };
 
@@ -310,6 +321,7 @@ function App() {
                 setUserObj(null);
 
                 const rootStyle = document.querySelector(":root").style;
+                // console.log(rootStyle)
                 rootStyle.setProperty("--secondary-color", "#1F4C76");
                 rootStyle.setProperty("--primary-color", "#1a1a1a");
                 rootStyle.setProperty("--accent-color", "#FFDF4F");
@@ -331,6 +343,7 @@ function App() {
             if (token) {
                 if (university) {
                     const rootStyle = document.querySelector(":root").style;
+                    // console.log(rootStyle)
                     rootStyle.setProperty(
                         "--secondary-color",
                         university["themeColors"]["secondaryColor"]
@@ -369,6 +382,7 @@ function App() {
                     );
                 }
 
+                console.log("tomato", university);
                 await refreshEventsData();
             }
         };
@@ -377,9 +391,13 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [university]);
 
+    // a safe current user reference (prevents crashes)
+    const currentUser = username;
+
     // ---------------- HELPERS (WRAPPERS) ----------------
 
-    const assignUni = (uni) => assignUniHelper(token, setUniversity, uni);
+    const assignUni = (universityVal) =>
+        assignUniHelper(token, setUniversity, universityVal);
 
     // generic filter/search wrapper used by children
     const filterContent = (
@@ -407,7 +425,11 @@ function App() {
             );
         }
 
-        console.warn("[App.filterContent] Unknown typeOfFilter:", typeOfFilter, searchFor);
+        console.warn(
+            "[App.filterContent] Unknown typeOfFilter:",
+            typeOfFilter,
+            searchFor
+        );
     };
 
     // ---------------- ROUTES ----------------
@@ -424,7 +446,7 @@ function App() {
                     notifications={dummyNotifications.current}
                     user={userObj}
                     firstName={firstName}
-                    hasUniversity={!!university}
+                    hasUniversity={university ? true : false}
                 />
 
                 {isLoading && <></>}
@@ -447,7 +469,7 @@ function App() {
                                         setIsPurchasing={setIsPurchasing}
                                         filterContent={filterContent}
                                         uni={university}
-                                        user={username}
+                                        user={userObj}
                                         firstName={firstName}
                                         role={role}
                                         users={[]}
@@ -467,7 +489,10 @@ function App() {
                             path="/log-in"
                             element={
                                 <RequireNoAuth token={token}>
-                                    <SignupLogin option={"log-in"} setToken={setToken} />
+                                    <SignupLogin
+                                        option={"log-in"}
+                                        setToken={setToken}
+                                    />
                                 </RequireNoAuth>
                             }
                         />
@@ -520,8 +545,7 @@ function App() {
                                         users={[]}
                                         events={events.current}
                                         eventsJoined={eventsJoined.current}
-                                        // use actual university object
-                                        uni={university ?? null}
+                                        uni={university}
                                     />
                                 </RequireAuth>
                             }
@@ -564,15 +588,45 @@ function App() {
                         {/* BIDDING */}
                         <Route
                             path="/bidding"
-                            element={<Bidding user={userObj} biddings={dummyBids.current} />}
+                            element={
+                                <Bidding
+                                    user={userObj}
+                                    biddings={dummyBids.current}
+                                />
+                            }
                         />
 
                         {/* ORGANIZER PAGES */}
                         <Route
                             path="/analytics"
                             element={
-                                <RequireRole username={userObj} role={role} allowedRoles={["organizer"]}>
-                                    <Analytics />
+                                <RequireRole
+                                    username={userObj}
+                                    role={role}
+                                    allowedRoles={["organizer"]}
+                                >
+                                    <Analytics
+                                        user={userObj}
+                                        uni={university}
+                                        userType={role}
+                                    />
+                                </RequireRole>
+                            }
+                        />
+
+                        <Route
+                            path="/analytics/event/:eventId"
+                            element={
+                                <RequireRole
+                                    username={userObj}
+                                    role={role}
+                                    allowedRoles={["organizer"]}
+                                >
+                                    <EventAnalyticsPage
+                                        user={userObj}
+                                        uni={university}
+                                        userType={role}
+                                    />
                                 </RequireRole>
                             }
                         />
@@ -580,7 +634,11 @@ function App() {
                         <Route
                             path="/create-event"
                             element={
-                                <RequireRole username={userObj} role={role} allowedRoles={["organizer"]}>
+                                <RequireRole
+                                    username={userObj}
+                                    role={role}
+                                    allowedRoles={["organizer"]}
+                                >
                                     <CreateEvent />
                                 </RequireRole>
                             }
@@ -594,7 +652,11 @@ function App() {
                                     role={role}
                                     allowedRoles={["organizer", "admin", "system-admin"]}
                                 >
-                                    <EditEvent user={userObj} users={[]} events={events.current} />
+                                    <EditEvent
+                                        user={userObj}
+                                        users={[]}
+                                        events={events.current}
+                                    />
                                 </RequireRole>
                             }
                         />
@@ -658,7 +720,10 @@ function App() {
                                     role={role}
                                     allowedRoles={["system-admin"]}
                                 >
-                                    <ManageUniversities initialUniversities={universities.current} />
+                                    <ManageUniversities
+                                        user={userObj}
+                                        uni={university}
+                                    />
                                 </RequireRole>
                             }
                         />
@@ -700,9 +765,9 @@ function App() {
                                     allowedRoles={["visitor", "system-admin"]}
                                 >
                                     <UniversitySelection
-                                        filterContent={filterContent}
+                                        filterContent={filterContent} // this is the filter function, btw
                                         universities={universities.current}
-                                        assignUni={assignUni}
+                                        assignUni={assignUni} // also function
                                     />
                                 </RequireRole>
                             }
@@ -719,7 +784,7 @@ function App() {
                                             organizer={organizerViewing}
                                             users={[]}
                                             events={events.current}
-                                            userType={role ?? "empty"}
+                                            userType={currentUser?.type ?? "empty"}
                                         />
                                     ) : (
                                         <Navigate to="/home" />
@@ -745,7 +810,7 @@ function App() {
                     </Routes>
                 )}
 
-                {!isLoading && <Footer type={role ?? "empty"} />}
+                {!isLoading && <Footer type={currentUser?.type ?? "empty"} />}
             </div>
         </>
     );

@@ -1,5 +1,4 @@
-// ticketorium-frontend/ticketorium-frontend-backend/routes/users.js
-
+// ticketorium-backend/routes/users.js
 import express from "express";
 import { User } from "../models/User.js";
 import {loginUser} from "./auth.js";

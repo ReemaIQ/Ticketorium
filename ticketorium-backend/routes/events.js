@@ -91,57 +91,88 @@ router.post("/", upload.single("img"), async (req, res) => {
 });
 
 
-/* GET ALL EVENTS - accepts user object from client (no middleware required) */
+/* GET ALL EVENTS - accepts user object OR university object from client (no middleware required) */
 router.get("/", async (req, res) => {
     try {
-        // First prefer any existing req.user (if present)
+        // 1) Try req.user first (if you ever set it via middleware)
         let user = req.user || null;
+        let universityPayload = null;
 
-        // If not present, try to read user from a custom header 'x-user' (JSON string)
+        // 2) Optionally, get user from 'x-user' header
         if (!user) {
             const userHeader = req.headers["x-user"];
             if (userHeader) {
                 try {
                     user = JSON.parse(userHeader);
                 } catch (err) {
-                    return res.status(400).json({ error: "Invalid x-user header JSON" });
+                    return res
+                        .status(400)
+                        .json({ error: "Invalid x-user header JSON" });
                 }
             }
         }
 
-        // If still no user, we can't scope events
-        if (!user) {
-            return res
-                .status(400)
-                .json({ error: "Missing user information. Pass user in 'x-user' header." });
+        // 3) New: try to read explicit university object from 'x-university' header
+        const uniHeader = req.headers["x-university"];
+        if (uniHeader) {
+            try {
+                universityPayload = JSON.parse(uniHeader);
+            } catch (err) {
+                return res
+                    .status(400)
+                    .json({ error: "Invalid x-university header JSON" });
+            }
         }
 
-        // Extract university id from user object.
-        // Acceptable shapes:
-        //  - user.university is a string ObjectId
-        //  - user.university is an object with _id
-        //  - user.universityId
-        let userUniversityId = null;
-        if (user.university) {
-            userUniversityId =
-                typeof user.university === "string"
-                    ? user.university
-                    : user.university._id || null;
-        } else if (user.universityId) {
-            userUniversityId = user.universityId;
-        } else if (user.univ) {
-            userUniversityId = user.univ;
+        // Helper: extract an ObjectId-like string from a user or university-shaped object
+        const extractUniversityId = (src) => {
+            if (!src) return null;
+
+            // Direct id string
+            if (typeof src === "string") return src;
+
+            // src._id
+            if (src._id && typeof src._id === "string") return src._id;
+
+            // src.id
+            if (src.id && typeof src.id === "string") return src.id;
+
+            // src.university (could be string or object)
+            if (src.university) {
+                if (typeof src.university === "string") return src.university;
+                if (
+                    src.university._id &&
+                    typeof src.university._id === "string"
+                )
+                    return src.university._id;
+            }
+
+            // src.universityId
+            if (src.universityId && typeof src.universityId === "string") {
+                return src.universityId;
+            }
+
+            return null;
+        };
+
+        // 4) Decide which source we use for the university ID:
+        //    - Prefer explicit universityPayload (x-university) if provided
+        //    - Otherwise fall back to the user object (req.user / x-user)
+        let universityId = extractUniversityId(universityPayload);
+        if (!universityId) {
+            universityId = extractUniversityId(user);
         }
 
-        if (!userUniversityId) {
-            return res
-                .status(400)
-                .json({ error: "User object missing university id (user.university/_id/universityId)" });
+        if (!universityId) {
+            return res.status(400).json({
+                error:
+                    "Missing university information. Provide a user (x-user) or university (x-university) with a valid id.",
+            });
         }
 
-        // Build filter: always scope to the user's university
+        // 5) Build filter: always scope to the university
         const { state } = req.query;
-        const filter = { university: userUniversityId };
+        const filter = { university: universityId };
         if (state) filter.state = state;
 
         const events = await Event.find(filter)

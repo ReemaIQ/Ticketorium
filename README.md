@@ -1,45 +1,31 @@
-# 🎟️ Ticketorium
-## Your Seat to Every Milestone
+# 🎟️ **Ticketorium**
+## _Your Seat to Every Milestone_
+
+Ticketorium is a **full-stack academic event ticketing platform** designed to streamline the end-to-end ticketing process for universities and their communities.  
+It supports complex academic event workflows- from **graduations** to **competitions**, **seminars**, and **campus experiences**- while ensuring fairness, security, and accessibility.
+
+Built for a multi-role ecosystem (System Admins, University Admins, Organizers, Students, Visitors), Ticketorium delivers a comprehensive digital experience for **event creation**, **registration**, **seating**, **payments**, **QR ticket validation**, **resale/bidding**, **disputes**, and **analytics**.
 
 ---
 
-Ticketorium is a **React + Vite** web application for managing university events, ticketing, bidding, and dispute resolution.  
-It supports multiple user roles and provides a fully interactive event ecosystem with a polished UI and smooth user experience.
+# 🌟 **Overview**
 
----
-
-Ticketorium is a modern, campus-focused event ticketing and seat reservation platform designed to make university events smoother, fairer, and more accessible for everyone. Built for high-demand moments like graduations, ceremonies, and major campus experiences, Ticketorium replaces outdated and stressful ticket distribution with a clean, intuitive, digital-first solution.
-With Ticketorium, students, families, visitors, organizers, and administrators all get a tailored experience. Attendees can browse events, reserve seats, download tickets, join waitlists, and securely resell or transfer tickets within the community. This ensures that no seat is wasted and every opportunity is accessible. Organizers gain powerful tools to configure seating, validate tickets, monitor attendance, and view live event statistics, while administrators manage policies, pricing, user accounts, and event approvals through a simple centralized dashboard.
-By combining efficient ticket management, transparent reselling, and a polished user interface, Ticketorium improves the entire event journey from planning to participation. It provides reliability for organizers, fairness for students, and convenience for every user involved. Ticketorium’s mission is simple:
-Connect people to the moments that matter with ease, trust, and confidence.
-
----
-
-### Note:
-
-The main branch is configured for deployment and will not work when trying to run locally. To run this project locally please clone the demo branch.
-
----
-
-## 🧪 Usage & Feature Guide
-
-Below are example flows for each type of user in the demo setup.
+Ticketorium mirrors real academic structures. Each role has a tailored experience:
 
 ### 👩‍🎓 Students
-
-Typical flows:
 
 - Browse events (e.g. “All Events”, “My Events”)
 - Join free or paid events
 - Join waitlists when events are full
 - Invite other attendees to events
+- List a ticket for bidding
 - Bid on resale tickets
 - Open disputes for ticket / event issues
 - View “My Disputes” and chat with support
 
 ### 🧑‍🤝‍🧑 Visitors
 
-Explore events at a chosen university (e.g. “Events at Harvard”)
+Explore events at a chosen university (e.g. “Events at KFUPM”)
 
 - Join free or paid events
 - Receive event invites from others
@@ -49,9 +35,10 @@ Explore events at a chosen university (e.g. “Events at Harvard”)
 ### 🎤 Event Organizers
 
 - Access organizer-only navigation links (e.g. “Create Event”, “Analytics”)
-- Create and manage events
+- Create, edit, and manage events
 - Open disputes related to their events
 - Monitor sales activity related to their tickets
+- View analytics 
 
 ### 🛡️ Admins
 
@@ -65,19 +52,203 @@ Explore events at a chosen university (e.g. “Events at Harvard”)
 - Same as admins, plus:
 - Can create regular admins and other system admins
 
----
 
-## 🛠️ Tech Stack
-
-- **React (Vite)**
-- **Tailwind CSS**
-- **Lucide React Icons**
-- **Custom Gilroy Font**
-- **Dummy JSON data** for local development
+Ticketorium replaces scattered manual processes with a **centralized**, **reliable**, and **secure** event management system.
 
 ---
 
-## 🚀 Getting Started
+# 🎫 **Core Features**
+
+## 🔐 **Authentication & Role-Based Access Control**
+- Secure JWT auth  
+- Passwords stored with **bcrypt hashing**  
+- Route protection per role  
+- System Admin & University Admin dashboards  
+
+---
+
+## 🏫 **University Lifecycle**
+- System Admins add universities to Ticketorium  
+- University Admins add/manage:
+  - Students
+  - Organizers
+  - University settings
+- Role promotions/demotions  
+- University-wide event visibility  
+
+---
+
+## 🎤 **Event Creation & Management**
+Organizers can:
+
+- Create and publish events  
+- Configure:
+  - Free or paid events  
+  - Seating plans or general admission  
+  - Capacity limits  
+  - Event visibility  
+- Edit event details anytime  
+- View upcoming, active, and past events
+- View general analytics
+- View analytics per event
+
+---
+
+## 💺 **Ticketing System**
+### ✔ Free & Paid Events  
+- Stripe integration for payments  
+- Auto seat assignment (if no seating map)  
+- Registrations stored securely  
+
+### ✔ Seating Plans  
+- Organizers set structured seat maps  
+- Students select seats when enabled  
+
+### ✔ Waitlist  
+- Notifications triggered  
+
+### ✔ Invitations  
+- Students & visitors can invite others  
+- Accept/decline flows  
+
+---
+
+## 🧾 **Ticket Resale, Listings, & Bidding**
+Built especially for **graduation tickets**:
+
+- Users can create resale **listings**  
+- Others can **bid** on available listings  
+- Sellers choose top bids  
+- Fully integrated with event details & user accounts  
+
+---
+
+## 📱 **Ticket Verification**
+Event Organizers can validate tickets via:
+
+- **QR Code Scanning**  
+- **Ticket Code Lookup**  
+
+Ensures secure entry and prevents fraudulent access.
+
+---
+
+## 🔔 **Notifications**
+Real-time notifications for:
+
+- Waitlist promotion  
+- Invite requests  
+- Accepted/declined invites  
+- Bid offers & bid acceptance  
+- Ticket purchased / transferred  
+- System alerts & dispute updates  
+
+---
+
+## 🛟 **Disputes & Support System**
+All users can open disputes regarding:
+
+- Tickets  
+- Payments  
+- Event issues  
+- Resale/bidding conflicts  
+
+Admins handle disputes in a **chat-style interface** with full history and resolution tracking.
+
+---
+
+# 📊 **Organizer Analytics**
+Professional-level dashboards with:
+
+- **Total Events Created**  
+- **Events Happening Soon**  
+- **Total Attendees Across All Events**  
+- **Conversion Rate (Views → Joined)**  
+- Event-level charts for:
+  - Attendance breakdown  
+  - Joined vs Waitlisted vs Cancelled  
+  - Visitor funnel  
+  - Gender distribution  
+  - Age groups  
+  - University distribution  
+
+
+---
+
+# 🛠️ **Tech Stack**
+
+### **Frontend**
+- React + Vite  
+- Tailwind CSS  
+- Lucide Icons  
+- QR Rendering  
+- Modern component architecture  
+
+### **Backend**
+- Node.js + Express  
+- MongoDB + Mongoose  
+- Stripe Payments  
+- JWT Authentication  
+- Role-based authorization  
+- QR utilities  
+- Analytics aggregation  
+
+### **Deployment**
+- **Backend:** Render  
+- **Frontend:** Vercel  
+- Environment variables configured separately per service  
+
+---
+
+# 🗄️ **Architecture Overview**
+
+```
+┌───────────────────────────────────┐
+│            System Admin           │
+│  - Policies, Global Config        │
+│  - Universities                   │
+└───────────────────────────────────┘
+                 │
+                 ▼
+┌───────────────────────────────────┐
+│          University Admin         │
+│ - Students, Organizers, Events    │
+└───────────────────────────────────┘
+                 │
+                 ▼
+┌───────────────────────────────────┐
+│           Event Organizer         │
+│  - Events, Seating, Analytics     │
+│  - Ticket Validation              │
+└───────────────────────────────────┘
+                │
+       ┌────────┴────────┐
+       ▼                 ▼
+┌──────────────┐    ┌───────────────┐
+│   Student    │    │   Visitor     │
+│ Registration │    │ Join Events   │
+│ Bidding      │    │ Bidding       │
+│ Listing      │    │ Disputes      │
+│ Invites      │    │ Invites       │
+│ Disputes     │    └───────────────┘
+└──────────────┘    
+```
+---
+## 🚀 Run The Depolyment
+
+```bash
+# front-end depolyment on Vercel
+https://ticketorium-frontend-417fdu2xi-reemas-projects-8e695f30.vercel.app/
+```
+
+```bash
+# backend depolyment on Render
+https://ticketorium.onrender.com/health
+```
+
+---
+
+## 🚀 Getting Started Locally
 
 ### 1. Clone the Repository
 
@@ -90,15 +261,12 @@ cd Ticketorium
 
 ```bash
 
-# Install dependencies for the root project (if any)
-npm install
-
 # Install backend dependencies
-cd ticketorium-frontend-backend
+cd ticketorium/ticketorium-backend
 npm install
 
 # Install frontend dependencies
-cd ../ticketorium-frontend
+cd ticketorium/ticketorium-frontend
 npm install
 ```
 ### 3. Run the Development Server
@@ -106,17 +274,22 @@ npm install
 ```bash
 
 # From the root directory:
-cd ticketorium-frontend-backend
+cd ticketorium/ticketorium-backend
+
+# run the seeds to update the data
+node seeds/seedAll.js
+
+# run the server
 node server.js
 
-# The backend will typically run on http://localhost:3001
+# The backend will typically run on http://localhost:4000
 ```
 
 #### Start the Frontend
 ```bash
 
 # From the root directory:
-cd ticketorium-frontend
+cd ticketorium/ticketorium-frontend
 
 npm run dev
 # The frontend will typically run on http://localhost:5173
@@ -127,83 +300,43 @@ npm run dev
 ## 📁 Project Structure
 
 ```
-ticketorium/
-│
-├── ticketorium-backend/      ← Node.js backend (Express server)
-│     └── server.js
-│
-├── ticketorium/              ← React (Vite) frontend
-│   ├── src/
-│   │   ├── api/              ← API helper file
-│   │   ├── assets/           ← Images, icons, fonts
-│   │   ├── components/       ← Reusable UI components
-│   │   ├── pages/            ← All page-level screens
-│   │   ├── App.css
-│   │   ├── App.jsx           ← App routing & providers
-│   │   ├── index.css
-│   │   └── main.jsx          ← React root entry
-│   │
-│   └── utils/                ← Shared utilities (formatting, helpers)
-│
-└── README.md                 ← Documentation
+Ticketorium/
+├── .idea/
+├── .vercel/
+├── node_modules/ 
+├── ticketorium-backend/
+│   ├── models/
+│   ├── node_modules/ 
+│   ├── routes/
+│   ├── seeds/
+│   ├── utils/
+│   ├── .env
+│   ├── database.js
+│   ├── index.js
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
+├── ticketorium-frontend/
+│   ├── .vercel/
+│   ├── data/
+│   ├── dist/
+│   ├── node_modules/ 
+│   ├── public/
+│   ├── src/
+│   ├── utils/
+│   ├── .env
+│   ├── .gitignore
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.js
+├── .gitignore
+├── package.json
+├── package-lock.json
+└── README.md
 ```
 
----
-
-## Working with Dummy Data
-
-For local development, the app uses dummy data for:
-- Users and roles (students, visitors, organizers, admins, system admins)
-- Events (states like joined, not-joined, waitlist, invited, etc.)
-- Disputes and chat history
-
-You can:
-- Add or modify user entries to test different roles
-- Change event states to see how the UI reacts
-- Seed disputes with example messages to test the chat interface
-
-### Example: Users
-```bash
-{
-"yo-shayma": {
-"first-name": "Shayma",
-"last-name": "Alarfaj",
-"email": "shayma@gmail.com",
-"type": "visitor",
-"university": "harvard",
-"gender": "female",
-"date-of-birth": "2004-05-01"
-},
-"so-cool": {
-"first-name": "Cool",
-"last-name": "Person",
-"email": "coolest-person@kfupm.edu.sa",
-"type": "admin",
-"university": "kfupm",
-"gender": "male",
-"date-of-birth": "1995-01-01"
-}
-}
-```
-### Example: Disputes
-
-Stored per user:
-```bash
-{
-  "d_1": {
-    "title": "Ticket not received",
-    "subtitle": "I bought a ticket but never received it…",
-    "messages": [
-      {
-        "id": "m_1",
-        "from": "user",
-        "type": "text",
-        "text": "Hello, I need help…"
-      }
-    ]
-  }
-}
-```
 --- 
 ## 👥 Team
 

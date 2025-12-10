@@ -123,7 +123,7 @@ function UniversityModal ({defaultTheme, isOpen, onClose, onSave, initialData, e
 
                                 {/* File Input */}
                                 <label className="block w-full">
-                                    <span className="sr-only">Choose profile photo</span>
+                                    <span className="sr-only">Choose logo photo</span>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -181,7 +181,7 @@ function UniversityModal ({defaultTheme, isOpen, onClose, onSave, initialData, e
                             type="submit"
                             className="px-6 py-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] font-[Gilroy-Medium] cursor-pointer"
                         >
-                            Save University
+                            Save
                         </button>
                     </div>
                 </form>

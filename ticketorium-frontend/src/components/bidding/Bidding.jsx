@@ -203,12 +203,10 @@ export default function Bidding({
 
                     {/* Right */}
                     <div>
-                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">
-                            Bidding Ends:
+                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">Bidding Ends:
                             <span className="text-[#1A1A1A]"> {bidding.date}</span>
                         </p>
-                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">
-                            Highest Bid:
+                        <p className="font-[Gilroy-Medium] text-[var(--primary-color)] text-[18px]">Highest Bid:
                             <span className="text-[#1A1A1A]"> $ {bidding.topBid}</span>
                         </p>
                     </div>

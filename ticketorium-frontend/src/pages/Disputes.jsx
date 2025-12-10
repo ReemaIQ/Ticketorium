@@ -36,13 +36,13 @@ function NewDisputeForm({ onSubmit, onCancel }) {
                 </div>
 
                 <div className="mb-6">
-                    <textarea
-                        rows={8}
-                        value={body}
-                        onChange={(e) => setBody(e.target.value)}
-                        placeholder="Describe your issue"
-                        className="w-full border border-[#E0E0E0] rounded-[10px] px-4 py-3 text-[14px] font-[Gilroy-Medium] outline-none placeholder:text-[#B5B5B5] h-[200px]"
-                    />
+          <textarea
+              rows={8}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="Describe your issue"
+              className="w-full border border-[#E0E0E0] rounded-[10px] px-4 py-3 text-[14px] font-[Gilroy-Medium] outline-none placeholder:text-[#B5B5B5] h-[200px]"
+          />
                 </div>
 
                 <div className="flex justify-end gap-3">
@@ -94,10 +94,7 @@ export default function Disputes(props) {
                 data.forEach((d) => {
                     obj[d._id] = { id: d._id, ...d };
                 });
-                console.log(
-                    "Parent passes user prop to DisputeChat:",
-                    props.user
-                );
+                console.log("Parent passes user prop to DisputeChat:", props.user);
                 setDisputesObj(obj);
             } catch (err) {
                 console.error("Load disputes error", err);
@@ -129,7 +126,7 @@ export default function Disputes(props) {
         }
     }
 
-    // create dispute -> POST /api/disputes
+// create dispute -> POST /api/disputes
     async function handleCreateDispute({ title, body }) {
         try {
             const payload = {
@@ -216,32 +213,30 @@ export default function Disputes(props) {
                     My Disputes
                 </h1>
 
-                {props.user.type !== "admin" &&
-                    props.user.type !== "system-admin" && (
-                        <div className="flex w-full justify-end">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setMode("new");
-                                    setSelectedId(null);
-                                }}
-                                className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
-                            >
-                                <Plus className="w-4 h-4" />
-                                New Dispute
-                            </button>
-                        </div>
-                    )}
+                {(props.user.role !== "admin" && props.user.role !== "system-admin") && (
+                    <div className="flex w-full justify-end">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setMode("new");
+                                setSelectedId(null);
+                            }}
+                            className="flex items-center gap-2 bg-[var(--accent-color)] text-[var(--secondary-color)] rounded-[6px] px-5 py-2.5 text-[14px] font-[Gilroy-Medium] cursor-pointer"
+                        >
+                            <Plus className="w-4 h-4" />
+                            New Dispute
+                        </button>
+                    </div>
+                )}
             </header>
 
             <section
                 className="
-                    flex flex-col md:flex-row
-                    px-4 md:px-8 pb-6 gap-4 md:gap-6
-                    h-[800px] md:h-[700px] overflow-y-hidden
-                "
-            >
-                {/* Left: Dispute list */}
+                        flex flex-col md:flex-row
+                        px-4 md:px-8 pb-6 gap-4 md:gap-6
+                        h-[800px] md:h-[700px] overflow-y-hidden
+                    "
+            >                {/* Left: Dispute list */}
                 <DisputeList
                     disputes={disputesArray}
                     selectedId={selectedId}
@@ -250,6 +245,7 @@ export default function Disputes(props) {
 
                 {/* Right: main area (empty / new / chat) */}
                 <div className="flex-1 flex flex-col md:h-[600px] h-[850px] mt-3 md:mt-0">
+
                     {mode === "empty" && (
                         <div className="flex items-center justify-center text-center text-[#A0A0A0] font-[Gilroy-Medium] text-[14px] md:text-[16px] h-full">
                             Select a chat to start messaging.
@@ -261,14 +257,13 @@ export default function Disputes(props) {
                             username={props.user}
                             onSubmit={handleCreateDispute}
                             onCancel={() =>
-                                selectedDispute
-                                    ? setMode("chat")
-                                    : setMode("empty")
+                                selectedDispute ? setMode("chat") : setMode("empty")
                             }
                         />
                     )}
 
                     {mode === "chat" && selectedDispute && (
+
                         <DisputeChat
                             dispute={selectedDispute}
                             onSendMessage={handleSendMessage}

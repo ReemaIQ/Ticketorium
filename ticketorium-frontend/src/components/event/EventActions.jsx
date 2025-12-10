@@ -35,19 +35,17 @@ const variants = {
 
 export default function EventActions({
                                          event,
-                                         user, // userId
+                                         user, // could be id or full userObj
                                          type,
                                          category,
-                                         state, // This is the event's action state (joined/invited/undefined/waitlist)
+                                         state,
                                          onAction,
                                          onStateChange,
                                      }) {
     const navigate = useNavigate();
     const routerLocation = useLocation();
 
-    // Use event prop to derive details
     const passedEvent = event || {};
-    // eventId is now consistently derived from the full event object
     const eventId = passedEvent.id || passedEvent._id;
 
     const [ticket, setTicket] = useState(null);
@@ -56,7 +54,7 @@ export default function EventActions({
 
     const closeModal = () => setOpenModal("none");
 
-    /* AUTO-OPEN MODALS WHEN COMING FROM REGISTRATION PAGE */
+    /* AUTO-OPEN MODALS WHEN RETURNING FROM REGISTRATION */
     useEffect(() => {
         const navState = routerLocation.state;
         if (!navState) return;
@@ -68,39 +66,51 @@ export default function EventActions({
         }
     }, [routerLocation.state]);
 
+    /* -------------------------
+       FIXED TICKET LOADING LOGIC
+       ------------------------- */
+    function normalizeUserId(u) {
+        if (!u) return "";
+        if (typeof u === "string") return u;
+        if (u._id) return u._id;
+        if (u.id) return u.id;
+        if (u.handle) return u.handle; // for demo fallback
+        return String(u);
+    }
 
-    /**
-     * Load ticket on mount / when eventId or user changes.
-     */
     useEffect(() => {
         if (!user || !eventId) return;
 
         async function syncTicket() {
             try {
-                // 1) Try to load existing ticket
-                const existing = await fetchTicketForEvent({ eventId, user });
+                const userId = normalizeUserId(user);
+
+                // 1) Try loading existing ticket
+                const existing = await fetchTicketForEvent({
+                    eventId,
+                    user: userId,
+                });
 
                 if (existing) {
                     setTicket((prev) => prev || { ...existing, accessibilityNotes: "" });
-                    console.log("Loaded ticket from backend:", existing);
+                    console.log("Loaded ticket:", existing);
                     return;
                 }
 
-                // 2) No ticket found in backend.
-                // If the derived state says user is joined, auto-generate a ticket.
+                // 2) Auto-create ticket if user is joined
                 if (state === "joined") {
                     const created = await createTicket({
                         eventId,
-                        userId: user,
+                        userId,
                         seat: null,
                         price: passedEvent?.price ?? 0,
                     });
 
                     setTicket({ ...created, accessibilityNotes: "" });
-                    console.log("Auto-created ticket for joined user:", created);
+                    console.log("Auto-created ticket:", created);
                 }
             } catch (err) {
-                console.error("Failed to load / auto-create ticket:", err);
+                console.error("Failed to load/create ticket:", err);
             }
         }
 
@@ -108,7 +118,10 @@ export default function EventActions({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [eventId, user, state, passedEvent?.price]);
 
-    // Effective state = what parent passed down (e.g., "joined", "waitlist", undefined)
+    /* -------------------------
+       ACTION BUTTON HANDLER
+       ------------------------- */
+
     const effectiveState = state;
 
     const actions =
@@ -117,10 +130,8 @@ export default function EventActions({
 
     if (!actions) return null;
 
-    // map button label → open correct modal / route
     function handleAction(label) {
         switch (label) {
-            // attend / waitlist
             case "Join":
             case "Pay & Join":
                 setOpenModal("join");
@@ -130,7 +141,6 @@ export default function EventActions({
                 setOpenModal("waitlist");
                 break;
 
-            // ticket & invite
             case "Your Ticket":
                 setOpenModal("ticket");
                 break;
@@ -148,11 +158,8 @@ export default function EventActions({
                 setOpenModal("resign");
                 break;
 
-            // organizer / admin tools
             case "Edit":
-                if (eventId) {
-                    navigate(`/event/${eventId}/edit`);
-                }
+                if (eventId) navigate(`/event/${eventId}/edit`);
                 break;
 
             case "Verify Tickets":
@@ -164,9 +171,10 @@ export default function EventActions({
                 setOpenModal("delete");
                 break;
 
-            // safety fallback
             case "View":
-                if (eventId) navigate(`/event/${eventId}`);
+                if (eventId) {
+                    navigate(`/event/${eventId}`, { state: { event: passedEvent } });
+                }
                 break;
 
             default:
@@ -174,11 +182,14 @@ export default function EventActions({
         }
     }
 
+    /* -------------------------
+       RENDER UI
+       ------------------------- */
+
     return (
         <>
             <div className="flex flex-wrap gap-2">
                 {actions
-                    // Only students can see "Send Invite" / "Offer Ticket"
                     .filter((action) => {
                         if (
                             (action.label === "Send Invite" ||
@@ -189,7 +200,6 @@ export default function EventActions({
                         }
                         return true;
                     })
-
                     .map((action, index) => {
                         const Icon = action.icon;
                         const colorClass = action.color || "";
@@ -199,31 +209,23 @@ export default function EventActions({
                         const isTickets = Icon === Tickets;
 
                         const handleClick = () => {
-                            const label = action.label;
-
-                            // Let parent intercept if it wants
                             if (onAction) {
-                                onAction(label);
+                                onAction(action.label);
                                 return;
                             }
 
-                            // CARD / LIST FALLBACK:
                             if (
-                                // Checks if `event` is NOT fully populated (e.g., called from a partial list item)
                                 !event &&
                                 eventId &&
-                                (label === "View" ||
-                                    label === "Join" ||
-                                    label === "Pay & Join" ||
-                                    label === "Verify Tickets")
+                                ["View", "Join", "Pay & Join", "Verify Tickets"].includes(
+                                    action.label
+                                )
                             ) {
-                                navigate(`/event/${eventId}`);
+                                navigate(`/event/${eventId}`, { state: { event: passedEvent } });
                                 return;
                             }
 
-                            // Default internal handling
-                            handleAction(label);
-                            console.log(`${label} clicked`);
+                            handleAction(action.label);
                         };
 
                         return (
@@ -232,12 +234,8 @@ export default function EventActions({
                                 className={`${baseBtn} ${variantClass} ${colorClass}`}
                                 onClick={handleClick}
                             >
-                                {/* Tickets icon BEFORE text */}
                                 {isTickets && Icon && <Icon size={16} />}
-
                                 {action.label}
-
-                                {/* ArrowRight AFTER text */}
                                 {isArrowRight && Icon && <Icon size={16} />}
                             </button>
                         );
@@ -246,7 +244,6 @@ export default function EventActions({
 
             {/* -------------------------- MODALS -------------------------- */}
 
-            {/* JOIN modal: create ticket + redirect to /registration */}
             <JoinModal
                 isOpen={openModal === "join"}
                 onClose={closeModal}
@@ -254,14 +251,11 @@ export default function EventActions({
                 title={passedEvent.title}
                 price={passedEvent.price}
                 hasSeatingPlan={passedEvent.hasSeatingPlan}
-                userId={user}
+                userId={normalizeUserId(user)}
                 setTicket={setTicket}
-                setViewState={(newState) => {
-                    if (onStateChange) onStateChange(newState);
-                }}
+                setViewState={(newState) => onStateChange?.(newState)}
             />
 
-            {/* INVITE modal */}
             <InviteModal
                 isOpen={openModal === "invite"}
                 onClose={closeModal}
@@ -269,7 +263,6 @@ export default function EventActions({
                 price={passedEvent.price}
             />
 
-            {/* TICKET modal: QR ticket */}
             <TicketModal
                 isOpen={openModal === "ticket"}
                 onClose={closeModal}
@@ -277,14 +270,12 @@ export default function EventActions({
                 title={passedEvent.title}
             />
 
-            {/* VERIFY modal: organizer/admin verifies ticket by code or QR scan */}
             <VerifyTicketsModal
                 isOpen={openModal === "verify"}
                 onClose={closeModal}
                 eventId={eventId}
             />
 
-            {/* RESIGN modal */}
             <ResignModal
                 isOpen={openModal === "resign"}
                 onClose={closeModal}
@@ -292,36 +283,29 @@ export default function EventActions({
                 price={passedEvent.price}
                 onConfirm={async () => {
                     try {
-                        // If there is a ticket, cancel it in backend
                         if (ticket?.id) {
-                            await cancelTicket(ticket.id, user);
-                            console.log("Ticket cancelled on resign:", ticket.id);
+                            await cancelTicket(ticket.id, normalizeUserId(user));
+                            console.log("Ticket cancelled:", ticket.id);
                         }
-
-                        // User is no longer joined
-                        if (onStateChange) onStateChange(undefined);
-
-                        // Clear local ticket
+                        onStateChange?.(undefined);
                         setTicket(null);
                     } catch (err) {
-                        console.error("Failed to resign / cancel ticket:", err);
+                        console.error("Failed to resign:", err);
                     } finally {
                         closeModal();
                     }
                 }}
             />
 
-            {/* Decline modal */}
             <DeclineInviteModal
                 isOpen={openModal === "decline"}
                 onClose={closeModal}
                 onConfirm={() => {
-                    if (onStateChange) onStateChange(undefined);
+                    onStateChange?.(undefined);
                     closeModal();
                 }}
             />
 
-            {/* DELETE modal: demo-only delete (shows banner) */}
             <DeleteEventModal
                 isOpen={openModal === "delete"}
                 onClose={closeModal}

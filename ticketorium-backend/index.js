@@ -1,3 +1,4 @@
+// ticketorium-frontend-backend/index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -31,84 +32,55 @@ import auth from "./routes/auth.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-/* -------- CORS CONFIG (EDITED) -------- */
+// Middlewares
 
-const allowedOrigins = [
-    "http://localhost:5173",                      // Vite dev
-    "http://localhost:4173",                      // (if you ever use preview)
-    "ticketorium-frontend-reemaiq-reemas-projects-8e695f30.vercel.app",           // replace with your real Vercel domain
-];
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 
-// If you prefer to keep it simple for now, you can comment out the function
-// and just use: origin: allowedOrigins
-
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            // Allow non-browser tools / curl / Postman (no origin header)
-            if (!origin) return callback(null, true);
-
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            }
-
-            console.log("CORS blocked for origin:", origin);
-            return callback(new Error("Not allowed by CORS"));
-        },
-        credentials: true,
-    })
-);
-
-// Preflight
-app.options("*", cors());
-
-/* -------------------------------------- */
+app.options("*", cors()); // <= this makes OPTIONS (preflight) succeed
 
 app.use(express.json());
 
 // Serve uploaded images
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static("uploads"));
 
-// Simple health check
-app.get("/health", (_req, res) => {
+// Health check (before DB is fine)
+app.get("/", (_req, res) => {
     res.send("Ticketorium backend is running");
 });
 
-// Stripe checkout example
-app.post("/checkout", async (req, res, next) => {
-    try {
-        const session = await stripe.checkout.sessions.create({
-            line_items: [
-                {
-                    price_data: {
-                        currency: "sar",
-                        product_data: {
-                            name: "Best Event Ever",
-                            description: "Don't miss it",
-                        },
-                        unit_amount: 50 * 100,
+app.post('/checkout', async (req, res) => {
+    console.log("HERE")
+    const session = await stripe.checkout.sessions.create({
+        line_items: [
+            {
+                price_data: {
+                    currency: "sar",
+                    product_data: {
+                        name: "Best Event Ever",
+                        description: "Don't miss it"
                     },
-                    quantity: 1,
+                    unit_amount: 50 * 100
                 },
-            ],
-            mode: "payment",
-            success_url: process.env.BASE_URL + "/complete",
-            cancel_url: process.env.BASE_URL + "/cancel",
-        });
+                quantity: 1
+            }
+        ],
+        mode: 'payment',
+        success_url: process.env.BASE_URL + "/complete",
+        cancel_url: process.env.BASE_URL + "/cancel"
+    })
+    console.log(session)
+    res.json({url: session.url})
+})
 
-        res.json({ url: session.url });
-    } catch (err) {
-        console.error("Stripe error:", err);
-        next(err);
-    }
-});
-
-// ---------- Start server + mount routes ----------
+// Start server inside async function
 async function start() {
     try {
         await connectDB(process.env.MONGO_URL);
 
-        // API routes
+        // Mount routers
         app.use("/api/universities", universitiesRouter);
         app.use("/api/users", usersRouter);
         app.use("/api/events", eventsRouter);
@@ -120,7 +92,7 @@ async function start() {
         app.use("/api/notifications", notificationsRouter);
         app.use("/api/auth", auth);
 
-        // 404 fallback for unknown API routes
+        // 404 fallback
         app.use((req, res) => {
             res.status(404).json({ error: "Not found" });
         });

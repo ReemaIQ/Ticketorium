@@ -5,7 +5,8 @@ import { fetchEventById, updateEvent } from "../../api/events.js";
 
 function EditEventPage({ user }) {
     const navigate = useNavigate();
-    // FIX: match route param name: /event/:eventId/edit
+
+    // FIX: param name must match route: /event/:eventId/edit
     const { eventId } = useParams();
 
     const [event, setEvent] = useState(null);
@@ -34,7 +35,8 @@ function EditEventPage({ user }) {
     // -----------------------------
     useEffect(() => {
         if (!eventId) {
-            console.warn("EditEvent: missing eventId from route params");
+            setError("Missing event id in the URL.");
+            setLoading(false);
             return;
         }
 
@@ -178,8 +180,8 @@ function EditEventPage({ user }) {
 
         try {
             setSaving(true);
-            await updateEvent(event._id, updatePayload);
-            navigate(`/event/${event._id}`, {
+            await updateEvent(event._id || eventId, updatePayload);
+            navigate(`/event/${event._id || eventId}`, {
                 replace: true,
             });
         } catch (err) {
