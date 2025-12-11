@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="README.md">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="payment page edits" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +20,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="main" />
@@ -131,23 +142,8 @@
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
       <workItem from="1765305279922" duration="1461000" />
-      <workItem from="1765311342387" duration="661000" />
-    </task>
-    <task id="LOCAL-00033" summary="made section title font smaller">
-      <option name="closed" value="true" />
-      <created>1763508960772</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508960772</updated>
-    </task>
-    <task id="LOCAL-00034" summary="worked on disputes page">
-      <option name="closed" value="true" />
-      <created>1763513169453</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1763513169453</updated>
+      <workItem from="1765311342387" duration="5903000" />
+      <workItem from="1765412207444" duration="336000" />
     </task>
     <task id="LOCAL-00035" summary="worked on disputes page">
       <option name="closed" value="true" />
@@ -525,7 +521,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765306124239</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="README.md">
+      <option name="closed" value="true" />
+      <created>1765312147583</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1765312147583</updated>
+    </task>
+    <task id="LOCAL-00083" summary="payment page edits">
+      <option name="closed" value="true" />
+      <created>1765412350972</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1765412350972</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -555,7 +567,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="final edits: connected checkout page" />
     <MESSAGE value="favicon added" />
     <MESSAGE value="editing data" />
     <MESSAGE value="biddings page connected to backend" />
@@ -580,7 +591,8 @@
     <MESSAGE value="invites fix layout" />
     <MESSAGE value="last fixes" />
     <MESSAGE value="README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="README.md" />
+    <MESSAGE value="payment page edits" />
+    <option name="LAST_COMMIT_MESSAGE" value="payment page edits" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
