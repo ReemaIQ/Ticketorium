@@ -1,12 +1,19 @@
-// ticketorium-frontend-backend/index.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import Stripe from "stripe";
+import path from "path";
+import { fileURLToPath } from "url";
+
 dotenv.config();
+
+// __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// DB
 import { connectDB } from "./database.js";
 
 // Routers
@@ -24,55 +31,92 @@ import auth from "./routes/auth.js";
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middlewares
+/* -------- CORS CONFIG (EDITED) -------- */
 
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+const allowedOrigins = [
+    "http://localhost:5173",                      // Vite dev
+    "http://localhost:4173",                      // (if you ever use preview)
+    "ticketorium-frontend-reemaiq-reemas-projects-8e695f30.vercel.app",           // replace with your real Vercel domain
+];
 
-app.options("*", cors()); // <= this makes OPTIONS (preflight) succeed
+// If you prefer to keep it simple for now, you can comment out the function
+// and just use: origin: allowedOrigins
+
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            // Allow non-browser tools / curl / Postman (no origin header)
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            console.log("CORS blocked for origin:", origin);
+            return callback(new Error("Not allowed by CORS"));
+        },
+        credentials: true,
+    })
+);
+
+
+// Preflight
+app.options("*", cors());
+
+/* -------------------------------------- */
 
 app.use(express.json());
 
 // Serve uploaded images
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Health check (before DB is fine)
-app.get("/", (_req, res) => {
+// Simple health check
+app.get("/health", (_req, res) => {
     res.send("Ticketorium backend is running");
 });
 
+// Stripe checkout
 app.post('/checkout', async (req, res) => {
+    const authHeader = req.headers.authorization;
+    // just checking a user is logged in
+    if (!authHeader) {
+        return res.status(401).json({ error: "Authorization header missing" });
+    }
     console.log("HERE")
+    try {
+        console.log("REQUEST BODY", req.body)
     const session = await stripe.checkout.sessions.create({
         line_items: [
             {
                 price_data: {
-                    currency: "sar",
+                    currency: "usd",
                     product_data: {
-                        name: "Best Event Ever",
-                        description: "Don't miss it"
+                        name: req.body.eventName,
+                        description: req.body.eventDesc
                     },
-                    unit_amount: 50 * 100
+                    unit_amount: Math.ceil(req.body.eventPrice * 100),
                 },
                 quantity: 1
             }
         ],
         mode: 'payment',
-        success_url: process.env.BASE_URL + "/complete",
-        cancel_url: process.env.BASE_URL + "/cancel"
+        success_url: process.env.BASE_URL + "/my-events",
+        cancel_url: process.env.BASE_URL + "/home"
     })
     console.log(session)
     res.json({url: session.url})
+    }
+    catch {
+        res.status(500).json({error: "Stripe checkout session creation failed"})
+    }
 })
 
-// Start server inside async function
+// ---------- Start server + mount routes ----------
 async function start() {
     try {
         await connectDB(process.env.MONGO_URL);
 
-        // Mount routers
+        // API routes
         app.use("/api/universities", universitiesRouter);
         app.use("/api/users", usersRouter);
         app.use("/api/events", eventsRouter);
@@ -84,7 +128,7 @@ async function start() {
         app.use("/api/notifications", notificationsRouter);
         app.use("/api/auth", auth);
 
-        // 404 fallback
+        // 404 fallback for unknown API routes
         app.use((req, res) => {
             res.status(404).json({ error: "Not found" });
         });
@@ -105,3 +149,5 @@ async function start() {
 }
 
 start();
+
+export default app;

@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-backend/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-backend/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/JoinModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/ticketorium-frontend/src/components/modals/JoinModal.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,15 +191,7 @@
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
       <workItem from="1765305279922" duration="1461000" />
-      <workItem from="1765311342387" duration="661000" />
-    </task>
-    <task id="LOCAL-00033" summary="made section title font smaller">
-      <option name="closed" value="true" />
-      <created>1763508960772</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1763508960772</updated>
+      <workItem from="1765311342387" duration="5903000" />
     </task>
     <task id="LOCAL-00034" summary="worked on disputes page">
       <option name="closed" value="true" />
@@ -583,7 +577,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765306124239</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="README.md">
+      <option name="closed" value="true" />
+      <created>1765312147583</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1765312147583</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
