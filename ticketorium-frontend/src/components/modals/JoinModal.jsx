@@ -81,14 +81,25 @@ function JoinModal({
 
             if (isPaid) {
                 // redirect to checkout for paid events
-                navigate("/checkout", {
-                    state: {
-                        eventId,
-                        ticketId,
-                        fromEventId: eventId,
-                        price: createdTicket.price ?? numericPrice,
+                const response = await fetch("http://localhost:4000/checkout/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
-                });
+                    body: JSON.stringify({
+                        eventName: title,
+                        eventPrice: numericPrice,
+                        eventDesc: "A great event",
+                    }),
+                })
+                const data = await response.json();
+                console.log("STRIPE", data)
+                if (data.url) {
+                    window.location.href = data.url; // Redirect to Stripe Checkout Session
+                } else {
+                    setError("Failed to initiate payment. Please try again.");
+                }
             } else {
                 // go to registration status page for free events
                 navigate("/registration", {

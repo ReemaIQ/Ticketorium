@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="mereging from demo">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-    </list>
+    <list default="true" id="21e39ca1-6aaf-4ba4-b446-c00efdfcc31f" name="Changes" comment="payment page edits" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,9 +20,22 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="demo" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -35,12 +46,12 @@
     &quot;assignee&quot;: &quot;LenaAshqar&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ReemaIQ/Ticketorium.git&quot;,
-    &quot;accountId&quot;: &quot;7ed07325-3c85-47e4-9274-950836a0d4f8&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ReemaIQ/Ticketorium.git",
+    "accountId": "68f66e2f-0677-471f-b9ae-311e0eedb4d5"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -59,7 +70,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "demo",
     "last_opened_file_path": "C:/Users/sweet/WebstormProjects/Ticketorium",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -92,7 +103,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-e03c56caf84a-JavaScript-WS-252.23892.411" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-WS-252.26199.162" />
       </set>
     </attachedChunks>
   </component>
@@ -131,7 +142,8 @@
       <workItem from="1764783728721" duration="491000" />
       <workItem from="1764788016200" duration="8519000" />
       <workItem from="1765305279922" duration="1461000" />
-      <workItem from="1765311342387" duration="661000" />
+      <workItem from="1765311342387" duration="5903000" />
+      <workItem from="1765412207444" duration="336000" />
     </task>
     <task id="LOCAL-00035" summary="worked on disputes page">
       <option name="closed" value="true" />
@@ -509,21 +521,21 @@
       <option name="project" value="LOCAL" />
       <updated>1765306124239</updated>
     </task>
-    <task id="LOCAL-00082" summary="mereging from demo">
+    <task id="LOCAL-00082" summary="README.md">
       <option name="closed" value="true" />
-      <created>1765410120808</created>
+      <created>1765312147583</created>
       <option name="number" value="00082" />
       <option name="presentableId" value="LOCAL-00082" />
       <option name="project" value="LOCAL" />
-      <updated>1765410120808</updated>
+      <updated>1765312147583</updated>
     </task>
-    <task id="LOCAL-00083" summary="mereging from demo">
+    <task id="LOCAL-00083" summary="payment page edits">
       <option name="closed" value="true" />
-      <created>1765410430467</created>
+      <created>1765412350972</created>
       <option name="number" value="00083" />
       <option name="presentableId" value="LOCAL-00083" />
       <option name="project" value="LOCAL" />
-      <updated>1765410430467</updated>
+      <updated>1765412350972</updated>
     </task>
     <option name="localTasksCounter" value="84" />
     <servers />
@@ -579,8 +591,8 @@
     <MESSAGE value="invites fix layout" />
     <MESSAGE value="last fixes" />
     <MESSAGE value="README.md" />
-    <MESSAGE value="mereging from demo" />
-    <option name="LAST_COMMIT_MESSAGE" value="mereging from demo" />
+    <MESSAGE value="payment page edits" />
+    <option name="LAST_COMMIT_MESSAGE" value="payment page edits" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -599,10 +611,6 @@
           <url>file://$PROJECT_DIR$/ticketorium-backend/routes/listings.js</url>
           <line>140</line>
           <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/ticketorium-frontend/src/components/event-list/EventList.jsx</url>
-          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
